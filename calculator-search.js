@@ -33,7 +33,7 @@ function init(){
     'urea per acre':'fertilizer',
     'percentage increase':'percentage',
     'percentage decrease':'percentage',
-    'scientific calculator':'scientific', 'sin calculator':'scientific', 'cos calculator':'scientific', 'tan calculator':'scientific', 'log calculator':'scientific', 'square root calculator':'scientific', 'unit converter':'unit', 'kg to pounds':'unit', 'kilograms to pounds':'unit', 'celsius to fahrenheit':'unit', 'days between dates':'date', 'date after':'date', 'date before':'date',
+    'scientific calculator':'scientific', 'scientific calculator online':'scientific', 'sin calculator':'scientific', 'cos calculator':'scientific', 'tan calculator':'scientific', 'log calculator':'scientific', 'square root calculator':'scientific', 'unit converter':'unit', 'kg to pounds':'unit', 'kilograms to pounds':'unit', 'celsius to fahrenheit':'unit', 'mph to km':'unit', 'meters to feet':'unit', 'liters to gallons':'unit', 'days between dates':'date', 'days until':'date', 'how many days until':'date', 'date after':'date', 'date after':'date', 'date before':'date',
     emi:'loan installment monthly payment finance',loan:'emi installment monthly payment markup borrowing',
     tax:'salary income fbr pakistan finance',salary:'tax income pakistan',zakat:'islamic charity nisab assets',
     psx:'stock shares profit loss dividend capital gain portfolio',stock:'psx shares profit dividend',shares:'psx stock portfolio',
