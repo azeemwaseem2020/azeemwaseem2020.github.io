@@ -33,6 +33,7 @@ function init(){
     'urea per acre':'fertilizer',
     'percentage increase':'percentage',
     'percentage decrease':'percentage',
+    'scientific calculator':'scientific', 'sin calculator':'scientific', 'cos calculator':'scientific', 'tan calculator':'scientific', 'log calculator':'scientific', 'square root calculator':'scientific', 'unit converter':'unit', 'kg to pounds':'unit', 'kilograms to pounds':'unit', 'celsius to fahrenheit':'unit', 'days between dates':'date', 'date after':'date', 'date before':'date',
     emi:'loan installment monthly payment finance',loan:'emi installment monthly payment markup borrowing',
     tax:'salary income fbr pakistan finance',salary:'tax income pakistan',zakat:'islamic charity nisab assets',
     psx:'stock shares profit loss dividend capital gain portfolio',stock:'psx shares profit dividend',shares:'psx stock portfolio',
@@ -41,7 +42,7 @@ function init(){
     tmr:'feed ration livestock cattle buffalo agriculture',feed:'tmr ration livestock cattle',
     force:'physics mass acceleration newton mechanics',velocity:'physics speed displacement time motion',acceleration:'physics velocity time motion',speed:'physics motion distance time average speed',free:'free fall gravity falling drop time velocity',projectile:'projectile motion range height flight angle',centripetal:'circular motion centripetal force radius speed',torque:'moment force lever arm rotation',spring:'hooke law spring force constant displacement',ohm:'ohm law voltage current resistance electricity circuit',resistance:'ohm resistance resistor circuit electricity series',voltage:'ohm voltage current resistance electricity',current:'electric current ampere voltage resistance',power:'electrical power watt voltage current electricity',wave:'wave speed frequency wavelength sound physics',frequency:'frequency period cycles hertz waves sound',wavelength:'wavelength wave frequency speed sound',heat:'heat energy specific heat temperature thermodynamics',thermodynamics:'heat gas temperature pressure volume thermodynamics',gas:'ideal gas law pressure volume moles temperature pv nrt',lens:'lens formula focal length object distance image distance optics',mirror:'mirror formula focal length object image distance optics',magnification:'magnification image size object size optics',snell:'snell law refraction refractive index optics',photon:'photon energy planck frequency wavelength modern physics',massenergy:'mass energy e mc2 relativity',halflife:'half life radioactive decay nuclear physics',coulomb:'coulomb law electric force charge distance electrostatics',
     kinetic:'energy physics mass velocity',density:'mass volume measurement science',physics:'science mechanics motion force energy waves electricity thermodynamics optics',science:'physics mechanics calculation formula student',
-    math:'percentage ratio equation quadratic average probability geometry'
+    math:'percentage ratio equation quadratic average probability geometry', scientific:'scientific sin cos tan logarithm log ln sqrt power roots trigonometry', unit:'unit conversion length mass temperature area volume speed pressure energy power kg lb km miles celsius fahrenheit', date:'date days calendar between add subtract deadline'
   };
 
   function matches(haystack, term){
