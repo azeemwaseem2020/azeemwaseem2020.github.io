@@ -55,6 +55,7 @@ function init(){
   function search(){
     var raw=normalize(input.value);
     var phrase=raw;
+    var percentageQuestion=/\b(?:what is|calculate)\b.*\d+(?:\.\d+)?\s*%|\b\d+(?:\.\d+)?\s*%\s*(?:of|increase|decrease|change)\b/i.test(String(input.value||''));
     var stopwords={the:1,a:1,an:1,for:1,to:1,of:1,in:1,on:1,do:1,i:1,need:1,how:1,what:1,is:1,my:1,calculate:1,calculator:1};
     var terms=raw?raw.split(' ').filter(function(t){return t.length>1&&!stopwords[t];}):[];
     var shown=0;
@@ -66,7 +67,7 @@ function init(){
       var haystack=(title+' '+keywords+' '+body).trim();
       var phraseTarget=aliases[phrase];
       var phraseMatch=phraseTarget && phraseTarget.split(' ').every(function(term){return haystack.indexOf(term)!==-1;});
-      var match=!terms.length || phraseMatch || terms.every(function(term){return matches(haystack,term);});
+      var match=!terms.length || phraseMatch || (percentageQuestion && (haystack.indexOf('percentage')!==-1 || haystack.indexOf('percent')!==-1)) || terms.every(function(term){return matches(haystack,term);});
       card.hidden=!match;
       if(match)shown++;
     });
