@@ -15,13 +15,13 @@ function init(){
     'age calculator':'age','how old am i':'age','exact age':'age','age in years months days':'age','tip calculator':'tip','restaurant tip':'tip','tip per person':'tip',
     'bill split calculator':'bill split','split restaurant bill':'bill split','how much does each person pay':'bill split','fuel cost calculator':'fuel','petrol cost':'fuel','fuel consumption':'fuel',
     'pace calculator':'pace','running pace':'pace','minutes per kilometer':'pace','min per km':'pace',
-    'what is x percent of y':'percentage','psx profit':'psx','stock profit':'psx','share profit':'psx'
+    'what is x percent of y':'percentage','psx profit':'psx','stock profit':'psx','share profit':'psx','gpa calculator':'gpa','grade point average':'gpa','semester gpa':'gpa','statistics calculator':'statistics','mean calculator':'statistics','median calculator':'statistics','standard deviation calculator':'statistics','fraction calculator':'fraction','add fractions':'fraction','subtract fractions':'fraction','multiply fractions':'fraction','divide fractions':'fraction','simple interest calculator':'simple interest','interest on principal':'simple interest'
   };
   var broad={
     emi:'loan installment monthly payment finance',loan:'emi installment monthly payment finance',tax:'salary income fbr pakistan finance',salary:'tax income pakistan',
     psx:'stock shares profit loss dividend portfolio',solar:'sun energy load system size electricity',fertilizer:'npk urea dap mop agriculture',tmr:'feed ration livestock cattle buffalo',
     age:'birthday birth date years months days',tip:'gratuity restaurant bill percentage',bill:'split shared restaurant total per person',fuel:'petrol diesel trip distance consumption cost',
-    pace:'running walking speed minutes kilometer',force:'physics mass acceleration newton',velocity:'physics speed displacement time',density:'mass volume science',
+    pace:'running walking speed minutes kilometer',gpa:'grade point average credits semester education',statistics:'mean median range variance standard deviation average data',fraction:'numerator denominator add subtract multiply divide simplify',simple:'interest principal rate time finance',force:'physics mass acceleration newton',velocity:'physics speed displacement time',density:'mass volume science',
     percentage:'percent increase decrease ratio math',math:'percentage ratio equation average probability geometry',science:'physics mechanics motion force energy waves electricity',
     unit:'conversion length mass temperature speed pressure energy',date:'calendar days between add subtract',time:'hours minutes seconds duration elapsed',scientific:'sin cos tan logarithm roots powers'
   };
