@@ -39,8 +39,8 @@ function init(){
     solar:'sun energy load system size electricity',electricity:'solar energy load',
     fertilizer:'npk urea dap mop potash agriculture',npk:'fertilizer nitrogen phosphorus potassium',
     tmr:'feed ration livestock cattle buffalo agriculture',feed:'tmr ration livestock cattle',
-    force:'physics mass acceleration newton',velocity:'physics speed displacement time',acceleration:'physics velocity time',
-    kinetic:'energy physics mass velocity',density:'mass volume measurement science',
+    force:'physics mass acceleration newton mechanics',velocity:'physics speed displacement time motion',acceleration:'physics velocity time motion',speed:'physics motion distance time average speed',free:'free fall gravity falling drop time velocity',projectile:'projectile motion range height flight angle',centripetal:'circular motion centripetal force radius speed',torque:'moment force lever arm rotation',spring:'hooke law spring force constant displacement',
+    kinetic:'energy physics mass velocity',density:'mass volume measurement science',physics:'science mechanics motion force energy waves electricity thermodynamics optics',science:'physics mechanics calculation formula student',
     math:'percentage ratio equation quadratic average probability geometry'
   };
 
