@@ -4,7 +4,7 @@ function init(){
   var section=document.getElementById('calculator-list'),input=document.getElementById('calculatorSearch');
   if(!section||!input)return;
   var cards=[].slice.call(section.querySelectorAll('.calculator-card')),button=document.getElementById('calculatorSearchButton'),count=document.getElementById('calculatorSearchCount'),noResults=section.querySelector('.calculator-no-results');
-  function norm(v){return String(v||'').toLowerCase().replace(/[^a-z0-9\\s]+/g,' ').replace(/\\s+/g,' ').trim();}
+  function norm(v){return String(v||'').toLowerCase().replace(/[^a-z0-9\s]+/g,' ').replace(/\s+/g,' ').trim();}
   var aliases={
     'loan calculator':'loan emi','personal loan calculator':'loan emi','car loan calculator':'loan emi','monthly installment calculator':'loan emi',
     'volume of a cylinder':'volume','cylinder volume formula':'volume','cube volume':'volume','rectangular prism volume':'volume','box volume calculator':'volume',
@@ -67,29 +67,29 @@ function init(){
   };
   function match(hay,term){if(hay.indexOf(term)!==-1)return true;if(aliases[term])return aliases[term].split(' ').every(function(x){return hay.indexOf(x)!==-1;});return false;}
   var intentPatterns=[
-    [/\\b\\d+(?:\\.\\d+)?%\\s*(?:of|from)\\s*\\d+/,'percentage'],
-    [/\\b(?:percentage|percent)\\s+(?:increase|decrease|change|difference)\\b/,'percentage'],
-    [/\\b(?:monthly|annual)\\s+(?:loan|mortgage)\\s+(?:payment|installment)\\b/,'loan emi'],
-    [/\\b(?:home|house)\\s+loan\\b/,'mortgage'],
-    [/\\b(?:how many|number of)\\s+(?:solar panels|panels)\\b/,'solar panel'],
-    [/\\b(?:kg|kilograms?)\\s+(?:to|in)\\s+(?:lb|lbs|pounds?)\\b/,'unit'],
-    [/\\b(?:miles?|mi)\\s+(?:to|in)\\s+(?:km|kilometers?)\\b/,'unit'],
-    [/\\b(?:fahrenheit|celsius|f|c)\\s+(?:to|in)\\s+(?:fahrenheit|celsius|f|c)\\b/,'unit'],
-    [/\\b(?:hours?|minutes?)\\s+(?:between|from)\\b/,'time'],
-    [/\\b(?:how old|age)\\b.*\\b(?:born|birth|date)\\b/,'age'],
-    [/\\b(?:what|which)\\s+grade\\b|\\b(?:marks?|score)\\s+(?:to|percentage|grade)\\b/,'grade'],
-    [/\\b(?:mean|median|average|standard deviation)\\b/,'statistics'],
-    [/\\b(?:solve|find)\\s+(?:the )?(?:missing )?(?:value|x)\\b.*\\b(?:ratio|proportion)\\b/,'proportion'],
-    [/\\b(?:quadratic|ax2|ax\\^2|discriminant)\\b/,'quadratic'],
-    [/\\b(?:npr|ncr|permutation|combination)\\b/,'permutation'],
-    [/\\b(?:surface area|total surface area)\\b/,'surface area'],
-    [/\\b(?:volume|capacity)\\b.*\\b(?:cylinder|cube|box|rectangular prism)\\b/,'volume'],
-    [/\\b(?:area)\\b.*\\b(?:circle|rectangle|triangle)\\b/,'area'],
-    [/\\bf\\s*=\\s*ma\\b|\\bforce\\b.*\\bmass\\b.*\\bacceleration\\b/,'force'],
-    [/\\b(?:rho|ρ|density)\\b.*\\b(?:mass|volume)\\b/,'density'],
-    [/\\b(?:pv\\s*=\\s*nrt|ideal gas)\\b/,'ideal gas'],
-    [/\\b(?:e\\s*=\\s*mc2|e\\s*=\\s*mc\\^2|mass energy)\\b/,'mass energy'],
-    [/\\b(?:ohm|voltage|current|resistance)\\b/,'ohms law']
+    [/\b\\d+(?:\\.\\d+)?%\s*(?:of|from)\s*\\d+/,'percentage'],
+    [/\b(?:percentage|percent)\s+(?:increase|decrease|change|difference)\b/,'percentage'],
+    [/\b(?:monthly|annual)\s+(?:loan|mortgage)\s+(?:payment|installment)\b/,'loan emi'],
+    [/\b(?:home|house)\s+loan\b/,'mortgage'],
+    [/\b(?:how many|number of)\s+(?:solar panels|panels)\b/,'solar panel'],
+    [/\b(?:kg|kilograms?)\s+(?:to|in)\s+(?:lb|lbs|pounds?)\b/,'unit'],
+    [/\b(?:miles?|mi)\s+(?:to|in)\s+(?:km|kilometers?)\b/,'unit'],
+    [/\b(?:fahrenheit|celsius|f|c)\s+(?:to|in)\s+(?:fahrenheit|celsius|f|c)\b/,'unit'],
+    [/\b(?:hours?|minutes?)\s+(?:between|from)\b/,'time'],
+    [/\b(?:how old|age)\b.*\b(?:born|birth|date)\b/,'age'],
+    [/\b(?:what|which)\s+grade\b|\b(?:marks?|score)\s+(?:to|percentage|grade)\b/,'grade'],
+    [/\b(?:mean|median|average|standard deviation)\b/,'statistics'],
+    [/\b(?:solve|find)\s+(?:the )?(?:missing )?(?:value|x)\b.*\b(?:ratio|proportion)\b/,'proportion'],
+    [/\b(?:quadratic|ax2|ax\\^2|discriminant)\b/,'quadratic'],
+    [/\b(?:npr|ncr|permutation|combination)\b/,'permutation'],
+    [/\b(?:surface area|total surface area)\b/,'surface area'],
+    [/\b(?:volume|capacity)\b.*\b(?:cylinder|cube|box|rectangular prism)\b/,'volume'],
+    [/\b(?:area)\b.*\b(?:circle|rectangle|triangle)\b/,'area'],
+    [/\bf\s*=\s*ma\b|\bforce\b.*\bmass\b.*\bacceleration\b/,'force'],
+    [/\b(?:rho|ρ|density)\b.*\b(?:mass|volume)\b/,'density'],
+    [/\b(?:pv\s*=\s*nrt|ideal gas)\b/,'ideal gas'],
+    [/\b(?:e\s*=\s*mc2|e\s*=\s*mc\\^2|mass energy)\b/,'mass energy'],
+    [/\b(?:ohm|voltage|current|resistance)\b/,'ohms law']
   ];
   function search(){
     var raw=norm(input.value),patternTarget=null;intentPatterns.some(function(item){if(item[0].test(raw)){patternTarget=item[1];return true;}return false;});var terms=raw?raw.split(' ').filter(function(x){return x.length>1&&!/^(the|a|an|for|to|of|in|on|do|i|need|how|what|is|my|calculate|calculator)$/.test(x);}):[],target=aliases[raw],shown=0;
