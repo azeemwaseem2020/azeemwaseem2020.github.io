@@ -66,11 +66,36 @@ function init(){
     unit:'conversion length mass temperature speed pressure energy',date:'calendar days between add subtract',time:'hours minutes seconds duration elapsed',scientific:'sin cos tan logarithm roots powers'
   };
   function match(hay,term){if(hay.indexOf(term)!==-1)return true;if(aliases[term])return aliases[term].split(' ').every(function(x){return hay.indexOf(x)!==-1;});return false;}
+  var intentPatterns=[
+    [/\\b\\d+(?:\\.\\d+)?%\\s*(?:of|from)\\s*\\d+/,'percentage'],
+    [/\\b(?:percentage|percent)\\s+(?:increase|decrease|change|difference)\\b/,'percentage'],
+    [/\\b(?:monthly|annual)\\s+(?:loan|mortgage)\\s+(?:payment|installment)\\b/,'loan emi'],
+    [/\\b(?:home|house)\\s+loan\\b/,'mortgage'],
+    [/\\b(?:how many|number of)\\s+(?:solar panels|panels)\\b/,'solar panel'],
+    [/\\b(?:kg|kilograms?)\\s+(?:to|in)\\s+(?:lb|lbs|pounds?)\\b/,'unit'],
+    [/\\b(?:miles?|mi)\\s+(?:to|in)\\s+(?:km|kilometers?)\\b/,'unit'],
+    [/\\b(?:fahrenheit|celsius|f|c)\\s+(?:to|in)\\s+(?:fahrenheit|celsius|f|c)\\b/,'unit'],
+    [/\\b(?:hours?|minutes?)\\s+(?:between|from)\\b/,'time'],
+    [/\\b(?:how old|age)\\b.*\\b(?:born|birth|date)\\b/,'age'],
+    [/\\b(?:what|which)\\s+grade\\b|\\b(?:marks?|score)\\s+(?:to|percentage|grade)\\b/,'grade'],
+    [/\\b(?:mean|median|average|standard deviation)\\b/,'statistics'],
+    [/\\b(?:solve|find)\\s+(?:the )?(?:missing )?(?:value|x)\\b.*\\b(?:ratio|proportion)\\b/,'proportion'],
+    [/\\b(?:quadratic|ax2|ax\\^2|discriminant)\\b/,'quadratic'],
+    [/\\b(?:npr|ncr|permutation|combination)\\b/,'permutation'],
+    [/\\b(?:surface area|total surface area)\\b/,'surface area'],
+    [/\\b(?:volume|capacity)\\b.*\\b(?:cylinder|cube|box|rectangular prism)\\b/,'volume'],
+    [/\\b(?:area)\\b.*\\b(?:circle|rectangle|triangle)\\b/,'area'],
+    [/\\bf\\s*=\\s*ma\\b|\\bforce\\b.*\\bmass\\b.*\\bacceleration\\b/,'force'],
+    [/\\b(?:rho|ρ|density)\\b.*\\b(?:mass|volume)\\b/,'density'],
+    [/\\b(?:pv\\s*=\\s*nrt|ideal gas)\\b/,'ideal gas'],
+    [/\\b(?:e\\s*=\\s*mc2|e\\s*=\\s*mc\\^2|mass energy)\\b/,'mass energy'],
+    [/\\b(?:ohm|voltage|current|resistance)\\b/,'ohms law']
+  ];
   function search(){
-    var raw=norm(input.value),terms=raw?raw.split(' ').filter(function(x){return x.length>1&&!/^(the|a|an|for|to|of|in|on|do|i|need|how|what|is|my|calculate|calculator)$/.test(x);}):[],target=aliases[raw],shown=0;
+    var raw=norm(input.value),patternTarget=null;intentPatterns.some(function(item){if(item[0].test(raw)){patternTarget=item[1];return true;}return false;});var terms=raw?raw.split(' ').filter(function(x){return x.length>1&&!/^(the|a|an|for|to|of|in|on|do|i|need|how|what|is|my|calculate|calculator)$/.test(x);}):[],target=aliases[raw],shown=0;
     cards.forEach(function(card){
       var hay=norm(((card.querySelector('h2')||{}).textContent||'')+' '+(card.getAttribute('data-keywords')||'')+' '+card.textContent);
-      var ok=!terms.length || (target&&target.split(' ').every(function(x){return hay.indexOf(x)!==-1;})) || terms.every(function(t){return match(hay,t)||broad[t]&&broad[t].split(' ').some(function(x){return hay.indexOf(x)!==-1;});});
+      var ok=!terms.length || patternTarget&&((broad[patternTarget]||'').split(' ').some(function(x){return hay.indexOf(x)!==-1;})||hay.indexOf(patternTarget)!==-1) || (target&&target.split(' ').every(function(x){return hay.indexOf(x)!==-1;})) || terms.every(function(t){return match(hay,t)||broad[t]&&broad[t].split(' ').some(function(x){return hay.indexOf(x)!==-1;});});
       card.hidden=!ok;if(ok)shown++;
     });
     if(count)count.textContent=raw?shown+' calculator'+(shown===1?'':'s')+' found':shown+' calculators available';
