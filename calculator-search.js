@@ -41,7 +41,7 @@ function init(){
     'projectile calculator':'projectile','projectile motion':'projectile','centripetal force':'centripetal','torque calculator':'torque',
     'kinetic energy calculator':'kinetic energy','potential energy calculator':'potential energy','momentum calculator':'momentum','work calculator':'work','power calculator':'power',
     'ohms law calculator':'ohms law','electrical power calculator':'electrical power','wave speed calculator':'wave speed','frequency calculator':'frequency',
-    'heat calculator':'heat','specific heat calculator':'specific heat','ideal gas law calculator':'ideal gas','lens formula calculator':'lens','mirror formula calculator':'mirror',
+    'heat calculator':'heat','specific heat calculator':'specific heat','ideal gas law calculator':'ideal gas','pv nrt':'ideal gas','pv=nrt':'ideal gas','ideal gas equation':'ideal gas','lens formula calculator':'lens','mirror formula calculator':'mirror',
     'photon energy calculator':'photon','mass energy calculator':'mass energy','half life calculator':'half life','coulombs law calculator':'coulomb'
   };
   var broad={
