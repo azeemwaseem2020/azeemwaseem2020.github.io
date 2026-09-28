@@ -6,6 +6,7 @@ function init(){
   var cards=[].slice.call(section.querySelectorAll('.calculator-card')),button=document.getElementById('calculatorSearchButton'),count=document.getElementById('calculatorSearchCount'),noResults=section.querySelector('.calculator-no-results');
   function norm(v){return String(v||'').toLowerCase().replace(/[^a-z0-9\\s]+/g,' ').replace(/\\s+/g,' ').trim();}
   var aliases={
+    'what is':'','how much':'','how many':'','find':'','solve':'','calculate':'','formula':'','equation':'','convert':'','from':'','to':'','per':'','rate':'','total':'','average':'','cost':'','price':'','needed':'','need':'','size':'','online':'','free':'','calculator':'',
     'how many solar panels':'solar panel','solar panels needed':'solar panel','solar panel size':'solar panel','monthly solar energy':'solar panel',
     'monthly loan payment':'loan emi','loan monthly payment':'loan emi','car loan payment':'loan emi','home loan payment':'mortgage',
     'take home salary':'salary tax','net salary':'salary tax','salary after tax':'salary tax',
