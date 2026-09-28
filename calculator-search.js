@@ -103,9 +103,22 @@ function init(){
     if(count)count.textContent=raw?shown+' calculator'+(shown===1?'':'s')+' found':shown+' calculators available';
     if(noResults)noResults.hidden=shown!==0;
   }
-  if(button)button.addEventListener('click',function(){search();if(norm(input.value)){section.scrollIntoView({behavior:'smooth',block:'start');}});
-  input.addEventListener('input',search);input.addEventListener('search',search);
-  input.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();search();section.scrollIntoView({behavior:'smooth',block:'start');}else if(e.key==='Escape'){input.value='';search();input.focus();}});
+  function runSearch(){
+    var raw=norm(input.value);
+    if(raw&&directRoutes[raw]){
+      window.location.assign(new URL(directRoutes[raw],document.baseURI).href);
+      return;
+    }
+    search();
+    if(raw) section.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  if(button)button.addEventListener('click',function(e){e.preventDefault();runSearch();});
+  input.addEventListener('input',search);
+  input.addEventListener('search',search);
+  input.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();runSearch();}
+    else if(e.key==='Escape'){input.value='';search();input.focus();}
+  });
   try{var q=new URLSearchParams(location.search).get('q');if(q){input.value=q;search();}}catch(e){}
   search();
 }
