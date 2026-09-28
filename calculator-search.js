@@ -6,6 +6,16 @@ function init(){
   var cards=[].slice.call(section.querySelectorAll('.calculator-card')),button=document.getElementById('calculatorSearchButton'),count=document.getElementById('calculatorSearchCount'),noResults=section.querySelector('.calculator-no-results');
   function norm(v){return String(v||'').toLowerCase().replace(/[^a-z0-9\\s]+/g,' ').replace(/\\s+/g,' ').trim();}
   var aliases={
+    'loan calculator':'loan emi','personal loan calculator':'loan emi','car loan calculator':'loan emi','monthly installment calculator':'loan emi',
+    'volume of a cylinder':'volume','cylinder volume formula':'volume','cube volume':'volume','rectangular prism volume':'volume','box volume calculator':'volume',
+    'circle area formula':'area','area of a circle':'area','rectangle area calculator':'area','triangle area calculator':'triangle',
+    'percentage from marks':'grade','test score calculator':'grade','exam percentage calculator':'grade','what grade is my score':'grade','marks to percentage':'grade',
+    'hours between two times':'time','time duration calculator':'time','how long between two times':'time','minutes to hours':'time',
+    'find missing value in a ratio':'proportion','cross multiplication calculator':'proportion','solve a proportion':'proportion',
+    'mortgage payment calculator':'mortgage','monthly mortgage payment':'mortgage','home loan calculator':'mortgage','mortgage interest calculator':'mortgage','loan amortization calculator':'mortgage',
+    '20 percent tip calculator':'tip','how much should i tip':'tip','split bill with tip':'bill split',
+    'calculate age from date of birth':'age','date of birth age calculator':'age','how many days old am i':'age',
+    'kilograms to pounds':'unit','f to c':'unit','fahrenheit to celsius':'unit','miles to km':'unit','km to miles':'unit','bar to psi':'unit','joules to calories':'unit','watts to kilowatts':'unit',
     'what is':'','how much':'','how many':'','find':'','solve':'','calculate':'','formula':'','equation':'','convert':'','from':'','to':'','per':'','rate':'','total':'','average':'','cost':'','price':'','needed':'','need':'','size':'','online':'','free':'','calculator':'',
     'how many solar panels':'solar panel','solar panels needed':'solar panel','solar panel size':'solar panel','monthly solar energy':'solar panel',
     'monthly loan payment':'loan emi','loan monthly payment':'loan emi','car loan payment':'loan emi','home loan payment':'mortgage',
