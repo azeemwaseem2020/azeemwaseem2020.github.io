@@ -103,8 +103,8 @@ function init(){
     [/\b(?:ohm|voltage|current|resistance)\b/,'ohms law']
   ];
   function search(){
-    var raw=norm(input.value),patternTarget=null;
-    intentPatterns.some(function(item){if(item[0].test(raw)){patternTarget=item[1];return true;}return false;});var terms=raw?raw.split(' ').filter(function(x){return x.length>1&&!/^(the|a|an|for|to|of|in|on|do|i|need|how|what|is|my|calculate|calculator)$/.test(x);}):[],target=aliases[raw],shown=0;
+    var raw=norm(input.value), patternTarget=null, rawLower=String(input.value||'').toLowerCase().trim();
+    intentPatterns.some(function(item){if(item[0].test(rawLower)){patternTarget=item[1];return true;}return false;});var terms=raw?raw.split(' ').filter(function(x){return x.length>1&&!/^(the|a|an|for|to|of|in|on|do|i|need|how|what|is|my|calculate|calculator)$/.test(x);}):[],target=aliases[raw],shown=0;
     cards.forEach(function(card){
       var hay=norm(((card.querySelector('h2')||{}).textContent||'')+' '+(card.getAttribute('data-keywords')||'')+' '+card.textContent);
       var ok=!terms.length || patternTarget&&((broad[patternTarget]||'').split(' ').some(function(x){return hay.indexOf(x)!==-1;})||hay.indexOf(patternTarget)!==-1) || (target&&target.split(' ').every(function(x){return hay.indexOf(x)!==-1;})) || terms.every(function(t){return match(hay,t)||broad[t]&&broad[t].split(' ').some(function(x){return hay.indexOf(x)!==-1;});});
