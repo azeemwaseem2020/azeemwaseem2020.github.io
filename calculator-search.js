@@ -5,6 +5,7 @@ function init(){
   if(!section||!input)return;
   var cards=[].slice.call(section.querySelectorAll('.calculator-card')),button=document.getElementById('calculatorSearchButton'),count=document.getElementById('calculatorSearchCount'),noResults=section.querySelector('.calculator-no-results');
   function norm(v){return String(v||'').toLowerCase().replace(/[^a-z0-9\s]+/g,' ').replace(/\s+/g,' ').trim();}
+  var directRoutes={'tmr':'tmr-feed-calculator.html','tmr calculator':'tmr-feed-calculator.html','tmr feed':'tmr-feed-calculator.html','tmr feed calculator':'tmr-feed-calculator.html','tmr dry matter':'tmr-dry-matter-calculator.html','tmr dry matter calculator':'tmr-dry-matter-calculator.html','tmr feed cost':'tmr-feed-cost-calculator.html','tmr feed cost calculator':'tmr-feed-cost-calculator.html','advanced tmr check':'tmr-check-my-ration.html'};
   var aliases={
     'loan calculator':'loan emi','personal loan calculator':'loan emi','car loan calculator':'loan emi','monthly installment calculator':'loan emi',
     'volume of a cylinder':'volume','cylinder volume formula':'volume','cube volume':'volume','rectangular prism volume':'volume','box volume calculator':'volume',
@@ -92,7 +93,8 @@ function init(){
     [/\b(?:ohm|voltage|current|resistance)\b/,'ohms law']
   ];
   function search(){
-    var raw=norm(input.value),patternTarget=null;intentPatterns.some(function(item){if(item[0].test(raw)){patternTarget=item[1];return true;}return false;});var terms=raw?raw.split(' ').filter(function(x){return x.length>1&&!/^(the|a|an|for|to|of|in|on|do|i|need|how|what|is|my|calculate|calculator)$/.test(x);}):[],target=aliases[raw],shown=0;
+    var raw=norm(input.value),patternTarget=null;
+    if(raw&&directRoutes[raw]){ window.location.href=directRoutes[raw]; return; }intentPatterns.some(function(item){if(item[0].test(raw)){patternTarget=item[1];return true;}return false;});var terms=raw?raw.split(' ').filter(function(x){return x.length>1&&!/^(the|a|an|for|to|of|in|on|do|i|need|how|what|is|my|calculate|calculator)$/.test(x);}):[],target=aliases[raw],shown=0;
     cards.forEach(function(card){
       var hay=norm(((card.querySelector('h2')||{}).textContent||'')+' '+(card.getAttribute('data-keywords')||'')+' '+card.textContent);
       var ok=!terms.length || patternTarget&&((broad[patternTarget]||'').split(' ').some(function(x){return hay.indexOf(x)!==-1;})||hay.indexOf(patternTarget)!==-1) || (target&&target.split(' ').every(function(x){return hay.indexOf(x)!==-1;})) || terms.every(function(t){return match(hay,t)||broad[t]&&broad[t].split(' ').some(function(x){return hay.indexOf(x)!==-1;});});
