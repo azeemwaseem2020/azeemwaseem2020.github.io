@@ -125,8 +125,9 @@ function money(n){return n.toLocaleString('en-PK',{minimumFractionDigits:2,maxim
 function pct(n){return n.toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2})+'%'}
 function calc(){
  const A=Number(amount.value),D=Number(down.value),P=A-D,annual=Number(rate.value),R=annual/1200,N=Math.round(Number(years.value)*12),F=Number(fees.value),K=kibor.value===''?null:Number(kibor.value);
- if(!Number.isFinite(A)||!Number.isFinite(D)||!Number.isFinite(annual)||!Number.isFinite(N)||!Number.isFinite(F)||A<=0||D<0||D>=A||annual<0||N<=0||F<0||K!==null&&(!Number.isFinite(K)||K<0)){result.innerHTML='<p role="alert">Please enter valid loan, rate, term and cost values. The down payment must be lower than the loan amount.</p>';return}
+ if(!Number.isFinite(A)||!Number.isFinite(D)||!Number.isFinite(annual)||!Number.isFinite(N)||!Number.isFinite(F)||A<=0||D<0||D>=A||annual<0||N<=0||N>1200||F<0||K!==null&&(!Number.isFinite(K)||K<0)){result.innerHTML='<p role="alert">Please enter valid loan, rate, term and cost values. The loan term must be between 1 month and 100 years, and the down payment must be lower than the loan amount.</p>';return}
  const e=R===0?P/N:P*R*Math.pow(1+R,N)/(Math.pow(1+R,N)-1),total=e*N,interest=total-P,totalCash=total+D+F;
+ if(![e,total,interest,totalCash].every(Number.isFinite)){result.innerHTML='<p role="alert">These inputs produce a value outside the calculator\'s safe numeric range. Try a smaller loan amount, rate or term.</p>';return}
  const flatInterest=P*(annual/100)*(N/12),flatPayment=(P+flatInterest)/N,flatTotal=P+flatInterest;
  let balance=P,rows=[],principalTotal=0,interestTotal=0;
  for(let i=1;i<=N;i++){let int=R===0?0:balance*R;let prin=e-int;if(i===N)prin=balance;let payment=prin+int;balance=Math.max(0,balance-prin);principalTotal+=prin;interestTotal+=int;rows.push({i,payment,principal:prin,interest:int,balance})}
