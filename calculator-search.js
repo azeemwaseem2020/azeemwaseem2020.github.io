@@ -341,7 +341,10 @@
     try {
       var params = new URLSearchParams(location.search);
       var q = params.get('q');
-      if (q) input.value = q;
+      if (q) {
+        input.value = q;
+        render();
+      }
     } catch (error) {
       // Older browsers can simply start with an empty search.
     }
