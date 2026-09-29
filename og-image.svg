@@ -1,1 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#10243a"/><rect x="70" y="70" width="1060" height="490" rx="36" fill="#183653"/><text x="100" y="205" font-family="Arial,Helvetica,sans-serif" font-size="92" font-weight="700" fill="#ffffff">Calcora</text><text x="105" y="285" font-family="Arial,Helvetica,sans-serif" font-size="42" fill="#ffffff">Free Online Calculators</text><text x="105" y="350" font-family="Arial,Helvetica,sans-serif" font-size="28" fill="#dbe7f2">Finance • PSX • Solar • Agriculture • Math • Science</text><text x="105" y="440" font-family="Arial,Helvetica,sans-serif" font-size="30" fill="#ffffff">Practical tools • Clear formulas • Fast results</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1e30"/><stop offset="1" stop-color="#183752"/></linearGradient>
+ <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#45b0ff"/><stop offset="1" stop-color="#7dd3fc"/></linearGradient>
+</defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<rect x="55" y="55" width="1090" height="520" rx="34" fill="#183752" stroke="#3d6989" stroke-width="2"/>
+<rect x="95" y="105" width="1015" height="14" rx="7" fill="url(#accent)"/>
+<text x="95" y="205" font-family="Arial,Helvetica,sans-serif" font-size="86" font-weight="700" fill="#fff">Calcora</text>
+<text x="98" y="280" font-family="Arial,Helvetica,sans-serif" font-size="42" font-weight="700" fill="#eef7ff">Free Online Calculators</text>
+<text x="100" y="335" font-family="Arial,Helvetica,sans-serif" font-size="27" fill="#cce0f0">Finance  •  PSX  •  Solar  •  Agriculture</text>
+<text x="100" y="375" font-family="Arial,Helvetica,sans-serif" font-size="27" fill="#cce0f0">Math  •  Science  •  Everyday calculations</text>
+<line x1="100" y1="430" x2="1095" y2="430" stroke="#4e7e9e" stroke-width="2"/>
+<text x="100" y="475" font-family="Arial,Helvetica,sans-serif" font-size="27" font-weight="700" fill="#fff">Clear formulas  •  Practical results  •  Free to use</text>
+<g transform="translate(930 150)">
+ <rect width="155" height="225" rx="18" fill="#0f273d" stroke="#64a0c3" stroke-width="2"/>
+ <rect x="25" y="25" width="105" height="48" rx="8" fill="#204c69"/>
+ <g fill="#2a5b78">
+  <rect x="25" y="95" width="30" height="25" rx="5"/><rect x="63" y="95" width="30" height="25" rx="5"/><rect x="101" y="95" width="30" height="25" rx="5"/>
+  <rect x="25" y="135" width="30" height="25" rx="5"/><rect x="63" y="135" width="30" height="25" rx="5"/><rect x="101" y="135" width="30" height="25" rx="5"/>
+  <rect x="25" y="175" width="30" height="25" rx="5"/><rect x="63" y="175" width="30" height="25" rx="5"/><rect x="101" y="175" width="30" height="25" rx="5"/>
+ </g>
+</g>
+</svg>
