@@ -56,3 +56,5 @@ th{font-weight:800}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
 }
+
+.calculator-actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.calculator-actions button{border:1px solid #d7e0e8;background:#fff;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer}.calculator-actions button:hover{box-shadow:0 3px 12px rgba(0,0,0,.08)}
