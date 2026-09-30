@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Health Calculator | BMI & BMR Calculator Online | Calcora</title>
+<meta name="description" content="Free health calculator for BMI and estimated basal metabolic rate. Enter height, weight, age and sex to get a transparent estimate with formulas and health guidance.">
+<meta name="author" content="Abdul Qadir">
+<link rel="canonical" href="https://azeemwaseem2020.github.io/health-calculator.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="theme-color" content="#10243a">
+<meta property="og:site_name" content="Calcora"><meta property="og:title" content="Health Calculator | BMI & BMR Calculator Online | Calcora">
+<meta property="og:description" content="Calculate BMI and estimated BMR from basic body measurements. Free, transparent and easy to review.">
+<meta property="og:type" content="website"><meta property="og:url" content="https://azeemwaseem2020.github.io/health-calculator.html">
+<meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png"><meta property="og:image:alt" content="Calcora Health Calculator">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Health Calculator | BMI & BMR Calculator Online | Calcora">
+<meta name="twitter:description" content="Free BMI and estimated BMR calculator with clear formulas and assumptions."><meta name="twitter:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Health Calculator","url":"https://azeemwaseem2020.github.io/health-calculator.html","applicationCategory":"HealthApplication","operatingSystem":"Any","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["BMI calculation","Estimated BMR calculation","Metric and imperial inputs"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://azeemwaseem2020.github.io/"},{"@type":"ListItem","position":2,"name":"Calculators","item":"https://azeemwaseem2020.github.io/calculators.html"},{"@type":"ListItem","position":3,"name":"Health Calculator","item":"https://azeemwaseem2020.github.io/health-calculator.html"}]}</script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="topbar"><div class="topbar-inner"><span>Calcora • Free health calculation tools</span><span>Estimate • No signup</span></div></div>
+<header class="site-header"><div class="header-inner"><a class="brand" href="./" aria-label="Calcora home"><span class="brand-mark">C</span>Calcora</a><nav aria-label="Primary navigation"><a href="calculators.html">Calculators</a><a href="categories.html">Categories</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav></div></header>
+<main id="main-content" class="section calculator-page">
+<p class="eyebrow">HEALTH • BODY METRICS</p>
+<h1>Health Calculator — BMI & BMR</h1>
+<section class="page-trust"><p><strong>Important:</strong> This calculator provides general estimates for education and planning. It is not a diagnosis, medical assessment or substitute for advice from a qualified healthcare professional.</p></section>
+<p class="lead">Calculate body mass index (BMI) and estimated basal metabolic rate (BMR) from basic measurements. Choose metric or imperial units and review the formulas used.</p>
+<div class="policy-grid" style="align-items:start">
+<section class="calculator-card">
+<h2>Your measurements</h2>
+<label for="units">Unit system</label><select id="units"><option value="metric">Metric (kg, cm)</option><option value="imperial">Imperial (lb, in)</option></select>
+<label for="weight">Weight</label><input id="weight" type="number" min="1" step="0.1" value="70" inputmode="decimal">
+<label for="height">Height</label><input id="height" type="number" min="1" step="0.1" value="170" inputmode="decimal">
+<label for="age">Age (years)</label><input id="age" type="number" min="1" max="120" step="1" value="30" inputmode="numeric">
+<label for="sex">Sex used for BMR equation</label><select id="sex"><option value="male">Male</option><option value="female">Female</option></select>
+<button class="btn" id="calculate" type="button">Calculate</button>
+<div id="result" aria-live="polite" role="status" style="margin-top:16px"></div>
+</section>
+<aside class="hero-card"><p class="eyebrow">WHAT THE NUMBERS MEAN</p><h2>BMI and BMR answer different questions</h2><p><strong>BMI</strong> is a height-to-weight screening measure. <strong>BMR</strong> is an estimate of the energy your body uses at rest based on the selected equation and inputs.</p><div class="callout"><strong>Do not use either result alone to diagnose a condition or prescribe a diet.</strong> Age, pregnancy, muscle mass, medical conditions, medications and many other factors can affect health decisions.</div></aside>
+</div>
+<section class="prose" style="margin-top:44px">
+<h2>BMI formula</h2><p>For metric inputs, BMI is calculated as <strong>weight in kilograms ÷ height in metres²</strong>. For imperial inputs, the calculator converts the measurements to metric before applying the same relationship.</p>
+<h2>BMR formula</h2><p>This page uses the Mifflin–St Jeor equation. For men: <strong>BMR = 10W + 6.25H − 5A + 5</strong>. For women: <strong>BMR = 10W + 6.25H − 5A − 161</strong>, where W is weight in kilograms, H is height in centimetres and A is age in years.</p>
+<h2>Common health-calculator searches</h2><p>This tool supports searches such as <strong>BMI calculator</strong>, <strong>BMI calculator online</strong>, <strong>BMR calculator</strong>, <strong>basal metabolic rate calculator</strong>, <strong>body mass index calculator</strong> and <strong>health calculator</strong>.</p>
+<h2>Understanding BMI</h2><p>BMI is a population-level screening measure and does not directly measure body fat. The same BMI can occur in people with different body compositions. Children, adolescents, pregnancy and some athletic or clinical situations require different interpretation.</p>
+<h2>Understanding BMR</h2><p>BMR is an estimate of resting energy expenditure, not a complete daily calorie requirement. Daily energy needs also depend on activity, body composition and other factors. Do not treat the BMR result as a personalized medical or nutrition prescription.</p>
+<h2>Frequently asked questions</h2>
+<h3>Is BMI a diagnosis?</h3><p>No. BMI is a screening measure. A healthcare professional can interpret it with other relevant information.</p>
+<h3>Does BMR equal the calories I should eat each day?</h3><p>No. BMR estimates resting energy expenditure. Daily energy needs are generally higher and vary by activity and individual circumstances.</p>
+<h3>Can this calculator replace medical advice?</h3><p>No. If you have symptoms, a medical condition, are pregnant, or need individualized nutrition or treatment advice, use guidance from a qualified professional.</p>
+<p><a href="calculators.html">View all calculators →</a> · <a href="unit-converter.html">Unit Converter →</a> · <a href="age-calculator.html">Age Calculator →</a></p>
+</section>
+</main>
+<footer class="footer-main"><div class="footer-inner"><div class="footer-bottom"><span>© 2026 Calcora. All rights reserved.</span><span>Free tools • No signup</span></div></div></footer>
+<script>
+(function(){
+const units=document.getElementById('units'),w=document.getElementById('weight'),h=document.getElementById('height'),age=document.getElementById('age'),sex=document.getElementById('sex'),out=document.getElementById('result');
+function calc(){
+ const rawW=Number(w.value),rawH=Number(h.value),A=Number(age.value);
+ if(!(rawW>0)||!(rawH>0)||!(A>=1&&A<=120)){out.innerHTML='<div class="callout">Enter a valid weight, height and age from 1 to 120 years.</div>';return;}
+ const kg=units.value==='metric'?rawW:rawW*0.45359237, cm=units.value==='metric'?rawH:rawH*2.54;
+ const bmi=kg/Math.pow(cm/100,2);
+ const bmr=10*kg+6.25*cm-5*A+(sex.value==='male'?5:-161);
+ let band=bmi<18.5?'Below 18.5':bmi<25?'18.5–24.9':bmi<30?'25.0–29.9':'30 or higher';
+ out.innerHTML='<div class="callout"><strong>BMI: '+bmi.toFixed(1)+'</strong><br>General BMI category range: '+band+'<br><br><strong>Estimated BMR: '+Math.round(bmr).toLocaleString()+' kcal/day</strong><br><small>BMR is an estimate of resting energy expenditure, not a daily calorie prescription.</small></div>';
+}
+document.getElementById('calculate').addEventListener('click',calc);units.addEventListener('change',calc);calc();
+})();
+</script>
+</body></html>
