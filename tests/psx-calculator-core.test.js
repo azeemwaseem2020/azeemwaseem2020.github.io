@@ -85,7 +85,7 @@ const f = fees({ buy: 100, sell: 120, shares: 100, buyComm: 0.15, sellComm: 0.15
 const minFee = fees({ buy: 10, sell: 12, shares: 1, buyComm: 0.1, sellComm: 0.1, feeTax: 0, buyOther: 0, sellOther: 0, fixedFees: 0, minComm: 5 });
 assert.equal(minFee.buyTotal, 5);
 assert.equal(minFee.sellTotal, 5);
-assert.equal(round(f.buyTotal), 30.13);
+assert.equal(round(f.buyTotal), 32.25);
 assert.equal(round(f.sellTotal), 36.70);
 assert.equal(round(f.total), 68.95);
 
