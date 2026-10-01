@@ -26,8 +26,8 @@ function fees({ buy, sell, shares, buyComm, sellComm, feeTax, buyOther, sellOthe
   if (buy <= 0 || sell < 0 || shares <= 0 || [buyComm, sellComm, feeTax, buyOther, sellOther, fixedFees, minComm].some(v => v < 0)) throw new Error("invalid input");
   const buyValue = buy * shares;
   const sellValue = sell * shares;
-  const buyCommission = buyValue * buyComm / 100;
-  const sellCommission = sellValue * sellComm / 100;
+  const buyCommission = Math.max(buyValue * buyComm / 100, minComm);
+  const sellCommission = Math.max(sellValue * sellComm / 100, minComm);
   const buyFeeTax = buyCommission * feeTax / 100;
   const sellFeeTax = sellCommission * feeTax / 100;
   const buyOtherCost = buyValue * buyOther / 100;
