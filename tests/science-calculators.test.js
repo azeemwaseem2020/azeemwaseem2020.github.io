@@ -71,7 +71,7 @@ assert.equal(speed(100,20),5);
 assert.equal(acceleration(20,5,3),5);
 assert.equal(kineticEnergy(2,3),9);
 assert.equal(pressure(100,2),50);
-assert.equal(potentialEnergy(2,9.81,10),196.2);
+assert.ok(Math.abs(potentialEnergy(2,9.81,10)-196.2)<1e-12);
 assert.ok(Math.abs(work(10,2,60)-10)<1e-12);
 assert.equal(power(100,20),5);
 assert.equal(momentum(2,3),6);
