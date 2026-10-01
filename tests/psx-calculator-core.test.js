@@ -86,8 +86,8 @@ const minFee = fees({ buy: 10, sell: 12, shares: 1, buyComm: 0.1, sellComm: 0.1,
 assert.equal(minFee.buyTotal, 5);
 assert.equal(minFee.sellTotal, 5);
 assert.equal(round(f.buyTotal), 30.13);
-assert.equal(round(f.sellTotal), 31.75);
-assert.equal(round(f.total), 61.88);
+assert.equal(round(f.sellTotal), 36.70);
+assert.equal(round(f.total), 68.95);
 
 const d = dividend({ dps: 5, shares: 200, price: 100, tax: 15 });
 assert.equal(d.gross, 1000);
