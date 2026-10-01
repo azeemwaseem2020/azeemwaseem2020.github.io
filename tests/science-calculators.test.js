@@ -75,7 +75,7 @@ assert.ok(Math.abs(potentialEnergy(2,9.81,10)-196.2)<1e-12);
 assert.ok(Math.abs(work(10,2,60)-10)<1e-12);
 assert.equal(power(100,20),5);
 assert.equal(momentum(2,3),6);
-assert.equal(ohmsLaw("v",3,4,undefined),12);
+assert.equal(ohmsLaw("v",undefined,3,4),12);
 assert.equal(ohmsLaw("i",12,undefined,4),3);
 assert.equal(ohmsLaw("r",12,3,undefined),4);
 assert.ok(Math.abs(photon(5e14,0)-3.313035075e-19)<1e-30);
