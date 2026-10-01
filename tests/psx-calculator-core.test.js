@@ -21,9 +21,9 @@ function trade({ buy, sell, shares, buyCost = 0, sellCost = 0, cgt = 0, days = 0
   return { invested, saleValue, gross, costs, tax, net, returnPct, breakEven, annualized };
 }
 
-function fees({ buy, sell, shares, buyComm, sellComm, feeTax, buyOther, sellOther, fixedFees }) {
-  if (![buy, sell, shares, buyComm, sellComm, feeTax, buyOther, sellOther, fixedFees].every(Number.isFinite)) throw new Error("non-finite input");
-  if (buy <= 0 || sell < 0 || shares <= 0 || [buyComm, sellComm, feeTax, buyOther, sellOther, fixedFees].some(v => v < 0)) throw new Error("invalid input");
+function fees({ buy, sell, shares, buyComm, sellComm, feeTax, buyOther, sellOther, fixedFees, minComm = 0 }) {
+  if (![buy, sell, shares, buyComm, sellComm, feeTax, buyOther, sellOther, fixedFees, minComm].every(Number.isFinite)) throw new Error("non-finite input");
+  if (buy <= 0 || sell < 0 || shares <= 0 || [buyComm, sellComm, feeTax, buyOther, sellOther, fixedFees, minComm].some(v => v < 0)) throw new Error("invalid input");
   const buyValue = buy * shares;
   const sellValue = sell * shares;
   const buyCommission = buyValue * buyComm / 100;
@@ -81,7 +81,7 @@ assert.equal(loss.tax, 0);
 assert.equal(loss.net, -1100);
 assert.equal(round(loss.returnPct), -22);
 
-const f = fees({ buy: 100, sell: 120, shares: 100, buyComm: 0.15, sellComm: 0.15, feeTax: 15, buyOther: 0.05, sellOther: 0.05, fixedFees: 10 });
+const f = fees({ buy: 100, sell: 120, shares: 100, buyComm: 0.15, sellComm: 0.15, feeTax: 15, buyOther: 0.05, sellOther: 0.05, fixedFees: 10 });\nconst minFee = fees({ buy: 10, sell: 12, shares: 1, buyComm: 0.1, sellComm: 0.1, feeTax: 0, buyOther: 0, sellOther: 0, fixedFees: 0, minComm: 5 });\nassert.equal(minFee.buyTotal, 5);\nassert.equal(minFee.sellTotal, 5);
 assert.equal(round(f.buyTotal), 30.13);
 assert.equal(round(f.sellTotal), 31.75);
 assert.equal(round(f.total), 61.88);
