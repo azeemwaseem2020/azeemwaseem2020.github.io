@@ -65,7 +65,7 @@
 | power calculator | /power-calculator.html |
 | torque calculator | /torque-calculator.html |
 | centripetal force calculator | /centripetal-force-calculator.html |
-| Ohm's law calculator | /ohms-law-calculator-advanced.html |
+| Ohm's law calculator | /ohms-law-calculator.html |
 | unit converter | /unit-converter.html |
 
 ## Finance expansion map
@@ -78,7 +78,7 @@
 | loan payoff calculator | /loan-payoff-calculator.html |
 | compound interest calculator | /compound-interest-calculator.html |
 | daily compound interest calculator | /daily-compound-interest-calculator.html |
-| investment calculator | existing investment tool/hub |
+| investment calculator | /investment-calculator.html |
 | salary calculator | /salary-calculator.html |
 | tax calculator Pakistan | /pakistan-salary-tax-calculator.html |
 | Zakat calculator | /zakat-calculator.html |
@@ -142,3 +142,29 @@ These should be used only where the page genuinely answers the task:
 - Formula/method, units, assumptions, worked examples and limitations remain visible.
 - Internal links connect parent hub -> calculator -> related calculator -> guide.
 - No keyword stuffing, doorway pages, or mass near-duplicate pages.
+
+
+## Final mapping audit — 2026-10
+
+### Verified URL alignment
+- Ohm's law: `/ohms-law-calculator.html` is the canonical keyword target; `/ohms-law-calculator-advanced.html` also exists and must not become a competing primary target without a distinct intent.
+- Matrix calculator: `/matrix-calculator.html` is not currently present in the repository; the keyword remains an opportunity, not a live-page target.
+- Probability, Pythagorean theorem, complex number, average, daily compound interest, salary, PSX portfolio, PSX average price, PSX position size, PSX dividend, adding fractions and simplifying fractions URLs were verified as present.
+- Savings, loan affordability, loan interest and loan payoff are now included in the finance intent implementation.
+- Existing calculator URLs are preserved; no URL migration is part of this keyword-mapping pass.
+
+### Final ownership rules
+- Broad discovery query -> homepage or topic hub.
+- Category query -> topic hub.
+- Exact calculation/problem query -> the dedicated calculator.
+- Country/year modifier -> only where the calculation is genuinely country/year specific.
+- Synonyms remain supporting terms unless they represent a materially different user task.
+- A guide should support the calculator and explain method/use cases rather than create a duplicate primary target.
+
+### Remaining opportunities
+- Matrix calculator: create only if the tool is actually built and offers distinct user value.
+- Ohm's law advanced page: either give it a clearly distinct advanced intent or keep `/ohms-law-calculator.html` as the sole primary target to avoid cannibalization.
+- Search Console query data should be used after indexing to refine secondary terms; it should not trigger duplicate pages for every synonym.
+
+### Final status
+The keyword map is now the **master source of truth** for Calcora's current page-to-intent architecture. Future keyword additions should be appended only after checking the existing primary owner and cannibalization risk.
