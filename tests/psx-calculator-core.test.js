@@ -81,10 +81,13 @@ assert.equal(loss.tax, 0);
 assert.equal(loss.net, -1100);
 assert.equal(round(loss.returnPct), -22);
 
-const f = fees({ buy: 100, sell: 120, shares: 100, buyComm: 0.15, sellComm: 0.15, feeTax: 15, buyOther: 0.05, sellOther: 0.05, fixedFees: 10 });\nconst minFee = fees({ buy: 10, sell: 12, shares: 1, buyComm: 0.1, sellComm: 0.1, feeTax: 0, buyOther: 0, sellOther: 0, fixedFees: 0, minComm: 5 });\nassert.equal(minFee.buyTotal, 5);\nassert.equal(minFee.sellTotal, 5);
+const f = fees({ buy: 100, sell: 120, shares: 100, buyComm: 0.15, sellComm: 0.15, feeTax: 15, buyOther: 0.05, sellOther: 0.05, fixedFees: 10 });
+const minFee = fees({ buy: 10, sell: 12, shares: 1, buyComm: 0.1, sellComm: 0.1, feeTax: 0, buyOther: 0, sellOther: 0, fixedFees: 0, minComm: 5 });
+assert.equal(minFee.buyTotal, 5);
+assert.equal(minFee.sellTotal, 5);
 assert.equal(round(f.buyTotal), 30.13);
 assert.equal(round(f.sellTotal), 31.75);
-assert.equal(round(f.total), 61.88);\n\nconst minFee = fees({ buy: 10, sell: 12, shares: 1, buyComm: 0.1, sellComm: 0.1, feeTax: 0, buyOther: 0, sellOther: 0, fixedFees: 0, minComm: 5 });\nassert.equal(minFee.buyTotal, 5);\nassert.equal(minFee.sellTotal, 5);\nassert.equal(minFee.total, 10);
+assert.equal(round(f.total), 61.88);
 
 const d = dividend({ dps: 5, shares: 200, price: 100, tax: 15 });
 assert.equal(d.gross, 1000);
@@ -95,6 +98,24 @@ assert.equal(d.yieldPct, 5);
 assert.equal(round(average({ q1: 100, p1: 100, q2: 50, p2: 130 })), 110);
 assert.deepEqual(bonus({ shares: 100, bonusShares: 20, totalCost: 10000 }), { adjustedShares: 120, averageCost: 83.33333333333333 });
 assert.deepEqual(rights({ shares: 100, ratio: 0.2, rightsPrice: 80, averageCost: 100 }), { rightsShares: 20, cash: 1600, totalShares: 120, blendedAverage: 96.66666666666667 });
+
+// Boundary: minimum brokerage should apply only when percentage brokerage is lower.
+const percentageAboveMinimum = fees({ buy: 1000, sell: 1200, shares: 1, buyComm: 1, sellComm: 1, feeTax: 0, buyOther: 0, sellOther: 0, fixedFees: 0, minComm: 5 });
+assert.equal(percentageAboveMinimum.buyTotal, 10);
+assert.equal(percentageAboveMinimum.sellTotal, 12);
+
+// Boundary: a losing trade must not create CGT in the core model.
+const lossWithCgt = trade({ buy: 100, sell: 90, shares: 100, buyCost: 50, sellCost: 50, cgt: 20 });
+assert.equal(lossWithCgt.tax, 0);
+assert.equal(lossWithCgt.net, -1100);
+
+// Boundary: break-even includes both supplied transaction costs.
+const breakEvenCheck = trade({ buy: 100, sell: 100, shares: 100, buyCost: 125, sellCost: 75, cgt: 20 });
+assert.equal(round(breakEvenCheck.breakEven), 102);
+
+// Boundary: annualized return is unavailable when the loss reaches or exceeds the invested amount.
+const totalLoss = trade({ buy: 100, sell: 0, shares: 1, days: 365 });
+assert.equal(totalLoss.annualized, null);
 
 assert.throws(() => trade({ buy: 0, sell: 100, shares: 1 }));
 assert.throws(() => average({ q1: 100, p1: 0, q2: 0, p2: 100 }));
