@@ -297,7 +297,7 @@ compare(kgm3);
 document.getElementById('calc').addEventListener('click',calc);
 solve.addEventListener('change',function(){setOptions();result.textContent='Enter the required values and calculate.';comparison.textContent='Select a reference material to compare your result.';document.getElementById('uncertaintyBox').textContent='';});
 material.addEventListener('change',function(){if(result.textContent.indexOf('Enter')!==0)calc();});
-document.getElementById('reset').addEventListener('click',function(){mass.value='';volume.value='';density.value='';material.value='';result.textContent='Enter your values and select Calculate.';comparison.textContent='Material comparison will appear here when a reference is selected.';});
+document.getElementById('reset').addEventListener('click',function(){mass.value='';volume.value='';density.value='';material.value='';result.textContent='Enter your values and select Calculate.';comparison.textContent='Material comparison will appear here when a reference is selected.';document.getElementById('uncertaintyBox').textContent='';});
 document.getElementById('copy').addEventListener('click',function(){var text=result.innerText.trim();if(!text||text.indexOf('Enter')===0){return;}if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){document.getElementById('copy').textContent='Copied';setTimeout(function(){document.getElementById('copy').textContent='Copy Result';},1200);});}});
 setOptions();
 })();
