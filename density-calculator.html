@@ -279,6 +279,7 @@ var relation=ratio<0.98?'lower than':ratio>1.02?'higher than':'close to';
 comparison.innerHTML='<strong>'+ref.name+' comparison:</strong> '+fmt(kgm3)+' kg/m³ is '+relation+' the reference value of '+fmt(ref.d)+' kg/m³ (ratio '+ratio.toLocaleString(undefined,{maximumFractionDigits:4})+'). Reference values are approximate.';
 }
 function calc(){
+var uncertaintyBox=document.getElementById('uncertaintyBox');if(uncertaintyBox)uncertaintyBox.textContent='';
 var mode=solve.value,m=Number(mass.value),v=Number(volume.value),d=Number(density.value),answer,unit,steps,kgm3;
 if(mode==='density'){
 if(!Number.isFinite(m)||m<0||!Number.isFinite(v)||v<=0){result.textContent='Enter a valid mass and a volume greater than zero.';return;}
@@ -290,11 +291,11 @@ kgm3=d*densityToKgm3[densityUnit.value];answer=(kgm3*v*volumeToM3[volumeUnit.val
 if(!Number.isFinite(m)||m<0||!Number.isFinite(d)||d<=0){result.textContent='Enter a valid mass and a density greater than zero.';return;}
 kgm3=d*densityToKgm3[densityUnit.value];answer=(m*massToKg[massUnit.value]/kgm3)/volumeToM3[resultUnit.value];unit=labels[resultUnit.value];steps='Volume = mass ÷ density = '+fmt(m)+' '+labels[massUnit.value]+' ÷ '+fmt(d)+' '+labels[densityUnit.value];
 }
-result.innerHTML='<strong>'+fmt(answer)+' '+unit+'</strong><br><span>'+steps+'</span><br><small>Scientific notation: '+sci(answer)+' '+unit+'</small>';if(mode==='density'&&Number(massUnc.value)>0&&Number(volumeUnc.value)>0){var rel=Math.sqrt(Math.pow(Number(massUnc.value)/m,2)+Math.pow(Number(volumeUnc.value)/v,2));var u=Math.abs(answer)*rel;document.getElementById('uncertaintyBox').innerHTML='<strong>First-order standard uncertainty estimate:</strong> ±'+fmt(u)+' '+unit+' (relative '+(rel*100).toLocaleString(undefined,{maximumFractionDigits:6})+'%). This assumes independent inputs.';}
+result.innerHTML='<strong>'+fmt(answer)+' '+unit+'</strong><br><span>'+steps+'</span><br><small>Scientific notation: '+sci(answer)+' '+unit+'</small>';if(mode==='density'&&m>0&&Number(massUnc.value)>0&&Number(volumeUnc.value)>0){var rel=Math.sqrt(Math.pow(Number(massUnc.value)/m,2)+Math.pow(Number(volumeUnc.value)/v,2));var u=Math.abs(answer)*rel;uncertaintyBox.innerHTML='<strong>First-order standard uncertainty estimate:</strong> ±'+fmt(u)+' '+unit+' (relative '+(rel*100).toLocaleString(undefined,{maximumFractionDigits:6})+'%). This assumes independent inputs.';}else if(mode==='density'&&m===0&&Number(massUnc.value)>0&&Number(volumeUnc.value)>0){uncertaintyBox.textContent='Relative uncertainty is undefined when the entered mass is zero.';}
 compare(kgm3);
 }
 document.getElementById('calc').addEventListener('click',calc);
-solve.addEventListener('change',function(){setOptions();result.textContent='Enter the required values and calculate.';comparison.textContent='Select a reference material to compare your result.';});
+solve.addEventListener('change',function(){setOptions();result.textContent='Enter the required values and calculate.';comparison.textContent='Select a reference material to compare your result.';document.getElementById('uncertaintyBox').textContent='';});
 material.addEventListener('change',function(){if(result.textContent.indexOf('Enter')!==0)calc();});
 document.getElementById('reset').addEventListener('click',function(){mass.value='';volume.value='';density.value='';material.value='';result.textContent='Enter your values and select Calculate.';comparison.textContent='Material comparison will appear here when a reference is selected.';});
 document.getElementById('copy').addEventListener('click',function(){var text=result.innerText.trim();if(!text||text.indexOf('Enter')===0){return;}if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){document.getElementById('copy').textContent='Copied';setTimeout(function(){document.getElementById('copy').textContent='Copy Result';},1200);});}});
