@@ -168,3 +168,31 @@ These should be used only where the page genuinely answers the task:
 
 ### Final status
 The keyword map is now the **master source of truth** for Calcora's current page-to-intent architecture. Future keyword additions should be appended only after checking the existing primary owner and cannibalization risk.
+
+
+## Priority keyword refinement — 2026-10-05
+
+The following terms are treated as **distinctive task-language opportunities**, not as guaranteed high-volume keywords. They are assigned only where Calcora's existing tool genuinely completes the task. Search Console data should replace assumptions once sufficient impressions are available.
+
+| Cluster | Primary intent | Distinctive supporting language | Owner |
+|---|---|---|---|
+| Homepage | free online calculators Pakistan | Pakistan calculator tools, calculators for Pakistan, free calculation tools | / |
+| PSX trade | stock profit calculator Pakistan | share profit calculator Pakistan, PSX return calculator, break-even share price, PSX brokerage calculation | /psx-calculator.html |
+| PSX library | PSX investment calculators Pakistan | PSX portfolio return, PSX average share price, PSX position size, dividend calculation | /psx-investor-calculator-hub.html |
+| TMR | TMR calculator for cattle & buffalo | cattle feed calculation, buffalo TMR calculation, feed cost per cow, TMR batch scaling | /tmr-feed-calculator.html |
+| TMR library | cattle feed calculators Pakistan | livestock feed calculator, dry matter feed calculation, ration cost check | /animal-feed-calculator-hub.html |
+| Fertilizer | fertilizer calculator per acre Pakistan | fertilizer bags calculator, nutrient supplied calculator, Urea per acre, DAP per acre, fertilizer cost per nutrient | /fertilizer-calculator.html |
+| Fertilizer library | fertilizer & NPK calculators Pakistan | NPK target calculator, fertilizer blend calculation, nutrient balance, field fertilizer cost | /agriculture-fertilizer-hub.html |
+| Math | online math calculator & solver | math problem solver, algebra calculator, equation solver, step-by-step math | /math-calculator-hub.html + /math-solver.html |
+
+### Keyword implementation rule
+
+Do not add these terms as a visible keyword list. Use them only when they describe a real input, result, formula, FAQ, internal-link context or page heading. This follows Google's guidance to use the words people search for in prominent, descriptive locations while avoiding keyword stuffing. Titles remain unique by intent rather than repeating a generic “calculator” phrase across the whole site.
+
+### Current priority
+
+1. Pakistan-specific finance and PSX calculations.
+2. TMR/cattle/buffalo feed calculation workflows.
+3. Fertilizer per-acre/NPK/product/bag workflows.
+4. Math calculator and solver intent.
+5. Broad calculator discovery remains owned by the homepage and calculator library, not individual pages.
