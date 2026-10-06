@@ -166,7 +166,31 @@ These should be used only where the page genuinely answers the task:
 - Ohm's law advanced page: either give it a clearly distinct advanced intent or keep `/ohms-law-calculator.html` as the sole primary target to avoid cannibalization.
 - Search Console query data should be used after indexing to refine secondary terms; it should not trigger duplicate pages for every synonym.
 
-### Final status
+### Pakistan finance competitor-gap ownership — 2026-10-06
+
+| Search intent cluster | Primary owner | Supporting guide / related owner |
+|---|---|---|
+| income tax slabs in Pakistan 2026-27 | /pakistan-income-tax-slabs-2026-27.html | /blog-pakistan-salary-tax-guide.html |
+| salary after tax in Pakistan | /salary-after-tax-pakistan.html | /pakistan-salary-tax-calculator.html |
+| tax on common salary levels | /pakistan-salary-tax-calculator.html | /salary-after-tax-pakistan.html |
+| freelancer tax Pakistan | /freelancer-tax-calculator-pakistan.html | /blog-freelancer-tax-pakistan.html |
+| Fiverr / YouTube income tax questions | /freelancer-tax-calculator-pakistan.html | /blog-freelancer-tax-pakistan.html |
+| filer vs non-filer Pakistan | /filer-vs-non-filer-pakistan.html | /finance-calculator-hub.html |
+| property purchase / capital-gains / rental tax | /pakistan-property-tax-calculator.html | /finance-calculator-hub.html |
+| vehicle token / registration tax | /pakistan-vehicle-tax-calculator.html | /finance-calculator-hub.html |
+| savings-account profit tax | /savings-account-profit-tax-calculator.html | /finance-calculator-hub.html |
+| cash withdrawal tax | /cash-withdrawal-tax-calculator.html | /finance-calculator-hub.html |
+| Pakistan bank loan comparison | /pakistan-bank-loan-calculator.html | /blog-bank-loan-calculator-pakistan.html |
+| HBL / UBL / Alfalah / MCB / Meezan / Faysal finance queries | /pakistan-bank-loan-calculator.html | /blog-bank-loan-calculator-pakistan.html |
+| reducing balance vs flat rate | /reducing-balance-vs-flat-rate-loan.html | /blog-emi-reducing-vs-flat-rate.html |
+| pension and gratuity Pakistan | /pension-gratuity-calculator-pakistan.html | /finance-calculator-hub.html |
+| USD to PKR | /usd-to-pkr-calculator.html | /currency-converter.html |
+| marla to square feet Pakistan | /marla-to-square-feet-calculator-pakistan.html | /unit-converter.html |
+| PSX trading fees / share CGT | /psx-calculator.html | /psx-capital-gains-tax-calculator.html + /blog-psx-trading-fees-cgt-pakistan.html |
+
+These pages intentionally consolidate close variants into the most useful existing calculation task. No separate page should be created for each salary amount, bank name, tax synonym or transaction-charge phrase unless a materially different calculation is introduced.
+
+### ### Final status
 The keyword map is now the **master source of truth** for Calcora's current page-to-intent architecture. Future keyword additions should be appended only after checking the existing primary owner and cannibalization risk.
 
 
