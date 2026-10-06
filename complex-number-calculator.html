@@ -32,21 +32,35 @@
 <div id="r" class="result" aria-live="polite"></div>
 </section>
 
-<h2>What the calculator calculates</h2>
-<p>For z₁ = a + bi and z₂ = c + di, addition combines like components: (a + c) + (b + d)i. Subtraction is (a − c) + (b − d)i. Multiplication uses i² = −1, giving (ac − bd) + (ad + bc)i.</p>
+<h2>How to enter a complex number</h2>
+<p>Enter the two components separately. For <strong>z = 5 − 2i</strong>, use 5 for the real part and −2 for the imaginary coefficient. The calculator does not expect you to type the letter <strong>i</strong> into an input field. This separation also makes negative signs explicit before the arithmetic begins.</p>
 
-<h2>Worked example</h2>
-<p>Take z₁ = 2 + 3i and z₂ = 4 + i. The sum is 6 + 4i, the difference is −2 + 2i, and the product is 5 + 14i. The multiplication check is 8 + 2i + 12i + 3i² = 8 + 14i − 3 = 5 + 14i.</p>
+<h2>What each operation means</h2>
+<p>For <strong>z₁ = a + bi</strong> and <strong>z₂ = c + di</strong>, addition combines corresponding components: <strong>(a + c) + (b + d)i</strong>. Subtraction does the same component-by-component: <strong>(a − c) + (b − d)i</strong>. Multiplication is different because the cross terms interact and <strong>i² = −1</strong>, producing <strong>(ac − bd) + (ad + bc)i</strong>.</p>
 
-<h2>Reading a complex number correctly</h2><p>A complex number in rectangular form is written as <strong>a + bi</strong>. The value <strong>a</strong> is the real part and <strong>b</strong> is the coefficient of the imaginary unit. A negative coefficient belongs to the imaginary part, so <strong>4 − 2i</strong> means a real part of 4 and an imaginary coefficient of −2. Keeping those two components separate prevents the most common sign errors.</p><h3>Why multiplication changes both parts</h3><p>When two complex numbers are multiplied, the real and imaginary components interact. The term <strong>bd i²</strong> becomes <strong>−bd</strong> because i² = −1, which is why the product formula has <strong>ac − bd</strong> as its real part and <strong>ad + bc</strong> as its imaginary coefficient.</p><h3>Scope of this calculator</h3><p>This tool is intentionally focused on three directly checkable operations: addition, subtraction and multiplication. It does not silently treat a complex number as an ordinary real value, and it does not provide division, roots or polar-form conversion without showing the relevant method.</p>
-<h2>Magnitude of a complex number</h2>
-<p>The magnitude of z = a + bi is |z| = √(a² + b²). It is the distance from the origin to the point (a, b) in the complex plane. This calculator focuses on arithmetic operations; use the formula above when you need the magnitude.</p>
+<h2>Worked calculation: addition and subtraction</h2>
+<p>Let <strong>z₁ = 7 − 2i</strong> and <strong>z₂ = 3 + 5i</strong>. Adding the real parts gives 10 and adding the imaginary coefficients gives 3, so the sum is <strong>10 + 3i</strong>. For subtraction, 7 − 3 = 4 and −2 − 5 = −7, giving <strong>4 − 7i</strong>. The important step is to treat the imaginary coefficient as a signed number rather than dropping its minus sign.</p>
 
-<h2>How to avoid sign mistakes</h2>
-<ul><li>Keep the real and imaginary coefficients separate.</li><li>When subtracting, subtract both components.</li><li>For multiplication, replace i² with −1 before simplifying.</li><li>Write negative imaginary coefficients explicitly, such as 4 − 2i.</li></ul>
+<h2>Worked calculation: multiplication</h2>
+<p>Take <strong>z₁ = 2 + 3i</strong> and <strong>z₂ = 4 + i</strong>. Expanding gives 8 + 2i + 12i + 3i². Since i² = −1, the real part becomes 8 − 3 = 5 and the imaginary part becomes 14i. The product is therefore <strong>5 + 14i</strong>. This expansion is the check used by the calculator's product formula.</p>
+
+<h2>Reading a complex number</h2>
+<p>A complex number has a real component and an imaginary component. In <strong>−3 + 4i</strong>, the real part is −3 and the imaginary coefficient is 4. In <strong>−3 − 4i</strong>, the real part is still −3 but the imaginary coefficient is −4. Keeping these signs attached to the correct component prevents errors when subtracting or multiplying.</p>
+
+<h2>Magnitude and the complex plane</h2>
+<p>For <strong>z = a + bi</strong>, the magnitude is <strong>|z| = √(a² + b²)</strong>. Geometrically, this is the distance from the origin to the point <strong>(a, b)</strong> on the complex plane. The current calculator does not include magnitude in its result panel, so this formula is provided as a reference rather than implying that the tool calculates it.</p>
+
+<h2>Conjugate: a useful related concept</h2>
+<p>The conjugate of <strong>a + bi</strong> is <strong>a − bi</strong>. Conjugates are useful when simplifying complex fractions and when working with magnitude because <strong>(a + bi)(a − bi) = a² + b²</strong>. This page does not calculate conjugates, but understanding the relationship helps connect rectangular-form arithmetic to later complex-number operations.</p>
+
+<h2>Calculator scope and checks</h2>
+<p>This calculator handles addition, subtraction and multiplication of two rectangular-form complex numbers. It validates that all four numeric components are supplied, then applies the displayed formulas. It does not claim to perform division, roots, polar conversion or other operations that are not shown in the result.</p>
+
+<h2>Common mistakes to check before accepting a result</h2>
+<ul><li>Forgetting that <strong>−2i</strong> has an imaginary coefficient of −2.</li><li>Changing the sign of both components during subtraction instead of subtracting each component correctly.</li><li>Using <strong>i² = +1</strong>; the correct identity is <strong>i² = −1</strong>.</li><li>Mixing the real part with the imaginary coefficient when entering the four inputs.</li><li>Assuming the magnitude or division result is included when this calculator only reports the three stated operations.</li></ul>
 
 <h2>Where complex numbers are used</h2>
-<p>Complex numbers are a standard mathematical tool in algebra, electrical engineering, signal processing, control systems and physics. In applications, the real and imaginary components represent model-specific quantities; they should not automatically be treated as two independent physical measurements.</p>
+<p>Complex numbers appear in algebra and in technical fields such as electrical engineering, signal processing, control systems and physics. Their meaning in an application depends on the model: the real and imaginary components are mathematical components and should not automatically be interpreted as two separate physical measurements.</p>
 
 <h2>FAQ</h2>
 <h3>What is i?</h3><p>The imaginary unit is defined by i² = −1.</p>
