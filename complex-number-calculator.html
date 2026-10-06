@@ -1,8 +1,67 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Complex Number Calculator | Calcora</title><meta name="description" content="Solve complex-number calculations with real and imaginary parts, arithmetic operations and clear results. Check complex-number inputs and results with Calcora."><meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.svg">
-<meta property="og:image:alt" content="Calcora online calculator">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://azeemwaseem2020.github.io/og-image.svg">
-<meta name="robots" content="index,follow"><meta name="author" content="Abdul Qadir"><meta property="article:modified_time" content="2026-10-06"><link rel="canonical" href="https://azeemwaseem2020.github.io/complex-number-calculator.html"><link rel="stylesheet" href="styles.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Calcora","item":"https://azeemwaseem2020.github.io/"},{"@type":"ListItem","position":2,"name":"Math Calculators","item":"https://azeemwaseem2020.github.io/math-calculator-hub.html"},{"@type":"ListItem","position":3,"name":"Complex Number" }]}</script></head><body><header class="site-header"><div class="header-inner"><a class="brand" href="./">Calcora</a><nav><a href="calculators.html">Calculators</a><a href="categories.html">Categories</a><a href="blog.html">Guides</a></nav></div></header><main class="section prose"><p class="page-author">Maintained by <a href="abdul-qadir.html" rel="author">Abdul Qadir</a> · <a href="calculator-methodology.html">Calculation methodology</a></p><p class="eyebrow">MATH CALCULATOR</p><h1>Complex Number Calculator</h1><p class="lead">A clear, focused calculator with validation and a short explanation of the method.</p><section class="page-trust" aria-label="Page information"><p><strong>Page information:</strong> Author: Abdul Qadir · Calculation logic checked by Abdul Qadir · Last updated: 6 October 2026</p><p><strong>Methodology:</strong> This page explains the calculation method and assumptions so the result can be checked independently.</p></section><section class="card" style="max-width:760px"><label>Real part a<input id="a" type="number" step="any"></label><label>Imaginary part b<input id="b" type="number" step="any"></label><label>Real part c<input id="c" type="number" step="any"></label><label>Imaginary part d<input id="d" type="number" step="any"></label><button type="button" onclick="calc()">Add, subtract & multiply</button><div id="r" class="result" aria-live="polite"></div><p>Inputs represent z₁=a+bi and z₂=c+di. The calculator returns common arithmetic results.</p><h2>FAQ</h2><p><strong>What is i?</strong> The imaginary unit satisfies i² = −1.</p></section><h2>How to use the complex number calculator</h2><ol><li>Enter the real and imaginary parts of the first complex number.</li><li>Enter the real and imaginary parts of the second.</li><li>Calculate the sum, difference and product.</li></ol><p><a href="calculators.html">← Back to all calculators</a></p><section class="calcora-quick-guide" id="calcora-quick-guide"><h2>Quick guide: how to use this calculator</h2><p>Enter the real and imaginary parts of the complex numbers, then choose the operation required by the calculator.</p><h3>Formula or method</h3><p><strong>A complex number has the form z = a + bi, where i² = −1.</strong></p><h3>Useful note</h3><p>Keep the real and imaginary parts separate; i represents the imaginary unit, not a second ordinary number.</p><h3>Before you use the result</h3><p>The result depends on the inputs, units and assumptions shown on this page. Check those details before using the result for a real-world decision or purchase.</p></section>
-<section class="prose calcora-content-expansion"><h2>Complex numbers in rectangular form</h2><p>A complex number is commonly written as z = a + bi, where a is the real part, b is the imaginary-part coefficient and i² = −1. Addition and subtraction operate component by component.</p><h3>Multiplication example</h3><p>(2 + 3i)(4 + i) = 8 + 2i + 12i + 3i² = 5 + 14i because i² = −1.</p><h3>Magnitude</h3><p>The magnitude of a + bi is √(a² + b²). It represents the distance from the origin to the corresponding point in the complex plane.</p><h2>Complex number FAQ</h2><h3>Can complex numbers be ordered like real numbers?</h3><p>There is no standard total ordering of complex numbers compatible with ordinary real-number ordering.</p><h3>Where are complex numbers used?</h3><p>They are used in areas including electrical engineering, signal processing, control systems, mathematics and physics.</p></section>
-<section class="prose" id="calcora-semantic-context"><h2>Complex number calculation context</h2><p>Complex numbers combine real and imaginary components and support arithmetic operations that extend ordinary real-number calculations. They connect algebra with advanced mathematical problem solving.</p><p><a href="math-solver.html">Math Solver</a> · <a href="math-calculator-hub.html">Math Calculator Hub</a> · <a href="scientific-calculator.html">Scientific Calculator</a></p></section><section class="section prose" id="calculation-notes"><h2>Working with complex numbers</h2><p>A complex number has a real part and an imaginary part, commonly written as a + bi. Keeping those parts separate makes addition, subtraction and multiplication easier to verify.</p><h3>Worked check</h3><p>For (2 + 3i) + (4 − i), combine real parts and imaginary parts separately to obtain 6 + 2i. For multiplication, remember that i² = −1.</p><h3>Interpretation</h3><p>Complex-number results are useful in algebra, signal analysis and electrical engineering. The real and imaginary components should not be interpreted as two independent physical measurements unless the underlying model defines them that way.</p></section></main>
-<script>function calc(){let a=+document.getElementById('a').value,b=+document.getElementById('b').value,c=+document.getElementById('c').value,d=+document.getElementById('d').value;if([a,b,c,d].some(v=>!Number.isFinite(v))){r.textContent='Enter all four values.';return}let fmt=(x,y)=>x+(y>=0?'+':'')+y+'i';r.textContent='Sum: '+fmt(a+c,b+d)+' | Difference: '+fmt(a-c,b-d)+' | Product: '+fmt(a*c-b*d,a*d+b*c)}</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Complex Number Calculator | Add, Subtract & Multiply | Calcora</title>
+<meta name="description" content="Calculate complex-number addition, subtraction and multiplication from real and imaginary parts. Includes formulas, a worked check, magnitude and practical context.">
+<meta name="author" content="Abdul Qadir">
+<link rel="canonical" href="https://azeemwaseem2020.github.io/complex-number-calculator.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Calcora"><meta property="og:title" content="Complex Number Calculator | Calcora"><meta property="og:description" content="Add, subtract and multiply complex numbers with transparent formulas and worked checks."><meta property="og:url" content="https://azeemwaseem2020.github.io/complex-number-calculator.html"><meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png"><meta property="og:image:alt" content="Calcora Complex Number Calculator"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Complex Number Calculator","url":"https://azeemwaseem2020.github.io/complex-number-calculator.html","applicationCategory":"EducationalApplication","operatingSystem":"Any","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"PKR"},"author":{"@type":"Person","@id":"https://azeemwaseem2020.github.io/abdul-qadir.html#abdul-qadir","name":"Abdul Qadir","url":"https://azeemwaseem2020.github.io/abdul-qadir.html"},"dateModified":"2026-10-06"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://azeemwaseem2020.github.io/"},{"@type":"ListItem","position":2,"name":"Math Calculator Hub","item":"https://azeemwaseem2020.github.io/math-calculator-hub.html"},{"@type":"ListItem","position":3,"name":"Complex Number Calculator","item":"https://azeemwaseem2020.github.io/complex-number-calculator.html"}]}</script>
+</head>
+<body><header class="site-header"><div class="header-inner"><a class="brand" href="./"><span class="brand-mark">C</span>Calcora</a><nav aria-label="Primary navigation"><a href="calculators.html">Calculators</a><a href="categories.html">Categories</a><a href="blog.html">Guides</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav></div></header>
+<main class="section prose">
+<p class="page-author">Maintained by <a href="abdul-qadir.html" rel="author">Abdul Qadir</a> · <a href="calculator-methodology.html">Calculation methodology</a></p>
+<p class="eyebrow">MATH • COMPLEX NUMBERS</p>
+<h1>Complex Number Calculator</h1>
+<p class="lead">Enter two complex numbers in rectangular form to calculate their sum, difference and product. The formulas below show exactly how the result is obtained.</p>
+
+<section class="page-trust" aria-label="Page information"><p><strong>Page information:</strong> Author: Abdul Qadir · Calculation logic checked by Abdul Qadir · Last updated: 6 October 2026.</p><p><strong>Method:</strong> The calculator represents z₁ = a + bi and z₂ = c + di, then applies standard complex-number arithmetic.</p></section>
+
+<section class="card" style="max-width:760px">
+<h2>Enter two complex numbers</h2>
+<label for="a">Real part of z₁ (a)<input id="a" type="number" step="any" placeholder="e.g. 2"></label>
+<label for="b">Imaginary coefficient of z₁ (b)<input id="b" type="number" step="any" placeholder="e.g. 3"></label>
+<label for="c">Real part of z₂ (c)<input id="c" type="number" step="any" placeholder="e.g. 4"></label>
+<label for="d">Imaginary coefficient of z₂ (d)<input id="d" type="number" step="any" placeholder="e.g. 1"></label>
+<button type="button" onclick="calc()">Calculate</button>
+<div id="r" class="result" aria-live="polite"></div>
+</section>
+
+<h2>What the calculator calculates</h2>
+<p>For z₁ = a + bi and z₂ = c + di, addition combines like components: (a + c) + (b + d)i. Subtraction is (a − c) + (b − d)i. Multiplication uses i² = −1, giving (ac − bd) + (ad + bc)i.</p>
+
+<h2>Worked example</h2>
+<p>Take z₁ = 2 + 3i and z₂ = 4 + i. The sum is 6 + 4i, the difference is −2 + 2i, and the product is 5 + 14i. The multiplication check is 8 + 2i + 12i + 3i² = 8 + 14i − 3 = 5 + 14i.</p>
+
+<h2>Magnitude of a complex number</h2>
+<p>The magnitude of z = a + bi is |z| = √(a² + b²). It is the distance from the origin to the point (a, b) in the complex plane. This calculator focuses on arithmetic operations; use the formula above when you need the magnitude.</p>
+
+<h2>How to avoid sign mistakes</h2>
+<ul><li>Keep the real and imaginary coefficients separate.</li><li>When subtracting, subtract both components.</li><li>For multiplication, replace i² with −1 before simplifying.</li><li>Write negative imaginary coefficients explicitly, such as 4 − 2i.</li></ul>
+
+<h2>Where complex numbers are used</h2>
+<p>Complex numbers are a standard mathematical tool in algebra, electrical engineering, signal processing, control systems and physics. In applications, the real and imaginary components represent model-specific quantities; they should not automatically be treated as two independent physical measurements.</p>
+
+<h2>FAQ</h2>
+<h3>What is i?</h3><p>The imaginary unit is defined by i² = −1.</p>
+<h3>Can complex numbers be compared like ordinary real numbers?</h3><p>There is no standard total ordering of complex numbers that behaves like the ordinary ordering of real numbers.</p>
+<h3>Does the calculator support division?</h3><p>This version focuses on addition, subtraction and multiplication so that each operation can be checked directly from the displayed formulas.</p>
+
+<h2>Related math tools</h2>
+<p><a href="math-calculator-hub.html">Math Calculator Hub</a> · <a href="scientific-calculator.html">Scientific Calculator</a> · <a href="quadratic-equation-calculator.html">Quadratic Equation Calculator</a> · <a href="math-solver.html">Math Solver</a></p>
+</main>
+<footer class="footer-main"><div class="footer-inner"><div class="footer-bottom"><span>© 2026 Calcora</span><span>Check the formula and inputs</span></div></div></footer>
+<script>
+function calc(){
+ const a=Number(document.getElementById('a').value),b=Number(document.getElementById('b').value),c=Number(document.getElementById('c').value),d=Number(document.getElementById('d').value);
+ const r=document.getElementById('r');
+ if([a,b,c,d].some(v=>!Number.isFinite(v))){r.textContent='Enter all four real and imaginary components.';return;}
+ const fmt=(x,y)=>x+(y>=0?'+':'')+y+'i';
+ r.innerHTML='<p><strong>Sum:</strong> '+fmt(a+c,b+d)+'</p><p><strong>Difference:</strong> '+fmt(a-c,b-d)+'</p><p><strong>Product:</strong> '+fmt(a*c-b*d,a*d+b*c)+'</p>';
+}
+</script>
+</body></html>
