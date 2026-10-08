@@ -76,6 +76,19 @@
 <p>A search for <strong>freelancer tax calculator</strong> often sounds like one question: “How much tax will I pay?” In practice, a reliable answer can require four separate calculations. First, identify the income route. Second, convert the receipt into the relevant PKR amount using the exchange rate applicable to the payment. Third, estimate the withholding or other tax amount under the selected statutory route. Fourth, reconcile that tax figure with platform fees, bank charges, operating costs and the amount actually credited. Combining all four into one unexplained percentage is convenient, but it hides the assumptions that matter most.</p>
 <p>Calcora deliberately exposes those layers. The <strong>freelancer income tax calculator Pakistan</strong> result is therefore not presented as a mysterious number produced by a black box. You can see the gross basis, conversion assumption, rate basis and estimated withholding, then use the separate cash-flow model to understand your practical take-home.</p>
 
+<section class="card" id="mixed-income-planner">
+<h2>Mixed freelancer income planner — separate the streams before estimating tax</h2>
+<p>Many experienced freelancers do not have a single income route. You may have IT export work, another exported service, and social-platform revenue in the same tax year. Instead of forcing all receipts into one rate, this planning module lets you allocate the annual gross basis across three routes. It is a <strong>classification planning tool</strong>, not a legal determination of how your income must be reported.</p>
+<label>IT / IT-enabled export share (%)
+<input id="mixIT" type="number" value="100" min="0" max="100" step=".01" inputmode="decimal"></label>
+<label>Other exported services share (%)
+<input id="mixOther" type="number" value="0" min="0" max="100" step=".01" inputmode="decimal"></label>
+<label>Social-platform revenue share (%)
+<input id="mixSocial" type="number" value="0" min="0" max="100" step=".01" inputmode="decimal"></label>
+<button class="btn" id="mixGo" type="button">Calculate mixed-income estimate</button>
+<div id="mixOut" class="callout" aria-live="polite"></div>
+<p><small>The three percentages must total 100%. For IT/ITeS, the PSEB status and for social-platform revenue, ATL status from the main calculator are used. Keep separate records for each income stream.</small></p>
+</section>
 <h2>Gross-to-net waterfall: follow every rupee</h2>
 <p>A professional <strong>freelance take-home calculator</strong> should let you trace the journey from an invoice or platform statement to the money available for personal or business use. The waterfall is:</p>
 <ol>
@@ -191,7 +204,22 @@ function calculate(){
   cmpOutA.textContent='PKR '+money(cmpCash[0]); cmpOutB.textContent='PKR '+money(cmpCash[1]); cmpOutC.textContent='PKR '+money(cmpCash[2]);
   auditTrail.innerHTML='<strong>Calculation audit trail</strong><br>'+periodNote+'<br>'+conversionNote+'<br>Rate basis: '+rateNote+'<br>Formula: PKR gross basis × '+rate.toFixed(2)+'% ÷ 100 = PKR '+money(tax)+' estimated withholding.<br><small>This audit trail makes the assumptions visible so you can compare the result with your payment record or tax documentation.</small>';
 }
+function calculateMixed(){
+  const a=Number(mixIT.value), b=Number(mixOther.value), d=Number(mixSocial.value);
+  const total=a+b+d;
+  if([a,b,d].some(v=>!Number.isFinite(v)||v<0||v>100)||Math.abs(total-100)>0.01){mixOut.innerHTML='<strong>Check the allocation:</strong> IT/ITeS + other exports + social-platform revenue must total 100%.';return}
+  let base=Number(income.value);
+  if(!Number.isFinite(base)||base<0){mixOut.textContent='Enter a valid gross receipt amount first.';return}
+  if(period.value==='monthly') base*=12;
+  if(currency.value==='USD'){const fxRate=Number(fx.value);if(!Number.isFinite(fxRate)||fxRate<=0){mixOut.textContent='Enter a valid PKR per USD rate first.';return}base*=fxRate}
+  const itRate=pseb.value==='yes'?0.25:1;
+  const socialRate=atl.value==='yes'?5:10;
+  const itBase=base*a/100, otherBase=base*b/100, socialBase=base*d/100;
+  const itTax=itBase*itRate/100, otherTax=otherBase/100, socialTax=socialBase*socialRate/100;
+  const totalTax=itTax+otherTax+socialTax;
+  mixOut.innerHTML='<strong>Mixed-income planning result</strong><br>Annual gross basis: PKR '+money(base)+'<br>IT/ITeS export: PKR '+money(itBase)+' × '+itRate.toFixed(2)+'% = PKR '+money(itTax)+'<br>Other exported services: PKR '+money(otherBase)+' × 1.00% = PKR '+money(otherTax)+'<br>Social-platform revenue: PKR '+money(socialBase)+' × '+socialRate.toFixed(2)+'% = PKR '+money(socialTax)+'<br><strong>Combined modeled withholding: PKR '+money(totalTax)+'</strong><br>Effective modeled rate on the full gross basis: '+(base?((totalTax/base)*100).toFixed(3):'0.000')+'%<br><small>This blended figure is only a planning output. It must not be used to classify income or replace the applicable tax-return calculation.</small>';
+}
 incomeType.addEventListener('change',()=>{updateFields();calculate()});
-period.addEventListener('change',calculate);currency.addEventListener('change',calculate);pseb.addEventListener('change',calculate);atl.addEventListener('change',calculate);income.addEventListener('input',calculate);fx.addEventListener('input',calculate);platformFee.addEventListener('input',calculate);bankCharges.addEventListener('input',calculate);alreadyWithheld.addEventListener('input',calculate);businessCosts.addEventListener('input',calculate);cmpFeeA.addEventListener('input',calculate);cmpFeeB.addEventListener('input',calculate);cmpFeeC.addEventListener('input',calculate);go.addEventListener('click',calculate);
+period.addEventListener('change',calculate);currency.addEventListener('change',calculate);pseb.addEventListener('change',calculate);atl.addEventListener('change',calculate);income.addEventListener('input',calculate);fx.addEventListener('input',calculate);platformFee.addEventListener('input',calculate);bankCharges.addEventListener('input',calculate);alreadyWithheld.addEventListener('input',calculate);businessCosts.addEventListener('input',calculate);cmpFeeA.addEventListener('input',calculate);cmpFeeB.addEventListener('input',calculate);cmpFeeC.addEventListener('input',calculate);mixGo.addEventListener('click',calculateMixed);go.addEventListener('click',calculate);
 updateFields();calculate();
 </script></body></html>
