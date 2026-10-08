@@ -220,3 +220,11 @@ Do not add these terms as a visible keyword list. Use them only when they descri
 3. Fertilizer per-acre/NPK/product/bag workflows.
 4. Math calculator and solver intent.
 5. Broad calculator discovery remains owned by the homepage and calculator library, not individual pages.
+
+### Freelancer SERP keyword-gap implementation — 2026-10-08
+
+The freelancer cluster now covers the main recurring competitor intents without creating duplicate URLs: freelancer tax calculator Pakistan; freelancer tax calculator 2026-27; IT export tax calculator; PSEB tax calculator; freelancer tax Pakistan; Fiverr tax Pakistan; Upwork tax Pakistan; YouTube tax Pakistan; Section 154A freelancer tax; and freelancer tax calculator after fees / take-home.
+
+Ownership: /freelancer-tax-calculator-pakistan.html is the calculator owner. /blog-freelancer-tax-pakistan.html supports the informational intent. Fiverr, Upwork, YouTube and PSEB variants remain supporting intent on the existing calculator rather than separate doorway pages.
+
+Implementation: natural headings, explanatory copy and FAQs were added only where the page genuinely answers the query. No keyword-stuffing block or duplicate calculator URL was created. Search Console query data should be used later to refine secondary wording.
