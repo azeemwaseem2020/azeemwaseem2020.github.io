@@ -187,7 +187,6 @@ function calculate(){
   if(incomeType.value==='it'){rate=pseb.value==='yes'?0.25:1;label=pseb.value==='yes'?'IT / IT-enabled export with PSEB':'IT / IT-enabled export without PSEB';}
   if(incomeType.value==='social'){rate=atl.value==='yes'?5:10;section='154B';label='Social-media / content-platform revenue';}
   const tax=annualBase*rate/100;
-  const rateNote=section==='154A'?'Estimated section 154A withholding basis':'Estimated section 154B withholding basis';
   const monthlyTax=tax/12;
   const net=annualBase-tax;
   const annualFee=annualBase*feePct/100;
