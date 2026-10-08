@@ -228,3 +228,20 @@ The freelancer cluster now covers the main recurring competitor intents without 
 Ownership: /freelancer-tax-calculator-pakistan.html is the calculator owner. /blog-freelancer-tax-pakistan.html supports the informational intent. Fiverr, Upwork, YouTube and PSEB variants remain supporting intent on the existing calculator rather than separate doorway pages.
 
 Implementation: natural headings, explanatory copy and FAQs were added only where the page genuinely answers the query. No keyword-stuffing block or duplicate calculator URL was created. Search Console query data should be used later to refine secondary wording.
+
+### Global freelancer-tax SERP intent audit — 2026-10-08
+
+A broader international SERP sample was checked across Pakistan-specific competitors and global freelancer-tax tools. Because public search results do not provide one universal, trustworthy worldwide volume ranking, the list below is a **competitor-frequency / search-intent top 10**, not a fabricated exact-volume ranking.
+
+1. freelancer tax calculator
+2. freelance tax calculator
+3. freelancer income tax calculator
+4. self-employed tax calculator
+5. freelance take-home calculator
+6. freelance tax after expenses
+7. platform fee tax calculator
+8. freelance quarterly tax calculator
+9. freelancer tax calculator 2026 / current tax year
+10. freelance tax calculator by country / country-specific freelancer tax
+
+**Calcora implementation:** the existing Pakistan freelancer calculator now naturally covers the first, second, third, fifth, sixth, seventh and ninth intents. The fourth and eighth are explicitly scoped as international concepts that Calcora does not incorrectly apply to Pakistan. The tenth is handled through clear Pakistan-only positioning rather than pretending to be a global tax engine. No duplicate doorway pages were created.
