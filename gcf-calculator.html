@@ -41,5 +41,5 @@
 <h3>What if one number is zero?</h3><p>If exactly one input is zero, the GCF is the absolute value of the other input. If both are zero, the GCF is undefined.</p>
 <h3>Is GCF the same as GCD?</h3><p>Yes. They are two common names for the greatest common divisor.</p>
 <h2>Related math tools</h2>
-<p><a href="math-calculator-hub.html">Math Calculator Hub</a> · <a href="calculators.html">All Calculators</a></p>
+<p><a href="fraction-calculator.html">Fraction Calculator</a> · <a href="ratio-calculator.html">Ratio Calculator</a> · <a href="average-calculator.html">Average Calculator</a> · <a href="math-calculator-hub.html">Math Calculator Hub</a> · <a href="calculators.html">All Calculators</a></p>
 </main><script>function calc(){const a0=Number(document.getElementById('a').value),b0=Number(document.getElementById('b').value),r=document.getElementById('r');if(!Number.isInteger(a0)||!Number.isInteger(b0)){r.textContent='Enter two integers.';return}let a=Math.abs(a0),b=Math.abs(b0);if(a===0&&b===0){r.textContent='GCF is undefined for 0 and 0.';return}while(b!==0){const t=a%b;a=b;b=t}r.textContent='GCF = '+a}</script></body></html>
