@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const root = new URL('../', import.meta.url);
-const pages = ['psx-calculator.html','psx-portfolio-calculator.html','psx-average-price-calculator.html','psx-position-size-calculator.html','psx-dividend-reinvestment-calculator.html'];
+const pages = ['psx-calculator.html','psx-brokerage-commission-calculator.html','psx-portfolio-calculator.html','psx-average-price-calculator.html','psx-position-size-calculator.html','psx-dividend-reinvestment-calculator.html'];
 const sitemap = fs.readFileSync(new URL('sitemap.xml', root), 'utf8');
 
 for (const file of pages) {
