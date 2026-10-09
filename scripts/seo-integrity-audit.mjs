@@ -116,6 +116,16 @@ const summary = {
   imagesMissingAlt: report.imagesMissingAlt.length,
   brokenInternalLinks: report.brokenInternalLinks.length,
   sitemap: report.sitemap,
+  findings: {
+    missingTitle: report.metadata.missingTitle,
+    missingDescription: report.metadata.missingDescription,
+    missingCanonical: report.metadata.missingCanonical,
+    duplicateTitleGroups: report.metadata.duplicateTitles,
+    duplicateCanonicalGroups: report.metadata.duplicateCanonicals,
+    imagesMissingAlt: report.imagesMissingAlt,
+    brokenInternalLinks: report.brokenInternalLinks,
+    noindexPages: report.metadata.noindex
+  },
   blockingErrors: report.errors
 };
 console.log('CALCORA SEO INTEGRITY AUDIT');
