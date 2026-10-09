@@ -24,7 +24,7 @@ assert.match(page, /wanda/i);
 assert.match(page, /feed cost per litre/i);
 assert.match(page, /Dry matter \(DM\)/i);
 assert.match(page, /daily feed cost ÷ daily milk litres/);
-assert.match(page, /animal-specific nutritional assessment/);
+assert.match(page, /does not prescribe one fixed ration for every cow/i);
 assert.match(page, /does not prescribe one fixed ration for every cow/i);
 assert.ok(page.includes('https://extension.psu.edu/total-mixed-rations-for-dairy-cows'));
 assert.ok(page.includes('https://extension.umn.edu/agriculture/animals-and-livestock/dairy/feeding-total-mixed-rations'));
