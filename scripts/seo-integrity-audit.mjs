@@ -101,7 +101,8 @@ for (const sitemapFile of ['sitemap.xml', 'sitemap-pakistan-priority.xml']) {
   const invalidLastmod = [...xml.matchAll(/<lastmod>([\s\S]*?)<\/lastmod>/gi)].map(match => match[1].trim()).filter(value => !/^\d{4}-\d{2}-\d{2}(?:T.*Z)?$/.test(value));
   report.sitemap.push({ file: sitemapFile, urlCount: locs.length, duplicateUrls: duplicates, noindexUrls: noindexSitemapUrls, missingLocalFiles: [...new Set(missingFiles)], invalidLastmod });
   if (!/^\s*<\?xml\s+version=/i.test(xml) || !/<urlset\b/i.test(xml) || !/<\/urlset>\s*$/i.test(xml)) report.errors.push('Malformed sitemap structure: ' + sitemapFile);
-  if (duplicates.length) report.errors.push('Duplicate URLs in ' + sitemapFile);\n  if (noindexSitemapUrls.length) console.warn('WARNING: noindex URLs listed in ' + sitemapFile + ': ' + noindexSitemapUrls.join(', '));
+  if (duplicates.length) report.errors.push('Duplicate URLs in ' + sitemapFile);
+  if (noindexSitemapUrls.length) console.warn('WARNING: noindex URLs listed in ' + sitemapFile + ': ' + noindexSitemapUrls.join(', '));
   if (missingFiles.length) report.errors.push('Sitemap URLs do not map to local files in ' + sitemapFile);
 }
 const summary = {
