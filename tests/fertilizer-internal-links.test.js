@@ -52,7 +52,7 @@ assert.doesNotMatch(hubContent, /<h2>Transparency &amp; source<\/h2>/i, 'remove 
 assert.match(hubContent, /id="fertilizer-verification"/, 'retain the practical field verification workflow');
 
 assert.match(primary, /href="fertilizer-bag-calculator\.html"[^>]*>50 kg bags, whole-bag purchase quantity and estimated cost/);
-assert.match(primary, /Last updated: October 9, 2026/);
+assert.match(primary, /Last updated:<\/strong> October 9, 2026/);
 
 assert.match(blend, /href="fertilizer-bag-calculator\.html"/);
 assert.match(blend, /purchase surplus and cost/);
