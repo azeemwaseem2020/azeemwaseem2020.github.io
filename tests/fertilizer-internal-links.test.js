@@ -54,7 +54,6 @@ assert.match(hubContent, /id="fertilizer-verification"/, 'retain the practical f
 assert.match(primary, /href="fertilizer-bag-calculator\.html"[^>]*>50 kg bags, whole-bag purchase quantity and estimated cost/);
 assert.match(primary, /Last updated: October 9, 2026/);
 
-const blend = fs.readFileSync(new URL('fertilizer-blend-calculator.html', root), 'utf8');
 assert.match(blend, /href="fertilizer-bag-calculator\.html"/);
 assert.match(blend, /purchase surplus and cost/);
 
