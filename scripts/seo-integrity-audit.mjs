@@ -87,7 +87,12 @@ for (const sitemapFile of ['sitemap.xml', 'sitemap-pakistan-priority.xml']) {
   const xml = fs.readFileSync(path.join(ROOT, sitemapFile), 'utf8');
   const locs = [...xml.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)].map(match => decodeEntities(match[1].trim()));
   const duplicates = [...new Set(locs.filter((url, index) => locs.indexOf(url) !== index))];
-  const noindexSitemapUrls = locs.filter(url => {\n    if (!url.startsWith(BASE)) return false;\n    const pathname = url.slice(BASE.length).split(/[?#]/, 1)[0].replace(/^\\//, '');\n    return noindexFiles.has(pathname || 'index.html');\n  });\n  const missingFiles = locs.filter(url => {
+  const noindexSitemapUrls = locs.filter(url => {
+    if (!url.startsWith(BASE)) return false;
+    const pathname = url.slice(BASE.length).split(/[?#]/, 1)[0].replace(/^\//, '');
+    return noindexFiles.has(pathname || 'index.html');
+  });
+  const missingFiles = locs.filter(url => {
     if (!url.startsWith(BASE)) return true;
     const pathname = url.slice(BASE.length).split(/[?#]/, 1)[0].replace(/^\//, '');
     const target = pathname || 'index.html';
