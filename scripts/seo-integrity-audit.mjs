@@ -64,7 +64,7 @@ for (const abs of htmlFiles) {
   if (!title) report.metadata.missingTitle.push(file); else addUnique(titles, title, file);
   if (!description) report.metadata.missingDescription.push(file);
   if (!canonical) report.metadata.missingCanonical.push(file); else addUnique(canonicals, canonical, file);
-  if (robotsTags.some(value => /\bnoindex\b/.test(value))) report.metadata.noindex.push(file);
+  if (robotsTags.some(value => /\bnoindex\b/.test(value))) { report.metadata.noindex.push(file); noindexFiles.add(file); }
 
   for (const match of html.matchAll(/<img\b[^>]*>/gi)) {
     if (!/\balt\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/i.test(match[0])) report.imagesMissingAlt.push({ file, tag: match[0].slice(0, 180) });
