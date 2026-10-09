@@ -88,6 +88,10 @@ assert.doesNotMatch(primary, /46 kg N per hectare/, 'replace hectare-first gener
 assert.match(primary, /23 kg of nitrogen per acre/, 'show an explicit Pakistan acre calculation example');
 const hubWithCrops = fs.readFileSync(new URL('agriculture-fertilizer-hub.html', root), 'utf8');
 assert.match(hubWithCrops, /id="pakistan-crop-guides"/, 'fertilizer hub must expose crop-specific guides');
+for (const [filename] of cropPages) {
+  assert.match(directory, new RegExp('href="' + filename.replace(/[.*+?^${}()|[\]\\]/g, '\\assert.match(hubWithCrops, /id="pakistan-crop-guides"/, 'fertilizer hub must expose crop-specific guides');') + '"'), filename + ' must be discoverable in the calculator directory');
+}
+
 
 console.log('Pakistan crop fertilizer pages, local units, bag example and FAQ de-duplication checks: PASS');
 console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + 4 core pages)');
