@@ -22,7 +22,7 @@ for (const file of pages) {
 }
 
 const hub = fs.readFileSync(new URL('psx-investor-calculator-hub.html', root), 'utf8');
-const jsonLdScripts = [...hub.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/gi)];
+const jsonLdScripts = [...hub.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)];
 const parsedSchemas = jsonLdScripts.map(([, json]) => JSON.parse(json));
 const collection = parsedSchemas.find(schema => schema['@type'] === 'CollectionPage');
 assert.ok(collection, 'PSX hub: CollectionPage JSON-LD missing');
