@@ -102,3 +102,19 @@ assert.match(rationCheck, /Total dry matter = 540 kg; total crude protein = 67\.
 assert.match(rationCheck, /12\.48% of DM/);
 assert.match(rationCheck, /does not prove the ration meets an animal’s needs/i, 'Worked example must clearly avoid implying nutritional adequacy');
 console.log('Advanced TMR checker trust, currency and weighted-nutrient example checks: PASS');
+
+
+assert.match(feedCalc, /Last updated:<\/strong> October 9, 2026/, 'Visible TMR feed calculator review date should match the latest content update');
+assert.match(feedCalc, /article:modified_time" content="2026-10-09"/, 'TMR feed calculator modification metadata should match its visible review date');
+for (const [path, html] of [
+  ['tmr-feed-calculator.html', feedCalc],
+  ['tmr-dry-matter-calculator.html', dryMatter],
+  ['tmr-feed-cost-calculator.html', feedCost],
+  ['tmr-check-my-ration.html', rationCheck],
+  ['dairy-cow-tmr-ration.html', page],
+  ['tmr-calculator-guide.html', guide],
+  ['animal-feed-calculator-hub.html', hub]
+]) {
+  assert.doesNotMatch(html, /<meta name="author" content="Calcora">/, path + ' should not use the brand as its named author');
+}
+console.log('TMR cluster author identity and freshness consistency checks: PASS');
