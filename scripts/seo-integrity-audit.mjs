@@ -50,6 +50,7 @@ function addUnique(map, key, file) {
 }
 const titles = new Map();
 const canonicals = new Map();
+const noindexFiles = new Set();
 
 for (const abs of htmlFiles) {
   const file = path.relative(ROOT, abs).split(path.sep).join('/');
@@ -86,16 +87,16 @@ for (const sitemapFile of ['sitemap.xml', 'sitemap-pakistan-priority.xml']) {
   const xml = fs.readFileSync(path.join(ROOT, sitemapFile), 'utf8');
   const locs = [...xml.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)].map(match => decodeEntities(match[1].trim()));
   const duplicates = [...new Set(locs.filter((url, index) => locs.indexOf(url) !== index))];
-  const missingFiles = locs.filter(url => {
+  const noindexSitemapUrls = locs.filter(url => {\n    if (!url.startsWith(BASE)) return false;\n    const pathname = url.slice(BASE.length).split(/[?#]/, 1)[0].replace(/^\\//, '');\n    return noindexFiles.has(pathname || 'index.html');\n  });\n  const missingFiles = locs.filter(url => {
     if (!url.startsWith(BASE)) return true;
     const pathname = url.slice(BASE.length).split(/[?#]/, 1)[0].replace(/^\//, '');
     const target = pathname || 'index.html';
     return !knownFiles.has(target);
   });
   const invalidLastmod = [...xml.matchAll(/<lastmod>([\s\S]*?)<\/lastmod>/gi)].map(match => match[1].trim()).filter(value => !/^\d{4}-\d{2}-\d{2}(?:T.*Z)?$/.test(value));
-  report.sitemap.push({ file: sitemapFile, urlCount: locs.length, duplicateUrls: duplicates, missingLocalFiles: [...new Set(missingFiles)], invalidLastmod });
+  report.sitemap.push({ file: sitemapFile, urlCount: locs.length, duplicateUrls: duplicates, noindexUrls: noindexSitemapUrls, missingLocalFiles: [...new Set(missingFiles)], invalidLastmod });
   if (!/^\s*<\?xml\s+version=/i.test(xml) || !/<urlset\b/i.test(xml) || !/<\/urlset>\s*$/i.test(xml)) report.errors.push('Malformed sitemap structure: ' + sitemapFile);
-  if (duplicates.length) report.errors.push('Duplicate URLs in ' + sitemapFile);
+  if (duplicates.length) report.errors.push('Duplicate URLs in ' + sitemapFile);\n  if (noindexSitemapUrls.length) console.warn('WARNING: noindex URLs listed in ' + sitemapFile + ': ' + noindexSitemapUrls.join(', '));
   if (missingFiles.length) report.errors.push('Sitemap URLs do not map to local files in ' + sitemapFile);
 }
 const summary = {
