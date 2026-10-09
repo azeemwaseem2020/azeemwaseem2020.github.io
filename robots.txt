@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
 
+User-agent: OAI-SearchBot
+Allow: /
+
 Sitemap: https://azeemwaseem2020.github.io/sitemap.xml
 Sitemap: https://azeemwaseem2020.github.io/sitemap-pakistan-priority.xml
