@@ -70,7 +70,15 @@
       '<p><strong>Eligibility check:</strong> This calculator does not verify whether salary income exceeds 75% of your taxable income, which is relevant to the salaried-person rate table. If you have business, rental, investment or other income, confirm which rate table applies before relying on this estimate.</p>' +
       '<p><strong>Important:</strong> This is an estimate using the slabs displayed on this page. It does not account for individual exemptions, credits, other income, prior withholding or all payroll adjustments. The monthly figure is an annual average, not a guaranteed payroll deduction.</p>';
   }
-  document.querySelectorAll('[data-monthly-salary]').forEach(button => {\n    button.addEventListener('click', () => {\n      const monthlySalary = Number(button.dataset.monthlySalary);\n      if (!Number.isFinite(monthlySalary) || monthlySalary < 0) return;\n      income.value = String(monthlySalary * 12);\n      income.dispatchEvent(new Event('input', { bubbles: true }));\n    });\n  });\n  document.getElementById('calc').addEventListener('click', calc);
+  document.querySelectorAll('[data-monthly-salary]').forEach(button => {
+    button.addEventListener('click', () => {
+      const monthlySalary = Number(button.dataset.monthlySalary);
+      if (!Number.isFinite(monthlySalary) || monthlySalary < 0) return;
+      income.value = String(monthlySalary * 12);
+      income.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  });
+  document.getElementById('calc').addEventListener('click', calc);
   income.addEventListener('input', calc);
   income.addEventListener('change', calc);
   calc();
