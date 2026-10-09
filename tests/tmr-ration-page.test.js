@@ -53,3 +53,19 @@ assert.ok(feedCost.includes('href="dairy-cow-tmr-ration.html"'), 'Feed cost page
 assert.ok(guide.includes('href="dairy-cow-tmr-ration.html"'), 'TMR guide must link to the bilingual dairy TMR resource');
 assert.equal((feedCost.match(/<meta name="author"/gi) || []).length, 1, 'Feed cost page should not duplicate author metadata');
 console.log('TMR cluster intent and internal-link checks: PASS');
+
+const hubSchemas = [...hub.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/gi)].map(([,json]) => JSON.parse(json));
+const hubCollection = hubSchemas.find(x => x['@type'] === 'CollectionPage');
+const expectedTmrUrls = [
+  'tmr-feed-calculator.html',
+  'tmr-dry-matter-calculator.html',
+  'tmr-feed-cost-calculator.html',
+  'tmr-check-my-ration.html',
+  'dairy-cow-tmr-ration.html'
+].map(path => 'https://azeemwaseem2020.github.io/' + path);
+assert.deepEqual(hubCollection.mainEntity.itemListElement.map(x => x.url), expectedTmrUrls, 'Hub schema should list only the relevant visible TMR tools');
+assert.equal((hub.match(/name="twitter:card"/gi) || []).length, 1, 'Hub should contain one Twitter card declaration');
+assert.equal((hub.match(/name="twitter:image"/gi) || []).length, 1, 'Hub should contain one Twitter image declaration');
+assert.match(guide, /Why moisture testing matters on a dairy farm/);
+assert.doesNotMatch(guide, /practical SEO topic|Searchers often arrive with a simple question/i, 'Reader-facing guide should not expose SEO-oriented editorial copy');
+console.log('TMR hub schema relevance and reader-first content checks: PASS');
