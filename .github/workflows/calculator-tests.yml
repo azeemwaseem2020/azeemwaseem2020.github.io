@@ -28,3 +28,4 @@ jobs:
           node tests/science-calculators.test.js
           node tests/tmr-ration-page.test.js
           node tests/fertilizer-internal-links.test.js
+          node tests/salary-tax-related-faq.test.js
