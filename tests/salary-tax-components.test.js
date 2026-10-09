@@ -37,4 +37,9 @@ for (const q of [
 ]) {
   assert.ok(faq.mainEntity.some(item => item.name === q), 'FAQPage schema missing: ' + q);
 }
+
+for (const item of faq.mainEntity) {
+  assert.ok(html.includes('<h3>' + item.name + '</h3>'),
+    'FAQ schema question must be visibly present as an exact heading: ' + item.name);
+}
 console.log('Salary tax component entity tests passed.');
