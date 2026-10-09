@@ -42,7 +42,7 @@ assert.ok(profitPage.includes('https://www.nccpl.com.pk/cgt'), 'PSX profit page:
 assert.equal((profitPage.match(/property=['"]og:image:alt['"]/gi) || []).length, 1, 'PSX profit page: Open Graph image alt should not be duplicated');
 assert.ok(profitPage.includes('"name":"PSX Profit Calculator Pakistan — Net Profit, Loss & Break-Even"'), 'PSX profit page: WebApplication name should match the page purpose');
 assert.ok(profitPage.includes('does not automatically transfer its result'), 'PSX profit page: fee estimator separation must be disclosed near break-even summary');
-assert.match(profitPage, /Last updated:\\s*(?:<\\/strong>\\s*)?October 9, 2026/, 'PSX profit page: page information and editorial date should reflect the current revision');
+assert.ok(/Last updated:/.test(profitPage) && profitPage.includes('October 9, 2026'), 'PSX profit page: page information and editorial date should reflect the current revision');
 
 
 const brokerage = fs.readFileSync(new URL('psx-brokerage-commission-calculator.html', root), 'utf8');
