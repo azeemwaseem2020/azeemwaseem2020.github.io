@@ -35,4 +35,19 @@ assert.match(hub, /href="fertilizer-calculator\.html"/);
 assert.match(hub, /href="fertilizer-bag-calculator\.html"/);
 assert.match(hub, /href="fertilizer-blend-calculator\.html"/);
 
-console.log('Fertilizer guide-to-calculator internal linking checks: PASS (18 guides)');
+const primary = fs.readFileSync(new URL('fertilizer-calculator.html', root), 'utf8');
+assert.match(primary, /href="fertilizer-bag-calculator\.html"[^>]*>50 kg bags, whole-bag purchase quantity and estimated cost/);
+assert.match(primary, /Last updated: October 9, 2026/);
+
+const blend = fs.readFileSync(new URL('fertilizer-blend-calculator.html', root), 'utf8');
+assert.match(blend, /href="fertilizer-bag-calculator\.html"/);
+assert.match(blend, /purchase surplus and cost/);
+
+const bags = fs.readFileSync(new URL('fertilizer-bag-calculator.html', root), 'utf8');
+assert.match(bags, /href="blog-fertilizer-bags-cost-calculator\.html"/);
+
+const directory = fs.readFileSync(new URL('calculators.html', root), 'utf8');
+assert.match(directory, /href="fertilizer-bag-calculator\.html"/);
+assert.match(directory, /Fertilizer Bag Calculator/);
+
+console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + 4 core pages)');
