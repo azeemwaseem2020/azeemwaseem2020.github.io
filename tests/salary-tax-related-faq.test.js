@@ -17,7 +17,7 @@ assert.match(html, /Should I calculate salary tax using gross salary or take-hom
 const faqScript = html.match(/<script type="application\/ld\+json">({\"@context\":\"https:\/\/schema\.org\",\"@type\":\"FAQPage\"[\s\S]*?})<\/script>/);
 assert.ok(faqScript, 'Must provide FAQPage JSON-LD for the visible related questions');
 const faq = JSON.parse(faqScript[1]);
-assert.equal(faq.mainEntity.length, 4, 'FAQ schema should contain the four visible high-intent questions');
+assert.equal(faq.mainEntity.length, 8, 'FAQ schema should contain the four original and four salary-component questions');
 for (const question of [
   'How much tax is deducted on a PKR 100,000 monthly salary in Pakistan?',
   'What is the difference between a filer and a non-filer in Pakistan?',
