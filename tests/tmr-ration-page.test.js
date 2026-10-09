@@ -118,3 +118,31 @@ for (const [path, html] of [
   assert.doesNotMatch(html, /<meta name="author" content="Calcora">/, path + ' should not use the brand as its named author');
 }
 console.log('TMR cluster author identity and freshness consistency checks: PASS');
+
+
+assert.match(dryMatter, /Updated: October 9, 2026/, 'Dry matter page visible update date should reflect the worked-example revision');
+assert.match(dryMatter, /article:modified_time" content="2026-10-09"/, 'Dry matter modification metadata should match visible update date');
+assert.match(feedCost, /Updated October 9, 2026/, 'Feed cost page should show a visible update date');
+assert.match(feedCost, /article:modified_time" content="2026-10-09"/, 'Feed cost modification metadata should match visible update date');
+assert.match(feedCost, /property="og:site_name" content="Calcora"/, 'Feed cost page should identify the site in social metadata');
+const clusterPages = [
+  ['TMR Feed Calculator', feedCalc],
+  ['TMR Dry Matter Calculator', dryMatter],
+  ['TMR Feed Cost Calculator', feedCost],
+  ['Advanced TMR Check', rationCheck],
+  ['Dairy Cow TMR Guide', page],
+  ['TMR Calculator Guide', guide],
+  ['Animal Feed Hub', hub]
+];
+const titles = clusterPages.map(([name, html]) => {
+  const match = html.match(/<title>([\\s\\S]*?)<\\/title>/i);
+  assert.ok(match, name + ' must have a title');
+  return match[1].replace(/&amp;/g, '&').trim();
+});
+assert.equal(new Set(titles).size, titles.length, 'TMR cluster pages must have distinct titles');
+for (const [name, html] of clusterPages) {
+  assert.equal((html.match(/<link rel="canonical"/gi) || []).length, 1, name + ' must have exactly one canonical');
+  assert.equal((html.match(/<h1\\b/gi) || []).length, 1, name + ' must have exactly one H1');
+  assert.match(html, /<meta name="description" content="[^"]{70,160}">/i, name + ' description should be a useful 70–160 character summary');
+}
+console.log('TMR cluster search-intent metadata, canonicals, H1s and freshness checks: PASS');
