@@ -44,3 +44,12 @@ assert.ok(collection, 'Animal feed hub CollectionPage schema missing');
 assert.equal(collection.mainEntity.numberOfItems, collection.mainEntity.itemListElement.length, 'Animal feed hub ItemList count mismatch');
 assert.ok(collection.mainEntity.itemListElement.some(x => x.url === canonical), 'Animal feed hub schema missing new page');
 console.log('Dairy cow TMR ration page checks: PASS');
+
+const dryMatter = fs.readFileSync(new URL('tmr-dry-matter-calculator.html', root), 'utf8');
+const feedCost = fs.readFileSync(new URL('tmr-feed-cost-calculator.html', root), 'utf8');
+const guide = fs.readFileSync(new URL('tmr-calculator-guide.html', root), 'utf8');
+assert.ok(dryMatter.includes('href="dairy-cow-tmr-ration.html"'), 'Dry matter page must link to bilingual dairy TMR context');
+assert.ok(feedCost.includes('href="dairy-cow-tmr-ration.html"'), 'Feed cost page must distinguish feed cost per litre and link to the bilingual guide');
+assert.ok(guide.includes('href="dairy-cow-tmr-ration.html"'), 'TMR guide must link to the bilingual dairy TMR resource');
+assert.equal((feedCost.match(/<meta name="author"/gi) || []).length, 1, 'Feed cost page should not duplicate author metadata');
+console.log('TMR cluster intent and internal-link checks: PASS');
