@@ -64,4 +64,34 @@ const directory = fs.readFileSync(new URL('calculators.html', root), 'utf8');
 assert.match(directory, /href="fertilizer-bag-calculator\.html"/);
 assert.match(directory, /Fertilizer Bag Calculator/);
 
+
+const cropPages = [
+  ['wheat-fertilizer-calculator.html', /Wheat Fertilizer Calculator/],
+  ['cotton-fertilizer-calculator.html', /Cotton Fertilizer Calculator/],
+  ['rice-fertilizer-calculator.html', /Rice Fertilizer Calculator/],
+  ['sugarcane-fertilizer-calculator.html', /Sugarcane Fertilizer Calculator/],
+  ['maize-fertilizer-calculator.html', /Maize Fertilizer Calculator/]
+];
+for (const [filename, titlePattern] of cropPages) {
+  const html = fs.readFileSync(new URL(filename, root), 'utf8');
+  assert.match(html, titlePattern, filename + ' must have a crop-specific title');
+  assert.match(html, /rel="canonical"/, filename + ' must have a canonical URL');
+  assert.match(html, /name="description"/, filename + ' must have a unique description');
+  assert.match(html, /soil-test|soil test/i, filename + ' must not present a universal fertilizer dose');
+  assert.match(html, /href="fertilizer-calculator\.html"/, filename + ' must link to the working fertilizer calculator');
+  assert.match(html, /href="fertilizer-bag-calculator\.html"/, filename + ' must link to bag planning');
+}
+assert.match(primary, /<option value="acre">Acres<\/option>\s*<option value="kanal">Kanal/i, 'Pakistan acres and kanal should appear before hectares');
+assert.match(primary, /id="crop-fertilizer-guides"/, 'primary calculator must link to crop-specific guides');
+assert.equal((primary.match(/<h2>Frequently asked questions<\/h2>/g) || []).length, 1, 'avoid repeating the same main FAQ section');
+assert.doesNotMatch(primary, /46 kg N per hectare/, 'replace hectare-first generic example with Pakistan acre and bag example');
+assert.match(primary, /23 kg of nitrogen per acre/, 'show an explicit Pakistan acre calculation example');
+const hubWithCrops = fs.readFileSync(new URL('agriculture-fertilizer-hub.html', root), 'utf8');
+assert.match(hubWithCrops, /id="pakistan-crop-guides"/, 'fertilizer hub must expose crop-specific guides');
+for (const [filename] of cropPages) {
+  assert.ok(directory.includes('href="' + filename + '"'), filename + ' must be discoverable in the calculator directory');
+}
+
+
+console.log('Pakistan crop fertilizer pages, local units, bag example and FAQ de-duplication checks: PASS');
 console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + 4 core pages)');

@@ -61,23 +61,36 @@ for (const abs of htmlFiles) {
   const canonicalTag = (html.match(/<link\b[^>]*\brel\s*=\s*(?:"canonical"|'canonical'|canonical)[^>]*>/i) || [])[0] || '';
   const canonical = attr(canonicalTag, 'href');
   const robotsTags = [...html.matchAll(/<meta\b[^>]*\bname\s*=\s*(?:"robots"|'robots'|robots)[^>]*>/gi)].map(m => attr(m[0], 'content').toLowerCase());
-  if (!title) report.metadata.missingTitle.push(file); else addUnique(titles, title, file);
-  if (!description) report.metadata.missingDescription.push(file);
-  if (!canonical) report.metadata.missingCanonical.push(file); else addUnique(canonicals, canonical, file);
-  if (robotsTags.some(value => /\bnoindex\b/.test(value))) { report.metadata.noindex.push(file); noindexFiles.add(file); }
+  const isNoindex = robotsTags.some(value => /\bnoindex\b/.test(value));
+  const isVerificationOrErrorFile = file === '404.html' || /^(?:google[a-f0-9]+\.html|bbe1f0cb-e6f8-4328-9b7e-c48eb0951b50\.html)$/i.test(file);
+  if (isNoindex) { report.metadata.noindex.push(file); noindexFiles.add(file); }
+
+  // Only indexable content pages need SEO metadata. Verification files, the 404 page,
+  // and noindex redirect/alias pages are intentionally excluded from missing-meta checks.
+  if (!isNoindex && !isVerificationOrErrorFile) {
+    if (!title) report.metadata.missingTitle.push(file); else addUnique(titles, title, file);
+    if (!description) report.metadata.missingDescription.push(file);
+    if (!canonical) report.metadata.missingCanonical.push(file); else addUnique(canonicals, canonical, file);
+  }
 
   for (const match of html.matchAll(/<img\b[^>]*>/gi)) {
     if (!/\balt\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/i.test(match[0])) report.imagesMissingAlt.push({ file, tag: match[0].slice(0, 180) });
   }
-  for (const match of html.matchAll(/\b(?:href|src)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi)) {
-    const value = match[1] ?? match[2] ?? match[3] ?? '';
+  // Parse attributes only from actual HTML element start tags; searching the entire
+  // document for "href=" also mistakes JavaScript strings and download code for links.
+  for (const match of html.matchAll(/<(a|link|img|script|iframe|source|video|audio)\b[^>]*>/gi)) {
+    const tagName = match[1].toLowerCase();
+    const value = attr(match[0], ['a', 'link'].includes(tagName) ? 'href' : 'src');
     const target = relFile(file, value);
     if (!target || /\.(?:png|jpe?g|webp|gif|svg|ico|css|js|xml|txt|pdf|woff2?|ttf|mp4|webm|json|map)$/i.test(target)) continue;
     if (!knownFiles.has(target) && !fs.existsSync(path.join(ROOT, target))) report.brokenInternalLinks.push({ file, href: value, target });
   }
 }
 for (const [title, files] of titles) if (files.length > 1) report.metadata.duplicateTitles.push({ title, files });
-for (const [canonical, files] of canonicals) if (files.length > 1) report.metadata.duplicateCanonicals.push({ canonical, files });
+for (const [canonical, files] of canonicals) {
+  const indexableFiles = files.filter(file => !noindexFiles.has(file) && file !== '404.html' && !/^(?:google[a-f0-9]+\.html|bbe1f0cb-e6f8-4328-9b7e-c48eb0951b50\.html)$/i.test(file));
+  if (indexableFiles.length > 1) report.metadata.duplicateCanonicals.push({ canonical, files: indexableFiles });
+}
 
 for (const sitemapFile of ['sitemap.xml', 'sitemap-pakistan-priority.xml']) {
   if (!fs.existsSync(path.join(ROOT, sitemapFile))) {
@@ -116,6 +129,16 @@ const summary = {
   imagesMissingAlt: report.imagesMissingAlt.length,
   brokenInternalLinks: report.brokenInternalLinks.length,
   sitemap: report.sitemap,
+  findings: {
+    missingTitle: report.metadata.missingTitle,
+    missingDescription: report.metadata.missingDescription,
+    missingCanonical: report.metadata.missingCanonical,
+    duplicateTitleGroups: report.metadata.duplicateTitles,
+    duplicateCanonicalGroups: report.metadata.duplicateCanonicals,
+    imagesMissingAlt: report.imagesMissingAlt,
+    brokenInternalLinks: report.brokenInternalLinks,
+    noindexPages: report.metadata.noindex
+  },
   blockingErrors: report.errors
 };
 console.log('CALCORA SEO INTEGRITY AUDIT');
