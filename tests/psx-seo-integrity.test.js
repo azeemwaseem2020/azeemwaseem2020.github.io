@@ -36,8 +36,8 @@ for (const item of collection.mainEntity.itemListElement) {
 assert.ok(collection.mainEntity.itemListElement.some(item => item.url.endsWith('/psx-brokerage-commission-calculator.html')), 'PSX hub: brokerage calculator missing from structured data');
 
 const profitPage = fs.readFileSync(new URL('psx-calculator.html', root), 'utf8');
-assert.match(profitPage, /<title>PSX Profit Calculator Pakistan \\| Net P\/L &amp; Break-Even \\| Calcora<\\/title>/, 'PSX profit page: title should preserve the primary profit intent');
-assert.match(profitPage, /<h1[^>]*>PSX Profit Calculator Pakistan — Net Profit, Loss &amp; Break-Even<\\/h1>/, 'PSX profit page: H1 should preserve the primary profit intent');
+assert.ok(profitPage.includes('<title>PSX Profit Calculator Pakistan | Net P/L &amp; Break-Even | Calcora</title>'), 'PSX profit page: title should preserve the primary profit intent');
+assert.ok(profitPage.includes('<h1>PSX Profit Calculator Pakistan — Net Profit, Loss &amp; Break-Even</h1>'), 'PSX profit page: H1 should preserve the primary profit intent');
 assert.ok(profitPage.includes('https://www.nccpl.com.pk/cgt'), 'PSX profit page: official NCCPL CGT reference missing');
 
 const brokerage = fs.readFileSync(new URL('psx-brokerage-commission-calculator.html', root), 'utf8');
