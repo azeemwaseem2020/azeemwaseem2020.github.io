@@ -36,6 +36,21 @@ assert.match(hub, /href="fertilizer-bag-calculator\.html"/);
 assert.match(hub, /href="fertilizer-blend-calculator\.html"/);
 
 const primary = fs.readFileSync(new URL('fertilizer-calculator.html', root), 'utf8');
+assert.doesNotMatch(primary, /<h2>Transparency &amp; methodology<\/h2>/i, 'remove generic duplicate transparency section');
+assert.doesNotMatch(primary, /<h2>Accuracy and safety note<\/h2>/i, 'avoid repeating the same application caveat');
+assert.match(primary, /id="fertilizer-calculation-transparency"/, 'retain the specific fertilizer input and soil-context explanation');
+assert.match(primary, /Punjab Agriculture/, 'retain the authoritative local soil-testing reference');
+
+const blend = fs.readFileSync(new URL('fertilizer-blend-calculator.html', root), 'utf8');
+assert.doesNotMatch(blend, /id="calculation-transparency"/, 'remove the duplicate blend disclaimer section');
+assert.doesNotMatch(blend, /id="calcora-semantic-context"/, 'remove thin generic semantic filler');
+assert.match(blend, /id="blend-precision-notes"/, 'retain the useful precision and rounding explanation');
+assert.match(blend, /id="blend-field-notes"/, 'retain the specific field-practice content');
+
+const hubContent = fs.readFileSync(new URL('agriculture-fertilizer-hub.html', root), 'utf8');
+assert.doesNotMatch(hubContent, /<h2>Transparency &amp; source<\/h2>/i, 'remove generic trust panel from the hub');
+assert.match(hubContent, /id="fertilizer-verification"/, 'retain the practical field verification workflow');
+
 assert.match(primary, /href="fertilizer-bag-calculator\.html"[^>]*>50 kg bags, whole-bag purchase quantity and estimated cost/);
 assert.match(primary, /Last updated: October 9, 2026/);
 
