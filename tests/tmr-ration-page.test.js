@@ -68,3 +68,21 @@ assert.equal((hub.match(/name="twitter:image"/gi) || []).length, 1, 'Hub should 
 assert.match(guide, /Why moisture testing matters on a dairy farm/);
 assert.doesNotMatch(guide, /practical SEO topic|Searchers often arrive with a simple question/i, 'Reader-facing guide should not expose SEO-oriented editorial copy');
 console.log('TMR hub schema relevance and reader-first content checks: PASS');
+
+assert.equal((guide.match(/<meta\\s+name="author"/gi) || []).length, 1, 'TMR guide should identify its visible author once in metadata');
+assert.equal((guide.match(/property="og:title"/gi) || []).length, 1, 'TMR guide should have one Open Graph title');
+assert.equal((guide.match(/property="og:description"/gi) || []).length, 1, 'TMR guide should have one Open Graph description');
+assert.equal((guide.match(/name="twitter:card"/gi) || []).length, 1, 'TMR guide should have one Twitter card declaration');
+assert.match(guide, /"dateModified":"2026-10-09"/, 'TMR guide Article schema should include the verified modification date');
+assert.doesNotMatch(feed, /<h2>Transparency &amp; methodology<\\/h2>/, 'TMR feed page should not repeat a generic transparency panel');
+assert.match(dm, /Worked example: calculate actual dry-matter intake/);
+assert.match(dm, /108 × 0.35 = 37.8 kg DM/);
+assert.match(dm, /37.8 ÷ 20 = 1.89 kg DM per animal/);
+assert.doesNotMatch(dm, /id="calcora-semantic-context"/, 'Dry matter page should not retain thin generic context filler');
+assert.match(cost, /Illustrative example: cost per kg of dry matter/);
+assert.match(cost, /PKR 18 ÷ 0.30 = PKR 60\\/kg DM/);
+assert.match(cost, /PKR 12 ÷ 0.20 = PKR 60\\/kg DM/);
+assert.match(cost, /These figures are examples only—not current Pakistani market quotations/);
+assert.doesNotMatch(cost, /id="calcora-semantic-context"/, 'Feed cost page should not retain thin generic context filler');
+assert.equal((cost.match(/id="tmr-cost-quality"/g) || []).length, 1, 'Feed cost normalization example should have one unique section ID');
+console.log('TMR expert-content, metadata and duplication checks: PASS');
