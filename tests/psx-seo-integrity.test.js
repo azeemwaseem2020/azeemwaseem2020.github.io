@@ -35,4 +35,18 @@ for (const item of collection.mainEntity.itemListElement) {
 }
 assert.ok(collection.mainEntity.itemListElement.some(item => item.url.endsWith('/psx-brokerage-commission-calculator.html')), 'PSX hub: brokerage calculator missing from structured data');
 
+const brokerage = fs.readFileSync(new URL('psx-brokerage-commission-calculator.html', root), 'utf8');
+assert.ok(brokerage.includes('https://www.psx.com.pk/psx/resources-and-tools/investors/investor-awareness-guide'), 'Brokerage page: official PSX tariff reference missing');
+assert.ok(brokerage.includes('https://www.secp.gov.pk/licensing/capital-markets/agents-and-brokers/'), 'Brokerage page: official SECP broker reference missing');
+assert.ok(brokerage.includes('Math.max(v.buyValue*v.buyRate/100,v.buyMin)'), 'Brokerage page: buy-side minimum commission formula missing');
+assert.ok(brokerage.includes('pctCandidate*v.sellRate/100>=v.sellMin'), 'Brokerage page: percentage commission break-even branch missing');
+assert.ok(brokerage.includes('minCandidate*v.sellRate/100<=v.sellMin'), 'Brokerage page: minimum commission break-even branch missing');
+
+const cgt = fs.readFileSync(new URL('psx-capital-gains-tax-calculator.html', root), 'utf8');
+assert.ok(cgt.includes('https://www.nccpl.com.pk/cgt'), 'CGT page: official NCCPL CGT reference missing');
+assert.ok(cgt.includes('https://www.fbr.gov.pk/Categ/Income-Tax-Ordinance/326/1000'), 'CGT page: official FBR ordinance reference missing');
+
+const yieldPage = fs.readFileSync(new URL('psx-dividend-yield-calculator.html', root), 'utf8');
+assert.ok(yieldPage.includes('https://www.psx.com.pk/psx/resources-and-tools/investors/guide-to-investors'), 'Dividend yield page: official PSX reference missing');
+
 console.log('PSX SEO integrity regression checks: PASS');
