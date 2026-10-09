@@ -4,10 +4,10 @@ import fs from 'node:fs';
 const html = fs.readFileSync(new URL('../pakistan-salary-tax-calculator.html', import.meta.url), 'utf8');
 const requiredTopics = [
   'salary-components-tax-treatment',
-  'Bonus, performance pay and commission',
-  'Allowances: house rent, utilities, travel and medical',
-  'Provident fund: employee contribution, employer contribution and profit',
-  'Gratuity, pension, leave encashment and termination payments',
+  'Is a bonus taxable as salary in Pakistan?',
+  'Are house rent, travel, utility and medical allowances taxable?',
+  'How is provident fund treated for salary tax?',
+  'Do gratuity, pension or leave encashment belong in this salary calculator?',
   'Employer-provided benefits and expense reimbursements',
   'annual salary certificate',
   'FBR’s Income Tax Ordinance resources'
