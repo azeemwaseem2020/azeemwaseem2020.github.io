@@ -39,6 +39,11 @@ const profitPage = fs.readFileSync(new URL('psx-calculator.html', root), 'utf8')
 assert.ok(profitPage.includes('<title>PSX Profit Calculator Pakistan | Net P/L &amp; Break-Even | Calcora</title>'), 'PSX profit page: title should preserve the primary profit intent');
 assert.ok(profitPage.includes('<h1>PSX Profit Calculator Pakistan — Net Profit, Loss & Break-Even</h1>'), 'PSX profit page: H1 should preserve the primary profit intent');
 assert.ok(profitPage.includes('https://www.nccpl.com.pk/cgt'), 'PSX profit page: official NCCPL CGT reference missing');
+assert.equal((profitPage.match(/property=['"]og:image:alt['"]/gi) || []).length, 1, 'PSX profit page: Open Graph image alt should not be duplicated');
+assert.ok(profitPage.includes('"name":"PSX Profit Calculator Pakistan — Net Profit, Loss & Break-Even"'), 'PSX profit page: WebApplication name should match the page purpose');
+assert.ok(profitPage.includes('does not automatically transfer its result'), 'PSX profit page: fee estimator separation must be disclosed near break-even summary');
+assert.ok(profitPage.includes('Last updated: October 9, 2026'), 'PSX profit page: page information date should reflect the current revision');
+assert.ok(profitPage.includes('Last updated:</strong> October 9, 2026'), 'PSX profit page: editorial metadata date should reflect the current revision');
 
 const brokerage = fs.readFileSync(new URL('psx-brokerage-commission-calculator.html', root), 'utf8');
 assert.ok(brokerage.includes('https://www.psx.com.pk/psx/resources-and-tools/investors/investor-awareness-guide'), 'Brokerage page: official PSX tariff reference missing');
