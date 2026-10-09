@@ -67,7 +67,8 @@
       '<p><strong>Simple monthly average:</strong> PKR ' + fmt(monthly) + '</p>' +
       '<p><strong>Average effective tax rate:</strong> ' + fmt(effective) + '%</p>' +
       '<p><strong>Marginal rate:</strong> ' + slab.rate + '%</p>' +
-      '<p><strong>Important:</strong> This is an estimate using the slabs displayed on this page. It does not account for individual exemptions, credits, other income, prior withholding or all payroll adjustments.</p>';
+      '<p><strong>Eligibility check:</strong> This calculator does not verify whether salary income exceeds 75% of your taxable income, which is relevant to the salaried-person rate table. If you have business, rental, investment or other income, confirm which rate table applies before relying on this estimate.</p>' +
+      '<p><strong>Important:</strong> This is an estimate using the slabs displayed on this page. It does not account for individual exemptions, credits, other income, prior withholding or all payroll adjustments. The monthly figure is an annual average, not a guaranteed payroll deduction.</p>';
   }
   document.getElementById('calc').addEventListener('click', calc);
   income.addEventListener('input', calc);
