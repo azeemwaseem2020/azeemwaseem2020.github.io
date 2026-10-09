@@ -54,8 +54,7 @@ assert.ok(guide.includes('href="dairy-cow-tmr-ration.html"'), 'TMR guide must li
 assert.equal((feedCost.match(/<meta name="author"/gi) || []).length, 1, 'Feed cost page should not duplicate author metadata');
 console.log('TMR cluster intent and internal-link checks: PASS');
 
-const hubSchemas = [...hub.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/gi)].map(([,json]) => JSON.parse(json));
-const hubCollection = hubSchemas.find(x => x['@type'] === 'CollectionPage');
+const hubCollection = collection;
 const expectedTmrUrls = [
   'tmr-feed-calculator.html',
   'tmr-dry-matter-calculator.html',
