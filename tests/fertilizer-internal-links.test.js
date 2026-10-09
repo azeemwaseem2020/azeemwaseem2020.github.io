@@ -89,7 +89,7 @@ assert.match(primary, /23 kg of nitrogen per acre/, 'show an explicit Pakistan a
 const hubWithCrops = fs.readFileSync(new URL('agriculture-fertilizer-hub.html', root), 'utf8');
 assert.match(hubWithCrops, /id="pakistan-crop-guides"/, 'fertilizer hub must expose crop-specific guides');
 for (const [filename] of cropPages) {
-  assert.match(directory, new RegExp('href="' + filename.replace(/[.*+?^${}()|[\]\\]/g, '\\assert.match(hubWithCrops, /id="pakistan-crop-guides"/, 'fertilizer hub must expose crop-specific guides');') + '"'), filename + ' must be discoverable in the calculator directory');
+  assert.ok(directory.includes('href="' + filename + '"'), filename + ' must be discoverable in the calculator directory');
 }
 
 
