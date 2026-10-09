@@ -29,3 +29,4 @@ jobs:
           node tests/tmr-ration-page.test.js
           node tests/fertilizer-internal-links.test.js
           node tests/salary-tax-related-faq.test.js
+          node tests/salary-tax-components.test.js
