@@ -1,0 +1,45 @@
+name: SEO integrity audit
+
+on:
+  push:
+    paths:
+      - "*.html"
+      - "blog-*.html"
+      - "sitemap*.xml"
+      - "robots.txt"
+      - "scripts/seo-integrity-audit.mjs"
+      - ".github/workflows/seo-integrity-audit.yml"
+  pull_request:
+    paths:
+      - "*.html"
+      - "blog-*.html"
+      - "sitemap*.xml"
+      - "robots.txt"
+      - "scripts/seo-integrity-audit.mjs"
+      - ".github/workflows/seo-integrity-audit.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "23 3 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out site
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Audit sitemap, metadata, images and internal links
+        run: node scripts/seo-integrity-audit.mjs
+      - name: Upload SEO audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: calcora-seo-integrity-report
+          path: audit-reports/seo-integrity-latest.json
+          if-no-files-found: warn
