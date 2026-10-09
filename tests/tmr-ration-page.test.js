@@ -88,3 +88,17 @@ assert.ok(feedCost.includes('These figures are examples only—not current Pakis
 assert.ok(!feedCost.includes('id="calcora-semantic-context"'), 'Feed cost page should not retain thin generic context filler');
 assert.equal(feedCost.split('id="tmr-cost-quality"').length - 1, 1, 'Feed cost normalization example should have one unique section ID');
 console.log('TMR expert-content, metadata and duplication checks: PASS');
+
+
+const rationCheck = fs.readFileSync(new URL('tmr-check-my-ration.html', root), 'utf8');
+assert.match(rationCheck, /<meta name="author" content="Abdul Qadir">/, 'Advanced TMR checker must identify the actual author');
+assert.doesNotMatch(rationCheck, /<meta name="author" content="Calcora">/, 'Generic brand name must not replace the named author');
+assert.match(rationCheck, /"priceCurrency":"PKR"/, 'TMR checker price currency should match its Pakistan-focused context');
+assert.match(rationCheck, /property="og:image"/, 'TMR checker should define an Open Graph image');
+assert.match(rationCheck, /name="twitter:card" content="summary_large_image"/, 'TMR checker should use a large social preview card');
+assert.match(rationCheck, /Written and maintained by <a href="abdul-qadir\.html" rel="author">Abdul Qadir<\/a>/, 'TMR checker should display its author');
+assert.match(rationCheck, /Worked example: weighted crude protein/);
+assert.match(rationCheck, /Total dry matter = 540 kg; total crude protein = 67\.4 kg/);
+assert.match(rationCheck, /12\.48% of DM/);
+assert.match(rationCheck, /does not prove the ration meets an animal’s needs/i, 'Worked example must clearly avoid implying nutritional adequacy');
+console.log('Advanced TMR checker trust, currency and weighted-nutrient example checks: PASS');
