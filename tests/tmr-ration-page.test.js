@@ -135,14 +135,14 @@ const clusterPages = [
   ['Animal Feed Hub', hub]
 ];
 const titles = clusterPages.map(([name, html]) => {
-  const match = html.match(/<title>([\\s\\S]*?)<\\/title>/i);
+  const match = html.match(/<title>(.*?)<\/title>/i);
   assert.ok(match, name + ' must have a title');
   return match[1].replace(/&amp;/g, '&').trim();
 });
 assert.equal(new Set(titles).size, titles.length, 'TMR cluster pages must have distinct titles');
 for (const [name, html] of clusterPages) {
   assert.equal((html.match(/<link rel="canonical"/gi) || []).length, 1, name + ' must have exactly one canonical');
-  assert.equal((html.match(/<h1\\b/gi) || []).length, 1, name + ' must have exactly one H1');
+  assert.equal((html.match(/<h1\b/gi) || []).length, 1, name + ' must have exactly one H1');
   assert.match(html, /<meta name="description" content="[^"]{70,160}">/i, name + ' description should be a useful 70–160 character summary');
 }
 console.log('TMR cluster search-intent metadata, canonicals, H1s and freshness checks: PASS');
