@@ -79,7 +79,7 @@ for (const [filename] of cropGuides) assert.ok(fertilizerGuide.includes('href="'
 const hubSchemas = [...hub.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
 const collectionSchema = hubSchemas.find(schema => schema['@type'] === 'CollectionPage');
 assert.ok(collectionSchema, 'agriculture hub must retain valid CollectionPage structured data');
-assert.equal(collectionSchema.mainEntity.numberOfItems, 17, 'hub ItemList count must match the 17 linked tools and guides');
+assert.equal(collectionSchema.mainEntity.numberOfItems, 18, 'hub ItemList count must match the 18 linked tools and guides');
 assert.equal(collectionSchema.mainEntity.itemListElement.length, 17, 'hub ItemList entries must match its declared count');
 
 assert.match(hub, /id="crop-specific-fertilizer-planning"/, 'hub must expose the dedicated crop guide cluster');
