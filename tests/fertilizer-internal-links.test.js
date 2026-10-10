@@ -57,6 +57,20 @@ for (const [filename, topic] of cropGuides) {
   assert.ok(visible.trim().split(/\s+/).length >= 450, filename + ' needs substantial, crop-specific visible content');
   assert.ok(cropSitemap.includes(filename), filename + ' must be present in the main sitemap');
   assert.ok(prioritySitemap.includes(filename), filename + ' must be present in the Pakistan-priority sitemap');
+  const schemas = [...html.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(match => JSON.parse(match[1]));
+  const faqSchema = schemas.find(schema => schema['@type'] === 'FAQPage');
+  assert.ok(faqSchema, filename + ' must mark up its visible FAQs with FAQPage JSON-LD');
+  const visibleFaq = html.match(/<h2>Frequently asked questions<\\/h2>([\\s\\S]*?)(?=<h2|<\\/main>)/i)?.[1] || '';
+  const visibleQuestions = [...visibleFaq.matchAll(/<h3>([\\s\\S]*?)<\\/h3>\\s*<p>([\\s\\S]*?)<\\/p>/gi)];
+  assert.equal(visibleQuestions.length, 3, filename + ' must keep three visible FAQ question-answer pairs');
+  assert.equal(faqSchema.mainEntity.length, visibleQuestions.length, filename + ' FAQ schema must match visible FAQ count');
+  for (let i = 0; i < visibleQuestions.length; i++) {
+    assert.equal(faqSchema.mainEntity[i].name, visibleQuestions[i][1].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').trim(), filename + ' FAQ schema question must match visible copy');
+    assert.equal(faqSchema.mainEntity[i].acceptedAnswer.text, visibleQuestions[i][2].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').trim(), filename + ' FAQ schema answer must match visible copy');
+  }
+  const breadcrumbSchema = schemas.find(schema => schema['@type'] === 'BreadcrumbList');
+  assert.ok(breadcrumbSchema, filename + ' must retain BreadcrumbList schema');
+  assert.equal(breadcrumbSchema.itemListElement.at(-1).item, html.match(/<link rel="canonical" href="([^"]+)"/)?.[1], filename + ' final breadcrumb must resolve to its canonical URL');
 }
 
 const fertilizerGuide = fs.readFileSync(new URL('blog-fertilizer.html', root), 'utf8');
