@@ -75,6 +75,13 @@ assert.ok(feedCalc.includes('<option value="bag40">40 kg bag</option>'), 'TMR ca
 assert.ok(feedCalc.includes('<option value="bag50">50 kg bag</option>'), 'TMR calculator should support a 50 kg feed-bag quote');
 assert.ok(feedCalc.includes("price/(priceUnits[i]==='bag40'?40:priceUnits[i]==='bag50'?50:1)"), 'TMR cost arithmetic should normalize bag quotes to a per-kg cost');
 assert.ok(feedCalc.includes('cost+=kg*pricePerKg[i]'), 'TMR ingredient costs should use normalized price per kg');
+for (const id of ['tmr-calculator-tool','species','batch','animals','feed','milkYield','rows','mixStatus','add','example','clearExample','calculate','copy','out']) {
+  assert.ok(feedCalc.includes('id="' + id + '"'), 'TMR calculator interface missing required control: ' + id);
+}
+assert.ok(feedCalc.includes('Estimated feed cost per litre of milk'), 'TMR results should estimate feed cost per litre when milk yield is entered');
+assert.ok(feedCalc.includes('enter a price for every ingredient'), 'TMR must not show a misleading total when some ingredient prices are missing');
+assert.ok(feedCalc.includes("(hasAllPrices?'Rs '+(kg*pricePerKg[i]).toFixed(2):'—')"), 'Ingredient cost rows should use the normalized price basis');
+assert.ok(feedCalc.includes("milkYield=document.getElementById('milkYield')"), 'Milk yield input must be wired to the calculation script');
 
 assert.equal(guide.split('<meta name="author"').length - 1, 1, 'TMR guide should identify its visible author once in metadata');
 assert.equal(guide.split('property="og:title"').length - 1, 1, 'TMR guide should have one Open Graph title');
@@ -109,8 +116,8 @@ assert.match(rationCheck, /does not prove the ration meets an animal’s needs/i
 console.log('Advanced TMR checker trust, currency and weighted-nutrient example checks: PASS');
 
 
-assert.match(feedCalc, /Last updated:<\/strong> October 9, 2026/, 'Visible TMR feed calculator review date should match the latest content update');
-assert.match(feedCalc, /article:modified_time" content="2026-10-09"/, 'TMR feed calculator modification metadata should match its visible review date');
+assert.match(feedCalc, /Last updated:<\/strong> October 10, 2026/, 'Visible TMR feed calculator review date should match the latest content update');
+assert.match(feedCalc, /article:modified_time" content="2026-10-10"/, 'TMR feed calculator modification metadata should match its visible review date');
 for (const [path, html] of [
   ['tmr-feed-calculator.html', feedCalc],
   ['tmr-dry-matter-calculator.html', dryMatter],
