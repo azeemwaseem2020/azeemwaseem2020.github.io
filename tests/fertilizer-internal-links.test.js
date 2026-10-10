@@ -52,10 +52,16 @@ assert.doesNotMatch(hubContent, /<h2>Transparency &amp; source<\/h2>/i, 'remove 
 assert.match(hubContent, /id="fertilizer-verification"/, 'retain the practical field verification workflow');
 
 assert.match(primary, /href="fertilizer-bag-calculator\.html"[^>]*>50 kg bags, whole-bag purchase quantity and estimated cost/);
-assert.match(primary, /Last updated:<\/strong> October 9, 2026/);
+assert.match(primary, /Last updated:<\/strong> October 10, 2026/);
 assert.match(primary, /<option value="acre" selected>Acres<\/option><option value="kanal">Kanal<\/option><option value="ha">Hectares \(ha\)<\/option>/, 'default to Pakistan-relevant acres and support kanal and hectare units');
 assert.match(primary, /1 acre = 8 kanal/, 'explain the acre-to-kanal conversion for Pakistan field planning');
 assert.match(primary, /areaUnit\.value==='kanal'\?'kanal'/, 'render rates and result summaries using the selected kanal unit');
+assert.match(primary, /function allocate\(n\)\{const key=n\.toUpperCase\(\),candidates=active\.filter\(v=>v\[n\]>0\);if\(!candidates\.length\|\|rem\[key\]<=0\)return;/, 'target planner must map lower-case product fields to upper-case nutrient target keys');
+assert.match(primary, /items\.filter\(x=>x\.r>0\)\.every\(x=>x\.price!==null\)\?money\(cost\):'Enter all prices'/, 'do not present a partial product-price sum as the total plan cost');
+assert.match(primary, /x\.price!==null\?x\.wholeBags\*x\.price:0/, 'an explicitly entered zero price is valid and must not be treated as missing');
+assert.match(primary, /x\.price!==null\?money\(x\.cost\):'Enter price'/, 'each unpriced product must be clearly identified in the results');
+assert.equal((primary.match(/"featureList"\s*:/g) || []).length, 1, 'SoftwareApplication schema must not repeat the featureList key');
+assert.match(primary, /article:modified_time" content="2026-10-10"/, 'fertilizer modification metadata must match the visible update date');
 
 assert.match(blend, /href="fertilizer-bag-calculator\.html"/);
 assert.match(blend, /purchase surplus and cost/);
