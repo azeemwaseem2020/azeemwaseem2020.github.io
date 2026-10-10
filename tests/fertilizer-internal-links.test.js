@@ -76,6 +76,16 @@ for (const [filename, topic] of cropGuides) {
   assert.ok(cropSitemap.includes(filename), filename + ' must be present in the main sitemap');
   assert.ok(prioritySitemap.includes(filename), filename + ' must be present in the Pakistan-priority sitemap');
 }
+
+const fertilizerGuide = fs.readFileSync(new URL('blog-fertilizer.html', root), 'utf8');
+assert.match(fertilizerGuide, /id="crop-specific-fertilizer-guides"/, 'main fertilizer guide must link readers to crop-specific planning');
+for (const [filename] of cropGuides) assert.ok(fertilizerGuide.includes('href="' + filename + '"'), 'main fertilizer guide must link to ' + filename);
+const hubSchemas = [...hub.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
+const collectionSchema = hubSchemas.find(schema => schema['@type'] === 'CollectionPage');
+assert.ok(collectionSchema, 'agriculture hub must retain valid CollectionPage structured data');
+assert.equal(collectionSchema.mainEntity.numberOfItems, 15, 'hub ItemList count must match the 15 linked tools and guides');
+assert.equal(collectionSchema.mainEntity.itemListElement.length, 15, 'hub ItemList entries must match its declared count');
+
 assert.match(hub, /id="crop-specific-fertilizer-planning"/, 'hub must expose the dedicated crop guide cluster');
 for (const [filename] of cropGuides) assert.ok(hub.includes('href="' + filename + '"'), 'hub must link to ' + filename);
 
