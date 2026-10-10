@@ -34,24 +34,6 @@ const hub = fs.readFileSync(new URL('agriculture-fertilizer-hub.html', root), 'u
 assert.match(hub, /href="fertilizer-calculator\.html"/);
 assert.match(hub, /href="fertilizer-bag-calculator\.html"/);
 assert.match(hub, /href="fertilizer-blend-calculator\.html"/);
-for (const [slug, crop] of [
-  ['wheat-fertilizer-calculator-pakistan.html', 'wheat'],
-  ['cotton-fertilizer-calculator-pakistan.html', 'cotton'],
-  ['rice-fertilizer-calculator-pakistan.html', 'rice'],
-  ['sugarcane-fertilizer-calculator-pakistan.html', 'sugarcane'],
-  ['maize-fertilizer-calculator-pakistan.html', 'maize']
-]) {
-  const page = fs.readFileSync(new URL(slug, root), 'utf8');
-  assert.match(hub, new RegExp('href="' + slug.replace(/[.*+?^\{}()|[\]\\]/g, '\\assert.match(hub, /href="fertilizer-blend-calculator\.html"/);') + '"'), crop + ' guide must be linked from agriculture hub');
-  assert.match(page, /<h1[^>]*>[^<]+<\/h1>/, crop + ' guide must have one readable primary heading');
-  assert.match(page, /rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\//, crop + ' guide must have an absolute canonical');
-  assert.match(page, /"@type":"Article"/, crop + ' guide must have Article structured data');
-  assert.match(page, /"@type":"BreadcrumbList"/, crop + ' guide must have breadcrumb structured data');
-  assert.match(page, /Frequently asked questions/, crop + ' guide must answer practical FAQs');
-  assert.match(page, /soil-test|soil test/i, crop + ' guide must distinguish arithmetic from soil-specific advice');
-}
-
-
 const cropGuides = [
   ['wheat-fertilizer-calculator-pakistan.html', /wheat/i],
   ['cotton-fertilizer-calculator-pakistan.html', /cotton/i],
