@@ -188,4 +188,30 @@ assert.ok(Math.abs((50 * 15.5 * 10 / 100) + 20 - 97.5) < 1e-9, '50 g of 15.5% N 
 assert.ok(Math.abs(50 * 15.5 * 10 * 0.4364 / 100 - 33.821) < 1e-9, 'P2O5-to-P example arithmetic must be correct');
 assert.ok(Math.abs(50 * 15.5 * 10 * 0.8301 / 100 - 64.33275) < 1e-9, 'K2O-to-K example arithmetic must be correct');
 
-console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + hydroponics multi-product checker)');
+
+const pasture = fs.readFileSync(new URL('pasture-fertilizer-calculator.html', root), 'utf8');
+const pastureDirectory = fs.readFileSync(new URL('calculators.html', root), 'utf8');
+const pastureSitemap = fs.readFileSync(new URL('sitemap.xml', root), 'utf8');
+const pasturePrioritySitemap = fs.readFileSync(new URL('sitemap-pakistan-priority.xml', root), 'utf8');
+assert.match(pasture, /<title>Pasture Fertilizer Calculator: NPK, Rate & Cost \| Calcora<\/title>/);
+assert.match(pasture, /<link rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\/pasture-fertilizer-calculator\.html">/);
+assert.match(pasture, /<h1>Pasture Fertilizer Calculator/);
+assert.match(pasture, /Worked example: converting a nitrogen target into urea/);
+assert.match(pasture, /not a recommendation to apply 40 kg N\/acre to pasture/);
+assert.match(pasture, /id="calculate"/);
+assert.match(pasture, /id="targetN"/);
+assert.match(pasture, /Pasture fertilizer calculator FAQs/);
+assert.ok(pasture.includes('href="fertilizer-calculator.html"'), 'pasture calculator must link to the general fertilizer tool');
+assert.ok(pasture.includes('href="fertilizer-bag-calculator.html"'), 'pasture calculator must link to the bag calculator');
+assert.ok(pastureDirectory.includes('href="pasture-fertilizer-calculator.html"'), 'calculator directory must link to pasture calculator');
+assert.ok(hub.includes('href="pasture-fertilizer-calculator.html"'), 'agriculture hub must link to pasture calculator');
+assert.ok(pastureSitemap.includes('https://azeemwaseem2020.github.io/pasture-fertilizer-calculator.html'), 'main sitemap must include pasture calculator');
+assert.ok(pasturePrioritySitemap.includes('https://azeemwaseem2020.github.io/pasture-fertilizer-calculator.html'), 'priority sitemap must include pasture calculator');
+const pastureSchemas = [...pasture.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
+assert.deepEqual(pastureSchemas.map(schema => schema['@type']), ['BreadcrumbList', 'SoftwareApplication', 'Person'], 'pasture page must expose valid breadcrumb, application and author JSON-LD');
+assert.equal(pastureSchemas[1].url, 'https://azeemwaseem2020.github.io/pasture-fertilizer-calculator.html');
+assert.ok(pastureSchemas[1].keywords.includes('pasture fertilizer calculator'));
+assert.ok(Math.abs(40 / 0.46 - 86.9565217391) < 1e-8, 'illustrative 40 kg N at 46% N should equal about 86.96 kg product');
+assert.ok(Math.abs((40 / 0.46) * 3 - 260.869565217) < 1e-6, 'three-acre product example should be about 260.87 kg before purchasing-rounding');
+
+console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + hydroponics and pasture calculator checks)');
