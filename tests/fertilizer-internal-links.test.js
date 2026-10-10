@@ -151,8 +151,19 @@ assert.ok(Math.abs(((100 - 20) * 100 / (10 * 15.5)) * 3 * 1.1 - 170.322580645) <
 
 
 const recipeChecker = fs.readFileSync(new URL('hydroponic-nutrient-recipe-checker.html', root), 'utf8');
-assert.ok(recipeChecker.includes('<title>Hydroponic Nutrient Recipe Checker: Multi-Fertilizer PPM | Calcora</title>'), 'multi-product checker needs a unique title');
+assert.ok(recipeChecker.includes('<title>Hydroponic Nutrient Calculator: Multi-Fertilizer PPM | Calcora</title>'), 'multi-product checker needs a keyword-focused unique title');
+t.assertNotThere = undefined;
 assert.ok(recipeChecker.includes('rel="canonical" href="https://azeemwaseem2020.github.io/hydroponic-nutrient-recipe-checker.html"'), 'multi-product checker needs a self canonical');
+assert.ok(recipeChecker.includes('<h1>Hydroponic Nutrient Calculator for Multi-Fertilizer PPM</h1>'), 'checker needs a descriptive H1 aligned to search intent');
+assert.ok(recipeChecker.includes('name="description" content="Calculate hydroponic nutrient ppm from multiple fertilizer labels, doses and reservoir litres.'), 'checker needs a specific meta description');
+assert.ok(recipeChecker.includes('Worked example: label percentage to nutrient ppm'), 'checker needs a transparent worked example');
+assert.ok(recipeChecker.includes('How to use this hydroponic nutrient calculator'), 'checker needs a practical usage section');
+assert.ok(recipeChecker.includes('"dateModified":"2026-10-10"'), 'WebApplication schema must show the reviewed modification date');
+assert.ok(recipeChecker.includes('"featureList"'), 'WebApplication schema should describe the tool features');
+assert.ok(fs.readFileSync(new URL('hydroponic-fertilizer-calculator.html', root), 'utf8').includes('href="hydroponic-nutrient-recipe-checker.html">Hydroponic Nutrient Calculator'), 'single-nutrient calculator must contextually link to multi-product calculator');
+assert.ok(directory.includes('data-keywords="hydroponic nutrient calculator ppm'), 'directory card should include natural hydroponic nutrient query variants');
+assert.ok(hub.includes('Open Hydroponic Nutrient Calculator'), 'agriculture hub should use a descriptive link anchor for the checker');
+
 assert.ok(recipeChecker.includes('id="rc-dose-4"'), 'multi-product checker must support four entered products');
 assert.ok(recipeChecker.includes('id="rc-pbasis-1"'), 'each product needs an individual phosphorus label basis');
 assert.ok(recipeChecker.includes('id="rc-kbasis-4"'), 'each product needs an individual potassium label basis');
