@@ -151,7 +151,7 @@ assert.ok(Math.abs(((100 - 20) * 100 / (10 * 15.5)) * 3 * 1.1 - 170.322580645) <
 
 
 const recipeChecker = fs.readFileSync(new URL('hydroponic-nutrient-recipe-checker.html', root), 'utf8');
-assert.ok(recipeChecker.includes('<title>Hydroponic Nutrient Calculator: Multi-Fertilizer PPM | Calcora</title>'), 'multi-product checker needs a keyword-focused unique title');
+assert.ok(recipeChecker.includes('<title>Hydroponic Nutrient Calculator: PPM | Calcora</title>'), 'multi-product checker needs a keyword-focused unique title');
 assert.ok(recipeChecker.includes('rel="canonical" href="https://azeemwaseem2020.github.io/hydroponic-nutrient-recipe-checker.html"'), 'multi-product checker needs a self canonical');
 assert.ok(recipeChecker.includes('<h1>Hydroponic Nutrient Calculator for Multi-Fertilizer PPM</h1>'), 'checker needs a descriptive H1 aligned to search intent');
 assert.ok(recipeChecker.includes('name="description" content="Calculate hydroponic nutrient ppm from multiple fertilizer labels, doses and reservoir litres.'), 'checker needs a specific meta description');
