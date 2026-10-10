@@ -131,6 +131,8 @@ assert.match(hydro, /rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io
 assert.match(hydro, /id="hydro-dose-form"/, 'hydroponic page must include its interactive dose form');
 assert.match(hydro, /id="hd-reservoirs"/, 'hydroponic calculator must support batch scaling across identical reservoirs');
 assert.match(hydro, /id="hd-reserve"/, 'hydroponic calculator must support an optional finished-solution reserve allowance');
+assert.match(hydro, /Scale a dose across multiple reservoirs/, 'hydroponic page must explain the batch planner with a practical example');
+assert.match(hydro, /Three reservoirs × 100 L each, plus a 10% preparation allowance, requires 330 L/, 'batch example must make reserve-volume semantics clear');
 assert.match(hydro, /const totalLitres=litres\*reservoirs\*\(1\+reserve\/100\)/, 'batch volume must scale by reservoir count and reserve allowance');
 assert.match(hydro, /const totalGrams=grams\*reservoirs\*\(1\+reserve\/100\)/, 'batch nutrient dose must scale proportionally with total prepared solution');
 assert.match(hydro, /Number\.isInteger\(reservoirs\).*reservoirs>10000.*reserve<0\|\|reserve>50/, 'batch controls must reject invalid counts and reserve percentages');
