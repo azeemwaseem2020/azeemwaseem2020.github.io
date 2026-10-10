@@ -154,8 +154,12 @@ const recipeChecker = fs.readFileSync(new URL('hydroponic-nutrient-recipe-checke
 assert.match(recipeChecker, /<title>Hydroponic Nutrient Recipe Checker: Multi-Fertilizer PPM \\| Calcora<\\/title>/, 'multi-product checker needs a unique title');
 assert.match(recipeChecker, /rel="canonical" href="https:\\/\\/azeemwaseem2020\\.github\\.io\\/hydroponic-nutrient-recipe-checker\\.html"/, 'multi-product checker needs a self canonical');
 assert.match(recipeChecker, /id="rc-dose-4"/, 'multi-product checker must support four entered products');
+assert.match(recipeChecker, /id="rc-pbasis-1"/, 'each product needs an individual phosphorus label basis');
+assert.match(recipeChecker, /id="rc-kbasis-4"/, 'each product needs an individual potassium label basis');
 assert.match(recipeChecker, /id="rc-target-S"/, 'multi-product checker must support sulfur target comparison');
-assert.match(recipeChecker, /const ppm=p\\.dose\\*p\\.grades\\[n\\]\\*10\\*factors\\[n\\]\\/volume/, 'nutrient contribution formula must be correct');
+assert.match(recipeChecker, /const ppm=p\\.dose\\*p\\.grades\\[n\\]\\*10\\*factor\\/volume/, 'nutrient contribution formula must be correct');
+assert.match(recipeChecker, /p\\.pbasis==='p2o5'\\?0\\.4364/, 'P label conversion must be selected independently per product');
+assert.match(recipeChecker, /p\\.kbasis==='k2o'\\?0\\.8301/, 'K label conversion must be selected independently per product');
 assert.match(recipeChecker, /0\\.4364/, 'P2O5-to-elemental-P conversion must be included');
 assert.match(recipeChecker, /0\\.8301/, 'K2O-to-elemental-K conversion must be included');
 assert.match(recipeChecker, /Above your entered target/, 'checker must flag estimates above user-supplied targets');
