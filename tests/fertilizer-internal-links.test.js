@@ -215,9 +215,10 @@ assert.ok(hub.includes('href="pasture-fertilizer-calculator.html"'), 'agricultur
 assert.ok(pastureSitemap.includes('https://azeemwaseem2020.github.io/pasture-fertilizer-calculator.html'), 'main sitemap must include pasture calculator');
 assert.ok(pasturePrioritySitemap.includes('https://azeemwaseem2020.github.io/pasture-fertilizer-calculator.html'), 'priority sitemap must include pasture calculator');
 const pastureSchemas = [...pasture.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
-assert.deepEqual(pastureSchemas.map(schema => schema['@type']), ['BreadcrumbList', 'SoftwareApplication', 'Person'], 'pasture page must expose valid breadcrumb, application and author JSON-LD');
+assert.deepEqual(pastureSchemas.map(schema => schema['@type']), ['BreadcrumbList', 'SoftwareApplication', 'Person', 'FAQPage'], 'pasture page must expose valid breadcrumb, application, author and FAQ JSON-LD');
 assert.equal(pastureSchemas[1].url, 'https://azeemwaseem2020.github.io/pasture-fertilizer-calculator.html');
 assert.ok(pastureSchemas[1].keywords.includes('pasture fertilizer calculator'));
+assert.equal(pastureSchemas[3].mainEntity.length, 6, 'FAQ structured data must match the six visible pasture FAQs');
 assert.ok(Math.abs(40 / 0.46 - 86.9565217391) < 1e-8, 'illustrative 40 kg N at 46% N should equal about 86.96 kg product');
 assert.ok(Math.abs((40 / 0.46) * 3 - 260.869565217) < 1e-6, 'three-acre product example should be about 260.87 kg before purchasing-rounding');
 
