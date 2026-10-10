@@ -80,7 +80,7 @@ const hubSchemas = [...hub.matchAll(/<script type="application\/ld\+json">([\s\S
 const collectionSchema = hubSchemas.find(schema => schema['@type'] === 'CollectionPage');
 assert.ok(collectionSchema, 'agriculture hub must retain valid CollectionPage structured data');
 assert.equal(collectionSchema.mainEntity.numberOfItems, 18, 'hub ItemList count must match the 18 linked tools and guides');
-assert.equal(collectionSchema.mainEntity.itemListElement.length, 17, 'hub ItemList entries must match its declared count');
+assert.equal(collectionSchema.mainEntity.itemListElement.length, 18, 'hub ItemList entries must match its declared count');
 
 assert.match(hub, /id="crop-specific-fertilizer-planning"/, 'hub must expose the dedicated crop guide cluster');
 for (const [filename] of cropGuides) assert.ok(hub.includes('href="' + filename + '"'), 'hub must link to ' + filename);
@@ -204,6 +204,7 @@ assert.match(pasture, /Pasture fertilizer calculator FAQs/);
 assert.ok(pasture.includes('href="fertilizer-calculator.html"'), 'pasture calculator must link to the general fertilizer tool');
 assert.ok(pasture.includes('href="fertilizer-bag-calculator.html"'), 'pasture calculator must link to the bag calculator');
 assert.ok(pastureDirectory.includes('href="pasture-fertilizer-calculator.html"'), 'calculator directory must link to pasture calculator');
+assert.ok(fs.readFileSync(new URL('fertilizer-calculator.html', root), 'utf8').includes('href="pasture-fertilizer-calculator.html"'), 'general fertilizer calculator must link to pasture calculator');
 assert.ok(hub.includes('href="pasture-fertilizer-calculator.html"'), 'agriculture hub must link to pasture calculator');
 assert.ok(pastureSitemap.includes('https://azeemwaseem2020.github.io/pasture-fertilizer-calculator.html'), 'main sitemap must include pasture calculator');
 assert.ok(pasturePrioritySitemap.includes('https://azeemwaseem2020.github.io/pasture-fertilizer-calculator.html'), 'priority sitemap must include pasture calculator');
