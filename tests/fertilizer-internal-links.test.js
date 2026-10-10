@@ -166,6 +166,8 @@ assert.ok(hub.includes('Open Hydroponic Nutrient Calculator'), 'agriculture hub 
 assert.ok(recipeChecker.includes('id="rc-dose-4"'), 'multi-product checker must support four entered products');
 assert.ok(recipeChecker.includes('id="rc-pbasis-1"'), 'each product needs an individual phosphorus label basis');
 assert.ok(recipeChecker.includes('id="rc-kbasis-4"'), 'each product needs an individual potassium label basis');
+assert.ok(recipeChecker.includes('Phosphorus label % (basis above)'), 'phosphorus input label must match the selectable label basis');
+assert.ok(recipeChecker.includes('Potassium label % (basis above)'), 'potassium input label must match the selectable label basis');
 assert.ok(recipeChecker.includes('id="rc-target-S"'), 'multi-product checker must support sulfur target comparison');
 const recipeScript = recipeChecker.slice(recipeChecker.lastIndexOf('<script>') + 8, recipeChecker.lastIndexOf('</script>'));
 assert.ok(recipeScript.length > 1000, 'multi-product checker must have its functional client-side script');
