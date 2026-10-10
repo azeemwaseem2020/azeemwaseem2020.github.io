@@ -157,6 +157,9 @@ assert.ok(recipeChecker.includes('id="rc-dose-4"'), 'multi-product checker must 
 assert.ok(recipeChecker.includes('id="rc-pbasis-1"'), 'each product needs an individual phosphorus label basis');
 assert.ok(recipeChecker.includes('id="rc-kbasis-4"'), 'each product needs an individual potassium label basis');
 assert.ok(recipeChecker.includes('id="rc-target-S"'), 'multi-product checker must support sulfur target comparison');
+const recipeScript = recipeChecker.slice(recipeChecker.lastIndexOf('<script>') + 8, recipeChecker.lastIndexOf('</script>'));
+assert.ok(recipeScript.length > 1000, 'multi-product checker must have its functional client-side script');
+assert.doesNotThrow(() => new Function(recipeScript), 'multi-product checker JavaScript must parse without syntax errors');
 assert.ok(recipeChecker.includes('const ppm=p.dose*p.grades[n]*10*factor/volume'), 'nutrient contribution formula must be correct');
 assert.ok(recipeChecker.includes("p.pbasis==='p2o5'?0.4364"), 'P label conversion must be selected independently per product');
 assert.ok(recipeChecker.includes("p.kbasis==='k2o'?0.8301"), 'K label conversion must be selected independently per product');
