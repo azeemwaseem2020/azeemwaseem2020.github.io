@@ -60,6 +60,7 @@ assert.match(primary, /function allocate\(n\)\{const key=n\.toUpperCase\(\),cand
 assert.match(primary, /items\.filter\(x=>x\.r>0\)\.every\(x=>x\.price!==null\)\?money\(cost\):'Enter all prices'/, 'do not present a partial product-price sum as the total plan cost');
 assert.match(primary, /x\.price!==null\?x\.wholeBags\*x\.price:0/, 'an explicitly entered zero price is valid and must not be treated as missing');
 assert.match(primary, /x\.price!==null\?money\(x\.cost\):'Enter price'/, 'each unpriced product must be clearly identified in the results');
+assert.match(primary, /items\.filter\(x=>x\.r>0\)\.every\(x=>x\.price!==null\)\?money\(cost\):'Incomplete—enter all prices'/, 'copied result summary must not report a partial cost as a total');
 assert.equal((primary.match(/"featureList"\s*:/g) || []).length, 1, 'SoftwareApplication schema must not repeat the featureList key');
 assert.match(primary, /article:modified_time" content="2026-10-10"/, 'fertilizer modification metadata must match the visible update date');
 
