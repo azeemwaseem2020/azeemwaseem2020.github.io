@@ -46,22 +46,21 @@ const cropSitemap = fs.readFileSync(new URL('sitemap.xml', root), 'utf8');
 const prioritySitemap = fs.readFileSync(new URL('sitemap-pakistan-priority.xml', root), 'utf8');
 for (const [filename, topic] of cropGuides) {
   const html = fs.readFileSync(new URL(filename, root), 'utf8');
-  const visible = html.replace(/<script\\b[\\s\\S]*?<\\/script>/gi, ' ').replace(/<style\\b[\\s\\S]*?<\\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/gi, ' ');
-  assert.match(html, /<title>[^<]+<\\/title>/, filename + ' needs a descriptive title');
+  const visible = html.replace(/<script\b[\s\S]*?<\/script>/gi, ' ').replace(/<style\b[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/gi, ' ');
+  assert.match(html, /<title>[^<]+<\/title>/, filename + ' needs a descriptive title');
   assert.match(html, /<meta name="description" content="[^"]{70,170}">/, filename + ' needs a useful meta description');
-  assert.match(html, /<link rel="canonical" href="https:\\/\\/azeemwaseem2020\\.github\\.io\\//, filename + ' needs an absolute canonical');
+  assert.match(html, /<link rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\//, filename + ' needs an absolute canonical');
   assert.match(html, /<meta name="author" content="Abdul Qadir">/, filename + ' must identify the site author consistently');
-  assert.match(html, /href="fertilizer-calculator\\.html"/, filename + ' must link to the primary calculation tool');
-  assert.match(html, /href="agriculture-fertilizer-hub\\.html"/, filename + ' must link back to the agriculture hub');
-  assert.match(html, /sfri\\.punjab\\.gov\\.pk/, filename + ' must cite a relevant Punjab agriculture source');
+  assert.match(html, /href="fertilizer-calculator\.html"/, filename + ' must link to the primary calculation tool');
+  assert.match(html, /href="agriculture-fertilizer-hub\.html"/, filename + ' must link back to the agriculture hub');
+  assert.match(html, /sfri\.punjab\.gov\.pk/, filename + ' must cite a relevant Punjab agriculture source');
   assert.match(html, topic, filename + ' must include its crop topic');
-  assert.ok(visible.trim().split(/\\s+/).length >= 450, filename + ' needs substantial, crop-specific visible content');
-  assert.match(cropSitemap, new RegExp(filename.replace(/[.*+?^{}()|[\\]\\\\]/g, '\\assert.match(hub, /href="fertilizer-blend-calculator\.html"/);')), filename + ' must be present in the main sitemap');
-  assert.match(prioritySitemap, new RegExp(filename.replace(/[.*+?^{}()|[\\]\\\\]/g, '\\assert.match(hub, /href="fertilizer-blend-calculator\.html"/);')), filename + ' must be present in the Pakistan-priority sitemap');
+  assert.ok(visible.trim().split(/\s+/).length >= 450, filename + ' needs substantial, crop-specific visible content');
+  assert.ok(cropSitemap.includes(filename), filename + ' must be present in the main sitemap');
+  assert.ok(prioritySitemap.includes(filename), filename + ' must be present in the Pakistan-priority sitemap');
 }
 assert.match(hub, /id="crop-specific-fertilizer-planning"/, 'hub must expose the dedicated crop guide cluster');
-for (const [filename] of cropGuides) assert.match(hub, new RegExp('href="' + filename.replace(/[.*+?^{}()|[\\]\\\\]/g, '\\assert.match(hub, /href="fertilizer-blend-calculator\.html"/);') + '"'), 'hub must link to ' + filename);
-
+for (const [filename] of cropGuides) assert.ok(hub.includes('href="' + filename + '"'), 'hub must link to ' + filename);
 
 const primary = fs.readFileSync(new URL('fertilizer-calculator.html', root), 'utf8');
 assert.doesNotMatch(primary, /<h2>Transparency &amp; methodology<\/h2>/i, 'remove generic duplicate transparency section');
