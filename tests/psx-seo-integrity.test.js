@@ -43,7 +43,7 @@ assert.equal((profitPage.match(/property=['"]og:image:alt['"]/gi) || []).length,
 assert.ok(profitPage.includes('"name":"PSX Profit Calculator Pakistan — Net Profit, Loss & Break-Even"'), 'PSX profit page: WebApplication name should match the page purpose');
 assert.ok(profitPage.includes('does not automatically transfer its result'), 'PSX profit page: fee estimator separation must be disclosed near break-even summary');
 assert.ok(profitPage.includes('Last updated: October 9, 2026'), 'PSX profit page: page information date should reflect the current revision');
-assert.ok(profitPage.includes('Last updated:</strong> October 9, 2026'), 'PSX profit page: editorial metadata date should reflect the current revision');
+assert.match(profitPage, /<strong>Page information:<\/strong>[\s\S]*?Last updated: October 9, 2026<\/p>/, 'PSX profit page: page-information block should contain the current revision date');
 
 const brokerage = fs.readFileSync(new URL('psx-brokerage-commission-calculator.html', root), 'utf8');
 assert.ok(brokerage.includes('https://www.psx.com.pk/psx/resources-and-tools/investors/investor-awareness-guide'), 'Brokerage page: official PSX tariff reference missing');
