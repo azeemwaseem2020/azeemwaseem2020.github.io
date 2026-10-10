@@ -125,7 +125,7 @@ assert.match(directory, /href="fertilizer-bag-calculator\.html"/);
 assert.match(directory, /Fertilizer Bag Calculator/);
 
 const hydro = fs.readFileSync(new URL('hydroponic-fertilizer-calculator.html', root), 'utf8');
-assert.match(hydro, /<title>Hydroponic Fertilizer Calculator: PPM, Tank Volume &amp; Grams \| Calcora<\/title>/, 'hydroponic page must target the requested keyword naturally');
+assert.match(hydro, /<title>Hydroponic Fertilizer Calculator: PPM, Tank Volume & Grams \| Calcora<\/title>/, 'hydroponic page must target the requested keyword naturally');
 assert.match(hydro, /<meta name="description" content="[^"]*target ppm[^"]*"/i, 'hydroponic page needs a specific meta description');
 assert.match(hydro, /rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\/hydroponic-fertilizer-calculator\.html"/, 'hydroponic page needs a self canonical');
 assert.match(hydro, /id="hydro-dose-form"/, 'hydroponic page must include its interactive dose form');
