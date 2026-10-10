@@ -46,7 +46,7 @@ const cropSitemap = fs.readFileSync(new URL('sitemap.xml', root), 'utf8');
 const prioritySitemap = fs.readFileSync(new URL('sitemap-pakistan-priority.xml', root), 'utf8');
 for (const [filename, topic] of cropGuides) {
   const html = fs.readFileSync(new URL(filename, root), 'utf8');
-  const visible = html.replace(/<script\b[\s\S]*?<\/script>/gi, ' ').replace(/<style\b[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/gi, ' ');
+  const visible = html.replace(/<script[\s\S]*?script>/gi, ' ').replace(/<style[\s\S]*?style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/gi, ' ');
   assert.match(html, /<title>[^<]+<\/title>/, filename + ' needs a descriptive title');
   assert.match(html, /<meta name="description" content="[^"]{70,170}">/, filename + ' needs a useful meta description');
   assert.match(html, /<link rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\//, filename + ' needs an absolute canonical');
