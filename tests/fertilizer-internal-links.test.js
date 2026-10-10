@@ -149,4 +149,26 @@ assert.match(directory, /href="hydroponic-fertilizer-calculator\.html"/, 'calcul
 assert.ok(Math.abs((100 - 20) * 100 / (10 * 15.5) - 51.6129032258) < 0.000001, 'worked hydroponic example arithmetic must remain correct');
 assert.ok(Math.abs(((100 - 20) * 100 / (10 * 15.5)) * 3 * 1.1 - 170.322580645) < 0.000001, 'three 100 L reservoirs plus 10% reserve must scale the batch dose correctly');
 
-console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + 5 core pages including hydroponics)');
+
+const recipeChecker = fs.readFileSync(new URL('hydroponic-nutrient-recipe-checker.html', root), 'utf8');
+assert.match(recipeChecker, /<title>Hydroponic Nutrient Recipe Checker: Multi-Fertilizer PPM \\| Calcora<\\/title>/, 'multi-product checker needs a unique title');
+assert.match(recipeChecker, /rel="canonical" href="https:\\/\\/azeemwaseem2020\\.github\\.io\\/hydroponic-nutrient-recipe-checker\\.html"/, 'multi-product checker needs a self canonical');
+assert.match(recipeChecker, /id="rc-dose-4"/, 'multi-product checker must support four entered products');
+assert.match(recipeChecker, /id="rc-target-S"/, 'multi-product checker must support sulfur target comparison');
+assert.match(recipeChecker, /const ppm=p\\.dose\\*p\\.grades\\[n\\]\\*10\\*factors\\[n\\]\\/volume/, 'nutrient contribution formula must be correct');
+assert.match(recipeChecker, /0\\.4364/, 'P2O5-to-elemental-P conversion must be included');
+assert.match(recipeChecker, /0\\.8301/, 'K2O-to-elemental-K conversion must be included');
+assert.match(recipeChecker, /Above your entered target/, 'checker must flag estimates above user-supplied targets');
+assert.match(recipeChecker, /does not invent a crop recipe/, 'checker must clearly state it does not prescribe a recipe');
+assert.match(recipeChecker, /Copy report/, 'checker must offer a copyable calculation report');
+assert.match(recipeChecker, /Print \\/ Save PDF/, 'checker must support printing its report');
+assert.ok(fs.readFileSync(new URL('sitemap.xml', root), 'utf8').includes('hydroponic-nutrient-recipe-checker.html'), 'multi-product checker must be in the main sitemap');
+assert.ok(fs.readFileSync(new URL('sitemap-pakistan-priority.xml', root), 'utf8').includes('hydroponic-nutrient-recipe-checker.html'), 'multi-product checker must be in the priority sitemap');
+assert.match(hub, /href="hydroponic-nutrient-recipe-checker\\.html"/, 'agriculture hub must link to the multi-product checker');
+assert.match(fertilizerGuide, /href="hydroponic-nutrient-recipe-checker\\.html"/, 'fertilizer guide must link to the multi-product checker');
+assert.match(directory, /href="hydroponic-nutrient-recipe-checker\\.html"/, 'calculator directory must link to the multi-product checker');
+assert.ok(Math.abs((50 * 15.5 * 10 / 100) + 20 - 97.5) < 1e-9, '50 g of 15.5% N in 100 L plus 20 ppm source water must yield 97.5 ppm N');
+assert.ok(Math.abs(50 * 15.5 * 10 * 0.4364 / 100 - 33.821) < 1e-9, 'P2O5-to-P example arithmetic must be correct');
+assert.ok(Math.abs(50 * 15.5 * 10 * 0.8301 / 100 - 64.33275) < 1e-9, 'K2O-to-K example arithmetic must be correct');
+
+console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + hydroponics multi-product checker)');
