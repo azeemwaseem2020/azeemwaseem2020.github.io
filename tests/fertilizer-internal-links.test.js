@@ -129,6 +129,11 @@ assert.match(hydro, /<title>Hydroponic Fertilizer Calculator: PPM, Tank Volume &
 assert.match(hydro, /<meta name="description" content="[^"]*target ppm[^"]*"/i, 'hydroponic page needs a specific meta description');
 assert.match(hydro, /rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\/hydroponic-fertilizer-calculator\.html"/, 'hydroponic page needs a self canonical');
 assert.match(hydro, /id="hydro-dose-form"/, 'hydroponic page must include its interactive dose form');
+assert.match(hydro, /id="hd-reservoirs"/, 'hydroponic calculator must support batch scaling across identical reservoirs');
+assert.match(hydro, /id="hd-reserve"/, 'hydroponic calculator must support an optional finished-solution reserve allowance');
+assert.match(hydro, /const totalLitres=litres\*reservoirs\*\(1\+reserve\/100\)/, 'batch volume must scale by reservoir count and reserve allowance');
+assert.match(hydro, /const totalGrams=grams\*reservoirs\*\(1\+reserve\/100\)/, 'batch nutrient dose must scale proportionally with total prepared solution');
+assert.match(hydro, /Number\.isInteger\(reservoirs\).*reservoirs>10000.*reserve<0\|\|reserve>50/, 'batch controls must reject invalid counts and reserve percentages');
 assert.match(hydro, /const grams=deficit\*litres\/\(10\*effective\)/, 'hydroponic dose formula must convert ppm deficit, litres and percentage into grams');
 assert.match(hydro, /basis==='p2o5'\?0\.4364:basis==='k2o'\?0\.8301:1/, 'hydroponic page must explicitly convert oxide label percentages to elemental P/K when selected');
 assert.match(hydro, /does not solve interacting nutrients from multi-nutrient products/i, 'hydroponic page must explain the single-nutrient limitation');
@@ -140,5 +145,6 @@ assert.match(hub, /href="hydroponic-fertilizer-calculator\.html"/, 'agriculture 
 assert.match(fertilizerGuide, /href="hydroponic-fertilizer-calculator\.html"/, 'fertilizer guide must link to hydroponic calculator');
 assert.match(directory, /href="hydroponic-fertilizer-calculator\.html"/, 'calculator directory must link to hydroponic calculator');
 assert.ok(Math.abs((100 - 20) * 100 / (10 * 15.5) - 51.6129032258) < 0.000001, 'worked hydroponic example arithmetic must remain correct');
+assert.ok(Math.abs(((100 - 20) * 100 / (10 * 15.5)) * 3 * 1.1 - 170.322580645) < 0.000001, 'three 100 L reservoirs plus 10% reserve must scale the batch dose correctly');
 
 console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + 5 core pages including hydroponics)');
