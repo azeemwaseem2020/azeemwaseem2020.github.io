@@ -209,6 +209,8 @@ assert.ok(pasture.includes("new Blob([csv]"), 'CSV export must create a download
 assert.ok(pasture.includes("https://wa.me/?text="), 'WhatsApp sharing must encode the plan summary');
 assert.ok(pasture.includes('P₂O₅, K₂O, sulfur, then N'), 'target planner must disclose its actual fixed allocation order');
 assert.ok(pasture.includes('not guaranteed to find the lowest-cost'), 'target planner must disclose optimization limitations');
+assert.ok(pasture.includes('No fertilizer rate is recommended by default.'), 'calculator must not present an empty-input zero-rate plan as a result');
+assert.ok(!pasture.includes("setMode('manual');manual();"), 'calculator must wait for the user to calculate an actual plan');
 assert.ok(pastureDirectory.includes('href="pasture-fertilizer-calculator.html"'), 'calculator directory must link to pasture calculator');
 assert.ok(fs.readFileSync(new URL('fertilizer-calculator.html', root), 'utf8').includes('href="pasture-fertilizer-calculator.html"'), 'general fertilizer calculator must link to pasture calculator');
 assert.ok(hub.includes('href="pasture-fertilizer-calculator.html"'), 'agriculture hub must link to pasture calculator');
