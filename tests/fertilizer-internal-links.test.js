@@ -79,8 +79,8 @@ for (const [filename] of cropGuides) assert.ok(fertilizerGuide.includes('href="'
 const hubSchemas = [...hub.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
 const collectionSchema = hubSchemas.find(schema => schema['@type'] === 'CollectionPage');
 assert.ok(collectionSchema, 'agriculture hub must retain valid CollectionPage structured data');
-assert.equal(collectionSchema.mainEntity.numberOfItems, 15, 'hub ItemList count must match the 15 linked tools and guides');
-assert.equal(collectionSchema.mainEntity.itemListElement.length, 15, 'hub ItemList entries must match its declared count');
+assert.equal(collectionSchema.mainEntity.numberOfItems, 16, 'hub ItemList count must match the 16 linked tools and guides');
+assert.equal(collectionSchema.mainEntity.itemListElement.length, 16, 'hub ItemList entries must match its declared count');
 
 assert.match(hub, /id="crop-specific-fertilizer-planning"/, 'hub must expose the dedicated crop guide cluster');
 for (const [filename] of cropGuides) assert.ok(hub.includes('href="' + filename + '"'), 'hub must link to ' + filename);
@@ -124,4 +124,21 @@ const directory = fs.readFileSync(new URL('calculators.html', root), 'utf8');
 assert.match(directory, /href="fertilizer-bag-calculator\.html"/);
 assert.match(directory, /Fertilizer Bag Calculator/);
 
-console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + 4 core pages)');
+const hydro = fs.readFileSync(new URL('hydroponic-fertilizer-calculator.html', root), 'utf8');
+assert.match(hydro, /<title>Hydroponic Fertilizer Calculator: PPM, Tank Volume &amp; Grams \| Calcora<\/title>/, 'hydroponic page must target the requested keyword naturally');
+assert.match(hydro, /<meta name="description" content="[^"]*target ppm[^"]*"/i, 'hydroponic page needs a specific meta description');
+assert.match(hydro, /rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\/hydroponic-fertilizer-calculator\.html"/, 'hydroponic page needs a self canonical');
+assert.match(hydro, /id="hydro-dose-form"/, 'hydroponic page must include its interactive dose form');
+assert.match(hydro, /const grams=deficit\*litres\/\(10\*effective\)/, 'hydroponic dose formula must convert ppm deficit, litres and percentage into grams');
+assert.match(hydro, /basis==='p2o5'\?0\.4364:basis==='k2o'\?0\.8301:1/, 'hydroponic page must explicitly convert oxide label percentages to elemental P/K when selected');
+assert.match(hydro, /does not solve interacting nutrients from multi-nutrient products/i, 'hydroponic page must explain the single-nutrient limitation');
+assert.match(hydro, /EC indicates combined conductivity rather than the amount of each individual nutrient/i, 'hydroponic page must not imply EC can identify individual nutrient ppm');
+assert.match(hydro, /href="fertilizer-calculator\.html"/, 'hydroponic page must distinguish and link to the field fertilizer calculator');
+assert.ok(fs.readFileSync(new URL('sitemap.xml', root), 'utf8').includes('hydroponic-fertilizer-calculator.html'), 'hydroponic calculator must be in main sitemap');
+assert.ok(fs.readFileSync(new URL('sitemap-pakistan-priority.xml', root), 'utf8').includes('hydroponic-fertilizer-calculator.html'), 'hydroponic calculator must be in priority sitemap');
+assert.match(hub, /href="hydroponic-fertilizer-calculator\.html"/, 'agriculture hub must link to hydroponic calculator');
+assert.match(fertilizerGuide, /href="hydroponic-fertilizer-calculator\.html"/, 'fertilizer guide must link to hydroponic calculator');
+assert.match(directory, /href="hydroponic-fertilizer-calculator\.html"/, 'calculator directory must link to hydroponic calculator');
+assert.ok(Math.abs((100 - 20) * 100 / (10 * 15.5) - 51.6129032258) < 0.000001, 'worked hydroponic example arithmetic must remain correct');
+
+console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + 5 core pages including hydroponics)');
