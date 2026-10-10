@@ -70,6 +70,11 @@ assert.doesNotMatch(guide, /practical SEO topic|Searchers often arrive with a si
 console.log('TMR hub schema relevance and reader-first content checks: PASS');
 
 const feedCalc = fs.readFileSync(new URL('tmr-feed-calculator.html', root), 'utf8');
+assert.ok(feedCalc.includes('class="priceUnit"'), 'TMR calculator should let farms choose how feed price is quoted');
+assert.ok(feedCalc.includes('<option value="bag40">40 kg bag</option>'), 'TMR calculator should support a common 40 kg feed-bag quote');
+assert.ok(feedCalc.includes('<option value="bag50">50 kg bag</option>'), 'TMR calculator should support a 50 kg feed-bag quote');
+assert.ok(feedCalc.includes("price/(priceUnits[i]==='bag40'?40:priceUnits[i]==='bag50'?50:1)"), 'TMR cost arithmetic should normalize bag quotes to a per-kg cost');
+assert.ok(feedCalc.includes('cost+=kg*pricePerKg[i]'), 'TMR ingredient costs should use normalized price per kg');
 
 assert.equal(guide.split('<meta name="author"').length - 1, 1, 'TMR guide should identify its visible author once in metadata');
 assert.equal(guide.split('property="og:title"').length - 1, 1, 'TMR guide should have one Open Graph title');
