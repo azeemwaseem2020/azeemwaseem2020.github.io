@@ -132,7 +132,7 @@ assert.match(hydro, /id="hydro-dose-form"/, 'hydroponic page must include its in
 assert.match(hydro, /const grams=deficit\*litres\/\(10\*effective\)/, 'hydroponic dose formula must convert ppm deficit, litres and percentage into grams');
 assert.match(hydro, /basis==='p2o5'\?0\.4364:basis==='k2o'\?0\.8301:1/, 'hydroponic page must explicitly convert oxide label percentages to elemental P/K when selected');
 assert.match(hydro, /does not solve interacting nutrients from multi-nutrient products/i, 'hydroponic page must explain the single-nutrient limitation');
-assert.match(hydro, /EC indicates combined conductivity rather than the amount of each individual nutrient/i, 'hydroponic page must not imply EC can identify individual nutrient ppm');
+assert.match(hydro, /EC measures total ionic conductivity and cannot identify the concentration of each individual nutrient/i, 'hydroponic page must not imply EC can identify individual nutrient ppm');
 assert.match(hydro, /href="fertilizer-calculator\.html"/, 'hydroponic page must distinguish and link to the field fertilizer calculator');
 assert.ok(fs.readFileSync(new URL('sitemap.xml', root), 'utf8').includes('hydroponic-fertilizer-calculator.html'), 'hydroponic calculator must be in main sitemap');
 assert.ok(fs.readFileSync(new URL('sitemap-pakistan-priority.xml', root), 'utf8').includes('hydroponic-fertilizer-calculator.html'), 'hydroponic calculator must be in priority sitemap');
