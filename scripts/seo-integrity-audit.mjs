@@ -3,8 +3,10 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 const BASE = 'https://azeemwaseem2020.github.io';
-const htmlFiles = walk(ROOT).filter(file => file.endsWith('.html') && !file.split(path.sep).includes('.git'));
-const knownFiles = new Set(htmlFiles.map(file => path.relative(ROOT, file).split(path.sep).join('/')));
+const allFiles = walk(ROOT).filter(file => !file.split(path.sep).includes('.git'));
+const htmlFiles = allFiles.filter(file => file.endsWith('.html'));
+const knownFiles = new Set(allFiles.map(file => path.relative(ROOT, file).split(path.sep).join('/')));
+const verificationFile = file => /^(?:google[a-f0-9]+|bbe1f0cb-e6f8-4328-9b7e-c48eb0951b50)\.html$/i.test(path.basename(file));
 const report = {
   htmlFiles: htmlFiles.length,
   metadata: { missingTitle: [], missingDescription: [], missingCanonical: [], noindex: [], duplicateTitles: [], duplicateCanonicals: [] },
@@ -61,19 +63,35 @@ for (const abs of htmlFiles) {
   const canonicalTag = (html.match(/<link\b[^>]*\brel\s*=\s*(?:"canonical"|'canonical'|canonical)[^>]*>/i) || [])[0] || '';
   const canonical = attr(canonicalTag, 'href');
   const robotsTags = [...html.matchAll(/<meta\b[^>]*\bname\s*=\s*(?:"robots"|'robots'|robots)[^>]*>/gi)].map(m => attr(m[0], 'content').toLowerCase());
-  if (!title) report.metadata.missingTitle.push(file); else addUnique(titles, title, file);
-  if (!description) report.metadata.missingDescription.push(file);
-  if (!canonical) report.metadata.missingCanonical.push(file); else addUnique(canonicals, canonical, file);
-  if (robotsTags.some(value => /\bnoindex\b/.test(value))) { report.metadata.noindex.push(file); noindexFiles.add(file); }
+  const isNoindex = robotsTags.some(value => /\bnoindex\b/.test(value));
+  const isVerification = verificationFile(file);
+  if (isNoindex) { report.metadata.noindex.push(file); noindexFiles.add(file); }
 
-  for (const match of html.matchAll(/<img\b[^>]*>/gi)) {
+  // Report metadata gaps only on pages eligible to appear in search.
+  // Verification tokens, the custom 404, and noindex redirect aliases are intentional exceptions.
+  if (!isVerification && !isNoindex) {
+    if (!title) report.metadata.missingTitle.push(file); else addUnique(titles, title, file);
+    if (!description) report.metadata.missingDescription.push(file);
+    if (!canonical) report.metadata.missingCanonical.push(file); else addUnique(canonicals, canonical, file);
+  }
+
+  const markup = html.replace(/<script\b[\s\S]*?<\/script\s*>/gi, '').replace(/<style\b[\s\S]*?<\/style\s*>/gi, '');
+  for (const match of markup.matchAll(/<img\b[^>]*>/gi)) {
     if (!/\balt\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/i.test(match[0])) report.imagesMissingAlt.push({ file, tag: match[0].slice(0, 180) });
   }
-  for (const match of html.matchAll(/\b(?:href|src)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi)) {
-    const value = match[1] ?? match[2] ?? match[3] ?? '';
-    const target = relFile(file, value);
-    if (!target || /\.(?:png|jpe?g|webp|gif|svg|ico|css|js|xml|txt|pdf|woff2?|ttf|mp4|webm|json|map)$/i.test(target)) continue;
-    if (!knownFiles.has(target) && !fs.existsSync(path.join(ROOT, target))) report.brokenInternalLinks.push({ file, href: value, target });
+  // Parse actual HTML element attributes rather than scanning all source text.
+  // This avoids treating JavaScript snippets such as a.href assignments as broken links.
+  for (const match of markup.matchAll(/<(?:a|area|link|img|script|source|iframe|form|video|audio)\b[^>]*>/gi)) {
+    const tag = match[0];
+    for (const attribute of ['href', 'src', 'action', 'poster']) {
+      const value = attr(tag, attribute);
+      if (!value) continue;
+      const target = relFile(file, value);
+      if (!target) continue;
+      if (!knownFiles.has(target) && !fs.existsSync(path.join(ROOT, target))) {
+        report.brokenInternalLinks.push({ file, attribute, href: value, target });
+      }
+    }
   }
 }
 for (const [title, files] of titles) if (files.length > 1) report.metadata.duplicateTitles.push({ title, files });
