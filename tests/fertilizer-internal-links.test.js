@@ -241,6 +241,8 @@ assert.ok(mainFertilizer.includes('id="buildSplitSchedule"'), 'split schedule mu
 assert.ok(mainFertilizer.includes('id="exportSplitSchedule"'), 'split schedule must support CSV export');
 assert.ok(mainFertilizer.includes('must total 100%'), 'split schedule must reject application shares that do not total 100%');
 assert.ok(mainFertilizer.includes('Calcora does not suggest timing or split percentages'), 'split schedule must not invent agronomic timing or percentages');
+assert.ok(mainFertilizer.includes('Split a calculated plan into user-defined application shares and export a schedule CSV'), 'SoftwareApplication featureList must describe the split schedule accurately');
+assert.ok(mainFertilizer.includes('Custom split-application schedule using user-defined percentages, with CSV export'), 'visible calculator features must mention the new schedule');
 const mainFertilizerScript = mainFertilizer.split('<script>').at(-1).split('</script>')[0];
 assert.doesNotThrow(() => new Function(mainFertilizerScript), 'main fertilizer calculator JavaScript must parse without syntax errors');
 assert.ok(Math.abs(100 * 0.30 - 30) < 1e-9 && Math.abs(100 * 0.70 - 70) < 1e-9, '30/70 split schedule must preserve the total product quantity');
