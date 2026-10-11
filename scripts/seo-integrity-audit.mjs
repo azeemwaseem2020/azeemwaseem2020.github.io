@@ -57,6 +57,7 @@ const titles = new Map();
 const canonicals = new Map();
 const canonicalForFile = new Map();
 const noindexFiles = new Set();
+const mainSitemapUrls = new Set();
 
 for (const abs of htmlFiles) {
   const file = path.relative(ROOT, abs).split(path.sep).join('/');
@@ -135,6 +136,7 @@ for (const sitemapFile of ['sitemap.xml', 'sitemap-pakistan-priority.xml']) {
   }
   const xml = fs.readFileSync(path.join(ROOT, sitemapFile), 'utf8');
   const locs = [...xml.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)].map(match => decodeEntities(match[1].trim()));
+  if (sitemapFile === 'sitemap.xml') locs.forEach(url => mainSitemapUrls.add(url));
   const duplicates = [...new Set(locs.filter((url, index) => locs.indexOf(url) !== index))];
   const noindexSitemapUrls = locs.filter(url => {
     if (!url.startsWith(BASE)) return false;
@@ -161,6 +163,10 @@ for (const sitemapFile of ['sitemap.xml', 'sitemap-pakistan-priority.xml']) {
   if (missingFiles.length) report.errors.push('Sitemap URLs do not map to local files in ' + sitemapFile);
   if (canonicalMismatches.length) report.errors.push('Sitemap URLs do not match canonical tags in ' + sitemapFile);
 }
+const indexablePagesMissingFromSitemap = [...canonicalForFile.keys()]
+  .map(file => ({ file, url: file === 'index.html' ? BASE + '/' : BASE + '/' + file }))
+  .filter(item => !mainSitemapUrls.has(item.url));
+
 const summary = {
   htmlFilesScanned: report.htmlFiles,
   missingTitle: report.metadata.missingTitle.length,
@@ -174,6 +180,7 @@ const summary = {
   htmlTechnical: Object.fromEntries(Object.entries(report.htmlTechnical).map(([key, value]) => [key, value.length])),
   invalidJsonLd: report.structuredData.invalidJsonLd.length,
   canonicalTargetsMissing: report.canonicalTargetsMissing.length,
+  indexablePagesMissingFromSitemap: indexablePagesMissingFromSitemap.length,
   sitemap: report.sitemap,
   blockingErrors: report.errors
 };
@@ -191,6 +198,7 @@ console.log(JSON.stringify({
     htmlTechnical: report.htmlTechnical,
     invalidJsonLd: report.structuredData.invalidJsonLd,
     canonicalTargetsMissing: report.canonicalTargetsMissing,
+    indexablePagesMissingFromSitemap,
     sitemap: report.sitemap
   }
 }, null, 2));
