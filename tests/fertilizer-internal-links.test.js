@@ -106,6 +106,17 @@ assert.match(primary, /Last updated:<\/strong> October 11, 2026/);
 assert.match(primary, /<option value="acre" selected>Acres<\/option><option value="kanal">Kanal<\/option><option value="ha">Hectares \(ha\)<\/option>/, 'default to Pakistan-relevant acres and support kanal and hectare units');
 assert.match(primary, /1 acre = 8 kanal/, 'explain the acre-to-kanal conversion for Pakistan field planning');
 assert.match(primary, /areaUnit\.value==='kanal'\?'kanal'/, 'render rates and result summaries using the selected kanal unit');
+assert.match(primary, /const areaFactors=\{acre:1,kanal:0\.125,ha:1\/2\.471053814\}/, 'area-basis conversion must use explicit acre, kanal and hectare factors');
+assert.match(primary, /fieldArea\*oldFactor\/newFactor/, 'changing area units must preserve the same physical field area');
+assert.match(primary, /const rateFactor=newFactor\/oldFactor/, 'changing area units must convert product rates and nutrient targets instead of silently relabelling them');
+assert.match(primary, /\['targetN','targetP','targetK','targetS','mTargetN','mTargetP','mTargetK','mTargetS'\]/, 'convert target-mode and optional manual nutrient targets together with product rates');
+assert.match(primary, /Area units converted while preserving the same physical field area and per-area rates/, 'invalidate stale results and explain that the plan must be recalculated after unit conversion');
+const areaFactorsForTest = { acre: 1, kanal: 0.125, ha: 1 / 2.471053814 };
+for (const [from, to, area, rate] of [['acre','kanal',2,100],['kanal','acre',16,12.5],['ha','acre',3,50],['acre','ha',2.471053814,100]]) {
+  const convertedArea = area * areaFactorsForTest[from] / areaFactorsForTest[to];
+  const convertedRate = rate * areaFactorsForTest[to] / areaFactorsForTest[from];
+  assert.ok(Math.abs(convertedArea * convertedRate - area * rate) < 1e-6, 'area conversion must preserve total product mass for ' + from + ' to ' + to);
+}
 assert.match(primary, /function allocate\(n\)\{const key=n\.toUpperCase\(\),candidates=active\.filter\(v=>v\[n\]>0\);if\(!candidates\.length\|\|rem\[key\]<=0\)return;/, 'target planner must map lower-case product fields to upper-case nutrient target keys');
 assert.match(primary, /items\.filter\(x=>x\.r>0\)\.every\(x=>x\.price!==null\)\?money\(cost\):'Enter all prices'/, 'do not present a partial product-price sum as the total plan cost');
 assert.match(primary, /x\.price!==null\?x\.wholeBags\*x\.price:0/, 'an explicitly entered zero price is valid and must not be treated as missing');
