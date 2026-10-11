@@ -12,6 +12,9 @@ const report = {
   metadata: { missingTitle: [], missingDescription: [], missingCanonical: [], noindex: [], duplicateTitles: [], duplicateCanonicals: [] },
   imagesMissingAlt: [],
   brokenInternalLinks: [],
+  htmlTechnical: { missingLang: [], missingViewport: [], missingCharset: [], multipleH1: [] },
+  structuredData: { invalidJsonLd: [] },
+  canonicalTargetsMissing: [],
   sitemap: [],
   errors: []
 };
@@ -52,6 +55,7 @@ function addUnique(map, key, file) {
 }
 const titles = new Map();
 const canonicals = new Map();
+const canonicalForFile = new Map();
 const noindexFiles = new Set();
 
 for (const abs of htmlFiles) {
@@ -67,12 +71,39 @@ for (const abs of htmlFiles) {
   const isVerification = verificationFile(file);
   if (isNoindex) { report.metadata.noindex.push(file); noindexFiles.add(file); }
 
+  if (!isVerification && !isNoindex) {
+    if (!/<html\b[^>]*\blang\s*=/i.test(html)) report.htmlTechnical.missingLang.push(file);
+    if (!/<meta\b[^>]*\bname\s*=\s*["']viewport["']/i.test(html)) report.htmlTechnical.missingViewport.push(file);
+    if (!/<meta\b[^>]*\bcharset\s*=/i.test(html)) report.htmlTechnical.missingCharset.push(file);
+    const h1Count = [...html.matchAll(/<h1\b[^>]*>/gi)].length;
+    if (h1Count > 1) report.htmlTechnical.multipleH1.push({ file, count: h1Count });
+    for (const script of html.matchAll(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi)) {
+      if (!/\btype\s*=\s*["']application\/ld\+json["']/i.test(script[0])) continue;
+      const jsonText = script[0].replace(/^<script\b[^>]*>/i, '').replace(/<\/script\s*>$/i, '').trim();
+      try { JSON.parse(jsonText); }
+      catch (error) { report.structuredData.invalidJsonLd.push({ file, error: String(error).slice(0, 240) }); }
+    }
+  }
+
   // Report metadata gaps only on pages eligible to appear in search.
   // Verification tokens, the custom 404, and noindex redirect aliases are intentional exceptions.
   if (!isVerification && !isNoindex) {
     if (!title) report.metadata.missingTitle.push(file); else addUnique(titles, title, file);
     if (!description) report.metadata.missingDescription.push(file);
-    if (!canonical) report.metadata.missingCanonical.push(file); else addUnique(canonicals, canonical, file);
+    if (!canonical) report.metadata.missingCanonical.push(file);
+    else {
+      addUnique(canonicals, canonical, file);
+      canonicalForFile.set(file, canonical);
+      try {
+        const parsed = new URL(canonical);
+        if (parsed.origin === BASE) {
+          const targetPath = decodeURIComponent(parsed.pathname).replace(/^\//, '') || 'index.html';
+          if (!knownFiles.has(targetPath)) report.canonicalTargetsMissing.push({ file, canonical, target: targetPath });
+        }
+      } catch {
+        report.canonicalTargetsMissing.push({ file, canonical, target: 'invalid-canonical-url' });
+      }
+    }
   }
 
   const markup = html.replace(/<script\b[\s\S]*?<\/script\s*>/gi, '').replace(/<style\b[\s\S]*?<\/style\s*>/gi, '');
@@ -116,12 +147,19 @@ for (const sitemapFile of ['sitemap.xml', 'sitemap-pakistan-priority.xml']) {
     const target = pathname || 'index.html';
     return !knownFiles.has(target);
   });
+  const canonicalMismatches = locs.flatMap(url => {
+    if (!url.startsWith(BASE)) return [{ url, reason: 'URL is outside the canonical site origin' }];
+    const pathname = url.slice(BASE.length).split(/[?#]/, 1)[0].replace(/^\//, '') || 'index.html';
+    const canonical = canonicalForFile.get(pathname);
+    return canonical && canonical !== url ? [{ url, file: pathname, canonical }] : [];
+  });
   const invalidLastmod = [...xml.matchAll(/<lastmod>([\s\S]*?)<\/lastmod>/gi)].map(match => match[1].trim()).filter(value => !/^\d{4}-\d{2}-\d{2}(?:T.*Z)?$/.test(value));
-  report.sitemap.push({ file: sitemapFile, urlCount: locs.length, duplicateUrls: duplicates, noindexUrls: noindexSitemapUrls, missingLocalFiles: [...new Set(missingFiles)], invalidLastmod });
+  report.sitemap.push({ file: sitemapFile, urlCount: locs.length, duplicateUrls: duplicates, noindexUrls: noindexSitemapUrls, missingLocalFiles: [...new Set(missingFiles)], canonicalMismatches, invalidLastmod });
   if (!/^\s*<\?xml\s+version=/i.test(xml) || !/<urlset\b/i.test(xml) || !/<\/urlset>\s*$/i.test(xml)) report.errors.push('Malformed sitemap structure: ' + sitemapFile);
   if (duplicates.length) report.errors.push('Duplicate URLs in ' + sitemapFile);
   if (noindexSitemapUrls.length) console.warn('WARNING: noindex URLs listed in ' + sitemapFile + ': ' + noindexSitemapUrls.join(', '));
   if (missingFiles.length) report.errors.push('Sitemap URLs do not map to local files in ' + sitemapFile);
+  if (canonicalMismatches.length) report.errors.push('Sitemap URLs do not match canonical tags in ' + sitemapFile);
 }
 const summary = {
   htmlFilesScanned: report.htmlFiles,
@@ -133,6 +171,9 @@ const summary = {
   duplicateCanonicalGroups: report.metadata.duplicateCanonicals.length,
   imagesMissingAlt: report.imagesMissingAlt.length,
   brokenInternalLinks: report.brokenInternalLinks.length,
+  htmlTechnical: Object.fromEntries(Object.entries(report.htmlTechnical).map(([key, value]) => [key, value.length])),
+  invalidJsonLd: report.structuredData.invalidJsonLd.length,
+  canonicalTargetsMissing: report.canonicalTargetsMissing.length,
   sitemap: report.sitemap,
   blockingErrors: report.errors
 };
@@ -147,6 +188,9 @@ console.log(JSON.stringify({
     duplicateCanonicals: report.metadata.duplicateCanonicals,
     imagesMissingAlt: report.imagesMissingAlt,
     brokenInternalLinks: report.brokenInternalLinks,
+    htmlTechnical: report.htmlTechnical,
+    invalidJsonLd: report.structuredData.invalidJsonLd,
+    canonicalTargetsMissing: report.canonicalTargetsMissing,
     sitemap: report.sitemap
   }
 }, null, 2));
