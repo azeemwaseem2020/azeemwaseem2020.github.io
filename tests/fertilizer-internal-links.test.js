@@ -234,3 +234,18 @@ assert.ok(Math.abs(40 / 0.46 - 86.9565217391) < 1e-8, 'illustrative 40 kg N at 4
 assert.ok(Math.abs((40 / 0.46) * 3 - 260.869565217) < 1e-6, 'three-acre product example should be about 260.87 kg before purchasing-rounding');
 
 console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + hydroponics and pasture calculator checks)');
+
+const mainFertilizer = fs.readFileSync(new URL('fertilizer-calculator.html', root), 'utf8');
+assert.ok(mainFertilizer.includes('id="splitSchedule"'), 'main fertilizer calculator must offer a custom split-application schedule');
+assert.ok(mainFertilizer.includes('id="buildSplitSchedule"'), 'split schedule must have an explicit build action');
+assert.ok(mainFertilizer.includes('id="exportSplitSchedule"'), 'split schedule must support CSV export');
+assert.ok(mainFertilizer.includes('must total 100%'), 'split schedule must reject application shares that do not total 100%');
+assert.ok(mainFertilizer.includes('Calcora does not suggest timing or split percentages'), 'split schedule must not invent agronomic timing or percentages');
+const mainFertilizerScript = mainFertilizer.slice(mainFertilizer.lastIndexOf('<script>') + 8, mainFertilizer.lastIndexOf('</script>'));
+assert.doesNotThrow(() => new Function(mainFertilizerScript), 'main fertilizer calculator JavaScript must parse without syntax errors');
+assert.ok(Math.abs(100 * 0.30 - 30) < 1e-9 && Math.abs(100 * 0.70 - 70) < 1e-9, '30/70 split schedule must preserve the total product quantity');
+assert.ok(Math.abs(30 * 0.46 - 13.8) < 1e-9 && Math.abs(70 * 0.46 - 32.2) < 1e-9, 'split schedule must preserve nutrient contribution from a 46% N product');
+assert.match(mainFertilizer, /Last updated:<\/strong> October 11, 2026/);
+assert.match(mainFertilizer, /article:modified_time" content="2026-10-11"/);
+console.log('Main fertilizer split schedule, validation, export, formula and freshness checks: PASS');
+
