@@ -293,3 +293,40 @@ assert.ok(Math.abs(comboAC.cost - 6000) < 1e-8, 'reference product combination A
 assert.ok(Math.abs(comboBC.cost - 6000) < 1e-8, 'reference product combination B+C cost should be 6000');
 assert.ok(comboAB.cost < comboAC.cost && comboAB.cost < comboBC.cost, 'optimizer reference case must select the lowest-cost feasible combination');
 
+
+assert.match(mainFertilizer, /const maxNodes=250000/, 'whole-bag optimizer must use a bounded search to avoid freezing the browser');
+assert.match(mainFertilizer, /complete:!aborted,nodes,maxNodes,baselineCost:greedyWholeBagCost,baselineFeasible:greedyFeasible/, 'whole-bag optimizer must return purchase cost, bag counts, nutrient supply and search status');
+assert.match(mainFertilizer, /Exhaustive search completed within the calculated bounds/, 'whole-bag results must distinguish a completed exhaustive search');
+assert.match(mainFertilizer, /Search limit reached; this is the best feasible combination found so far, not a certified global minimum/, 'whole-bag results must not claim optimality when the node cap is reached');
+assert.match(mainFertilizer, /minimizes entered bag-purchase cost subject to meeting each entered nutrient minimum/, 'whole-bag method must disclose its purchase-cost objective');
+assert.match(mainFertilizer, /const greedyWholeBagCost=greedyFeasible\?baselineItems\.reduce/, 'standard whole-bag baseline must use whole-bag counts and entered bag prices');
+
+function referenceWholeBagSearch(products, targets, maxBags = 20) {
+  let best = null;
+  function walk(i, counts) {
+    if (i === products.length) {
+      const supply = { N: 0, P: 0, K: 0, S: 0 };
+      let cost = 0;
+      counts.forEach((n, j) => {
+        cost += n * products[j].price;
+        for (const k of Object.keys(supply)) supply[k] += n * products[j].bag * products[j][k] / 100;
+      });
+      if (Object.keys(targets).every(k => supply[k] >= targets[k] - 1e-9) &&
+          (!best || cost < best.cost || (cost === best.cost && counts.reduce((a,b)=>a+b,0) < best.counts.reduce((a,b)=>a+b,0)))) {
+        best = { cost, counts: counts.slice(), supply };
+      }
+      return;
+    }
+    for (let n = 0; n <= maxBags; n++) walk(i + 1, [...counts, n]);
+  }
+  walk(0, []);
+  return best;
+}
+const bagReference = referenceWholeBagSearch([
+  { bag: 50, price: 1000, N: 50, P: 0, K: 0, S: 0 },
+  { bag: 50, price: 400, N: 25, P: 25, K: 0, S: 0 }
+], { N: 20, P: 10 }, 3);
+assert.equal(bagReference.cost, 800, 'reference whole-bag optimizer should choose two 50 kg multi-nutrient bags at PKR 800');
+assert.deepEqual(bagReference.counts, [0, 2], 'reference whole-bag optimizer should prefer the feasible lower-cost integer bag combination');
+assert.ok(bagReference.supply.N >= 20 && bagReference.supply.P >= 10, 'whole-bag purchase must meet every nutrient minimum');
+console.log('Whole-bag optimizer bounded-search and purchase-cost regression checks: PASS');
