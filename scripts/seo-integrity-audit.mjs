@@ -119,7 +119,19 @@ const summary = {
   blockingErrors: report.errors
 };
 console.log('CALCORA SEO INTEGRITY AUDIT');
-console.log(JSON.stringify(summary, null, 2));
+console.log(JSON.stringify({
+  ...summary,
+  detail: {
+    missingTitle: report.metadata.missingTitle,
+    missingDescription: report.metadata.missingDescription,
+    missingCanonical: report.metadata.missingCanonical,
+    duplicateTitles: report.metadata.duplicateTitles,
+    duplicateCanonicals: report.metadata.duplicateCanonicals,
+    imagesMissingAlt: report.imagesMissingAlt,
+    brokenInternalLinks: report.brokenInternalLinks,
+    sitemap: report.sitemap
+  }
+}, null, 2));
 fs.mkdirSync(path.join(ROOT, 'audit-reports'), { recursive: true });
 fs.writeFileSync(path.join(ROOT, 'audit-reports/seo-integrity-latest.json'), JSON.stringify(report, null, 2) + '\n');
 if (report.errors.length) process.exitCode = 1;
