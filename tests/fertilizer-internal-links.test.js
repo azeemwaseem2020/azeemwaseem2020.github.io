@@ -278,14 +278,14 @@ function bruteForceTwoNutrient(products, targets) {
 const sampleProducts = [
   { name: 'A', n: 0.5, p: 0, costPerKg: 100 },
   { name: 'B', n: 0, p: 0.5, costPerKg: 80 },
-  { name: 'C', n: 0.25, p: 0.25, costPerKg: 60 }
+  { name: 'C', n: 0.25, p: 0.25, costPerKg: 150 }
 ];
 const sampleTargets = { N: 10, P: 10 };
 const comboAB = bruteForceTwoNutrient([sampleProducts[0], sampleProducts[1]], sampleTargets);
 const comboAC = bruteForceTwoNutrient([sampleProducts[0], sampleProducts[2]], sampleTargets);
 const comboBC = bruteForceTwoNutrient([sampleProducts[1], sampleProducts[2]], sampleTargets);
 assert.ok(Math.abs(comboAB.cost - 3600) < 1e-8, 'reference product combination A+B cost should be 3600');
-assert.ok(Math.abs(comboAC.cost - 4400) < 1e-8, 'reference product combination A+C cost should be 4400');
-assert.ok(Math.abs(comboBC.cost - 4000) < 1e-8, 'reference product combination B+C cost should be 4000');
+assert.ok(Math.abs(comboAC.cost - 6000) < 1e-8, 'reference product combination A+C cost should be 6000');
+assert.ok(Math.abs(comboBC.cost - 6000) < 1e-8, 'reference product combination B+C cost should be 6000');
 assert.ok(comboAB.cost < comboAC.cost && comboAB.cost < comboBC.cost, 'optimizer reference case must select the lowest-cost feasible combination');
 
