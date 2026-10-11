@@ -261,4 +261,31 @@ assert.ok(Math.abs(30 * 0.46 - 13.8) < 1e-9 && Math.abs(70 * 0.46 - 32.2) < 1e-9
 assert.match(mainFertilizer, /Last updated:<\/strong> October 11, 2026/);
 assert.match(mainFertilizer, /article:modified_time" content="2026-10-11"/);
 console.log('Main fertilizer split schedule, validation, export, formula and freshness checks: PASS');
+assert.match(mainFertilizer, /function optimizeCostPlan\(\)/, 'target planner must include an explicit cost-aware solver');
+assert.match(mainFertilizer, /function solveLinearSystem\(matrix,vector\)/, 'optimizer must solve candidate nutrient-balance equations');
+assert.match(mainFertilizer, /function combinations\(values,size,start=0,prefix=\[\],out=\[\]\)/, 'optimizer must enumerate candidate product and nutrient constraint combinations');
+assert.match(mainFertilizer, /const missing=active\.filter\(x=>x\.price===null/, 'optimizer must require prices for every nutrient-containing product to avoid biased comparisons');
+assert.match(mainFertilizer, /No feasible combination of the entered products can meet every target at the same time/, 'optimizer must explain infeasible target combinations');
+assert.match(mainFertilizer, /continuous product quantity × price per kg/, 'optimizer must disclose its continuous-rate cost objective and separate whole-bag rounding');
+assert.match(mainFertilizer, /id="optimizeCostPlan"/, 'target results must provide an explicit optimizer action');
+assert.match(mainFertilizer, /optimizeButton\.onclick=optimizeCostPlan/, 'optimizer action must be wired to the solver');
+function bruteForceTwoNutrient(products, targets) {
+  const det = products[0].n * products[1].p - products[1].n * products[0].p;
+  const x = (targets.N * products[1].p - products[1].n * targets.P) / det;
+  const y = (products[0].n * targets.P - targets.N * products[0].p) / det;
+  return { x, y, cost: x * products[0].costPerKg + y * products[1].costPerKg };
+}
+const sampleProducts = [
+  { name: 'A', n: 0.5, p: 0, costPerKg: 100 },
+  { name: 'B', n: 0, p: 0.5, costPerKg: 80 },
+  { name: 'C', n: 0.25, p: 0.25, costPerKg: 60 }
+];
+const sampleTargets = { N: 10, P: 10 };
+const comboAB = bruteForceTwoNutrient([sampleProducts[0], sampleProducts[1]], sampleTargets);
+const comboAC = bruteForceTwoNutrient([sampleProducts[0], sampleProducts[2]], sampleTargets);
+const comboBC = bruteForceTwoNutrient([sampleProducts[1], sampleProducts[2]], sampleTargets);
+assert.ok(Math.abs(comboAB.cost - 3600) < 1e-8, 'reference product combination A+B cost should be 3600');
+assert.ok(Math.abs(comboAC.cost - 4400) < 1e-8, 'reference product combination A+C cost should be 4400');
+assert.ok(Math.abs(comboBC.cost - 4000) < 1e-8, 'reference product combination B+C cost should be 4000');
+assert.ok(comboAB.cost < comboAC.cost && comboAB.cost < comboBC.cost, 'optimizer reference case must select the lowest-cost feasible combination');
 
