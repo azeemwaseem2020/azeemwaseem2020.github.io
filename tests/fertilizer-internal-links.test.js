@@ -266,11 +266,11 @@ assert.match(mainFertilizer, /function solveLinearSystem\(matrix,vector\)/, 'opt
 assert.match(mainFertilizer, /function combinations\(values,size,start=0,prefix=\[\],out=\[\]\)/, 'optimizer must enumerate candidate product and nutrient constraint combinations');
 assert.match(mainFertilizer, /const missing=active\.filter\(x=>x\.price===null/, 'optimizer must require prices for every nutrient-containing product to avoid biased comparisons');
 assert.match(mainFertilizer, /No feasible combination of the entered products can meet every target at the same time/, 'optimizer must explain infeasible target combinations');
-assert.match(mainFertilizer, /continuous product quantity × price per kg/, 'optimizer must disclose its continuous-rate cost objective and separate whole-bag rounding');
+assert.match(mainFertilizer, /continuous solver compares product quantities by price per kg/, 'optimizer must disclose the continuous-rate cost objective');
 assert.match(mainFertilizer, /const baselineItems=active\.map\(x=>\(\.\.\.x,r:0\)\)/, 'optimizer must calculate the existing greedy planner baseline before changing the plan');
 assert.match(mainFertilizer, /const optimization=\{baselineCost:greedyCost,optimizedCost:best\.objective\*A,greedyFeasible\}/, 'optimizer must pass comparable whole-field baseline and optimized continuous costs into results');
 assert.match(mainFertilizer, /Cost comparison \(estimated for /, 'results must show the standard-versus-optimized cost comparison');
-assert.match(mainFertilizer, /Whole-bag rounding, delivery, application labour and field losses are not included/, 'savings display must disclose excluded real-world costs');
+assert.match(mainFertilizer, /excludes whole-bag rounding, delivery, application labour and field losses/, 'continuous savings display must disclose excluded real-world costs');
 assert.match(mainFertilizer, /id="optimizeCostPlan"/, 'target results must provide an explicit optimizer action');
 assert.match(mainFertilizer, /optimizeButton\.onclick=optimizeCostPlan/, 'optimizer action must be wired to the solver');
 function bruteForceTwoNutrient(products, targets) {
