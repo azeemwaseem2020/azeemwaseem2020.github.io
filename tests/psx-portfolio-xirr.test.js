@@ -58,6 +58,17 @@ assert.throws(() => calculateXirr([
   { date: "2026-01-01", amount: 200 }
 ]), /valid date/, "XIRR must reject missing transaction dates");
 
+assert.throws(() => calculateXirr([
+  { date: "2025-02-30", amount: -100 },
+  { date: "2026-01-01", amount: 200 }
+]), /real calendar date/, "XIRR must reject impossible calendar dates instead of normalizing them");
+
+assert.throws(() => calculateXirr([
+  { date: "2026-01-01", amount: -100 },
+  { date: "2026-01-01", amount: 120 }
+]), /at least two different dates/, "XIRR must reject zero-duration cash flows because annualized return is undefined");
+
+
 
 assert.match(html, /Target allocation & rebalancing planner/, "portfolio rebalancing planner must be visible");
 assert.match(html, /<title>PSX Portfolio Calculator Pakistan \| Rebalancing & XIRR \| Calcora<\/title>/, "title should match the portfolio page's rebalancing and dated-return features");
