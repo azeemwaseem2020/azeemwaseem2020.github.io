@@ -17,7 +17,7 @@ assert.doesNotThrow(() => new Function(inlineScript), "portfolio page JavaScript
 const match = inlineScript.match(/function calculateXirr\(flows\)\{([\s\S]*?)\nfunction readCashFlows\(\)/);
 assert.ok(match, "the pure XIRR solver must remain separately testable");
 const calculateXirr = new Function("flows", match[1].replace(/\}\s*$/, ""));
-const feeMatch = inlineScript.match(/function signedCashFlow\(row\)\{([\\s\\S]*?)\\nfunction calculateXirr/);
+const feeMatch = inlineScript.match(/function signedCashFlow\(row\)\{([\s\S]*?)\nfunction calculateXirr/);
 assert.ok(feeMatch, "fee-aware cash flow conversion must be testable");
 const signedCashFlow = new Function("row", feeMatch[1].replace(/\\}\s*$/, ""));
 const mockRow = (type, amount, fees, date = "2025-01-01") => ({
