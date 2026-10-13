@@ -137,7 +137,7 @@ assert.match(feedCalc, /360 × 3 = 1,080 kg/, 'TMR guide should show multi-day b
 assert.match(feedCalc, /hypothetical PKR 3,000 price for a 40 kg bag equals PKR 75\/kg/, 'TMR guide should explain bag-price normalization without presenting a market quote');
 assert.match(feedCalc, /not a current market price/, 'TMR guide must label example prices as illustrative');
 assert.match(feedCalc, /100 kg of fodder at 20% dry matter supplies 20 kg DM/, 'TMR guide should demonstrate dry-matter change with moisture');
-assert.match(feedCalc, /does not confirm nutrient balance, palatability, safety or suitability/, 'TMR guide must distinguish arithmetic from nutrition advice');
+assert.match(feedCalc, /cannot confirm nutrient balance, palatability, safety or suitability/, 'TMR guide must distinguish arithmetic from nutrition advice');
 
 
 
