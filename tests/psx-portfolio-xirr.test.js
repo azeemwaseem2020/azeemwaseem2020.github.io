@@ -75,5 +75,11 @@ assert.equal(rebalancePlan[0].shareChange, 10, "underweight holding should sugge
 assert.equal(rebalancePlan[1].shareChange, -10, "overweight holding should suggest selling whole shares");
 assert.equal(rebalancePlan[0].residualGap, 0, "exact whole-share rebalance should leave no residual gap");
 assert.equal(rebalancePlan[1].residualGap, 0, "exact whole-share rebalance should leave no residual gap for second holding");
+const exitPlan = calculateRebalance([
+  {symbol:"KEEP",q:10,price:100,targetAllocation:100,targetEntered:true},
+  {symbol:"EXIT",q:5,price:100,targetAllocation:0,targetEntered:true}
+], 1500);
+assert.equal(exitPlan.length, 2, "zero-percent targets must remain in the plan so users can exit a position");
+assert.equal(exitPlan[1].shareChange, -5, "a zero-percent target should suggest selling the entire holding at the entered reference price");
 
 console.log("PSX portfolio dated cash-flow XIRR checks: PASS");
