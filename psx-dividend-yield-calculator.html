@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>PSX Dividend Yield Calculator Pakistan | Formula & Income | Calcora</title>
 <meta name="description" content="Calculate PSX dividend yield and estimated dividend income from shares, price and dividend per share, with the formula, example and key assumptions.">
-<meta name="author" content="Abdul Qadir"><meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png"><meta property="og:image:alt" content="Calcora PSX Dividend Yield Calculator"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<meta name="author" content="Abdul Qadir"><meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png"><meta property="og:image:alt" content="Calcora PSX Dividend Yield Calculator">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <link rel="canonical" href="https://azeemwaseem2020.github.io/psx-dividend-yield-calculator.html">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -40,7 +40,7 @@
 <h2>Your PSX inputs</h2>
 <label for="shares">Number of shares</label><input id="shares" type="number" min="0" step="1" value="100" inputmode="numeric">
 <label for="price">Share price (PKR)</label><input id="price" type="number" min="0" step="0.01" value="100" inputmode="decimal">
-<label for="dps">Dividend per share (PKR)</label><input id="dps" type="number" min="0" step="0.01" value="5" inputmode="decimal">
+<label for="dps">Dividend per share for the selected period (PKR)</label><input id="dps" type="number" min="0" step="0.01" value="5" inputmode="decimal">
 <label for="period">Dividend period</label><select id="period"><option>Per declared dividend</option><option>Annual total</option></select>
 <button class="btn" id="calculate" type="button">Calculate dividend yield</button>
 <div id="result" aria-live="polite" role="status" style="margin-top:16px"></div>
@@ -54,11 +54,17 @@
 </div>
 <section class="prose" style="margin-top:44px">
 <h2>How the PSX dividend yield calculation works</h2>
-<p>The calculator uses the figures you enter. Estimated dividend income is <strong>shares × dividend per share</strong>. Dividend yield is <strong>dividend per share ÷ share price × 100</strong>.</p>
+<p>Dividend yield compares a cash dividend per share with the share price used in the calculation. The formula is <strong>dividend per share ÷ share price × 100</strong>. Estimated gross cash income for your entered holding is <strong>number of shares × dividend per share</strong>.</p>
+<h2>Worked example: yield and estimated cash income</h2>
+<p>Suppose you hold 100 shares, use a share price of PKR 100, and enter PKR 5 per share as the dividend for the selected period. The yield is 5 ÷ 100 × 100 = <strong>5%</strong>, and the estimated gross dividend is 100 × 5 = <strong>PKR 500</strong>. These are arithmetic examples, not a forecast or a confirmation that a company will declare or pay this dividend.</p>
+<h2>Choose the dividend period carefully</h2>
+<p>Select <strong>Per declared dividend</strong> when the amount entered is for one declared payment. Select <strong>Annual total</strong> only when the dividend-per-share amount represents the total for a full year. The calculator does not annualise a quarterly or interim dividend automatically, and the yield shown is based on the period represented by your input.</p>
+<h2>Gross dividend is not necessarily take-home cash</h2>
+<p>The result is a gross estimate before any applicable withholding tax, brokerage or other charges. Actual cash received can depend on the investor’s tax treatment, eligibility, the company’s final payment and account records. This tool does not determine a personal tax rate or calculate net proceeds.</p>
+<h2>Price basis and investment risk</h2>
+<p>Keep the price basis consistent with your purpose: current market price for a current-price comparison, or your own purchase cost for a cost-yield calculation. A falling share price can make the percentage yield appear higher even when the cash dividend has not increased; it does not by itself mean the investment is safer or more profitable. Share prices and future dividends can change, and past payments do not guarantee future income.</p>
 <h2>Important PSX assumptions</h2>
-<p>This tool does not fetch live PSX prices, company announcements, tax rates or brokerage charges. For an actual investment record, verify the declared dividend, eligibility date, share price and applicable taxes or charges using current company and broker information.</p>
-<h2>Dividend yield can change with price</h2>
-<p>If the dividend per share stays unchanged while the market price moves, the calculated yield changes because the denominator changes. A higher share price produces a lower yield for the same dividend per share, while a lower price produces a higher yield.</p>
+<p>This tool does not fetch live PSX prices, company announcements, eligibility dates, tax rates or brokerage charges. Before relying on an estimate, verify the company’s official dividend announcement, relevant book-closure/eligibility details, payment status and the price basis you intend to use.</p>
 <h2>Official investor education reference</h2><p>The <a href="https://www.psx.com.pk/psx/resources-and-tools/investors/guide-to-investors" target="_blank" rel="noopener noreferrer">PSX Guide to Investors</a> describes dividend yield as a measure relating cash dividend to share price. Use the company’s latest dividend announcement and your relevant share-price basis; this calculator does not fetch live prices, predict future dividends or determine your tax treatment.</p><h2>Related PSX calculators</h2>
 <p><a href="psx-calculator.html">PSX Profit Calculator</a> · <a href="psx-portfolio-calculator.html">PSX Portfolio Calculator</a> · <a href="psx-average-price-calculator.html">PSX Average Price Calculator</a> · <a href="psx-brokerage-commission-calculator.html">PSX Brokerage Commission Calculator</a> · <a href="dividend-calculator.html">Dividend Calculator</a></p>
 </section>
@@ -71,11 +77,13 @@
 const s=document.getElementById('shares'),p=document.getElementById('price'),d=document.getElementById('dps'),o=document.getElementById('result');
 function calc(){
  const shares=Number(s.value),price=Number(p.value),dps=Number(d.value);
- if(!Number.isFinite(shares)||!Number.isFinite(price)||!Number.isFinite(dps)||shares<0||price<=0||dps<0){
-   o.innerHTML='<div class="callout">Enter a valid share count, a share price greater than 0 and a non-negative dividend per share.</div>';return;
+ const period=document.getElementById('period').value;
+ if(!Number.isFinite(shares)||!Number.isInteger(shares)||shares<0||!Number.isFinite(price)||price<=0||!Number.isFinite(dps)||dps<0){
+   o.innerHTML='<div class="callout">Enter a whole, non-negative share count, a share price greater than 0 and a non-negative dividend per share.</div>';return;
  }
  const income=shares*dps,yieldPct=dps/price*100;
- o.innerHTML='<div class="callout"><strong>Dividend yield: '+yieldPct.toFixed(2)+'%</strong><br>Estimated dividend income: PKR '+income.toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2})+'</div>';
+ const periodLabel=period==='Annual total'?'annual estimated gross dividend income':'estimated gross income per declared dividend';
+ o.innerHTML='<div class="callout"><strong>Dividend yield for entered period: '+yieldPct.toFixed(2)+'%</strong><br>'+periodLabel.charAt(0).toUpperCase()+periodLabel.slice(1)+': PKR '+income.toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2})+'</div>';
 }
 document.getElementById('calculate').addEventListener('click',calc);calc();
 })();
