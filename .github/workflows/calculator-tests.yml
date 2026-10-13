@@ -24,6 +24,7 @@ jobs:
       - name: Run regression tests
         run: |
           node tests/psx-calculator-core.test.js
+          node tests/psx-portfolio-xirr.test.js
           node tests/psx-seo-integrity.test.js
           node tests/science-calculators.test.js
           node tests/tmr-ration-page.test.js
