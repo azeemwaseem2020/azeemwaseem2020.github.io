@@ -56,6 +56,15 @@ const cgt = fs.readFileSync(new URL('psx-capital-gains-tax-calculator.html', roo
 assert.ok(cgt.includes('https://www.nccpl.com.pk/cgt'), 'CGT page: official NCCPL CGT reference missing');
 assert.ok(cgt.includes('https://www.fbr.gov.pk/Categ/Income-Tax-Ordinance/326/1000'), 'CGT page: official FBR ordinance reference missing');
 
+const averagePage = fs.readFileSync(new URL('psx-average-price-calculator.html', root), 'utf8');
+assert.equal((averagePage.match(/<meta name=['"]author['"]/gi) || []).length, 1, 'Average-price page: author metadata must not be duplicated');
+assert.equal((averagePage.match(/property=['"]og:image['"]/gi) || []).length, 1, 'Average-price page: one Open Graph image should be defined');
+assert.match(averagePage, /<meta name="twitter:card" content="summary_large_image">/, 'Average-price page: large social preview metadata missing');
+assert.doesNotMatch(averagePage, /id="average-cost-use-cases"|id="expert-validation-layer"|id="average-cost-evidence"|id="average-source-check"/, 'Average-price page: redundant legacy sections remain');
+assert.match(averagePage, /id="choose-next-psx-calculation"/, 'Average-price page: intent-based next-step section missing');
+assert.match(averagePage, /href="psx-dividend-reinvestment-calculator\.html"/, 'Average-price page: dividend-reinvestment internal link missing');
+assert.doesNotMatch(averagePage, /"@type":"SoftwareApplication","name":"PSX Average Price Calculator"/, 'Average-price page: duplicate application schema remains');
+
 const yieldPage = fs.readFileSync(new URL('psx-dividend-yield-calculator.html', root), 'utf8');
 assert.ok(yieldPage.includes('https://www.psx.com.pk/psx/resources-and-tools/investors/guide-to-investors'), 'Dividend yield page: official PSX reference missing');
 
