@@ -60,6 +60,14 @@ assert.throws(() => calculateXirr([
 
 
 assert.match(html, /Target allocation & rebalancing planner/, "portfolio rebalancing planner must be visible");
+assert.match(html, /<title>PSX Portfolio Calculator Pakistan \| Rebalancing & XIRR \| Calcora<\/title>/, "title should match the portfolio page's rebalancing and dated-return features");
+assert.match(html, /<meta property="og:image" content="https:\/\/azeemwaseem2020\.github\.io\/og-image\.png">/, "social preview should use the existing site image");
+assert.match(inlineScript, /requiredNumber=selector=>\{const value=tr\.querySelector\(selector\)\.value\.trim\(\);return value===''\?NaN:Number\(value\)\}/, "blank required holding inputs must be rejected rather than silently treated as zero");
+assert.match(inlineScript, /Every CSV holding row must include shares, average cost, reference price and dividend per share/, "CSV import must reject missing required numeric cells");
+for (const repeatedSection of ["portfolio-audit-trail", "portfolio-reconciliation", "expert-validation-layer", "portfolio-evidence"]) {
+  assert.ok(!html.includes('id="' + repeatedSection + '"'), "repeated section should be removed: " + repeatedSection);
+}
+
 assert.match(html, /class="target-allocation"/, "each holding must accept a target allocation");
 assert.match(html, /Target allocations must total 100%/, "rebalancing must validate target weights");
 assert.match(html, /Residual gap after whole shares/, "rebalancing must disclose whole-share rounding residuals");
