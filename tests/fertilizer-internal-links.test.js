@@ -267,7 +267,7 @@ assert.match(mainFertilizer, /function combinations\(values,size,start=0,prefix=
 assert.match(mainFertilizer, /const missing=active\.filter\(x=>x\.price===null/, 'optimizer must require prices for every nutrient-containing product to avoid biased comparisons');
 assert.match(mainFertilizer, /No feasible combination of the entered products can meet every target at the same time/, 'optimizer must explain infeasible target combinations');
 assert.match(mainFertilizer, /continuous solver compares product quantities by price per kg/, 'optimizer must disclose the continuous-rate cost objective');
-assert.match(mainFertilizer, /const baselineItems=active\.map\(x=>\(\.\.\.x,r:0\)\)/, 'optimizer must calculate the existing greedy planner baseline before changing the plan');
+assert.match(mainFertilizer, /const baselineItems=active\.map\(x=>\(\{\.\.\.x,r:0\}\)\)/, 'optimizer must calculate the existing greedy planner baseline before changing the plan');
 assert.match(mainFertilizer, /const optimization=\{baselineCost:greedyCost,optimizedCost:best\.objective\*A,greedyFeasible,wholeBag\}/, 'optimizer must pass continuous and whole-bag comparisons into results');
 assert.match(mainFertilizer, /Continuous-quantity comparison \(estimated for /, 'results must show the standard-versus-optimized continuous cost comparison');
 assert.match(mainFertilizer, /excludes whole-bag rounding, delivery, application labour and field losses/, 'continuous savings display must disclose excluded real-world costs');
