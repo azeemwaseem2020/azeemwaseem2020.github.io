@@ -45,7 +45,13 @@ assert.ok(profitPage.includes('does not automatically transfer its result'), 'PS
 assert.ok(profitPage.includes('Last updated: October 9, 2026'), 'PSX profit page: page information date should reflect the current revision');
 assert.ok(profitPage.includes('Calculation checks: Calcora regression tests'), 'PSX profit page: validation wording should describe internal regression tests accurately');
 assert.doesNotMatch(profitPage, /Reviewed for calculation logic by Calcora/, 'PSX profit page: avoid ambiguous self-review wording');
-assert.match(profitPage, /<strong>Page information:<\/strong>[\s\S]*?Last updated: October 9, 2026<\/p>/, 'PSX profit page: page-information block should contain the current revision date');
+assert.match(profitPage, /<strong>Page information:<\/strong>[\s\S]*?Last updated: October 13, 2026<\/p>/, 'PSX profit page: page-information block should contain the current revision date');
+assert.match(profitPage, /<meta property="article:modified_time" content="2026-10-13">/, 'PSX profit page: article modified time should match the revision');
+assert.match(profitPage, /id="next-psx-tool"/, 'PSX profit page: consolidated intent-led PSX navigation missing');
+assert.match(profitPage, /href="psx-dividend-yield-calculator\.html"/, 'PSX profit page: dividend yield internal link missing');
+assert.match(profitPage, /href="psx-capital-gains-tax-calculator\.html"/, 'PSX profit page: dedicated CGT tool link missing');
+assert.equal((profitPage.match(/<h2>Related PSX Calculators<\/h2>/gi) || []).length, 0, 'PSX profit page: duplicate related-calculator section remains');
+assert.equal((profitPage.match(/id="next-psx-tool"/g) || []).length, 1, 'PSX profit page: next-tool navigation should appear once');
 
 const brokerage = fs.readFileSync(new URL('psx-brokerage-commission-calculator.html', root), 'utf8');
 assert.ok(brokerage.includes('https://www.psx.com.pk/psx/resources-and-tools/investors/investor-awareness-guide'), 'Brokerage page: official PSX tariff reference missing');
