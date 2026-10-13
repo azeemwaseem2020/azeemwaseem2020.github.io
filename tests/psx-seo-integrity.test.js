@@ -77,5 +77,12 @@ assert.equal((reinvestmentPage.match(/Related Calcora tools/g) || []).length, 0,
 
 const yieldPage = fs.readFileSync(new URL('psx-dividend-yield-calculator.html', root), 'utf8');
 assert.ok(yieldPage.includes('https://www.psx.com.pk/psx/resources-and-tools/investors/guide-to-investors'), 'Dividend yield page: official PSX reference missing');
+assert.equal((yieldPage.match(/name=['"]twitter:card['"]/gi) || []).length, 1, 'Dividend yield page: Twitter card metadata must not be duplicated');
+assert.equal((yieldPage.match(/name=['"]twitter:image['"]/gi) || []).length, 1, 'Dividend yield page: Twitter image metadata must not be duplicated');
+assert.match(yieldPage, /Dividend per share for the selected period/, 'Dividend yield page: input must explain selected-period basis');
+assert.match(yieldPage, /does not annualise a quarterly or interim dividend automatically/, 'Dividend yield page: annualisation limitation must be explicit');
+assert.match(yieldPage, /Gross dividend is not necessarily take-home cash/, 'Dividend yield page: gross versus net income distinction missing');
+assert.match(yieldPage, /!Number\.isInteger\(shares\)/, 'Dividend yield page: share count must be validated as a whole number');
+assert.match(yieldPage, /periodLabel=period==='Annual total'/, 'Dividend yield page: selected dividend period must affect result labelling');
 
 console.log('PSX SEO integrity regression checks: PASS');
