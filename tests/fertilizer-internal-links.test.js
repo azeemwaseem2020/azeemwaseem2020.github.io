@@ -260,8 +260,8 @@ const mainFertilizerScript = mainFertilizer.split('<script>').at(-1).split('</sc
 assert.doesNotThrow(() => new Function(mainFertilizerScript), 'main fertilizer calculator JavaScript must parse without syntax errors');
 assert.ok(Math.abs(100 * 0.30 - 30) < 1e-9 && Math.abs(100 * 0.70 - 70) < 1e-9, '30/70 split schedule must preserve the total product quantity');
 assert.ok(Math.abs(30 * 0.46 - 13.8) < 1e-9 && Math.abs(70 * 0.46 - 32.2) < 1e-9, 'split schedule must preserve nutrient contribution from a 46% N product');
-assert.match(mainFertilizer, /Last updated:<\/strong> October 11, 2026/);
-assert.match(mainFertilizer, /article:modified_time" content="2026-10-11"/);
+assert.match(mainFertilizer, /Last updated:<\/strong> October 13, 2026/);
+assert.match(mainFertilizer, /article:modified_time" content="2026-10-13"/);
 console.log('Main fertilizer split schedule, validation, export, formula and freshness checks: PASS');
 assert.match(mainFertilizer, /function optimizeCostPlan\(\)/, 'target planner must include an explicit cost-aware solver');
 assert.match(mainFertilizer, /function solveLinearSystem\(matrix,vector\)/, 'optimizer must solve candidate nutrient-balance equations');
