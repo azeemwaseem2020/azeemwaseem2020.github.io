@@ -35,7 +35,7 @@ assert.match(html, /FBR Finance Act 2026 publication/,
   'Must link the enacted Finance Act as a primary source');
 assert.match(html, /A Finance Bill is useful background but is not[\\s\\S]{0,100}substitute for the enacted law/,
   'Must distinguish a Finance Bill from enacted legislation');
-assert.match(html, /Source set reviewed on 13 October 2026/,
+assert.match(html, /Official source set reviewed October 13, 2026,/
   'Must display the current official-source review date');
 assert.match(html, /"dateModified":"2026-10-13"/,
   'Structured data dateModified must match the reviewed page version');
