@@ -67,6 +67,14 @@ assert.match(averagePage, /id="choose-next-psx-calculation"/, 'Average-price pag
 assert.match(averagePage, /href="psx-dividend-reinvestment-calculator\.html"/, 'Average-price page: dividend-reinvestment internal link missing');
 assert.doesNotMatch(averagePage, /"@type":"SoftwareApplication","name":"PSX Average Price Calculator"/, 'Average-price page: duplicate application schema remains');
 
+const reinvestmentPage = fs.readFileSync(new URL('psx-dividend-reinvestment-calculator.html', root), 'utf8');
+assert.match(reinvestmentPage, /id="reinvestment-scenario-guide"/, 'Dividend reinvestment page: unique practical scenario guide missing');
+assert.ok(reinvestmentPage.includes('PKR 4,500 remains to reinvest'), 'Dividend reinvestment page: net-dividend worked example missing');
+assert.ok(reinvestmentPage.includes('not a statement of the current tax rate'), 'Dividend reinvestment page: example tax assumption must be clearly labelled');
+assert.ok(reinvestmentPage.includes('The model allows fractional shares'), 'Dividend reinvestment page: fractional-share assumption must be disclosed');
+assert.doesNotMatch(reinvestmentPage, /What this PSX dividend reinvestment model covers|A simple way to think about reinvesting dividends|Why reinvestment can matter/, 'Dividend reinvestment page: repetitive legacy guide copy remains');
+assert.equal((reinvestmentPage.match(/Related Calcora tools/g) || []).length, 0, 'Dividend reinvestment page: duplicate generic related-tools block remains');
+
 const yieldPage = fs.readFileSync(new URL('psx-dividend-yield-calculator.html', root), 'utf8');
 assert.ok(yieldPage.includes('https://www.psx.com.pk/psx/resources-and-tools/investors/guide-to-investors'), 'Dividend yield page: official PSX reference missing');
 
