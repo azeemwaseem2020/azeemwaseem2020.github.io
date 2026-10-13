@@ -102,7 +102,8 @@ assert.doesNotMatch(hubContent, /<h2>Transparency &amp; source<\/h2>/i, 'remove 
 assert.match(hubContent, /id="fertilizer-verification"/, 'retain the practical field verification workflow');
 
 assert.match(primary, /href="fertilizer-bag-calculator\.html"[^>]*>50 kg bags, whole-bag purchase quantity and estimated cost/);
-assert.match(primary, /Last updated:<\/strong> October 13, 2026/);
+const visibleUpdateDate = primary.match(/Last updated:<\/strong> ([^<]+)/)?.[1];
+assert.ok(visibleUpdateDate, 'fertilizer page must display its update date');
 assert.match(primary, /<option value="acre" selected>Acres<\/option><option value="kanal">Kanal<\/option><option value="ha">Hectares \(ha\)<\/option>/, 'default to Pakistan-relevant acres and support kanal and hectare units');
 assert.match(primary, /1 acre = 8 kanal/, 'explain the acre-to-kanal conversion for Pakistan field planning');
 assert.match(primary, /areaUnit\.value==='kanal'\?'kanal'/, 'render rates and result summaries using the selected kanal unit');
@@ -123,7 +124,8 @@ assert.match(primary, /x\.price!==null\?x\.wholeBags\*x\.price:0/, 'an explicitl
 assert.match(primary, /x\.price!==null\?money\(x\.cost\):'Enter price'/, 'each unpriced product must be clearly identified in the results');
 assert.match(primary, /items\.filter\(x=>x\.r>0\)\.every\(x=>x\.price!==null\)\?money\(cost\):'Incomplete—enter all prices'/, 'copied result summary must not report a partial cost as a total');
 assert.equal((primary.match(/"featureList"\s*:/g) || []).length, 1, 'SoftwareApplication schema must not repeat the featureList key');
-assert.match(primary, /article:modified_time" content="2026-10-13"/, 'fertilizer modification metadata must match the visible update date');
+const metadataUpdateDate = primary.match(/article:modified_time" content="([^"]+)"/)?.[1];
+assert.equal(metadataUpdateDate, visibleUpdateDate.replace(/^October (\d+), (\d{4})$/, (_, day, year) => year + '-10-' + day.padStart(2, '0')), 'fertilizer modification metadata must match the visible update date');
 
 assert.match(blend, /href="fertilizer-bag-calculator\.html"/);
 assert.match(blend, /purchase surplus and cost/);
