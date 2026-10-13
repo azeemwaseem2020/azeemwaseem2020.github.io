@@ -116,8 +116,8 @@ assert.match(rationCheck, /does not prove the ration meets an animal’s needs/i
 console.log('Advanced TMR checker trust, currency and weighted-nutrient example checks: PASS');
 
 
-assert.match(feedCalc, /Last updated:<\/strong> October 10, 2026/, 'Visible TMR feed calculator review date should match the latest content update');
-assert.match(feedCalc, /article:modified_time" content="2026-10-10"/, 'TMR feed calculator modification metadata should match its visible review date');
+assert.match(feedCalc, /Last updated:<\/strong> October 13, 2026/, 'Visible TMR feed calculator review date should match the latest content update');
+assert.match(feedCalc, /article:modified_time" content="2026-10-13"/, 'TMR feed calculator modification metadata should match its visible review date');
 for (const [path, html] of [
   ['tmr-feed-calculator.html', feedCalc],
   ['tmr-dry-matter-calculator.html', dryMatter],
@@ -130,6 +130,15 @@ for (const [path, html] of [
   assert.doesNotMatch(html, /<meta name="author" content="Calcora">/, path + ' should not use the brand as its named author');
 }
 console.log('TMR cluster author identity and freshness consistency checks: PASS');
+
+assert.match(feedCalc, /PAKISTAN FARM WORKFLOW • WORKED EXAMPLE/, 'TMR guide should provide practical Pakistan farm context');
+assert.match(feedCalc, /20 × 18 = 360 kg\/day/, 'TMR guide should show transparent group-feed scaling arithmetic');
+assert.match(feedCalc, /360 × 3 = 1,080 kg/, 'TMR guide should show multi-day batch scaling');
+assert.match(feedCalc, /hypothetical PKR 3,000 price for a 40 kg bag equals PKR 75\/kg/, 'TMR guide should explain bag-price normalization without presenting a market quote');
+assert.match(feedCalc, /not a current market price/, 'TMR guide must label example prices as illustrative');
+assert.match(feedCalc, /100 kg of fodder at 20% dry matter supplies 20 kg DM/, 'TMR guide should demonstrate dry-matter change with moisture');
+assert.match(feedCalc, /does not confirm nutrient balance, palatability, safety or suitability/, 'TMR guide must distinguish arithmetic from nutrition advice');
+
 
 
 assert.match(dryMatter, /Updated: October 9, 2026/, 'Dry matter page visible update date should reflect the worked-example revision');
