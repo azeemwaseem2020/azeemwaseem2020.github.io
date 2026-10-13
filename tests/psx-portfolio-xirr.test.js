@@ -58,4 +58,21 @@ assert.throws(() => calculateXirr([
   { date: "2026-01-01", amount: 200 }
 ]), /valid date/, "XIRR must reject missing transaction dates");
 
-console.log("PSX portfolio dated cash-flow XIRR checks: PASS");
+
+assert.match(html, /Target allocation & rebalancing planner/, "portfolio rebalancing planner must be visible");
+assert.match(html, /class="target-allocation"/, "each holding must accept a target allocation");
+assert.match(html, /Target allocations must total 100%/, "rebalancing must validate target weights");
+assert.match(html, /Residual gap after whole shares/, "rebalancing must disclose whole-share rounding residuals");
+assert.match(html, /Target allocation \(%\)/, "portfolio CSV must preserve target allocations");
+const rebalanceMatch = inlineScript.match(/function calculateRebalance\(data,totalValue\)\{([\s\S]*?)\}\nfunction money/);
+assert.ok(rebalanceMatch, "the rebalancing calculation must remain separately testable");
+const calculateRebalance = new Function("data", "totalValue", rebalanceMatch[1]);
+const rebalancePlan = calculateRebalance([
+  {symbol:"AAA",q:10,price:100,targetAllocation:50},
+  {symbol:"BBB",q:30,price:100,targetAllocation:50}
+], 4000);
+assert.equal(rebalancePlan[0].shareChange, 10, "underweight holding should suggest buying whole shares");
+assert.equal(rebalancePlan[1].shareChange, -10, "overweight holding should suggest selling whole shares");
+assert.equal(rebalancePlan[0].residualGap, 0, "exact whole-share rebalance should leave no residual gap");
+assert.equal(rebalancePlan[1].residualGap, 0, "exact whole-share rebalance should leave no residual gap for second holding");
+\nconsole.log("PSX portfolio dated cash-flow XIRR checks: PASS");
