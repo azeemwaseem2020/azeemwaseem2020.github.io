@@ -83,4 +83,12 @@ assert.doesNotMatch(emi, /<h3>What changes the EMI\?<\/h3>/,
   'EMI page must not repeat the rate/principal/term impact list');
 
 
+const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
+const prioritySitemap = fs.readFileSync(new URL('../sitemap-pakistan-priority.xml', import.meta.url), 'utf8');
+for (const map of [sitemap, prioritySitemap]) {
+  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/zakat-calculator\.html<\/loc><lastmod>2026-10-13<\/lastmod>/,
+    'Both sitemaps must record the Zakat page revision date');
+  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/loan-emi-calculator\.html<\/loc><lastmod>2026-10-13<\/lastmod>/,
+    'Both sitemaps must record the EMI page revision date');
+}
 console.log('Finance calculator SEO, source and validation tests passed.');
