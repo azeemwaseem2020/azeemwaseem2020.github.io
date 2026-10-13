@@ -7,12 +7,34 @@ assert.match(html, /id="valuationDate"/, "the terminal valuation date must be ex
 assert.match(html, /id="exportCashFlows"/, "dated cash flows must be exportable for audit");
 assert.match(html, /calcora-psx-dated-cash-flows\.csv/, "export must use a clear CSV filename");
 assert.match(html, /maximum of 50 dated transactions/, "the transaction ledger must enforce its documented limit");
+assert.match(html, /class="cash-fees"/, "transactions must support explicit broker fees and taxes");
+assert.match(html, /Fees\/taxes entered/, "the result must reconcile entered fees and taxes");
+assert.match(html, /Net dividends received/, "dividend receipts must be reported separately");
+
 
 const inlineScript = html.split("<script>").at(-1).split("</script>")[0];
 assert.doesNotThrow(() => new Function(inlineScript), "portfolio page JavaScript must parse without syntax errors");
 const match = inlineScript.match(/function calculateXirr\(flows\)\{([\s\S]*?)\nfunction readCashFlows\(\)/);
 assert.ok(match, "the pure XIRR solver must remain separately testable");
 const calculateXirr = new Function("flows", match[1].replace(/\}\s*$/, ""));
+const feeMatch = inlineScript.match(/function signedCashFlow\(row\)\{([\\s\\S]*?)\\nfunction calculateXirr/);
+assert.ok(feeMatch, "fee-aware cash flow conversion must be testable");
+const signedCashFlow = new Function("row", feeMatch[1].replace(/\\}\s*$/, ""));
+const mockRow = (type, amount, fees, date = "2025-01-01") => ({
+  querySelector(selector) {
+    const fields = {
+      ".cash-type": { value: type },
+      ".cash-amount": { value: String(amount) },
+      ".cash-fees": { value: String(fees) },
+      ".cash-date": { value: date }
+    };
+    return fields[selector];
+  }
+});
+assert.equal(signedCashFlow(mockRow("buy", 10000, 100)).signed, -10100, "buy cash flow must include fees as an additional outflow");
+assert.equal(signedCashFlow(mockRow("sell", 12000, 200)).signed, 11800, "sale cash flow must deduct fees from proceeds");
+assert.equal(signedCashFlow(mockRow("dividend", 300, 30)).signed, 270, "net dividend receipt must deduct entered withholding/tax");
+
 
 const tenPercent = calculateXirr([
   { date: "2025-01-01", amount: -10000 },
