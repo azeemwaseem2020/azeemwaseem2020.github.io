@@ -12,7 +12,7 @@ const inlineScript = html.split("<script>").at(-1).split("</script>")[0];
 assert.doesNotThrow(() => new Function(inlineScript), "portfolio page JavaScript must parse without syntax errors");
 const match = inlineScript.match(/function calculateXirr\(flows\)\{([\s\S]*?)\nfunction readCashFlows\(\)/);
 assert.ok(match, "the pure XIRR solver must remain separately testable");
-const calculateXirr = new Function("flows", match[1]);
+const calculateXirr = new Function("flows", match[1].replace(/\}\s*$/, ""));
 
 const tenPercent = calculateXirr([
   { date: "2025-01-01", amount: -10000 },
