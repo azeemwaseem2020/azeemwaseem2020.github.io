@@ -12,6 +12,8 @@ const report = {
   metadata: { missingTitle: [], missingDescription: [], missingCanonical: [], noindex: [], duplicateTitles: [], duplicateCanonicals: [] },
   imagesMissingAlt: [],
   brokenInternalLinks: [],
+  internalLinksToNoindexPages: [],
+  internalLinksToCanonicalAliases: [],
   htmlTechnical: { missingLang: [], missingViewport: [], missingCharset: [], multipleH1: [] },
   structuredData: { invalidJsonLd: [] },
   canonicalTargetsMissing: [],
@@ -56,6 +58,8 @@ function addUnique(map, key, file) {
 const titles = new Map();
 const canonicals = new Map();
 const canonicalForFile = new Map();
+const canonicalForAllFiles = new Map();
+const internalAnchorLinks = [];
 const noindexFiles = new Set();
 const mainSitemapUrls = new Set();
 
@@ -67,6 +71,7 @@ for (const abs of htmlFiles) {
   const description = attr(descriptionTag, 'content');
   const canonicalTag = (html.match(/<link\b[^>]*\brel\s*=\s*(?:"canonical"|'canonical'|canonical)[^>]*>/i) || [])[0] || '';
   const canonical = attr(canonicalTag, 'href');
+  if (canonical) canonicalForAllFiles.set(file, canonical);
   const robotsTags = [...html.matchAll(/<meta\b[^>]*\bname\s*=\s*(?:"robots"|'robots'|robots)[^>]*>/gi)].map(m => attr(m[0], 'content').toLowerCase());
   const isNoindex = robotsTags.some(value => /\bnoindex\b/.test(value));
   const isVerification = verificationFile(file);
@@ -108,6 +113,11 @@ for (const abs of htmlFiles) {
   }
 
   const markup = html.replace(/<script\b[\s\S]*?<\/script\s*>/gi, '').replace(/<style\b[\s\S]*?<\/style\s*>/gi, '');
+  for (const anchor of markup.matchAll(/<a\b[^>]*>/gi)) {
+    const href = attr(anchor[0], 'href');
+    const target = relFile(file, href);
+    if (target && knownFiles.has(target)) internalAnchorLinks.push({ file, href, target });
+  }
   for (const match of markup.matchAll(/<img\b[^>]*>/gi)) {
     if (!/\balt\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/i.test(match[0])) report.imagesMissingAlt.push({ file, tag: match[0].slice(0, 180) });
   }
@@ -126,6 +136,17 @@ for (const abs of htmlFiles) {
     }
   }
 }
+function canonicalUrlForFile(file) {
+  return file === 'index.html' ? BASE + '/' : BASE + '/' + file;
+}
+for (const link of internalAnchorLinks) {
+  if (noindexFiles.has(link.target)) report.internalLinksToNoindexPages.push(link);
+  const targetCanonical = canonicalForAllFiles.get(link.target);
+  if (targetCanonical && targetCanonical !== canonicalUrlForFile(link.target)) {
+    report.internalLinksToCanonicalAliases.push({ ...link, canonical: targetCanonical });
+  }
+}
+
 for (const [title, files] of titles) if (files.length > 1) report.metadata.duplicateTitles.push({ title, files });
 for (const [canonical, files] of canonicals) if (files.length > 1) report.metadata.duplicateCanonicals.push({ canonical, files });
 
@@ -177,6 +198,8 @@ const summary = {
   duplicateCanonicalGroups: report.metadata.duplicateCanonicals.length,
   imagesMissingAlt: report.imagesMissingAlt.length,
   brokenInternalLinks: report.brokenInternalLinks.length,
+  internalLinksToNoindexPages: report.internalLinksToNoindexPages.length,
+  internalLinksToCanonicalAliases: report.internalLinksToCanonicalAliases.length,
   htmlTechnical: Object.fromEntries(Object.entries(report.htmlTechnical).map(([key, value]) => [key, value.length])),
   invalidJsonLd: report.structuredData.invalidJsonLd.length,
   canonicalTargetsMissing: report.canonicalTargetsMissing.length,
@@ -184,6 +207,8 @@ const summary = {
   sitemap: report.sitemap,
   blockingErrors: report.errors
 };
+if (report.internalLinksToNoindexPages.length) console.warn('WARNING: internal links point to noindex pages: ' + report.internalLinksToNoindexPages.length);
+if (report.internalLinksToCanonicalAliases.length) console.warn('WARNING: internal links point to canonical aliases: ' + report.internalLinksToCanonicalAliases.length);
 console.log('CALCORA SEO INTEGRITY AUDIT');
 console.log(JSON.stringify({
   ...summary,
@@ -195,6 +220,8 @@ console.log(JSON.stringify({
     duplicateCanonicals: report.metadata.duplicateCanonicals,
     imagesMissingAlt: report.imagesMissingAlt,
     brokenInternalLinks: report.brokenInternalLinks,
+    internalLinksToNoindexPages: report.internalLinksToNoindexPages,
+    internalLinksToCanonicalAliases: report.internalLinksToCanonicalAliases,
     htmlTechnical: report.htmlTechnical,
     invalidJsonLd: report.structuredData.invalidJsonLd,
     canonicalTargetsMissing: report.canonicalTargetsMissing,
