@@ -73,5 +73,14 @@ assert.equal((emi.match(/"dateModified":"2026-10-13"/g) || []).length, 2,
   'EMI WebApplication and WebPage structured data must share the current revision date');
 assert.match(emi, /article:modified_time" content="2026-10-13"/,
   'EMI Open Graph modified time must match the current page revision');
+assert.equal(emi.split('<h2>Worked EMI example</h2>').length - 1, 1,
+  'EMI worked example should appear once after consolidation');
+assert.doesNotMatch(emi, /id="emi-content-guide"/,
+  'EMI page must not retain the duplicate comparison guide section');
+assert.doesNotMatch(emi, /<h2>How to compare two loan offers<\/h2>/,
+  'EMI page must not repeat the loan-comparison section');
+assert.doesNotMatch(emi, /<h3>What changes the EMI\?<\/h3>/,
+  'EMI page must not repeat the rate/principal/term impact list');
+
 
 console.log('Finance calculator SEO, source and validation tests passed.');
