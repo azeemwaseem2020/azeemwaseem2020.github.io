@@ -75,4 +75,5 @@ assert.equal(rebalancePlan[0].shareChange, 10, "underweight holding should sugge
 assert.equal(rebalancePlan[1].shareChange, -10, "overweight holding should suggest selling whole shares");
 assert.equal(rebalancePlan[0].residualGap, 0, "exact whole-share rebalance should leave no residual gap");
 assert.equal(rebalancePlan[1].residualGap, 0, "exact whole-share rebalance should leave no residual gap for second holding");
-\nconsole.log("PSX portfolio dated cash-flow XIRR checks: PASS");
+
+console.log("PSX portfolio dated cash-flow XIRR checks: PASS");
