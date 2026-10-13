@@ -101,4 +101,13 @@ const exitPlan = calculateRebalance([
 assert.equal(exitPlan.length, 2, "zero-percent targets must remain in the plan so users can exit a position");
 assert.equal(exitPlan[1].shareChange, -5, "a zero-percent target should suggest selling the entire holding at the entered reference price");
 
-console.log("PSX portfolio dated cash-flow XIRR checks: PASS");
+
+assert.match(html, /id="portfolio-snapshot-example"/, "the guide must include a concrete valuation example distinct from rebalancing");
+assert.match(html, /PKR 1,000 unrealised profit/, "the worked valuation example must explain the numerical outcome");
+assert.match(html, /Calculation checks: Calcora regression tests/, "page trust copy must describe the actual check without implying independent review");
+assert.match(html, /Pakistan Stock Exchange investor guide/, "the guide must cite a relevant primary investor resource");
+assert.match(html, /NCCPL CGT resources/, "the guide must point users to current capital-gains-tax resources");
+assert.equal((html.match(/id="portfolio-guide-title"/g) || []).length, 1, "the long-form guide heading id must be unique");
+assert.equal((html.match(/id="portfolio-snapshot-example"/g) || []).length, 1, "the valuation example id must be unique");
+
+console.log("PSX portfolio content, transparency and dated cash-flow XIRR checks: PASS");
