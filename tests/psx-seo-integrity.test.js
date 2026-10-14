@@ -42,11 +42,11 @@ assert.ok(profitPage.includes('https://www.nccpl.com.pk/cgt'), 'PSX profit page:
 assert.equal((profitPage.match(/property=['"]og:image:alt['"]/gi) || []).length, 1, 'PSX profit page: Open Graph image alt should not be duplicated');
 assert.ok(profitPage.includes('"name":"PSX Profit Calculator Pakistan — Net Profit, Loss & Break-Even"'), 'PSX profit page: WebApplication name should match the page purpose');
 assert.ok(profitPage.includes('does not automatically transfer its result'), 'PSX profit page: fee estimator separation must be disclosed near break-even summary');
-assert.ok(profitPage.includes('Last updated: October 13, 2026'), 'PSX profit page: page information date should reflect the current revision');
-assert.ok(profitPage.includes('Calculation checks: Calcora regression tests'), 'PSX profit page: validation wording should describe internal regression tests accurately');
+assert.ok(profitPage.includes('Last updated: October 14, 2026'), 'PSX profit page: page information date should reflect the current revision');
+assert.ok(profitPage.includes('Calculation basis: entered trade values and the formulas described below'), 'PSX profit page: validation wording should describe internal regression tests accurately');
 assert.doesNotMatch(profitPage, /Reviewed for calculation logic by Calcora/, 'PSX profit page: avoid ambiguous self-review wording');
 assert.match(profitPage, /<strong>Page information:<\/strong>[\s\S]*?Last updated: October 13, 2026<\/p>/, 'PSX profit page: page-information block should contain the current revision date');
-assert.match(profitPage, /<meta property="article:modified_time" content="2026-10-13">/, 'PSX profit page: article modified time should match the revision');
+assert.match(profitPage, /<meta property="article:modified_time" content="2026-10-14">/, 'PSX profit page: article modified time should match the revision');
 assert.match(profitPage, /id="next-psx-tool"/, 'PSX profit page: consolidated intent-led PSX navigation missing');
 assert.match(profitPage, /href="psx-dividend-yield-calculator\.html"/, 'PSX profit page: dividend yield internal link missing');
 assert.match(profitPage, /href="psx-capital-gains-tax-calculator\.html"/, 'PSX profit page: dedicated CGT tool link missing');
