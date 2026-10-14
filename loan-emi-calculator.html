@@ -164,6 +164,9 @@ function calc(){
  if(!Number.isFinite(A)||!Number.isFinite(D)||!Number.isFinite(annual)||!Number.isFinite(N)||!Number.isFinite(F)||A<=0||D<0||D>=A||annual<0||annual>100||N<=0||N>600||F<0||K!==null&&(!Number.isFinite(K)||K<0||K>100)){result.innerHTML='<p role="alert">Please enter valid values: loan amount above zero, down payment below the amount, annual rate and optional benchmark from 0% to 100%, term from 1 to 600 monthly payments, and non-negative fees.</p>';return}
  const e=R===0?P/N:P*R*Math.pow(1+R,N)/(Math.pow(1+R,N)-1),total=e*N,interest=total-P,totalCash=total+D+F;
  const flatInterest=P*(annual/100)*(N/12),flatPayment=(P+flatInterest)/N,flatTotal=P+flatInterest;
+ if(![e,total,interest,totalCash,flatInterest,flatPayment,flatTotal].every(Number.isFinite)){
+  result.innerHTML='<p role="alert">These values are too large to calculate reliably. Check the loan amount, rate, fees and term, then try again.</p>';return;
+ }
  let balance=P,rows=[],principalTotal=0,interestTotal=0;
  for(let i=1;i<=N;i++){let int=R===0?0:balance*R;let prin=e-int;if(i===N)prin=balance;let payment=prin+int;balance=Math.max(0,balance-prin);principalTotal+=prin;interestTotal+=int;rows.push({i,payment,principal:prin,interest:int,balance})}
  const spread=K===null?null:annual-K;
