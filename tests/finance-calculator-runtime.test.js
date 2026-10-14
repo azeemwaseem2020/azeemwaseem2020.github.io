@@ -77,7 +77,7 @@ function inlineScript(html, marker) {
   assert.match(field('result').innerHTML, /Please enter valid values/);
 
   field('rate').value = '10';
-  field('amount').value = '1e308';
+  field('amount').value = '1.79e308';
   field('calculate').handlers.click();
   assert.match(field('result').innerHTML, /too large to calculate reliably/);
 }
