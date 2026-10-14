@@ -37,9 +37,9 @@ assert.match(html, /A Finance Bill is useful background but is not[\s\S]{0,100}s
   'Must distinguish a Finance Bill from enacted legislation');
 assert.match(html, /Official source set reviewed October 13, 2026\./,
   'Must display the current official-source review date');
-assert.match(html, /"dateModified":"2026-10-13"/,
+assert.match(html, /"dateModified":"2026-10-14"/,
   'Structured data dateModified must match the reviewed page version');
-assert.match(html, /article:modified_time" content="2026-10-13"/,
+assert.match(html, /article:modified_time" content="2026-10-14"/,
   'Open Graph modified time must match the reviewed page version');
 
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
