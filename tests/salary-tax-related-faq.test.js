@@ -49,16 +49,20 @@ assert.match(zakat, /value="" placeholder="Enter the applicable Nisab amount"/,
   'Zakat page must not prefill the historical 1446–47 Nisab as current');
 assert.match(zakat, /PKR 503,529[\s\S]{0,220}historical Pakistan government reference/,
   'Zakat page must identify the PKR 503,529 threshold as historical');
+assert.match(zakat, /!Number\.isFinite\(assets\)/,
+  'Zakat calculator must stop when the entered asset sum exceeds reliable numeric range');
 assert.match(zakat, /validMoneyInput/,
   'Zakat calculator must reject blank, negative and non-numeric money inputs instead of silently converting them to zero');
 assert.match(zakat, /Enter a positive Nisab threshold/,
   'Zakat calculation must require a positive user-confirmed Nisab');
-assert.match(zakat, /"dateModified":"2026-10-13"/,
+assert.match(zakat, /"dateModified":"2026-10-14"/,
   'Zakat structured-data revision date must match the current page revision');
-assert.match(zakat, /article:modified_time" content="2026-10-13"/,
+assert.match(zakat, /article:modified_time" content="2026-10-14"/,
   'Zakat Open Graph modified time must match the current page revision');
 
 const emi = fs.readFileSync(new URL('../loan-emi-calculator.html', import.meta.url), 'utf8');
+assert.match(emi, /Number\.MAX_SAFE_INTEGER/,
+  'EMI calculator must reject amounts beyond safe numeric precision');
 assert.match(emi, /N>600/,
   'EMI calculator must cap the schedule at 600 monthly payments');
 assert.match(emi, /annual>100/,
@@ -69,9 +73,9 @@ assert.match(emi, /total scheduled repayment of approximately PKR 127,482\.27/,
   'EMI worked example must match the reducing-balance formula to two decimal places');
 assert.doesNotMatch(emi, /2026-10-09/,
   'EMI structured-data dates must not retain the prior revision date');
-assert.equal((emi.match(/"dateModified":"2026-10-13"/g) || []).length, 2,
+assert.equal((emi.match(/"dateModified":"2026-10-14"/g) || []).length, 2,
   'EMI WebApplication and WebPage structured data must share the current revision date');
-assert.match(emi, /article:modified_time" content="2026-10-13"/,
+assert.match(emi, /article:modified_time" content="2026-10-14"/,
   'EMI Open Graph modified time must match the current page revision');
 assert.equal(emi.split('<h2>Worked EMI example</h2>').length - 1, 1,
   'EMI worked example should appear once after consolidation');
@@ -86,9 +90,9 @@ assert.doesNotMatch(emi, /<h3>What changes the EMI\?<\/h3>/,
 const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
 const prioritySitemap = fs.readFileSync(new URL('../sitemap-pakistan-priority.xml', import.meta.url), 'utf8');
 for (const map of [sitemap, prioritySitemap]) {
-  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/zakat-calculator\.html<\/loc><lastmod>2026-10-13<\/lastmod>/,
+  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/zakat-calculator\.html<\/loc><lastmod>2026-10-14<\/lastmod>/,
     'Both sitemaps must record the Zakat page revision date');
-  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/loan-emi-calculator\.html<\/loc><lastmod>2026-10-13<\/lastmod>/,
+  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/loan-emi-calculator\.html<\/loc><lastmod>2026-10-14<\/lastmod>/,
     'Both sitemaps must record the EMI page revision date');
 }
 console.log('Finance calculator SEO, source and validation tests passed.');
