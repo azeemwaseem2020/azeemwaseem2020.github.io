@@ -79,7 +79,7 @@ function inlineScript(html, marker) {
   field('rate').value = '10';
   field('amount').value = '1.79e308';
   field('calculate').handlers.click();
-  assert.match(field('result').innerHTML, /too large to calculate reliably/);
+  assert.match(field('result').innerHTML, /exceed safe numeric precision/);
 }
 
 // Zakat: verify the estimate, missing Nisab validation and overflow guard.
