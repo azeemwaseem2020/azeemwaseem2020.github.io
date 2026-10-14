@@ -49,6 +49,9 @@ function calculateZakat(){
   if(nisab<=0){result.innerHTML='<p role="alert">Enter a positive Nisab threshold from a source appropriate to your valuation date and method before calculating an estimate.</p>';return;}
   const assets=assetIds.reduce((sum,id)=>sum+money(id),0);
   const liabilities=money('liabilities');
+  if(!Number.isFinite(assets)||!Number.isFinite(assets-liabilities)){
+    result.innerHTML='<p role="alert">These amounts are too large to calculate reliably. Check the PKR values and try again.</p>';return;
+  }
   const net=Math.max(0,assets-liabilities);
   const meetsNisab=nisab>0&&net>=nisab;
   const due=meetsNisab?net*0.025:0;
