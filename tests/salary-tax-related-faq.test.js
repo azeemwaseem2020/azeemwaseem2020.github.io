@@ -49,7 +49,7 @@ assert.match(zakat, /value="" placeholder="Enter the applicable Nisab amount"/,
   'Zakat page must not prefill the historical 1446–47 Nisab as current');
 assert.match(zakat, /PKR 503,529[\s\S]{0,220}historical Pakistan government reference/,
   'Zakat page must identify the PKR 503,529 threshold as historical');
-assert.match(zakat, /!Number\\.isFinite\\(assets\\)/,
+assert.match(zakat, /!Number\.isFinite\(assets\)/,
   'Zakat calculator must stop when the entered asset sum exceeds reliable numeric range');
 assert.match(zakat, /validMoneyInput/,
   'Zakat calculator must reject blank, negative and non-numeric money inputs instead of silently converting them to zero');
@@ -61,7 +61,7 @@ assert.match(zakat, /article:modified_time" content="2026-10-14"/,
   'Zakat Open Graph modified time must match the current page revision');
 
 const emi = fs.readFileSync(new URL('../loan-emi-calculator.html', import.meta.url), 'utf8');
-assert.match(emi, /Number\\.MAX_SAFE_INTEGER/,
+assert.match(emi, /Number\.MAX_SAFE_INTEGER/,
   'EMI calculator must reject amounts beyond safe numeric precision');
 assert.match(emi, /N>600/,
   'EMI calculator must cap the schedule at 600 monthly payments');
