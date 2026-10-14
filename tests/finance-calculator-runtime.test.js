@@ -6,20 +6,20 @@ const read = name => fs.readFileSync(new URL('../' + name, import.meta.url), 'ut
 
 function makeDom(html) {
   const elements = new Map();
-  for (const match of html.matchAll(/<input\\b[^>]*>/g)) {
+  for (const match of html.matchAll(/<input\b[^>]*>/g)) {
     const tag = match[0];
-    const id = tag.match(/\\bid="([^"]+)"/)?.[1];
+    const id = tag.match(/\bid="([^"]+)"/)?.[1];
     if (!id) continue;
     elements.set(id, {
       id,
-      value: tag.match(/\\bvalue="([^"]*)"/)?.[1] ?? '',
+      value: tag.match(/\bvalue="([^"]*)"/)?.[1] ?? '',
       innerHTML: '',
       textContent: '',
       handlers: {},
       addEventListener(type, callback) { this.handlers[type] = callback; }
     });
   }
-  for (const match of html.matchAll(/<(?:button|div|a)\\b[^>]*\\bid="([^"]+)"[^>]*>/g)) {
+  for (const match of html.matchAll(/<(?:button|div|a)\b[^>]*\bid="([^"]+)"[^>]*>/g)) {
     if (!elements.has(match[1])) elements.set(match[1], {
       id: match[1], value: '', innerHTML: '', textContent: '', handlers: {},
       addEventListener(type, callback) { this.handlers[type] = callback; }
@@ -36,7 +36,7 @@ function makeDom(html) {
         return elements.get(id);
       },
       querySelector(selector) {
-        const id = selector.match(/label\\[for="([^"]+)"\\]/)?.[1] ?? '';
+        const id = selector.match(/label\[for="([^"]+)"\]/)?.[1] ?? '';
         return { textContent: id || 'Unknown field' };
       }
     }
@@ -44,7 +44,7 @@ function makeDom(html) {
 }
 
 function inlineScript(html, marker) {
-  const scripts = [...html.matchAll(/<script>([\\s\\S]*?)<\\/script>/g)].map(match => match[1]);
+  const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(match => match[1]);
   const found = scripts.find(script => script.includes(marker));
   assert.ok(found, 'Expected inline calculator script containing: ' + marker);
   return found;
@@ -63,14 +63,14 @@ function inlineScript(html, marker) {
   field('fees').value = '0';
   field('kibor').value = '';
   field('calculate').handlers.click();
-  assert.match(field('result').innerHTML, /Monthly EMI:<\\/strong> PKR 2,124\\.70/);
-  assert.match(field('result').innerHTML, /Total interest:<\\/strong> PKR 27,482\\.27/);
-  assert.match(field('result').innerHTML, /Total loan repayment:<\\/strong> PKR 127,482\\.27/);
+  assert.match(field('result').innerHTML, /Monthly EMI:<\/strong> PKR 2,124\.70/);
+  assert.match(field('result').innerHTML, /Total interest:<\/strong> PKR 27,482\.27/);
+  assert.match(field('result').innerHTML, /Total loan repayment:<\/strong> PKR 127,482\.27/);
 
   field('rate').value = '0';
   field('calculate').handlers.click();
-  assert.match(field('result').innerHTML, /Monthly EMI:<\\/strong> PKR 1,666\\.67/);
-  assert.match(field('result').innerHTML, /Total interest:<\\/strong> PKR 0\\.00/);
+  assert.match(field('result').innerHTML, /Monthly EMI:<\/strong> PKR 1,666\.67/);
+  assert.match(field('result').innerHTML, /Total interest:<\/strong> PKR 0\.00/);
 
   field('rate').value = '101';
   field('calculate').handlers.click();
@@ -94,8 +94,8 @@ function inlineScript(html, marker) {
   field('gold').value = '200000';
   field('liabilities').value = '100000';
   field('calc').handlers.click();
-  assert.match(field('result').innerHTML, /Net listed assets:<\\/strong> PKR 800,000/);
-  assert.match(field('result').innerHTML, /Estimated Zakat at 2\\.5%:<\\/strong> PKR 20,000/);
+  assert.match(field('result').innerHTML, /Net listed assets:<\/strong> PKR 800,000/);
+  assert.match(field('result').innerHTML, /Estimated Zakat at 2\.5%:<\/strong> PKR 20,000/);
 
   field('nisab').value = '';
   field('calc').handlers.click();
