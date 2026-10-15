@@ -211,5 +211,91 @@ function calc(){
 document.getElementById('calculate').addEventListener('click',calc);
 calc();
 </script>
+
+<script>
+(function () {
+  const el = id => document.getElementById(id);
+  const money = n => n.toLocaleString('en-PK', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  const payoff = el('extra-payoff-result');
+  function calculatePayoff() {
+    const amount = Number(el('amount').value), down = Number(el('down').value);
+    const rate = Number(el('rate').value), months = Math.round(Number(el('years').value) * 12);
+    const extra = Number(el('extra-principal').value), principal = amount - down, r = rate / 1200;
+    if (![amount, down, rate, months, extra, principal].every(Number.isFinite) ||
+        amount <= 0 || down < 0 || down >= amount || rate < 0 || rate > 100 ||
+        months < 1 || months > 600 || extra < 0 ||
+        [amount, down, extra].some(v => v > Number.MAX_SAFE_INTEGER)) {
+      payoff.textContent = 'Enter valid loan inputs and a non-negative extra payment.';
+      return;
+    }
+    if (extra === 0) {
+      payoff.textContent = 'Enter an extra monthly principal amount above zero to estimate potential savings.';
+      return;
+    }
+    const emi = r === 0 ? principal / months : principal * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
+    if (!Number.isFinite(emi) || emi <= 0) { payoff.textContent = 'These inputs are too large for a reliable estimate.'; return; }
+    let normalBalance = principal, normalInterest = 0, extraBalance = principal, extraInterest = 0, paidMonths = 0;
+    for (let i = 0; i < months && normalBalance > 0.005; i++) {
+      const interest = normalBalance * r;
+      normalInterest += interest;
+      normalBalance = Math.max(0, normalBalance - Math.min(normalBalance, Math.max(0, emi - interest)));
+    }
+    while (extraBalance > 0.005 && paidMonths < months) {
+      const interest = extraBalance * r;
+      extraInterest += interest;
+      extraBalance = Math.max(0, extraBalance - Math.min(extraBalance, Math.max(0, emi - interest) + extra));
+      paidMonths++;
+    }
+    if (extraBalance > 0.005) { payoff.textContent = 'The extra-payment scenario did not pay off within the selected term.'; return; }
+    payoff.textContent = 'Extra-payment payoff scenario\nExtra principal each month: PKR ' + money(extra) +
+      '\nEstimated payoff: ' + paidMonths + ' months' +
+      '\nInterest without extra payments: PKR ' + money(normalInterest) +
+      '\nInterest with extra payments: PKR ' + money(extraInterest) +
+      '\nPotential interest saved: PKR ' + money(Math.max(0, normalInterest - extraInterest)) +
+      '\nPotential months saved: ' + Math.max(0, months - paidMonths) +
+      '\nIllustrative estimate only; confirm prepayment rules, charges and payment allocation with the lender.';
+  }
+  el('calculate').addEventListener('click', calculatePayoff);
+  el('extra-principal').addEventListener('input', calculatePayoff);
+  calculatePayoff();
+
+  el('aff-check').addEventListener('click', function () {
+    const income = Number(el('aff-income').value), expenses = Number(el('aff-expenses').value);
+    const debts = Number(el('aff-debt').value), emi = Number(el('aff-emi').value);
+    const shock = Number(el('aff-buffer').value), output = el('aff-result');
+    if (![income, expenses, debts, emi, shock].every(Number.isFinite) ||
+        income <= 0 || expenses < 0 || debts < 0 || emi < 0 ||
+        [income, expenses, debts, emi].some(v => v > Number.MAX_SAFE_INTEGER)) {
+      output.textContent = 'Enter a positive take-home income and valid non-negative expenses, debts and EMI.';
+      return;
+    }
+    const combined = debts + emi;
+    if (!Number.isFinite(combined)) { output.textContent = 'Combined payments are too large to calculate reliably.'; return; }
+    const ratio = combined / income * 100, remaining = income - expenses - combined;
+    const annual = Number(el('rate').value), principal = Number(el('amount').value) - Number(el('down').value);
+    const months = Math.round(Number(el('years').value) * 12);
+    let stress = null;
+    if (Number.isFinite(annual) && annual >= 0 && annual + shock <= 100 && principal > 0 && months >= 1 && months <= 600) {
+      const r = (annual + shock) / 1200;
+      const value = r === 0 ? principal / months : principal * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
+      if (Number.isFinite(value)) stress = value;
+    }
+    const label = ratio < 30 ? 'Lower payment burden' : ratio < 40 ? 'Moderate payment burden' : 'High payment burden';
+    let text = 'Budget check\nTake-home income: PKR ' + money(income) +
+      '\nOther debt plus proposed EMI: PKR ' + money(combined) +
+      '\nDebt payments / income: ' + ratio.toFixed(1) + '% (' + label + ')' +
+      '\nLeft after listed expenses and debt: PKR ' + money(remaining) +
+      '\n' + (remaining < 0 ? 'Listed commitments exceed income after essential expenses.' : 'Review your full budget and keep an emergency buffer.');
+    if (stress === null) text += '\nRate-stress EMI unavailable; check main calculator inputs and keep stressed rate at or below 100%.';
+    else text += '\nHypothetical stressed rate: ' + (annual + shock).toFixed(2) + '%' +
+      '\nStressed EMI: PKR ' + money(stress) +
+      '\nDebt payments / income after stress: ' + ((debts + stress) / income * 100).toFixed(1) + '%' +
+      '\nRemaining after expenses and debt after stress: PKR ' + money(income - expenses - debts - stress);
+    text += '\n30% and 40% labels are budgeting prompts, not universal lending standards.';
+    output.textContent = text;
+  });
+})();
+</script>
+
 </body>
 </html>
