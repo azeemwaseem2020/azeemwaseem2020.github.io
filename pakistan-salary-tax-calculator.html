@@ -115,7 +115,7 @@
     const raw=income.value.trim(), n=Number(raw);
     if(raw==='' || !Number.isFinite(n) || n<0) { result.innerHTML='<p role="alert">Enter a valid salary amount of PKR 0 or more.</p>'; return; }
     const annualInput=n*(period.value==='monthly'?12:1);
-    if (!Number.isFinite(annualInput) || annualInput > Number.MAX_SAFE_INTEGER) {
+    if (!Number.isFinite(annualInput) || annualInput > 1000000000000) {
       result.innerHTML='<p role="alert">This amount is too large to calculate reliably. Enter an annualised salary below PKR '+fmt(Number.MAX_SAFE_INTEGER)+'.</p>';
       return;
     }
@@ -155,7 +155,7 @@
   mode.addEventListener('change',()=>{updateLabels();calc();});
   document.querySelectorAll('[data-monthly-salary]').forEach(button=>button.addEventListener('click',()=>{
     const v=Number(button.dataset.monthlySalary);
-    period.value='monthly'; income.value=String(v); updateLabels(); calc();
+    period.value='monthly'; lastPeriod='monthly'; income.value=String(v); updateLabels(); calc();
   }));
   document.getElementById('calc').addEventListener('click',calc);
   income.addEventListener('input',calc);
