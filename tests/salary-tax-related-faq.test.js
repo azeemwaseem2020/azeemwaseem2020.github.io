@@ -87,6 +87,20 @@ assert.doesNotMatch(emi, /<h3>What changes the EMI\?<\/h3>/,
   'EMI page must not repeat the rate/principal/term impact list');
 
 
+const emiIntent = fs.readFileSync(new URL('../loan-emi-calculator.html', import.meta.url), 'utf8');
+assert.match(emiIntent, /<title>Loan EMI Calculator Pakistan \| Monthly Payment &amp; Interest \| Calcora<\/title>/,
+  'EMI title should match the primary loan EMI search intent');
+assert.match(emiIntent, /<h1>EMI Calculator Pakistan — Monthly Loan Payment & Interest<\/h1>/,
+  'EMI H1 should promise a monthly loan-payment calculation');
+assert.match(emiIntent, /<meta name="description" content="Calculate EMI in Pakistan from loan amount, annual rate and tenure\./,
+  'EMI description should state the inputs and Pakistan context');
+
+const psxIntent = fs.readFileSync(new URL('../psx-calculator.html', import.meta.url), 'utf8');
+assert.match(psxIntent, /Use this PSX profit calculator to estimate gross and net share profit or loss, net return and break-even price/,
+  'PSX lead should prioritize the primary profit/loss intent before secondary modules');
+assert.doesNotMatch(psxIntent.match(/<p class="lead">([\s\S]*?)<\/p>/)?.[1] || '', /dividend income, weighted average share price, bonus-share adjustment and rights-issue cost from your own trade figures/,
+  'PSX lead should not present secondary calculator intents as equal primary targets');
+
 const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
 const prioritySitemap = fs.readFileSync(new URL('../sitemap-pakistan-priority.xml', import.meta.url), 'utf8');
 for (const map of [sitemap, prioritySitemap]) {
