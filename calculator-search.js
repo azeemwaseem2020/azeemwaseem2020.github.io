@@ -258,6 +258,48 @@
       return null;
     }
 
+    var activeFilter = 'all';
+    var filterButtons = Array.prototype.slice.call(document.querySelectorAll('[data-library-filter]'));
+
+    function matchesFilter(card) {
+      if (activeFilter === 'all') return true;
+
+      var category = String(card.getAttribute('data-category') || '').trim().toLowerCase();
+      var title = norm((card.querySelector('h2, h3') || {}).textContent || '');
+      var keywords = norm(card.getAttribute('data-keywords') || '');
+      // Prefer explicit card taxonomy. Only uncategorized cards use keyword
+      // fallback, so words in generic descriptions cannot leak unrelated tools
+      // into topic results (for example "weighted" into Health or "volume" into Solar).
+      var categoryGroups = {
+        Finance: ['finance', 'business', 'tax', 'salary', 'loans', 'auto'],
+        PSX: ['psx'],
+        Agriculture: ['agriculture'],
+        Solar: ['solar'],
+        Math: ['math', 'geometry', 'statistics', 'conversions', 'education'],
+        Science: ['science', 'electrical', 'utilities'],
+        Health: ['health', 'fitness'],
+        Construction: ['construction', 'property']
+      };
+      if ((categoryGroups[activeFilter] || []).indexOf(category) !== -1) return true;
+      if (category) {
+        // Investing cards sometimes share the Finance category; include only
+        // clearly identified PSX/stock tools, not every finance calculator.
+        if (activeFilter === 'PSX') return /\b(psx|stock|shares?|dividend|brokerage|portfolio|capital gains?|kse ?100|securities|eps calculator)\b/.test(title + ' ' + keywords);
+        return false;
+      }
+
+      var hay = title + ' ' + keywords;
+      if (activeFilter === 'Finance') return /\b(finance|tax|salary|loan|business|bank|money|zakat|emi|retirement|savings|mortgage|insurance|interest calculator|budget|profit|markup)\b/.test(hay);
+      if (activeFilter === 'PSX') return /\b(psx|stock|shares?|dividend|brokerage|portfolio|capital gains?|kse ?100|securities|eps calculator)\b/.test(hay);
+      if (activeFilter === 'Agriculture') return /\b(agriculture|fertili[sz]er|npk|urea|dap|mop|crop|pasture|farm|feed|livestock|cattle|buffalo|cow|tmr|hydroponic|topsoil|ration|forage|silage|nutrient)\b/.test(hay);
+      if (activeFilter === 'Solar') return /\b(solar|photovoltaic|panel count|solar battery|solar load|inverter sizing|peak sun hours)\b/.test(hay);
+      if (activeFilter === 'Math') return /\b(math|geometry|statistics|statistical|percentage|fraction|ratio|equation|algebra|calculus|probability|matrix|vector|number theory|conversion|permutation|combination|gpa|grade point|triangle|area|volume|perimeter|unit converter)\b/.test(hay);
+      if (activeFilter === 'Science') return /\b(science|electrical|physics|chemistry|voltage|current|watts|amps|force|energy|density|velocity|kinematics|wave|circuit|lens formula|mirror formula|photon|half life|coulomb|resistance|ohms)\b/.test(hay);
+      if (activeFilter === 'Health') return /\b(health|medical|fitness|bmi|calorie|pregnancy|body weight|body fat|tdee|sleep|ovulation|fertility|bmr|heart rate|ideal weight)\b/.test(hay);
+      if (activeFilter === 'Construction') return /\b(construction|concrete|roof|stairs|tile|wallpaper|floor|paint|brick|lumber|gravel|square footage|land area|building material|cement|steel quantity)\b/.test(hay);
+      return false;
+    }
+
     function render() {
       var raw = String(input.value || '').trim();
       var query = norm(raw);
@@ -267,22 +309,25 @@
       });
 
       if (!query) {
+        var visibleCount = 0;
         meta.forEach(function (item) {
-          item.card.hidden = false;
+          var show = matchesFilter(item.card);
+          item.card.hidden = !show;
           item.card.style.removeProperty('order');
+          if (show) visibleCount++;
         });
         cards.forEach(function (card, index) {
           card.style.order = String(index);
         });
-        if (count) count.textContent = cards.length + ' calculators available';
-        if (noResults) noResults.hidden = true;
+        if (count) count.textContent = visibleCount + ' of ' + cards.length + ' calculators shown';
+        if (noResults) noResults.hidden = visibleCount !== 0;
         return;
       }
 
       var ranked = meta.map(function (item) {
         return { item: item, score: score(item, query, tokens, target) };
       }).filter(function (entry) {
-        return entry.score > 0;
+        return entry.score > 0 && matchesFilter(entry.item.card);
       });
 
       ranked.sort(function (a, b) {
@@ -292,8 +337,7 @@
 
       var visible = ranked.map(function (entry) { return entry.item.card; });
       meta.forEach(function (item) {
-        var show = visible.indexOf(item.card) !== -1;
-        item.card.hidden = !show;
+        item.card.hidden = visible.indexOf(item.card) === -1;
       });
 
       visible.forEach(function (card, index) {
@@ -304,6 +348,18 @@
       if (count) count.textContent = shown + ' calculator' + (shown === 1 ? '' : 's') + ' found';
       if (noResults) noResults.hidden = shown !== 0;
     }
+
+    filterButtons.forEach(function (filterButton) {
+      filterButton.addEventListener('click', function () {
+        activeFilter = filterButton.getAttribute('data-library-filter') || 'all';
+        filterButtons.forEach(function (buttonEl) {
+          var selected = buttonEl === filterButton;
+          buttonEl.classList.toggle('is-active', selected);
+          buttonEl.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        });
+        render();
+      });
+    });
 
     function runSearch() {
       var raw = norm(input.value);
