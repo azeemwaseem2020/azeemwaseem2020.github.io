@@ -35,11 +35,11 @@ assert.match(html, /FBR Finance Act 2026 publication/,
   'Must link the enacted Finance Act as a primary source');
 assert.match(html, /A Finance Bill is useful background but is not[\s\S]{0,100}substitute for the enacted law/,
   'Must distinguish a Finance Bill from enacted legislation');
-assert.match(html, /Official source set reviewed October 13, 2026\./,
+assert.match(html, /Official source set reviewed October 15, 2026\./,
   'Must display the current official-source review date');
-assert.match(html, /"dateModified":"2026-10-13"/,
+assert.match(html, /"dateModified":"2026-10-15"/,
   'Structured data dateModified must match the reviewed page version');
-assert.match(html, /article:modified_time" content="2026-10-13"/,
+assert.match(html, /article:modified_time" content="2026-10-15"/,
   'Open Graph modified time must match the reviewed page version');
 
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
@@ -140,5 +140,23 @@ assert.match(emi, /https:\/\/ubldigital\.com\/Loans\/Consumer-Loans\/UBL-Drive/,
   'EMI comparison checklist must link to the official UBL product page');
 assert.match(emi, /https:\/\/www\.meezanbank\.com\/car-ijarah\//,
   'EMI comparison checklist must link to the official Meezan Bank product page');
+
+
+assert.match(html, /id="salary-period"/,
+  'Salary tax calculator must support monthly and annual input modes');
+assert.match(html, /Estimated annual net after income tax/,
+  'Salary tax result must show estimated annual net pay after income tax');
+assert.match(html, /Estimated monthly net after income tax/,
+  'Salary tax result must show estimated monthly net pay after income tax');
+assert.match(html, /id="salary-net-gross-tools"/,
+  'Salary tax page must expose the reverse net-to-gross estimator');
+assert.match(html, /function reverseNetToGross\(\)/,
+  'Reverse estimator must calculate a gross salary from a target net salary');
+assert.match(html, /id="tax-year-comparison"/,
+  'Salary tax page must compare current and previous tax years');
+assert.match(html, /function previousYearTax\(x\)/,
+  'Previous-year comparison must use a separate Tax Year 2026 formula');
+assert.match(html, /annual > 10000000/,
+  'Previous-year comparison must account for the 9% surcharge above PKR 10 million');
 
 console.log('Finance calculator SEO, source and validation tests passed.');
