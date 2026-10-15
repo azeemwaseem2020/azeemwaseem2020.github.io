@@ -159,6 +159,11 @@
     }
     const grossAnnual = high;
     const tax = calculateTax(grossAnnual).tax;
+    const estimatedNet = grossAnnual - tax;
+    if (!Number.isFinite(grossAnnual) || !Number.isFinite(tax) || !Number.isFinite(estimatedNet) || estimatedNet + 0.01 < targetAnnual) {
+      output.innerHTML = '<p role="alert">This target is too large for a reliable reverse estimate. Enter a lower target monthly net salary and try again.</p>';
+      return;
+    }
     output.innerHTML = '<p><strong>Estimated gross monthly taxable salary:</strong> PKR ' + fmt(grossAnnual / 12) + '</p>' +
       '<p><strong>Estimated annual income tax:</strong> PKR ' + fmt(tax) + '</p>' +
       '<p><strong>Estimated monthly net after income tax:</strong> PKR ' + fmt((grossAnnual - tax) / 12) + '</p>' +
