@@ -283,14 +283,14 @@
       };
       if ((categoryGroups[activeFilter] || []).indexOf(category) !== -1) return true;
 
-      if (activeFilter === 'Finance') return /\\b(finance|tax|salary|loan|business|invest|bank|money|zakat|emi|dividend|stock|psx|retirement|savings|mortgage|insurance|interest|budget|profit|markup|brokerage|portfolio)\\b/.test(hay);
-      if (activeFilter === 'PSX') return /\\b(psx|stocks?|shares?|dividends?|brokerage|portfolios?|capital gains?|kse ?100|securities|average price|position size)\\b/.test(hay);
-      if (activeFilter === 'Agriculture') return /\\b(agriculture|fertili[sz]er|npk|urea|dap|mop|crop|pasture|farm|feed|livestock|cattle|buffalo|cow|tmr|hydroponic|topsoil|ration|forage|silage|nutrient)\\b/.test(hay);
-      if (activeFilter === 'Solar') return /\\b(solar|photovoltaic|pv|panel count|solar battery|solar load|inverter sizing|peak sun hours)\\b/.test(hay);
-      if (activeFilter === 'Math') return /\\b(math|geometry|statistics|statistical|percentage|fraction|ratio|equation|algebra|calculus|probability|matrix|vector|number theory|conversion|permutation|combination|gpa|grade point|triangle|area|volume|perimeter|unit converter)\\b/.test(hay);
-      if (activeFilter === 'Science') return /\\b(science|electrical|physics|chemistry|voltage|current|watts|amps|force|energy|density|velocity|kinematics|wave|circuit|lens formula|mirror formula|photon|half life|coulomb|resistance|ohms)\\b/.test(hay);
-      if (activeFilter === 'Health') return /\\b(health|medical|fitness|bmi|calorie|pregnancy|body weight|body fat|tdee|sleep|ovulation|fertility|bmr|heart rate|ideal weight)\\b/.test(hay);
-      if (activeFilter === 'Construction') return /\\b(construction|concrete|roof|stairs|tile|wallpaper|floor|paint|brick|lumber|gravel|square footage|land area|building material|cement|steel quantity)\\b/.test(hay);
+      if (activeFilter === 'Finance') return /\b(finance|tax|salary|loan|business|invest|bank|money|zakat|emi|dividend|stock|psx|retirement|savings|mortgage|insurance|interest|budget|profit|markup|brokerage|portfolio)\b/.test(hay);
+      if (activeFilter === 'PSX') return /\b(psx|stocks?|shares?|dividends?|brokerage|portfolios?|capital gains?|kse ?100|securities|average price|position size)\b/.test(hay);
+      if (activeFilter === 'Agriculture') return /\b(agriculture|fertili[sz]er|npk|urea|dap|mop|crop|pasture|farm|feed|livestock|cattle|buffalo|cow|tmr|hydroponic|topsoil|ration|forage|silage|nutrient)\b/.test(hay);
+      if (activeFilter === 'Solar') return /\b(solar|photovoltaic|pv|panel count|solar battery|solar load|inverter sizing|peak sun hours)\b/.test(hay);
+      if (activeFilter === 'Math') return /\b(math|geometry|statistics|statistical|percentage|fraction|ratio|equation|algebra|calculus|probability|matrix|vector|number theory|conversion|permutation|combination|gpa|grade point|triangle|area|volume|perimeter|unit converter)\b/.test(hay);
+      if (activeFilter === 'Science') return /\b(science|electrical|physics|chemistry|voltage|current|watts|amps|force|energy|density|velocity|kinematics|wave|circuit|lens formula|mirror formula|photon|half life|coulomb|resistance|ohms)\b/.test(hay);
+      if (activeFilter === 'Health') return /\b(health|medical|fitness|bmi|calorie|pregnancy|body weight|body fat|tdee|sleep|ovulation|fertility|bmr|heart rate|ideal weight)\b/.test(hay);
+      if (activeFilter === 'Construction') return /\b(construction|concrete|roof|stairs|tile|wallpaper|floor|paint|brick|lumber|gravel|square footage|land area|building material|cement|steel quantity)\b/.test(hay);
       return false;
     }
 
