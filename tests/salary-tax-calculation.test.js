@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const html = fs.readFileSync(new URL('../pakistan-salary-tax-calculator.html', import.meta.url), 'utf8');
-const match = html.match(/const tax = \(x, y\) => \{([\s\S]*?)\n  \};\n  function grossForNet/);
+const match = html.match(/const tax = \(x, y\) => \{([\s\S]*?)\n  \};\n  function marginalRate/);
 assert.ok(match, 'Tax engine must expose a testable two-year slab function');
 const calculateTax = new Function('x', 'y', match[1]);
 
