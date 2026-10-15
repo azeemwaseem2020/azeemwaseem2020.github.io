@@ -48,13 +48,13 @@ assert.match(html, /article:modified_time" content="2026-10-15"/,
   'Open Graph modified time must match the revised salary-tax page');
 
 
-assert.match(html, /id="salary-period"[\\s\\S]{0,160}value="monthly"[\\s\\S]{0,100}value="annual"/,
+assert.match(html, /id="salary-period"[\s\S]{0,160}value="monthly"[\s\S]{0,100}value="annual"/,
   'Salary tax calculator must offer monthly and annual salary input');
-assert.match(html, /id="tax-year"[\\s\\S]{0,180}Tax Year 2027[\\s\\S]{0,120}Tax Year 2026/,
+assert.match(html, /id="tax-year"[\s\S]{0,180}Tax Year 2027[\s\S]{0,120}Tax Year 2026/,
   'Salary tax calculator must allow selecting FY 2026–27 and FY 2025–26');
-assert.match(html, /id="salary-mode"[\\s\\S]{0,240}net-gross/,
+assert.match(html, /id="salary-mode"[\s\S]{0,240}net-gross/,
   'Salary tax calculator must support reverse net-to-gross estimates');
-assert.match(html, /function grossForNet\\(target, y\\)/,
+assert.match(html, /function grossForNet\(target, y\)/,
   'Reverse salary calculation must solve gross pay from target net pay');
 assert.match(html, /Estimated annual take-home after income tax/,
   'Results must show estimated net salary after income tax');
@@ -62,24 +62,23 @@ assert.match(html, /Year-on-year comparison/,
   'Results must compare tax-year estimates at the same gross taxable salary');
 assert.match(html, /id="roman-urdu-faq"/,
   'The page must answer relevant salary tax questions in Roman Urdu');
-assert.match(html, /if \\(x > 10000000\\) amount \\*= 1\\.09/,
+assert.match(html, /if \(x > 10000000\) amount \*= 1\.09/,
   'Historical FY 2025–26 comparison must account for the 9% surcharge above PKR 10 million');
 
-
-assert.match(html, /annualBasis=amount\\*\\(lastPeriod==='monthly'\\?12:1\\)/,
+assert.match(html, /annualBasis=amount\*\(lastPeriod==='monthly'\?12:1\)/,
   'Changing the salary period must preserve the same underlying salary amount');
-assert.match(html, /period\\.value='monthly'; lastPeriod='monthly'; income\\.value=String\\(v\\)/,
+assert.match(html, /period\.value='monthly'; lastPeriod='monthly'; income\.value=String\(v\)/,
   'Quick salary examples must keep the period state synchronized');
 assert.match(html, /annualInput > 1000000000000/,
   'Calculator must reject amounts outside its reliable numeric range');
-assert.match(html, /if \\(raw==='' \\|\\| !Number\\.isFinite\\(n\\) \\|\\| n<0\\)/,
+assert.match(html, /if \(raw==='' \|\| !Number\.isFinite\(n\) \|\| n<0\)/,
   'Calculator must reject blank, negative and non-finite salary input');
 assert.match(html, /class="salary-tax-controls"/,
   'Salary controls must use the dedicated responsive layout');
 const styles = fs.readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
-assert.match(styles, /\\.salary-tax-controls[\\s\\S]{0,180}grid-template-columns: repeat\\(3, minmax\\(0, 1fr\\)\\)/,
+assert.match(styles, /\.salary-tax-controls[\s\S]{0,180}grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/,
   'Salary controls should display as a compact three-column group on desktop');
-assert.match(styles, /@media \\(max-width: 640px\\)[\\s\\S]{0,100}\\.salary-tax-controls \\{ grid-template-columns: 1fr; gap: 12px; \\}/,
+assert.match(styles, /@media \(max-width: 640px\)[\s\S]{0,100}\.salary-tax-controls \{ grid-template-columns: 1fr; gap: 12px; \}/,
   'Salary controls must stack on narrow mobile screens');
 
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
