@@ -136,12 +136,14 @@
       : '<p><strong>Year comparison:</strong> For context, the same gross taxable salary under FY 2026–27 rates would produce estimated tax of PKR '+fmt(prevTax)+'. Difference from FY 2025–26: PKR '+fmt(annualTax-prevTax)+' per year.</p>';
     result.innerHTML='<h2>Estimated salary result</h2>'+
       '<p><strong>Selected tax year:</strong> '+yearLabel+'</p>'+
-      '<p><strong>Estimated annual gross taxable salary:</strong> PKR '+fmt(gross)+'</p>'+\n      '<p><strong>Estimated monthly gross taxable salary:</strong> PKR '+fmt(gross/12)+'</p>'+
+      '<p><strong>Estimated annual gross taxable salary:</strong> PKR '+fmt(gross)+'</p>'+
+      '<p><strong>Estimated monthly gross taxable salary:</strong> PKR '+fmt(gross/12)+'</p>'+
       '<p><strong>Estimated annual income tax:</strong> PKR '+fmt(annualTax)+'</p>'+
       '<p><strong>Estimated monthly tax average:</strong> PKR '+fmt(annualTax/12)+'</p>'+
       '<p><strong>Estimated annual take-home after income tax:</strong> PKR '+fmt(net)+'</p>'+
       '<p><strong>Estimated monthly take-home after income tax:</strong> PKR '+fmt(net/12)+'</p>'+
-      '<p><strong>Effective tax rate:</strong> '+(gross?((annualTax/gross)*100).toFixed(2):'0.00')+'%</p>'+\n      '<p><strong>Marginal tax rate:</strong> '+marginalRate(gross,selectedYear)+'%</p>'+
+      '<p><strong>Effective tax rate:</strong> '+(gross?((annualTax/gross)*100).toFixed(2):'0.00')+'%</p>'+
+      '<p><strong>Marginal tax rate:</strong> '+marginalRate(gross,selectedYear)+'%</p>'+
       (mode.value==='net-gross'?'<p><strong>Target net pay entered:</strong> PKR '+fmt(annualInput)+' per year. Gross pay is solved iteratively using the selected year’s tax formula.</p>':'')+
       comparison+
       '<p><strong>Scope:</strong> This is a tax-only estimate, not guaranteed payroll net pay. It excludes benefits, provident-fund deductions, loans, other income, tax credits, exemptions, withholding adjustments and individual eligibility checks. FY 2025–26 comparison includes the 9% surcharge on tax where taxable income exceeds PKR 10 million; verify both years against the applicable FBR rules before filing.</p>';
