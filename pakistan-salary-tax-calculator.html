@@ -141,6 +141,7 @@
       if (!Number.isFinite(monthlySalary) || monthlySalary < 0) return;
       document.getElementById('salary-period').value = 'monthly';
       income.value = String(monthlySalary);
+      updateSalaryInputLabel();
       income.dispatchEvent(new Event('input', { bubbles: true }));
     });
   });
