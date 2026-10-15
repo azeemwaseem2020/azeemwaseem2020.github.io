@@ -47,6 +47,24 @@ assert.match(html, /"dateModified":"2026-10-15"/,
 assert.match(html, /article:modified_time" content="2026-10-15"/,
   'Open Graph modified time must match the revised salary-tax page');
 
+
+assert.match(html, /id="salary-period"[\\s\\S]{0,160}value="monthly"[\\s\\S]{0,100}value="annual"/,
+  'Salary tax calculator must offer monthly and annual salary input');
+assert.match(html, /id="tax-year"[\\s\\S]{0,180}Tax Year 2027[\\s\\S]{0,120}Tax Year 2026/,
+  'Salary tax calculator must allow selecting FY 2026–27 and FY 2025–26');
+assert.match(html, /id="salary-mode"[\\s\\S]{0,240}net-gross/,
+  'Salary tax calculator must support reverse net-to-gross estimates');
+assert.match(html, /function grossForNet\\(target, y\\)/,
+  'Reverse salary calculation must solve gross pay from target net pay');
+assert.match(html, /Estimated annual take-home after income tax/,
+  'Results must show estimated net salary after income tax');
+assert.match(html, /Year-on-year comparison/,
+  'Results must compare tax-year estimates at the same gross taxable salary');
+assert.match(html, /id="roman-urdu-faq"/,
+  'The page must answer relevant salary tax questions in Roman Urdu');
+assert.match(html, /if \\(x > 10000000\\) amount \\*= 1\\.09/,
+  'Historical FY 2025–26 comparison must account for the 9% surcharge above PKR 10 million');
+
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
 assert.match(zakat, /<h1>Pakistan Zakat Calculator — Nisab &amp; 2\.5% Estimate<\/h1>/,
   'Zakat page should not label a prior-year Nisab as the current-year default');
