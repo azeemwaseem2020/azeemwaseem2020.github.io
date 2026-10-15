@@ -87,6 +87,31 @@ assert.doesNotMatch(emi, /<h3>What changes the EMI\?<\/h3>/,
   'EMI page must not repeat the rate/principal/term impact list');
 
 
+assert.match(zakat, /id="zakat-verification-record"/,
+  'Zakat page must expose a verification record');
+assert.match(zakat, /PKR 900,000[\\s\\S]{0,220}PKR 20,000/,
+  'Zakat verification record must show a reproducible worked arithmetic example');
+assert.match(zakat, /Independent reviewer:<\\/strong> None is currently identified/,
+  'Zakat page must not imply independent specialist review without evidence');
+
+assert.match(emi, /id="emi-verification-record"/,
+  'EMI page must expose a verification record');
+assert.match(emi, /PKR 2,124\\.70[\\s\\S]{0,100}PKR 27,482\\.27[\\s\\S]{0,100}PKR 127,482\\.27/,
+  'EMI verification record must show the runtime-tested sample outputs');
+assert.match(emi, /Independent reviewer:<\\/strong> None is currently identified/,
+  'EMI page must not imply independent finance review without evidence');
+
+const author = fs.readFileSync(new URL('../abdul-qadir.html', import.meta.url), 'utf8');
+assert.match(author, /Examples of documented software checks/,
+  'Author profile should describe verifiable work rather than unsupported credentials');
+assert.match(author, /not an independent reviewer of my own work/,
+  'Author profile must distinguish maintenance from independent review');
+const methodology = fs.readFileSync(new URL('../calculator-methodology.html', import.meta.url), 'utf8');
+assert.match(methodology, /Examples of automated checks users can inspect/,
+  'Methodology page should provide concrete test evidence');
+assert.match(methodology, /do not prove exhaustive correctness/,
+  'Methodology page must state the limits of automated test evidence');
+
 const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
 const prioritySitemap = fs.readFileSync(new URL('../sitemap-pakistan-priority.xml', import.meta.url), 'utf8');
 for (const map of [sitemap, prioritySitemap]) {
