@@ -267,12 +267,11 @@
       var category = String(card.getAttribute('data-category') || '').trim().toLowerCase();
       var title = norm((card.querySelector('h2, h3') || {}).textContent || '');
       var keywords = norm(card.getAttribute('data-keywords') || '');
-      // Exclude descriptive copy from topic matching: broad prose such as
-      // "shared", "weighted" or "due date" can otherwise leak unrelated cards
-      // into a topic. Explicit category metadata is the strongest signal.
-      var hay = category + ' ' + title + ' ' + keywords;
+      // Prefer explicit card taxonomy. Only uncategorized cards use keyword
+      // fallback, so words in generic descriptions cannot leak unrelated tools
+      // into topic results (for example "weighted" into Health or "volume" into Solar).
       var categoryGroups = {
-        Finance: ['finance', 'business', 'tax', 'salary', 'loans', 'property'],
+        Finance: ['finance', 'business', 'tax', 'salary', 'loans', 'auto'],
         PSX: ['psx'],
         Agriculture: ['agriculture'],
         Solar: ['solar'],
@@ -282,15 +281,22 @@
         Construction: ['construction', 'property']
       };
       if ((categoryGroups[activeFilter] || []).indexOf(category) !== -1) return true;
+      if (category) {
+        // Investing cards sometimes share the Finance category; include only
+        // clearly identified PSX/stock tools, not every finance calculator.
+        if (activeFilter === 'PSX') return /\\b(psx|stock|shares?|dividend|brokerage|portfolio|capital gains?|kse ?100|securities|eps calculator)\\b/.test(title + ' ' + keywords);
+        return false;
+      }
 
-      if (activeFilter === 'Finance') return /\b(finance|tax|salary|loan|business|invest|bank|money|zakat|emi|dividend|stock|psx|retirement|savings|mortgage|insurance|interest|budget|profit|markup|brokerage|portfolio)\b/.test(hay);
-      if (activeFilter === 'PSX') return /\b(psx|stocks?|shares?|dividends?|brokerage|portfolios?|capital gains?|kse ?100|securities|average price|position size)\b/.test(hay);
-      if (activeFilter === 'Agriculture') return /\b(agriculture|fertili[sz]er|npk|urea|dap|mop|crop|pasture|farm|feed|livestock|cattle|buffalo|cow|tmr|hydroponic|topsoil|ration|forage|silage|nutrient)\b/.test(hay);
-      if (activeFilter === 'Solar') return /\b(solar|photovoltaic|pv|panel count|solar battery|solar load|inverter sizing|peak sun hours)\b/.test(hay);
-      if (activeFilter === 'Math') return /\b(math|geometry|statistics|statistical|percentage|fraction|ratio|equation|algebra|calculus|probability|matrix|vector|number theory|conversion|permutation|combination|gpa|grade point|triangle|area|volume|perimeter|unit converter)\b/.test(hay);
-      if (activeFilter === 'Science') return /\b(science|electrical|physics|chemistry|voltage|current|watts|amps|force|energy|density|velocity|kinematics|wave|circuit|lens formula|mirror formula|photon|half life|coulomb|resistance|ohms)\b/.test(hay);
-      if (activeFilter === 'Health') return /\b(health|medical|fitness|bmi|calorie|pregnancy|body weight|body fat|tdee|sleep|ovulation|fertility|bmr|heart rate|ideal weight)\b/.test(hay);
-      if (activeFilter === 'Construction') return /\b(construction|concrete|roof|stairs|tile|wallpaper|floor|paint|brick|lumber|gravel|square footage|land area|building material|cement|steel quantity)\b/.test(hay);
+      var hay = title + ' ' + keywords;
+      if (activeFilter === 'Finance') return /\\b(finance|tax|salary|loan|business|bank|money|zakat|emi|retirement|savings|mortgage|insurance|interest calculator|budget|profit|markup)\\b/.test(hay);
+      if (activeFilter === 'PSX') return /\\b(psx|stock|shares?|dividend|brokerage|portfolio|capital gains?|kse ?100|securities|eps calculator)\\b/.test(hay);
+      if (activeFilter === 'Agriculture') return /\\b(agriculture|fertili[sz]er|npk|urea|dap|mop|crop|pasture|farm|feed|livestock|cattle|buffalo|cow|tmr|hydroponic|topsoil|ration|forage|silage|nutrient)\\b/.test(hay);
+      if (activeFilter === 'Solar') return /\\b(solar|photovoltaic|panel count|solar battery|solar load|inverter sizing|peak sun hours)\\b/.test(hay);
+      if (activeFilter === 'Math') return /\\b(math|geometry|statistics|statistical|percentage|fraction|ratio|equation|algebra|calculus|probability|matrix|vector|number theory|conversion|permutation|combination|gpa|grade point|triangle|area|volume|perimeter|unit converter)\\b/.test(hay);
+      if (activeFilter === 'Science') return /\\b(science|electrical|physics|chemistry|voltage|current|watts|amps|force|energy|density|velocity|kinematics|wave|circuit|lens formula|mirror formula|photon|half life|coulomb|resistance|ohms)\\b/.test(hay);
+      if (activeFilter === 'Health') return /\\b(health|medical|fitness|bmi|calorie|pregnancy|body weight|body fat|tdee|sleep|ovulation|fertility|bmr|heart rate|ideal weight)\\b/.test(hay);
+      if (activeFilter === 'Construction') return /\\b(construction|concrete|roof|stairs|tile|wallpaper|floor|paint|brick|lumber|gravel|square footage|land area|building material|cement|steel quantity)\\b/.test(hay);
       return false;
     }
 
