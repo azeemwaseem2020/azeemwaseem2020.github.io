@@ -120,4 +120,25 @@ for (const map of [sitemap, prioritySitemap]) {
   assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/loan-emi-calculator\.html<\/loc><lastmod>2026-10-15<\/lastmod>/,
     'Both sitemaps must record the EMI page revision date');
 }
+assert.match(emi, /id="extra-principal"/,
+  'EMI page must expose an optional extra-principal input');
+assert.match(emi, /id="extra-payoff-result"/,
+  'EMI page must expose a separate payoff scenario result');
+assert.match(emi, /function calculatePayoff\(\)/,
+  'EMI extra-payment scenario must have a dedicated calculation routine');
+assert.match(emi, /Potential interest saved/,
+  'EMI payoff scenario must explain potential interest savings');
+assert.match(emi, /id="affordability-stress-test"/,
+  'EMI page must expose the affordability and rate-stress tool');
+assert.match(emi, /id="aff-check"/,
+  'EMI affordability tool must have a working action control');
+assert.match(emi, /Number\.MAX_SAFE_INTEGER/,
+  'EMI scenario inputs must include safe-number guardrails');
+assert.match(emi, /official-bank-offer-checklist/,
+  'EMI page must include an official-source loan-offer comparison checklist');
+assert.match(emi, /https:\/\/ubldigital\.com\/Loans\/Consumer-Loans\/UBL-Drive/,
+  'EMI comparison checklist must link to the official UBL product page');
+assert.match(emi, /https:\/\/www\.meezanbank\.com\/car-ijarah\//,
+  'EMI comparison checklist must link to the official Meezan Bank product page');
+
 console.log('Finance calculator SEO, source and validation tests passed.');
