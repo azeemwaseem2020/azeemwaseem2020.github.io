@@ -42,11 +42,11 @@ assert.ok(profitPage.includes('https://www.nccpl.com.pk/cgt'), 'PSX profit page:
 assert.equal((profitPage.match(/property=['"]og:image:alt['"]/gi) || []).length, 1, 'PSX profit page: Open Graph image alt should not be duplicated');
 assert.ok(profitPage.includes('"name":"PSX Profit Calculator Pakistan — Net Profit, Loss & Break-Even"'), 'PSX profit page: WebApplication name should match the page purpose');
 assert.ok(profitPage.includes('does not automatically transfer its result'), 'PSX profit page: fee estimator separation must be disclosed near break-even summary');
-assert.ok(profitPage.includes('Last updated: October 13, 2026'), 'PSX profit page: page information date should reflect the current revision');
-assert.ok(profitPage.includes('Calculation checks: Calcora regression tests'), 'PSX profit page: validation wording should describe internal regression tests accurately');
+assert.ok(profitPage.includes('Last updated: October 14, 2026'), 'PSX profit page: page information date should reflect the current revision');
+assert.ok(profitPage.includes('Calculation basis: entered trade values and the formulas described below'), 'PSX profit page: validation wording should describe internal regression tests accurately');
 assert.doesNotMatch(profitPage, /Reviewed for calculation logic by Calcora/, 'PSX profit page: avoid ambiguous self-review wording');
-assert.match(profitPage, /<strong>Page information:<\/strong>[\s\S]*?Last updated: October 13, 2026<\/p>/, 'PSX profit page: page-information block should contain the current revision date');
-assert.match(profitPage, /<meta property="article:modified_time" content="2026-10-13">/, 'PSX profit page: article modified time should match the revision');
+assert.match(profitPage, /<strong>Page information:<\/strong>[\s\S]*?Last updated: October 14, 2026<\/p>/, 'PSX profit page: page-information block should contain the current revision date');
+assert.match(profitPage, /<meta property="article:modified_time" content="2026-10-14">/, 'PSX profit page: article modified time should match the revision');
 assert.match(profitPage, /id="next-psx-tool"/, 'PSX profit page: consolidated intent-led PSX navigation missing');
 assert.match(profitPage, /href="psx-dividend-yield-calculator\.html"/, 'PSX profit page: dividend yield internal link missing');
 assert.match(profitPage, /href="psx-capital-gains-tax-calculator\.html"/, 'PSX profit page: dedicated CGT tool link missing');
@@ -90,5 +90,17 @@ assert.match(yieldPage, /does not annualise a quarterly or interim dividend auto
 assert.match(yieldPage, /Gross dividend is not necessarily take-home cash/, 'Dividend yield page: gross versus net income distinction missing');
 assert.match(yieldPage, /!Number\.isInteger\(shares\)/, 'Dividend yield page: share count must be validated as a whole number');
 assert.match(yieldPage, /periodLabel=period==='Annual total'/, 'Dividend yield page: selected dividend period must affect result labelling');
+
+const emiPage = fs.readFileSync(new URL('loan-emi-calculator.html', root), 'utf8');
+assert.ok(emiPage.includes('Choose the right loan calculator') && emiPage.includes('href="car-loan-emi-pakistan.html"') && emiPage.includes('href="home-loan-emi-pakistan.html"'),
+  'General EMI page should route vehicle and housing intent to their dedicated calculators');
+const carEmiPage = fs.readFileSync(new URL('car-loan-emi-pakistan.html', root), 'utf8');
+assert.ok(carEmiPage.includes('Is this the right tool?') && carEmiPage.includes('href="loan-emi-calculator.html"') && carEmiPage.includes('href="home-loan-emi-pakistan.html"'),
+  'Car EMI page should distinguish general-loan and home-loan intent');
+const homeEmiPage = fs.readFileSync(new URL('home-loan-emi-pakistan.html', root), 'utf8');
+assert.ok(homeEmiPage.includes('Is this the right tool?') && homeEmiPage.includes('href="car-loan-emi-pakistan.html"') && homeEmiPage.includes('href="loan-emi-calculator.html"'),
+  'Home EMI page should distinguish car-loan and general-loan intent');
+assert.ok(profitPage.includes('Choose the right PSX tool') && profitPage.includes('href="psx-average-price-calculator.html"') && profitPage.includes('href="psx-dividend-yield-calculator.html"') && profitPage.includes('href="psx-capital-gains-tax-calculator.html"'),
+  'PSX profit page should route specialist intents to dedicated calculators');
 
 console.log('PSX SEO integrity regression checks: PASS');

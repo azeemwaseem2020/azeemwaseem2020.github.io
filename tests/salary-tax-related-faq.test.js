@@ -11,6 +11,11 @@ assert.match(html, /What is the difference between a filer and a non-filer in Pa
   'Must answer the filer versus non-filer question');
 assert.match(html, /does not, by itself, replace the salary tax slab calculation/i,
   'Must distinguish salary slab tax from ATL-dependent withholding on other transactions');
+assert.match(html, /Use the right salary tool:[\s\S]{0,260}href="salary-calculator\.html"/,
+  'Salary tax page should route pay-period conversion intent to the general salary calculator');
+const salaryConverter = fs.readFileSync(new URL('../salary-calculator.html', import.meta.url), 'utf8');
+assert.match(salaryConverter, /Need a tax estimate instead of a pay-period conversion[\s\S]{0,250}href="pakistan-salary-tax-calculator\.html"/,
+  'General salary page should route Pakistan salary-tax intent to the dedicated tax calculator');
 assert.match(html, /Should I calculate salary tax using gross salary or take-home pay\?/i,
   'Must explain the correct taxable salary input');
 
@@ -37,10 +42,44 @@ assert.match(html, /A Finance Bill is useful background but is not[\s\S]{0,100}s
   'Must distinguish a Finance Bill from enacted legislation');
 assert.match(html, /Official source set reviewed October 13, 2026\./,
   'Must display the current official-source review date');
-assert.match(html, /"dateModified":"2026-10-13"/,
-  'Structured data dateModified must match the reviewed page version');
-assert.match(html, /article:modified_time" content="2026-10-13"/,
-  'Open Graph modified time must match the reviewed page version');
+assert.match(html, /"dateModified":"2026-10-15"/,
+  'Structured data dateModified must match the revised salary-tax page');
+assert.match(html, /article:modified_time" content="2026-10-15"/,
+  'Open Graph modified time must match the revised salary-tax page');
+
+
+assert.match(html, /id="salary-period"[\s\S]{0,160}value="monthly"[\s\S]{0,100}value="annual"/,
+  'Salary tax calculator must offer monthly and annual salary input');
+assert.match(html, /id="tax-year"[\s\S]{0,180}Tax Year 2027[\s\S]{0,120}Tax Year 2026/,
+  'Salary tax calculator must allow selecting FY 2026–27 and FY 2025–26');
+assert.match(html, /id="salary-mode"[\s\S]{0,240}net-gross/,
+  'Salary tax calculator must support reverse net-to-gross estimates');
+assert.match(html, /function grossForNet\(target, y\)/,
+  'Reverse salary calculation must solve gross pay from target net pay');
+assert.match(html, /Estimated annual take-home after income tax/,
+  'Results must show estimated net salary after income tax');
+assert.match(html, /Year-on-year comparison/,
+  'Results must compare tax-year estimates at the same gross taxable salary');
+assert.match(html, /id="roman-urdu-faq"/,
+  'The page must answer relevant salary tax questions in Roman Urdu');
+assert.match(html, /if \(x > 10000000\) amount \*= 1\.09/,
+  'Historical FY 2025–26 comparison must account for the 9% surcharge above PKR 10 million');
+
+assert.match(html, /annualBasis=amount\*\(lastPeriod==='monthly'\?12:1\)/,
+  'Changing the salary period must preserve the same underlying salary amount');
+assert.match(html, /period\.value='monthly'; lastPeriod='monthly'; income\.value=String\(v\)/,
+  'Quick salary examples must keep the period state synchronized');
+assert.match(html, /annualInput > 1000000000000/,
+  'Calculator must reject amounts outside its reliable numeric range');
+assert.match(html, /if\(raw==='' \|\| !Number\.isFinite\(n\) \|\| n<0\)/,
+  'Calculator must reject blank, negative and non-finite salary input');
+assert.match(html, /class="salary-tax-controls"/,
+  'Salary controls must use the dedicated responsive layout');
+const styles = fs.readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
+assert.match(styles, /\.salary-tax-controls[\s\S]{0,180}grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/,
+  'Salary controls should display as a compact three-column group on desktop');
+assert.match(styles, /@media \(max-width: 640px\)[\s\S]{0,100}\.salary-tax-controls \{ grid-template-columns: 1fr; gap: 12px; \}/,
+  'Salary controls must stack on narrow mobile screens');
 
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
 assert.match(zakat, /<h1>Pakistan Zakat Calculator — Nisab &amp; 2\.5% Estimate<\/h1>/,
@@ -86,6 +125,20 @@ assert.doesNotMatch(emi, /<h2>How to compare two loan offers<\/h2>/,
 assert.doesNotMatch(emi, /<h3>What changes the EMI\?<\/h3>/,
   'EMI page must not repeat the rate/principal/term impact list');
 
+
+const emiIntent = fs.readFileSync(new URL('../loan-emi-calculator.html', import.meta.url), 'utf8');
+assert.match(emiIntent, /<title>Loan EMI Calculator Pakistan \| Monthly Payment &amp; Interest \| Calcora<\/title>/,
+  'EMI title should match the primary loan EMI search intent');
+assert.match(emiIntent, /<h1>EMI Calculator Pakistan — Monthly Loan Payment & Interest<\/h1>/,
+  'EMI H1 should promise a monthly loan-payment calculation');
+assert.match(emiIntent, /<meta name="description" content="Calculate EMI in Pakistan from loan amount, annual rate and tenure\./,
+  'EMI description should state the inputs and Pakistan context');
+
+const psxIntent = fs.readFileSync(new URL('../psx-calculator.html', import.meta.url), 'utf8');
+assert.match(psxIntent, /Use this PSX profit calculator to estimate gross and net share profit or loss, net return and break-even price/,
+  'PSX lead should prioritize the primary profit/loss intent before secondary modules');
+assert.doesNotMatch(psxIntent.match(/<p class="lead">([\s\S]*?)<\/p>/)?.[1] || '', /dividend income, weighted average share price, bonus-share adjustment and rights-issue cost from your own trade figures/,
+  'PSX lead should not present secondary calculator intents as equal primary targets');
 
 const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
 const prioritySitemap = fs.readFileSync(new URL('../sitemap-pakistan-priority.xml', import.meta.url), 'utf8');
