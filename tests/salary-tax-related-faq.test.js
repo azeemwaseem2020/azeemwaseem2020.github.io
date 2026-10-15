@@ -65,6 +65,23 @@ assert.match(html, /id="roman-urdu-faq"/,
 assert.match(html, /if \\(x > 10000000\\) amount \\*= 1\\.09/,
   'Historical FY 2025–26 comparison must account for the 9% surcharge above PKR 10 million');
 
+
+assert.match(html, /annualBasis=amount\\*\\(lastPeriod==='monthly'\\?12:1\\)/,
+  'Changing the salary period must preserve the same underlying salary amount');
+assert.match(html, /period\\.value='monthly'; lastPeriod='monthly'; income\\.value=String\\(v\\)/,
+  'Quick salary examples must keep the period state synchronized');
+assert.match(html, /annualInput > 1000000000000/,
+  'Calculator must reject amounts outside its reliable numeric range');
+assert.match(html, /if \\(raw==='' \\|\\| !Number\\.isFinite\\(n\\) \\|\\| n<0\\)/,
+  'Calculator must reject blank, negative and non-finite salary input');
+assert.match(html, /class="salary-tax-controls"/,
+  'Salary controls must use the dedicated responsive layout');
+const styles = fs.readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
+assert.match(styles, /\\.salary-tax-controls[\\s\\S]{0,180}grid-template-columns: repeat\\(3, minmax\\(0, 1fr\\)\\)/,
+  'Salary controls should display as a compact three-column group on desktop');
+assert.match(styles, /@media \\(max-width: 640px\\)[\\s\\S]{0,100}\\.salary-tax-controls \\{ grid-template-columns: 1fr; gap: 12px; \\}/,
+  'Salary controls must stack on narrow mobile screens');
+
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
 assert.match(zakat, /<h1>Pakistan Zakat Calculator — Nisab &amp; 2\.5% Estimate<\/h1>/,
   'Zakat page should not label a prior-year Nisab as the current-year default');
