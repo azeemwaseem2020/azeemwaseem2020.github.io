@@ -5,7 +5,7 @@
   <p><strong>Important:</strong> Results are estimates for planning and educational use. Check applicable official, professional, technical or regulatory guidance when a decision requires current or site-specific information.</p>
 </section>
 <p class="lead">Estimate Pakistan salary income tax for FY 2026–27 (Tax Year 2027), then see annual tax, monthly average, effective rate and the applicable marginal slab. Enter taxable salary—not a generic bill or take-home figure.</p><p class="intent-routing"><strong>Use the right salary tool:</strong> This page estimates income tax under the stated Pakistan tax-year slabs. If you only need to convert gross pay between annual, monthly, weekly, daily or hourly periods, use the <a href="salary-calculator.html">Salary Calculator</a> instead.</p><section class="calculator-card" aria-label="Pakistan salary tax calculator controls">
-<div class="form-grid">
+<div class="salary-tax-controls">
 <div><label for="salary-period">Salary input period</label><select id="salary-period"><option value="monthly">Monthly salary</option><option value="annual" selected>Annual salary</option></select></div>
 <div><label for="tax-year">Tax year</label><select id="tax-year"><option value="2026">Tax Year 2027 (FY 2026–27)</option><option value="2025">Tax Year 2026 (FY 2025–26)</option></select></div>
 <div><label for="salary-mode">Calculation mode</label><select id="salary-mode"><option value="gross-tax">Gross taxable salary → tax and estimated net</option><option value="net-gross">Target take-home pay → estimated gross salary</option></select></div>
@@ -79,6 +79,7 @@
   const mode = document.getElementById('salary-mode');
   const label = document.getElementById('income-label');
   const help = document.getElementById('salary-input-help');
+  let lastPeriod = period.value;
   const fmt = n => Math.round(n).toLocaleString('en-PK');
   const tax = (x, y) => {
     if (y === '2025') {
@@ -109,12 +110,15 @@
     help.textContent = mode.value==='net-gross'
       ? 'Enter the desired take-home amount after income tax only. The reverse estimate excludes benefits, deductions, provident-fund contributions and other payroll items.'
       : 'Enter taxable salary before income tax. Monthly input is annualised × 12; bonuses, allowances and exemptions are not added automatically.';
-    document.querySelectorAll('[data-monthly-salary]').forEach(b=>b.disabled=mode.value==='net-gross' && false);
   }
   function calc() {
     const raw=income.value.trim(), n=Number(raw);
     if(raw==='' || !Number.isFinite(n) || n<0) { result.innerHTML='<p role="alert">Enter a valid salary amount of PKR 0 or more.</p>'; return; }
     const annualInput=n*(period.value==='monthly'?12:1);
+    if (!Number.isFinite(annualInput) || annualInput > Number.MAX_SAFE_INTEGER) {
+      result.innerHTML='<p role="alert">This amount is too large to calculate reliably. Enter an annualised salary below PKR '+fmt(Number.MAX_SAFE_INTEGER)+'.</p>';
+      return;
+    }
     const selectedYear=year.value;
     const gross=mode.value==='net-gross'?grossForNet(annualInput,selectedYear):annualInput;
     const annualTax=tax(gross,selectedYear);
@@ -138,7 +142,15 @@
       comparison+
       '<p><strong>Scope:</strong> This is a tax-only estimate, not guaranteed payroll net pay. It excludes benefits, provident-fund deductions, loans, other income, tax credits, exemptions, withholding adjustments and individual eligibility checks. FY 2025–26 comparison includes the 9% surcharge on tax where taxable income exceeds PKR 10 million; verify both years against the applicable FBR rules before filing.</p>';
   }
-  period.addEventListener('change',()=>{updateLabels();calc();});
+  period.addEventListener('change',()=>{
+    const raw=income.value.trim(), amount=Number(raw);
+    if(raw!=='' && Number.isFinite(amount) && amount>=0) {
+      const annualBasis=amount*(lastPeriod==='monthly'?12:1);
+      income.value=String(period.value==='monthly'?annualBasis/12:annualBasis);
+    }
+    lastPeriod=period.value;
+    updateLabels(); calc();
+  });
   year.addEventListener('change',calc);
   mode.addEventListener('change',()=>{updateLabels();calc();});
   document.querySelectorAll('[data-monthly-salary]').forEach(button=>button.addEventListener('click',()=>{
