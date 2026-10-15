@@ -71,7 +71,7 @@ assert.match(html, /period\.value='monthly'; lastPeriod='monthly'; income\.value
   'Quick salary examples must keep the period state synchronized');
 assert.match(html, /annualInput > 1000000000000/,
   'Calculator must reject amounts outside its reliable numeric range');
-assert.match(html, /if \(raw==='' \|\| !Number\.isFinite\(n\) \|\| n<0\)/,
+assert.match(html, /if\(raw==='' \|\| !Number\.isFinite\(n\) \|\| n<0\)/,
   'Calculator must reject blank, negative and non-finite salary input');
 assert.match(html, /class="salary-tax-controls"/,
   'Salary controls must use the dedicated responsive layout');
