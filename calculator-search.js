@@ -263,19 +263,35 @@
 
     function matchesFilter(card) {
       if (activeFilter === 'all') return true;
-      var category = String(card.getAttribute('data-category') || '').toLowerCase();
+
+      var category = String(card.getAttribute('data-category') || '').trim().toLowerCase();
       var title = norm((card.querySelector('h2, h3') || {}).textContent || '');
       var keywords = norm(card.getAttribute('data-keywords') || '');
-      var hay = category + ' ' + title + ' ' + keywords + ' ' + norm(card.textContent || '');
-      if (activeFilter === 'Finance') return /finance|tax|salary|loan|business|invest|bank|money|zakat|emi|dividend|stock|psx|retirement|savings|mortgage|insurance/.test(hay);
-      if (activeFilter === 'PSX') return /psx|stock|share|dividend|brokerage|portfolio|capital gain|kse 100|securities/.test(hay);
-      if (activeFilter === 'Agriculture') return /agriculture|fertilizer|fertiliser|npk|urea|dap|mop|crop|pasture|farm|feed|livestock|cattle|buffalo|cow|tmr|hydroponic|topsoil/.test(hay);
-      if (activeFilter === 'Solar') return /solar|photovoltaic|panel size|solar battery|solar load/.test(hay);
-      if (activeFilter === 'Math') return /math|geometry|statistics|statistical|percentage|fraction|ratio|equation|algebra|calculus|probability|matrix|vector|number theory|conversion/.test(hay);
-      if (activeFilter === 'Science') return /science|electrical|physics|chemistry|voltage|current|watts|amps|force|energy|density|velocity|kinematics|wave|circuit/.test(hay);
-      if (activeFilter === 'Health') return /health|medical|fitness|bmi|calorie|pregnancy|weight|body fat|tdee|sleep|ovulation|due date/.test(hay);
-      if (activeFilter === 'Construction') return /construction|property|concrete|roof|stairs|tile|wallpaper|floor|paint|brick|lumber|gravel|mortgage|land area/.test(hay);
-      return true;
+      // Exclude descriptive copy from topic matching: broad prose such as
+      // "shared", "weighted" or "due date" can otherwise leak unrelated cards
+      // into a topic. Explicit category metadata is the strongest signal.
+      var hay = category + ' ' + title + ' ' + keywords;
+      var categoryGroups = {
+        Finance: ['finance', 'business', 'tax', 'salary', 'loans', 'property'],
+        PSX: ['psx'],
+        Agriculture: ['agriculture'],
+        Solar: ['solar'],
+        Math: ['math', 'geometry', 'statistics', 'conversions', 'education'],
+        Science: ['science', 'electrical', 'utilities'],
+        Health: ['health', 'fitness'],
+        Construction: ['construction', 'property']
+      };
+      if ((categoryGroups[activeFilter] || []).indexOf(category) !== -1) return true;
+
+      if (activeFilter === 'Finance') return /\\b(finance|tax|salary|loan|business|invest|bank|money|zakat|emi|dividend|stock|psx|retirement|savings|mortgage|insurance|interest|budget|profit|markup|brokerage|portfolio)\\b/.test(hay);
+      if (activeFilter === 'PSX') return /\\b(psx|stocks?|shares?|dividends?|brokerage|portfolios?|capital gains?|kse ?100|securities|average price|position size)\\b/.test(hay);
+      if (activeFilter === 'Agriculture') return /\\b(agriculture|fertili[sz]er|npk|urea|dap|mop|crop|pasture|farm|feed|livestock|cattle|buffalo|cow|tmr|hydroponic|topsoil|ration|forage|silage|nutrient)\\b/.test(hay);
+      if (activeFilter === 'Solar') return /\\b(solar|photovoltaic|pv|panel count|solar battery|solar load|inverter sizing|peak sun hours)\\b/.test(hay);
+      if (activeFilter === 'Math') return /\\b(math|geometry|statistics|statistical|percentage|fraction|ratio|equation|algebra|calculus|probability|matrix|vector|number theory|conversion|permutation|combination|gpa|grade point|triangle|area|volume|perimeter|unit converter)\\b/.test(hay);
+      if (activeFilter === 'Science') return /\\b(science|electrical|physics|chemistry|voltage|current|watts|amps|force|energy|density|velocity|kinematics|wave|circuit|lens formula|mirror formula|photon|half life|coulomb|resistance|ohms)\\b/.test(hay);
+      if (activeFilter === 'Health') return /\\b(health|medical|fitness|bmi|calorie|pregnancy|body weight|body fat|tdee|sleep|ovulation|fertility|bmr|heart rate|ideal weight)\\b/.test(hay);
+      if (activeFilter === 'Construction') return /\\b(construction|concrete|roof|stairs|tile|wallpaper|floor|paint|brick|lumber|gravel|square footage|land area|building material|cement|steel quantity)\\b/.test(hay);
+      return false;
     }
 
     function render() {
