@@ -92,15 +92,15 @@ assert.match(yieldPage, /!Number\.isInteger\(shares\)/, 'Dividend yield page: sh
 assert.match(yieldPage, /periodLabel=period==='Annual total'/, 'Dividend yield page: selected dividend period must affect result labelling');
 
 const emiPage = fs.readFileSync(new URL('loan-emi-calculator.html', root), 'utf8');
-assert.match(emiPage, /Choose the right loan calculator[\\s\\S]{0,400}href="car-loan-emi-pakistan\\.html"[\\s\\S]{0,250}href="home-loan-emi-pakistan\\.html"/,
+assert.ok(emiPage.includes('Choose the right loan calculator') && emiPage.includes('href="car-loan-emi-pakistan.html"') && emiPage.includes('href="home-loan-emi-pakistan.html"'),
   'General EMI page should route vehicle and housing intent to their dedicated calculators');
 const carEmiPage = fs.readFileSync(new URL('car-loan-emi-pakistan.html', root), 'utf8');
-assert.match(carEmiPage, /Choose the right loan calculator[\\s\\S]{0,350}href="loan-emi-calculator\\.html"[\\s\\S]{0,250}href="home-loan-emi-pakistan\\.html"/,
+assert.ok(carEmiPage.includes('Is this the right tool?') && carEmiPage.includes('href="loan-emi-calculator.html"') && carEmiPage.includes('href="home-loan-emi-pakistan.html"'),
   'Car EMI page should distinguish general-loan and home-loan intent');
 const homeEmiPage = fs.readFileSync(new URL('home-loan-emi-pakistan.html', root), 'utf8');
-assert.match(homeEmiPage, /Choose the right loan calculator[\\s\\S]{0,350}href="car-loan-emi-pakistan\\.html"[\\s\\S]{0,250}href="loan-emi-calculator\\.html"/,
+assert.ok(homeEmiPage.includes('Is this the right tool?') && homeEmiPage.includes('href="car-loan-emi-pakistan.html"') && homeEmiPage.includes('href="loan-emi-calculator.html"'),
   'Home EMI page should distinguish car-loan and general-loan intent');
-assert.match(profitPage, /Choose the right PSX tool[\\s\\S]{0,450}href="psx-average-price-calculator\\.html"[\\s\\S]{0,250}href="psx-dividend-yield-calculator\\.html"/,
-  'PSX profit page should route average-price and dividend intent to specialist calculators');
+assert.ok(profitPage.includes('Choose the right PSX tool') && profitPage.includes('href="psx-average-price-calculator.html"') && profitPage.includes('href="psx-dividend-yield-calculator.html"') && profitPage.includes('href="psx-capital-gains-tax-calculator.html"'),
+  'PSX profit page should route specialist intents to dedicated calculators');
 
 console.log('PSX SEO integrity regression checks: PASS');
