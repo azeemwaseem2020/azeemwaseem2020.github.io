@@ -37,7 +37,7 @@ const marginalRate = new Function('x', 'y', marginalMatch[1]);
 for (const [income, expected] of [[600000,0],[600001,1],[2200000,11],[2200001,20],[4100000,25],[4100001,29],[5600001,32],[7000001,35]]) {
   assert.equal(marginalRate(income, '2026'), expected, 'Wrong current-year marginal rate at PKR ' + income);
 }
-for (const [income, expected] of [[2200001,23],[3200001,30],[4100001,35]]) {
+for (const [income, expected] of [[2200001,23],[3200001,30],[4100001,35],[10000000,35],[10000001,38.15]]) {
   assert.equal(marginalRate(income, '2025'), expected, 'Wrong prior-year marginal rate at PKR ' + income);
 }
 
