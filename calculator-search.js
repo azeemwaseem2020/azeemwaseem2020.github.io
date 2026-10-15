@@ -258,6 +258,23 @@
       return null;
     }
 
+    var activeFilter = 'all';
+    var filterButtons = Array.prototype.slice.call(document.querySelectorAll('[data-library-filter]'));
+
+    function matchesFilter(card) {
+      if (activeFilter === 'all') return true;
+      var category = String(card.getAttribute('data-category') || '').toLowerCase();
+      if (activeFilter === 'Finance') return category === 'finance';
+      if (activeFilter === 'PSX') return category === 'psx' || category === 'investing';
+      if (activeFilter === 'Agriculture') return category === 'agriculture' || category === 'animal feed' || category === 'livestock' || category === 'garden';
+      if (activeFilter === 'Solar') return category === 'solar' || /solar/.test(norm(card.getAttribute('data-keywords') || ''));
+      if (activeFilter === 'Math') return category === 'math' || category === 'statistics';
+      if (activeFilter === 'Science') return category === 'science' || category === 'electrical' || category === 'physics';
+      if (activeFilter === 'Health') return category === 'health' || category === 'medical';
+      if (activeFilter === 'Construction') return category === 'construction' || category === 'property' || category === 'home';
+      return true;
+    }
+
     function render() {
       var raw = String(input.value || '').trim();
       var query = norm(raw);
@@ -267,22 +284,25 @@
       });
 
       if (!query) {
+        var visibleCount = 0;
         meta.forEach(function (item) {
-          item.card.hidden = false;
+          var show = matchesFilter(item.card);
+          item.card.hidden = !show;
           item.card.style.removeProperty('order');
+          if (show) visibleCount++;
         });
         cards.forEach(function (card, index) {
           card.style.order = String(index);
         });
-        if (count) count.textContent = cards.length + ' calculators available';
-        if (noResults) noResults.hidden = true;
+        if (count) count.textContent = visibleCount + ' of ' + cards.length + ' calculators shown';
+        if (noResults) noResults.hidden = visibleCount !== 0;
         return;
       }
 
       var ranked = meta.map(function (item) {
         return { item: item, score: score(item, query, tokens, target) };
       }).filter(function (entry) {
-        return entry.score > 0;
+        return entry.score > 0 && matchesFilter(entry.item.card);
       });
 
       ranked.sort(function (a, b) {
@@ -292,8 +312,7 @@
 
       var visible = ranked.map(function (entry) { return entry.item.card; });
       meta.forEach(function (item) {
-        var show = visible.indexOf(item.card) !== -1;
-        item.card.hidden = !show;
+        item.card.hidden = visible.indexOf(item.card) === -1;
       });
 
       visible.forEach(function (card, index) {
@@ -304,6 +323,18 @@
       if (count) count.textContent = shown + ' calculator' + (shown === 1 ? '' : 's') + ' found';
       if (noResults) noResults.hidden = shown !== 0;
     }
+
+    filterButtons.forEach(function (filterButton) {
+      filterButton.addEventListener('click', function () {
+        activeFilter = filterButton.getAttribute('data-library-filter') || 'all';
+        filterButtons.forEach(function (buttonEl) {
+          var selected = buttonEl === filterButton;
+          buttonEl.classList.toggle('is-active', selected);
+          buttonEl.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        });
+        render();
+      });
+    });
 
     function runSearch() {
       var raw = norm(input.value);
