@@ -89,16 +89,16 @@ assert.doesNotMatch(emi, /<h3>What changes the EMI\?<\/h3>/,
 
 assert.match(zakat, /id="zakat-verification-record"/,
   'Zakat page must expose a verification record');
-assert.match(zakat, /PKR 900,000[\\s\\S]{0,220}PKR 20,000/,
+assert.ok(zakat.includes('PKR 900,000 in listed assets') && zakat.includes('PKR 20,000'),
   'Zakat verification record must show a reproducible worked arithmetic example');
-assert.match(zakat, /Independent reviewer:<\\/strong> None is currently identified/,
+assert.ok(zakat.includes('Independent reviewer:</strong> None is currently identified'),
   'Zakat page must not imply independent specialist review without evidence');
 
 assert.match(emi, /id="emi-verification-record"/,
   'EMI page must expose a verification record');
-assert.match(emi, /PKR 2,124\\.70[\\s\\S]{0,100}PKR 27,482\\.27[\\s\\S]{0,100}PKR 127,482\\.27/,
+assert.ok(emi.includes('PKR 2,124.70') && emi.includes('PKR 27,482.27') && emi.includes('PKR 127,482.27'),
   'EMI verification record must show the runtime-tested sample outputs');
-assert.match(emi, /Independent reviewer:<\\/strong> None is currently identified/,
+assert.ok(emi.includes('Independent reviewer:</strong> None is currently identified'),
   'EMI page must not imply independent finance review without evidence');
 
 const author = fs.readFileSync(new URL('../abdul-qadir.html', import.meta.url), 'utf8');
