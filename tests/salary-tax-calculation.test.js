@@ -43,7 +43,7 @@ for (const [income, expected] of [[2200001,23],[3200001,30],[4100001,35]]) {
 
 const reverseMatch = html.match(/function grossForNet\(target, y\) \{([\s\S]*?)\n  \}\n  function updateLabels/);
 assert.ok(reverseMatch, 'Reverse gross salary solver must be extractable for numerical tests');
-const grossForNet = new Function('tax', reverseMatch[1])((income, taxYear) => calculateTax(income, taxYear));
+const grossForNet = new Function('tax', 'return function(target, y) {' + reverseMatch[1] + '}')((income, taxYear) => calculateTax(income, taxYear));
 for (const [targetNet, taxYear] of [[1200000, '2026'], [2400000, '2025']]) {
   const gross = grossForNet(targetNet, taxYear);
   const resultingNet = gross - calculateTax(gross, taxYear);
