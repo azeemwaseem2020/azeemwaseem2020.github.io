@@ -11,6 +11,11 @@ assert.match(html, /What is the difference between a filer and a non-filer in Pa
   'Must answer the filer versus non-filer question');
 assert.match(html, /does not, by itself, replace the salary tax slab calculation/i,
   'Must distinguish salary slab tax from ATL-dependent withholding on other transactions');
+assert.match(html, /Use the right salary tool:[\s\S]{0,260}href="salary-calculator\.html"/,
+  'Salary tax page should route pay-period conversion intent to the general salary calculator');
+const salaryConverter = fs.readFileSync(new URL('../salary-calculator.html', import.meta.url), 'utf8');
+assert.match(salaryConverter, /Need a tax estimate instead of a pay-period conversion[\s\S]{0,250}href="pakistan-salary-tax-calculator\.html"/,
+  'General salary page should route Pakistan salary-tax intent to the dedicated tax calculator');
 assert.match(html, /Should I calculate salary tax using gross salary or take-home pay\?/i,
   'Must explain the correct taxable salary input');
 
@@ -37,10 +42,10 @@ assert.match(html, /A Finance Bill is useful background but is not[\s\S]{0,100}s
   'Must distinguish a Finance Bill from enacted legislation');
 assert.match(html, /Official source set reviewed October 13, 2026\./,
   'Must display the current official-source review date');
-assert.match(html, /"dateModified":"2026-10-14"/,
-  'Structured data dateModified must match the reviewed page version');
-assert.match(html, /article:modified_time" content="2026-10-14"/,
-  'Open Graph modified time must match the reviewed page version');
+assert.match(html, /"dateModified":"2026-10-15"/,
+  'Structured data dateModified must match the revised salary-tax page');
+assert.match(html, /article:modified_time" content="2026-10-15"/,
+  'Open Graph modified time must match the revised salary-tax page');
 
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
 assert.match(zakat, /<h1>Pakistan Zakat Calculator — Nisab &amp; 2\.5% Estimate<\/h1>/,
