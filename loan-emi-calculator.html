@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png"><meta property="og:image:alt" content="Calcora EMI Calculator"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://azeemwaseem2020.github.io/og-image.png"><meta name="twitter:image:alt" content="Calcora EMI Calculator">
 <meta name="twitter:title" content="EMI Calculator Pakistan | Monthly Payment | Calcora">
 <meta name="twitter:description" content="Monthly EMI, total interest, amortization schedule and loan-cost comparison.">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"EMI Calculator Pakistan","url":"https://azeemwaseem2020.github.io/loan-emi-calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"PKR"},"author":{"@type":"Person","@id":"https://azeemwaseem2020.github.io/abdul-qadir.html#abdul-qadir","name":"Abdul Qadir","url":"https://azeemwaseem2020.github.io/abdul-qadir.html"},"dateModified":"2026-10-15","featureList":["Monthly EMI calculation","Total interest and repayment","Amortization schedule","Principal and interest breakdown","Reducing-balance versus flat-rate comparison","KIBOR spread comparison","Optional extra-principal payoff scenario and estimated interest savings"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"EMI Calculator Pakistan","url":"https://azeemwaseem2020.github.io/loan-emi-calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"PKR"},"author":{"@type":"Person","@id":"https://azeemwaseem2020.github.io/abdul-qadir.html#abdul-qadir","name":"Abdul Qadir","url":"https://azeemwaseem2020.github.io/abdul-qadir.html"},"dateModified":"2026-10-15","featureList":["Monthly EMI calculation","Total interest and repayment","Amortization schedule","Principal and interest breakdown","Reducing-balance versus flat-rate comparison","KIBOR spread comparison","Optional extra-principal payoff scenario and estimated interest savings","Monthly budget affordability ratio and hypothetical rate-stress test"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://azeemwaseem2020.github.io/"},{"@type":"ListItem","position":2,"name":"Calculators","item":"https://azeemwaseem2020.github.io/calculators.html"},{"@type":"ListItem","position":3,"name":"Loan EMI Calculator","item":"https://azeemwaseem2020.github.io/loan-emi-calculator.html"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://azeemwaseem2020.github.io/abdul-qadir.html#abdul-qadir","name":"Abdul Qadir","url":"https://azeemwaseem2020.github.io/abdul-qadir.html"}</script><meta property="article:modified_time" content="2026-10-15"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"EMI Calculator Pakistan | Loan Payment & Interest","url":"https://azeemwaseem2020.github.io/loan-emi-calculator.html","description":"Calculate EMI in Pakistan from loan amount, annual rate and tenure, with total interest, repayment and amortization details.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"Calcora","url":"https://azeemwaseem2020.github.io/"},"about":{"@type":"Thing","name":"Loan EMI calculation"},"author":{"@type":"Person","@id":"https://azeemwaseem2020.github.io/abdul-qadir.html#abdul-qadir","name":"Abdul Qadir","url":"https://azeemwaseem2020.github.io/abdul-qadir.html"},"dateModified":"2026-10-15"}</script>
 </head>
@@ -71,6 +71,23 @@
 <div class="callout"><strong>This calculator uses reducing-balance mathematics.</strong> Your bank or finance company may use different rules, fees, insurance, payment dates, rounding or variable-rate terms. The lender's official repayment schedule is the figure to rely on for a real offer.</div>
 </aside>
 </div>
+
+<section class="calculator-card" id="affordability-stress-test" style="margin-top:28px">
+<h2>Loan affordability & rate-stress test</h2>
+<p>Check whether a proposed monthly instalment fits your budget, including existing monthly debt payments and a possible rate increase. This is a budgeting screen, not a bank approval or credit assessment.</p>
+<div class="policy-grid" style="align-items:start">
+<div>
+<label for="aff-income">Monthly take-home income (PKR)</label><input id="aff-income" type="number" min="0" step="1000" value="150000" inputmode="decimal">
+<label for="aff-expenses">Essential monthly living expenses (PKR)</label><input id="aff-expenses" type="number" min="0" step="1000" value="50000" inputmode="decimal">
+<label for="aff-debt">Other monthly debt payments (PKR)</label><input id="aff-debt" type="number" min="0" step="500" value="10000" inputmode="decimal">
+<label for="aff-emi">Proposed loan EMI (PKR)</label><input id="aff-emi" type="number" min="0" step="100" value="25000" inputmode="decimal">
+<label for="aff-buffer">Rate increase stress (percentage points)</label><select id="aff-buffer"><option value="0">No increase (0%)</option><option value="1">+1 percentage point</option><option value="2" selected>+2 percentage points</option><option value="3">+3 percentage points</option><option value="5">+5 percentage points</option></select>
+<button class="btn" type="button" id="aff-check">Check affordability</button>
+</div>
+<div id="aff-result" aria-live="polite" role="status"><p>Enter your monthly budget and proposed EMI, then run the stress test.</p></div>
+</div>
+<p class="muted">The stress case estimates a new EMI on the same outstanding principal and remaining term using the entered calculator loan rate plus the selected increase. If the rate is fixed, this is a hypothetical shock rather than a forecast. If your proposed EMI is not based on the main calculator's loan amount, term and rate, use the result as a simple budget check only.</p>
+</section>
 
 <section class="prose" style="margin-top:44px">
 <h2>Loan payment and amortization terms</h2>
@@ -220,6 +237,33 @@ function calc(){
 }
 document.getElementById('calculate').addEventListener('click',calc);
 calc();
+</script>
+<script>
+(function(){
+ const el=id=>document.getElementById(id);
+ const money=n=>n.toLocaleString('en-PK',{minimumFractionDigits:0,maximumFractionDigits:0});
+ el('aff-check').addEventListener('click',function(){
+  const income=Number(el('aff-income').value),expenses=Number(el('aff-expenses').value),debts=Number(el('aff-debt').value),emi=Number(el('aff-emi').value),shock=Number(el('aff-buffer').value);
+  const out=el('aff-result');
+  if(![income,expenses,debts,emi,shock].every(Number.isFinite)||income<=0||expenses<0||debts<0||emi<0||shock<0){
+   out.innerHTML='<p role="alert">Enter a positive take-home income and non-negative expenses, debt payments and EMI.</p>';return;
+  }
+  if([income,expenses,debts,emi].some(v=>v>Number.MAX_SAFE_INTEGER)){
+   out.innerHTML='<p role="alert">Amounts are too large for a reliable estimate. Enter realistic PKR values.</p>';return;
+  }
+  const combined=debts+emi,ratio=combined/income*100,remaining=income-expenses-combined;
+  const annual=Number(el('rate').value),principal=Number(el('amount').value)-Number(el('down').value),months=Math.round(Number(el('years').value)*12);
+  let stressEmi=null,stressRatio=null,stressRemaining=null;
+  if(Number.isFinite(annual)&&annual>=0&&annual+shock<=100&&principal>0&&months>0&&months<=600){
+   const rr=(annual+shock)/1200;
+   stressEmi=rr===0?principal/months:principal*rr*Math.pow(1+rr,months)/(Math.pow(1+rr,months)-1);
+   if(Number.isFinite(stressEmi)){stressRatio=(debts+stressEmi)/income*100;stressRemaining=income-expenses-debts-stressEmi;}else stressEmi=null;
+  }
+  const label=p=>p<30?'Lower payment burden':p<40?'Moderate payment burden':'High payment burden';
+  const status=remaining<0?'Your listed commitments exceed take-home income after essential expenses.':ratio>=40?'The proposed debt payments are a high share of income; consider a smaller payment or more buffer.':ratio>=30?'Review the budget carefully and keep an emergency buffer.':'The proposed EMI is below the simple 30% debt-payment screen; still check your full budget and lender terms.';
+  out.innerHTML='<div class="callout"><h3>Budget check</h3><p><strong>Monthly income:</strong> PKR '+money(income)+'</p><p><strong>Debt payments including proposed EMI:</strong> PKR '+money(combined)+'</p><p><strong>Debt payments / take-home income:</strong> '+ratio.toFixed(1)+'% — '+label(ratio)+'</p><p><strong>Left after listed expenses and debt payments:</strong> PKR '+money(remaining)+'</p><p>'+status+'</p>'+(stressEmi===null?'<p class="muted">Rate-stress EMI unavailable: check the main calculator amount, term and rate, and keep the stressed annual rate at or below 100%.</p>':'<h3>Hypothetical rate-stress case</h3><p><strong>Rate used:</strong> '+(annual+shock).toFixed(2)+'% annually</p><p><strong>Estimated stressed EMI:</strong> PKR '+money(stressEmi)+'</p><p><strong>Debt payments / income after stress:</strong> '+stressRatio.toFixed(1)+'%</p><p><strong>Left after expenses and debt payments after stress:</strong> PKR '+money(stressRemaining)+'</p>')+'<p class="muted">The 30% and 40% labels are simple budgeting prompts, not universal lending standards. Actual affordability depends on household needs, variable income, savings, dependants, lender policy and product terms.</p></div>';
+ });
+})();
 </script>
 </body>
 </html>
