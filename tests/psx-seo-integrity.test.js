@@ -91,4 +91,16 @@ assert.match(yieldPage, /Gross dividend is not necessarily take-home cash/, 'Div
 assert.match(yieldPage, /!Number\.isInteger\(shares\)/, 'Dividend yield page: share count must be validated as a whole number');
 assert.match(yieldPage, /periodLabel=period==='Annual total'/, 'Dividend yield page: selected dividend period must affect result labelling');
 
+const emiPage = fs.readFileSync(new URL('loan-emi-calculator.html', root), 'utf8');
+assert.match(emiPage, /Choose the right loan calculator[\\s\\S]{0,400}href="car-loan-emi-pakistan\\.html"[\\s\\S]{0,250}href="home-loan-emi-pakistan\\.html"/,
+  'General EMI page should route vehicle and housing intent to their dedicated calculators');
+const carEmiPage = fs.readFileSync(new URL('car-loan-emi-pakistan.html', root), 'utf8');
+assert.match(carEmiPage, /Choose the right loan calculator[\\s\\S]{0,350}href="loan-emi-calculator\\.html"[\\s\\S]{0,250}href="home-loan-emi-pakistan\\.html"/,
+  'Car EMI page should distinguish general-loan and home-loan intent');
+const homeEmiPage = fs.readFileSync(new URL('home-loan-emi-pakistan.html', root), 'utf8');
+assert.match(homeEmiPage, /Choose the right loan calculator[\\s\\S]{0,350}href="car-loan-emi-pakistan\\.html"[\\s\\S]{0,250}href="loan-emi-calculator\\.html"/,
+  'Home EMI page should distinguish car-loan and general-loan intent');
+assert.match(profitPage, /Choose the right PSX tool[\\s\\S]{0,450}href="psx-average-price-calculator\\.html"[\\s\\S]{0,250}href="psx-dividend-yield-calculator\\.html"/,
+  'PSX profit page should route average-price and dividend intent to specialist calculators');
+
 console.log('PSX SEO integrity regression checks: PASS');
