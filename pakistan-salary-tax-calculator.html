@@ -146,6 +146,7 @@
       '<p><strong>Marginal tax rate:</strong> '+marginalRate(gross,selectedYear)+'%</p>'+
       (mode.value==='net-gross'?'<p><strong>Target net pay entered:</strong> PKR '+fmt(annualInput)+' per year. Gross pay is solved iteratively using the selected year’s tax formula.</p>':'')+
       comparison+
+      '<p><strong>Eligibility:</strong> This calculator does not verify whether salary income exceeds 75% of taxable income, a condition relevant to the salaried-person rate table. Mixed-income cases should be checked against the applicable FBR rules.</p>'+
       '<p><strong>Scope:</strong> This is a tax-only estimate, not guaranteed payroll net pay. It excludes benefits, provident-fund deductions, loans, other income, tax credits, exemptions, withholding adjustments and individual eligibility checks. FY 2025–26 comparison includes the 9% surcharge on tax where taxable income exceeds PKR 10 million; verify both years against the applicable FBR rules before filing.</p>';
   }
   period.addEventListener('change',()=>{
