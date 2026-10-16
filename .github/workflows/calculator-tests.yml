@@ -6,6 +6,7 @@ on:
       - "tests/**"
       - "*.html"
       - "calculator-search.js"
+      - "navigation.js"
       - "sitemap.xml"
       - ".github/workflows/calculator-tests.yml"
   pull_request:
