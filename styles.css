@@ -66,3 +66,11 @@
 
 /* Calcora P2 result actions: consistent, accessible controls across calculators */
 .calcora-result-actions{margin:1.5rem 0;padding:1rem;border:1px solid #dfe5ec;border-radius:12px;background:#fff}.calcora-result-actions h2{margin-top:0}.calcora-result-actions div{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}.calcora-result-actions button,.calcora-result-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:.65rem .9rem;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:inherit;text-decoration:none;font:inherit;cursor:pointer}.calcora-result-actions button:hover,.calcora-result-actions a:hover{background:#eef2f7}.calcora-result-actions button:focus-visible,.calcora-result-actions a:focus-visible{outline:3px solid rgba(37,99,235,.3);outline-offset:2px}@media (max-width:600px){.calcora-result-actions div>*{width:100%}}
+/* Search and navigation usability: fast category scanning, visible result feedback, and mobile-friendly filters. */
+.calculator-category-filters{display:flex;gap:8px;overflow-x:auto;padding:10px 1px 12px;margin:8px 0 12px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.calculator-category-filter{flex:0 0 auto;border:1px solid #d5e0e9;border-radius:999px;background:#fff;color:#46556b;padding:8px 13px;font:inherit;font-size:.86rem;font-weight:750;cursor:pointer;white-space:nowrap}
+.calculator-category-filter:hover,.calculator-category-filter:focus-visible{border-color:#087f70;color:#087f70}
+.calculator-category-filter[aria-pressed="true"]{background:#14213d;border-color:#14213d;color:#fff}
+.calculator-no-results{margin:14px 0;padding:14px 16px;border:1px solid #f0d7a6;border-radius:12px;background:#fff8e8;color:#604c25}
+.search-reset-button{border:0;background:transparent;color:#087f70;text-decoration:underline;font:inherit;font-weight:800;cursor:pointer;padding:0}
+@media(max-width:580px){.calculator-category-filters{margin-left:-2px;margin-right:-2px;padding-bottom:14px}.calculator-category-filter{padding:8px 11px;font-size:.82rem}}
