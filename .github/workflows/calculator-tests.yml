@@ -5,6 +5,7 @@ on:
     paths:
       - "tests/**"
       - "*.html"
+      - "calculator-search.js"
       - "sitemap.xml"
       - ".github/workflows/calculator-tests.yml"
   pull_request:
@@ -29,3 +30,4 @@ jobs:
           node tests/psx-seo-integrity.test.js
           node tests/science-calculators.test.js
           node tests/sitemap-integrity.test.js
+          node tests/search-integrity.test.js
