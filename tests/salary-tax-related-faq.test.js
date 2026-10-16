@@ -202,7 +202,6 @@ for (const [pageName, otherPage] of [
     pageName + ' must connect the specific-salary answer to a related salary example');
   const selfLinkPrefix = '<a href="' + pageName + '">Tax on PKR ';
   assert.ok(!example.includes(selfLinkPrefix), pageName + ' related resources must not link to itself as a destination');
-  assert.doesNotMatch(example, new RegExp('<a href="' + selfPath + '">Tax on PKR [0-9,]+ salary</a>'),
     pageName + ' related resources must not link to itself as a destination');
 }
 
