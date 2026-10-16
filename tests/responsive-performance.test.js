@@ -52,8 +52,13 @@ let imagesWithoutLazyHint = 0;
 
 for (const page of pages) {
   const html = read(page);
-  if (!/<meta[^>]+name=["']viewport["'][^>]*>/i.test(html)) viewportMissing.push(page);
-  if (!/href=["'][^"']*styles\.css(?:\?[^"']*)?["']/i.test(html)) stylesheetMissing.push(page);
+  const verificationArtifact = /^google[a-z0-9]+\.html$/i.test(path.basename(page)) ||
+    /^[a-f0-9-]{36}\.html$/i.test(path.basename(page)) && /google-site-verification:/i.test(html);
+  const redirectStub = /<meta[^>]+name=["']robots["'][^>]*content=["']noindex,follow["']/i.test(html) &&
+    (/<meta[^>]+http-equiv=["']refresh["']/i.test(html) || /location\.replace\(/i.test(html));
+  const requiresResponsiveViewport = !verificationArtifact && !redirectStub;
+  if (requiresResponsiveViewport && !/<meta[^>]+name=["']viewport["'][^>]*>/i.test(html)) viewportMissing.push(page);
+  if (requiresResponsiveViewport && !/href=["'][^"']*styles\.css(?:\?[^"']*)?["']/i.test(html)) stylesheetMissing.push(page);
   for (const match of html.matchAll(/<script\b([^>]*)\bsrc=["']https?:\/\/[^"']+["'][^>]*>/gi)) {
     if (!/\b(?:async|defer)\b/i.test(match[0])) syncExternalScripts.push(page);
   }
@@ -70,7 +75,7 @@ assert.ok(stylesheetMissing.length <= Math.max(3, Math.floor(pages.length * 0.02
   "Unexpected number of pages missing shared responsive CSS: " + stylesheetMissing.slice(0, 12).join(", "));
 
 console.log("Responsive/performance safeguards PASS");
-console.log("HTML pages audited: " + pages.length + "; missing viewport: " + viewportMissing.length + "; missing shared CSS: " + stylesheetMissing.length);
+console.log("HTML files scanned: " + pages.length + "; missing viewport on indexable pages: " + viewportMissing.length + "; missing shared CSS on indexable pages: " + stylesheetMissing.length + "; utility/redirect files excluded from responsive requirements.");
 console.log("Static performance review (manual follow-up): " + syncExternalScripts.length + " page(s) with synchronous external scripts; " +
   imagesWithoutDimensions + "/" + imageCount + " images missing width/height; " +
   imagesWithoutLazyHint + "/" + imageCount + " images without explicit loading hints.");
