@@ -44,6 +44,9 @@ assert.match(html, /article:modified_time" content="2026-10-15"/,
 
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
 assert.match(zakat, /<h1>Pakistan Zakat Calculator — Nisab &amp; 2\.5% Estimate<\/h1>/,
+assert.match(zakat, /href="#zakat-calculator">Jump to the Zakat calculator<\/a>/, 'Zakat calculator intent should offer an immediate path to the tool');
+assert.match(zakat, /<section class="calculator-card" id="zakat-calculator">/, 'Zakat calculator section should expose the jump target');
+assert.doesNotMatch(zakat, /Before entering figures, read the/, 'Zakat calculator page should not push users away before they can calculate');
   'Zakat page should not label a prior-year Nisab as the current-year default');
 assert.match(zakat, /value="" placeholder="Enter the applicable Nisab amount"/,
   'Zakat page must not prefill the historical 1446–47 Nisab as current');
