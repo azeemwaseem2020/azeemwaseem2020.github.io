@@ -36,3 +36,4 @@ jobs:
           node tests/science-calculators.test.js
           node tests/sitemap-integrity.test.js
           node tests/search-integrity.test.js
+          node tests/responsive-performance.test.js
