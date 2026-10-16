@@ -25,6 +25,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Check calculator search JavaScript syntax
+        run: node --check calculator-search.js
       - name: Run regression tests
         run: |
           node tests/psx-calculator-core.test.js
