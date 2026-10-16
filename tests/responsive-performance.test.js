@@ -58,7 +58,7 @@ for (const page of pages) {
     (/<meta[^>]+http-equiv=["']refresh["']/i.test(html) || /location\.replace\(/i.test(html));
   const requiresResponsiveViewport = !verificationArtifact && !redirectStub;
   if (requiresResponsiveViewport && !/<meta[^>]+name=["']viewport["'][^>]*>/i.test(html)) viewportMissing.push(page);
-  if (requiresResponsiveViewport && !/href=["'][^"']*styles\.css(?:\?[^"']*)?["']/i.test(html)) stylesheetMissing.push(page);
+  if (requiresResponsiveViewport && !/href=["'][^"']*(?:styles|style|calculator-mobile)\.css(?:\?[^"']*)?["']/i.test(html)) stylesheetMissing.push(page);
   for (const match of html.matchAll(/<script\b([^>]*)\bsrc=["']https?:\/\/[^"']+["'][^>]*>/gi)) {
     if (!/\b(?:async|defer)\b/i.test(match[0])) syncExternalScripts.push(page);
   }
