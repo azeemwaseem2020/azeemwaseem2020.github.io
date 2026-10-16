@@ -166,4 +166,29 @@ assert.match(html, /function previousYearTax\(x\)/,
 assert.match(html, /annual > 10000000/,
   'Previous-year comparison must account for the 9% surcharge above PKR 10 million');
 
+
+for (const [pageName, salary] of [
+  ['salary-tax-on-50000.html', 'PKR 50,000'],
+  ['salary-tax-on-100000.html', 'PKR 100,000'],
+  ['salary-tax-on-200000.html', 'PKR 200,000']
+]) {
+  const example = fs.readFileSync(new URL('../' + pageName, import.meta.url), 'utf8');
+  assert.match(example, /Need an estimate for a different salary\?/,
+    pageName + ' must provide a useful next step for visitors with another salary amount');
+  assert.match(example, /href="pakistan-salary-tax-calculator\.html#salary-tax-calculator"/,
+    pageName + ' must link directly to the calculator control, not just the top of the page');
+  assert.match(example, /href="pakistan-income-tax-slabs-2026-27\.html"/,
+    pageName + ' must link to the relevant official-slab explainer');
+  assert.match(example, /"dateModified":"2026-10-16"/,
+    pageName + ' structured-data revision date must match its latest content change');
+  assert.match(example, /article:modified_time" content="2026-10-16"/,
+    pageName + ' Open Graph modified time must match its latest content change');
+}
+for (const map of [sitemap, prioritySitemap]) {
+  for (const pageName of ['salary-tax-on-50000.html', 'salary-tax-on-100000.html', 'salary-tax-on-200000.html']) {
+    assert.match(map, new RegExp('<loc>https://azeemwaseem2020\\.github\\.io/' + pageName + '<\\/loc><lastmod>2026-10-16<\\/lastmod>'),
+      'Both sitemaps must record the latest revision date for ' + pageName);
+  }
+}
+
 console.log('Finance calculator SEO, source and validation tests passed.');
