@@ -5,11 +5,13 @@ on:
     paths:
       - "tests/**"
       - "*.html"
+      - "sitemap.xml"
       - ".github/workflows/calculator-tests.yml"
   pull_request:
     paths:
       - "tests/**"
       - "*.html"
+      - "sitemap.xml"
       - ".github/workflows/calculator-tests.yml"
   workflow_dispatch:
 
