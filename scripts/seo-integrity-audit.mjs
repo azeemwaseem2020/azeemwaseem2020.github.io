@@ -78,7 +78,7 @@ for (const abs of htmlFiles) {
     .replace(/&#39;|&apos;/gi, "'");
   const bodyWords = (visibleBody.match(/[\p{L}\p{N}]+(?:[’'’-][\p{L}\p{N}]+)*/gu) || []).length;
   const priorityPage = /(?:salary-tax|income-tax|zakat|emi|loan|psx|fertilizer|tmr|animal-feed|agriculture|solar-calculator|finance-calculator)/i.test(file);
-  const intentionalNoindex = /<meta\\b[^>]*\\bname\\s*=\\s*["']robots["'][^>]*\\bcontent\\s*=\\s*["'][^"']*\\bnoindex\\b/i.test(html);
+  const intentionalNoindex = /<meta\b[^>]*\bname\s*=\s*["']robots["'][^>]*\bcontent\s*=\s*["'][^"']*\bnoindex\b/i.test(html);
   const eligibleForContentReview = !intentionalNoindex && !verificationFile(file);
   if (eligibleForContentReview && bodyWords < 250) report.contentQuality.under250Words.push({ file, bodyWords, priorityPage });
   else if (eligibleForContentReview && bodyWords < 500) report.contentQuality.from250To499Words.push({ file, bodyWords, priorityPage });
