@@ -13,6 +13,8 @@ assert.match(html, /What is the difference between a filer and a non-filer in Pa
   'Must answer the filer versus non-filer question');
 assert.match(html, /does not, by itself, replace the salary tax slab calculation/i,
   'Must distinguish salary slab tax from ATL-dependent withholding on other transactions');
+assert.match(html, /does not test that eligibility condition or determine full payroll take-home pay after benefits, provident-fund treatment, and other deductions/i, 'Salary tax page must distinguish estimated net after income tax from full payroll take-home pay');
+assert.doesNotMatch(html, /does not test that eligibility condition or calculate take-home pay/i, 'Salary tax introduction must not contradict its net-after-tax output');
 assert.match(html, /Should I calculate salary tax using gross salary or take-home pay\?/i,
   'Must explain the correct taxable salary input');
 
