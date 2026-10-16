@@ -3,6 +3,8 @@ import fs from 'node:fs';
 
 const html = fs.readFileSync(new URL('../pakistan-salary-tax-calculator.html', import.meta.url), 'utf8');
 
+assert.match(html, /href="#salary-tax-calculator">Jump to the salary tax calculator<\/a>/, 'Salary tax calculator intent should offer an immediate path to the tool');
+assert.match(html, /<section class="calculator-card" id="salary-tax-calculator">/, 'Salary tax calculator section should expose the jump target');
 assert.match(html, /How much tax is deducted on a PKR 100,000 monthly salary in Pakistan\?/i,
   'Must answer the high-intent PKR 100,000 monthly salary tax question');
 assert.match(html, /PKR 6,000[\s\S]{0,180}PKR 500/i,
@@ -37,9 +39,9 @@ assert.match(html, /A Finance Bill is useful background but is not[\s\S]{0,100}s
   'Must distinguish a Finance Bill from enacted legislation');
 assert.match(html, /Official source set reviewed October 15, 2026\./,
   'Must display the current official-source review date');
-assert.match(html, /"dateModified":"2026-10-15"/,
+assert.match(html, /"dateModified":"2026-10-16"/,
   'Structured data dateModified must match the reviewed page version');
-assert.match(html, /article:modified_time" content="2026-10-15"/,
+assert.match(html, /article:modified_time" content="2026-10-16"/,
   'Open Graph modified time must match the reviewed page version');
 
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
