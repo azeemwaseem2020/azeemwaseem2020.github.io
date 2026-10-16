@@ -80,3 +80,30 @@
 .site-header .nav-dropdown-trigger[aria-expanded="true"]{background:#eaf8f4;color:#087f70}
 @media(max-width:900px){.site-header .nav-dropdown-menu{left:0;right:auto;max-width:calc(100vw - 24px);max-height:min(65vh,520px);overflow:auto;overscroll-behavior:contain}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.site-header nav a,.nav-tab{transition:none}}
+
+
+/* Mobile layout and performance safeguards: prevent common overflow and improve touch usability. */
+img,video,iframe,canvas,svg{max-width:100%}
+pre{max-width:100%;overflow-x:auto}
+table{max-width:100%}
+.calculator-card input,.calculator-card select,.calculator-card textarea{min-width:0;max-width:100%}
+.calculator-card button,.calculator-card input,.calculator-card select,.calculator-card textarea{min-height:44px}
+.calcora-search-wrap{min-width:0;flex-wrap:wrap}
+.calcora-search-wrap input{min-width:0;flex:1 1 220px}
+.calculator-card,.card,.policy-card,.contact-card,.faq-item{overflow-wrap:anywhere}
+@media(max-width:580px){
+  .calculator-card{padding:18px}
+  .calculator-card input,.calculator-card select,.calculator-card textarea{font-size:16px}
+  .calculator-card button,.calculator-card .btn{width:100%;min-height:46px}
+  .calcora-live-search{margin:18px 12px;padding:15px}
+  .calcora-search-wrap{align-items:stretch;gap:9px}
+  .calcora-search-wrap span{white-space:normal}
+  .footer-grid,.grid,.category-grid,.policy-grid,.contact-grid,.faq-grid{min-width:0}
+}
+@media(max-width:360px){
+  .header-inner{gap:6px}
+  .brand{font-size:1.18rem}
+  .brand-mark{width:28px;height:28px}
+  .site-header nav a{padding:8px 8px;font-size:.78rem}
+  .calculator-card{padding:14px}
+}
