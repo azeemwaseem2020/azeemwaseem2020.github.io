@@ -6,7 +6,7 @@
     var input = document.getElementById('calculatorSearch');
     if (!section || !input) return;
 
-    var cards = Array.prototype.slice.call(section.querySelectorAll('.calculator-card'));
+    var cards = Array.prototype.slice.call(section.querySelectorAll('.calculator-card:not([data-search-ignore="true"])'));
     var button = document.getElementById('calculatorSearchButton');
     var count = document.getElementById('calculatorSearchCount');
     var noResults = document.getElementById('calculatorNoResults');
@@ -275,10 +275,11 @@
     }
 
     function detectTarget(rawQuery) {
+      var normalizedQuery = norm(rawQuery);
       for (var i = 0; i < patterns.length; i++) {
-        if (patterns[i][0].test(rawQuery)) return patterns[i][1];
+        if (patterns[i][0].test(normalizedQuery)) return patterns[i][1];
       }
-      if (aliases[rawQuery]) return aliases[rawQuery];
+      if (aliases[normalizedQuery]) return aliases[normalizedQuery];
       return null;
     }
 
