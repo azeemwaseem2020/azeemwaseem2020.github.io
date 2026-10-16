@@ -9,8 +9,10 @@
     var cards = Array.prototype.slice.call(section.querySelectorAll('.calculator-card'));
     var button = document.getElementById('calculatorSearchButton');
     var count = document.getElementById('calculatorSearchCount');
-    var noResults = section.querySelector('.calculator-no-results');
-    var originalOrder = cards.slice();
+    var noResults = document.getElementById('calculatorNoResults');
+    var clearButton = document.getElementById('calculatorSearchClear');
+    var categoryFilter = document.getElementById('calculatorCategoryFilters');
+    var activeCategory = 'All';
 
     function norm(value) {
       return String(value || '')
@@ -205,8 +207,30 @@
       var keywords = norm(card.getAttribute('data-keywords') || '');
       var text = norm(card.textContent || '');
       var hay = title + ' ' + keywords + ' ' + text;
-      return { card: card, index: index, title: title, keywords: keywords, text: text, hay: hay };
+      return { card: card, index: index, title: title, keywords: keywords, text: text, hay: hay, category: String(card.getAttribute('data-category') || 'Other').trim() || 'Other' };
     });
+
+    // Build accessible category filters from categories actually present in the library.
+    // This keeps the filter current as calculator cards are added or renamed.
+    if (categoryFilter) {
+      var categoryNames = ['All'].concat(Array.from(new Set(meta.map(function (item) { return item.category; })).values()).sort(function (a, b) { return a.localeCompare(b); }));
+      categoryNames.forEach(function (name) {
+        var filterButton = document.createElement('button');
+        filterButton.type = 'button';
+        filterButton.className = 'calculator-category-filter';
+        filterButton.textContent = name === 'All' ? 'All categories' : name;
+        filterButton.setAttribute('data-category', name);
+        filterButton.setAttribute('aria-pressed', name === activeCategory ? 'true' : 'false');
+        filterButton.addEventListener('click', function () {
+          activeCategory = name;
+          Array.prototype.forEach.call(categoryFilter.querySelectorAll('button'), function (button) {
+            button.setAttribute('aria-pressed', button.getAttribute('data-category') === activeCategory ? 'true' : 'false');
+          });
+          render();
+        });
+        categoryFilter.appendChild(filterButton);
+      });
+    }
 
     function tokenMatch(hay, token) {
       if (hay.indexOf(token) !== -1) return 1;
@@ -267,22 +291,22 @@
       });
 
       if (!query) {
+        var categoryVisible = 0;
         meta.forEach(function (item) {
-          item.card.hidden = false;
-          item.card.style.removeProperty('order');
+          var show = activeCategory === 'All' || item.category === activeCategory;
+          item.card.hidden = !show;
+          item.card.style.order = String(item.index);
+          if (show) categoryVisible++;
         });
-        cards.forEach(function (card, index) {
-          card.style.order = String(index);
-        });
-        if (count) count.textContent = cards.length + ' calculators available';
-        if (noResults) noResults.hidden = true;
+        if (count) count.textContent = activeCategory === 'All' ? cards.length + ' calculators available' : categoryVisible + ' calculators in ' + activeCategory;
+        if (noResults) noResults.hidden = categoryVisible > 0;
         return;
       }
 
       var ranked = meta.map(function (item) {
         return { item: item, score: score(item, query, tokens, target) };
       }).filter(function (entry) {
-        return entry.score > 0;
+        return entry.score > 0 && (activeCategory === 'All' || entry.item.category === activeCategory);
       });
 
       ranked.sort(function (a, b) {
@@ -303,6 +327,9 @@
       var shown = visible.length;
       if (count) count.textContent = shown + ' calculator' + (shown === 1 ? '' : 's') + ' found';
       if (noResults) noResults.hidden = shown !== 0;
+      if (categoryFilter) Array.prototype.forEach.call(categoryFilter.querySelectorAll('button'), function (filterButton) {
+        filterButton.setAttribute('aria-pressed', filterButton.getAttribute('data-category') === activeCategory ? 'true' : 'false');
+      });
     }
 
     function runSearch() {
@@ -316,6 +343,15 @@
       // than guessing a destination. This avoids incorrect redirects.
       render();
       if (raw) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    if (clearButton) {
+      clearButton.addEventListener('click', function () {
+        input.value = '';
+        activeCategory = 'All';
+        render();
+        input.focus();
+      });
     }
 
     if (button) {
