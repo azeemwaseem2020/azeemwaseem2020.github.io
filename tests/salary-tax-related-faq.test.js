@@ -200,7 +200,8 @@ for (const [pageName, otherPage] of [
   const example = fs.readFileSync(new URL('../' + pageName, import.meta.url), 'utf8');
   assert.match(example, new RegExp('compare nearby examples:[\\s\\S]*href="' + otherPage + '"'),
     pageName + ' must connect the specific-salary answer to a related salary example');
-  const selfPath = pageName.replace(/[.*+?^${}()|[\]\\]/g, '\\console.log('Finance calculator SEO, source and validation tests passed.');');
+  const selfLinkPrefix = '<a href="' + pageName + '">Tax on PKR ';
+  assert.ok(!example.includes(selfLinkPrefix), pageName + ' related resources must not link to itself as a destination');
   assert.doesNotMatch(example, new RegExp('<a href="' + selfPath + '">Tax on PKR [0-9,]+ salary</a>'),
     pageName + ' related resources must not link to itself as a destination');
 }
