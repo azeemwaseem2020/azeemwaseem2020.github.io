@@ -1,0 +1,78 @@
+name: Calcora Lighthouse performance audit
+
+on:
+  push:
+    branches:
+      - seo/people-first-calculator-library
+    paths:
+      - "*.html"
+      - "*.css"
+      - "*.js"
+      - ".github/workflows/lighthouse-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Start local static server
+        run: |
+          npx --yes http-server . -p 4173 -c-1 > /tmp/calcora-http-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then
+              echo "Static server is ready"
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/calcora-http-server.log
+          exit 1
+      - name: Run Lighthouse mobile audits
+        run: |
+          mkdir -p lighthouse-reports
+          for page in / /calculators.html /loan-emi-calculator.html /fertilizer-calculator.html; do
+            slug=$(echo "$page" | sed 's#^/##; s#/$#home#; s#\.html$##; s#^$#home#; s#[^a-zA-Z0-9_-]#-#g')
+            npx --yes lighthouse "http://127.0.0.1:4173$page" \
+              --output=json --output-path="lighthouse-reports/mobile-$slug.json" \
+              --chrome-flags="--headless --no-sandbox" \
+              --only-categories=performance,accessibility,best-practices,seo
+          done
+      - name: Summarize lab metrics
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import path from 'node:path';
+          const dir = 'lighthouse-reports';
+          for (const file of fs.readdirSync(dir).filter(name => name.endsWith('.json'))) {
+            const report = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+            const audits = report.audits || {};
+            const score = id => report.categories?.[id]?.score == null ? 'n/a' : Math.round(report.categories[id].score * 100);
+            const metric = id => audits[id]?.displayValue ?? 'n/a';
+            console.log([
+              file,
+              'Performance=' + score('performance'),
+              'Accessibility=' + score('accessibility'),
+              'SEO=' + score('seo'),
+              'LCP=' + metric('largest-contentful-paint'),
+              'TBT=' + metric('total-blocking-time'),
+              'CLS=' + metric('cumulative-layout-shift')
+            ].join(' | '));
+          }
+          NODE
+      - name: Upload Lighthouse reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: calcora-lighthouse-mobile-reports
+          path: lighthouse-reports/
+          if-no-files-found: error
+          retention-days: 14
