@@ -68,15 +68,15 @@ for (const abs of htmlFiles) {
   const file = path.relative(ROOT, abs).split(path.sep).join('/');
   const html = fs.readFileSync(abs, 'utf8');
   const visibleBody = html
-    .replace(/<head\\b[\\s\\S]*?<\\/head\\s*>/gi, ' ')
-    .replace(/<(?:script|style|nav|header|footer|noscript|svg)\\b[\\s\\S]*?<\\/(?:script|style|nav|header|footer|noscript|svg)\\s*>/gi, ' ')
-    .replace(/<!--[\\s\\S]*?-->/g, ' ')
+    .replace(/<head\b[\s\S]*?<\/head\s*>/gi, ' ')
+    .replace(/<(?:script|style|nav|header|footer|noscript|svg)\b[\s\S]*?<\/(?:script|style|nav|header|footer|noscript|svg)\s*>/gi, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;|&#160;/gi, ' ')
     .replace(/&amp;/gi, '&').replace(/&quot;|&#34;/gi, '"')
     .replace(/&lt;/gi, '<').replace(/&gt;/gi, '>')
     .replace(/&#39;|&apos;/gi, "'");
-  const bodyWords = (visibleBody.match(/[\\p{L}\\p{N}]+(?:[’'’-][\\p{L}\\p{N}]+)*/gu) || []).length;
+  const bodyWords = (visibleBody.match(/[\p{L}\p{N}]+(?:[’'’-][\p{L}\p{N}]+)*/gu) || []).length;
   const priorityPage = /(?:salary-tax|income-tax|zakat|emi|loan|psx|fertilizer|tmr|animal-feed|agriculture|solar-calculator|finance-calculator)/i.test(file);
   if (bodyWords < 250) report.contentQuality.under250Words.push({ file, bodyWords, priorityPage });
   else if (bodyWords < 500) report.contentQuality.from250To499Words.push({ file, bodyWords, priorityPage });
