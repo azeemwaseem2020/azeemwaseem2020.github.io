@@ -51,4 +51,14 @@ assert.match(navigation, /event\.key === 'Escape'/);
 assert.match(navigation, /aria-expanded/);
 assert.match(navigation, /pointerdown/);
 
-console.log("Search and navigation regression checks: PASS (" + searchableCards.length + " unique searchable cards; " + cards.length + " directory card links)");
+function verifyLocalTargets(source, sourceName) {
+  const links = [...source.matchAll(/\b(?:href|src)="([^"]+)"/g)].map(([match, value]) => value);
+  for (const href of links) {
+    if (/^(?:https?:|mailto:|tel:|data:|javascript:|#)/i.test(href)) continue;
+    const localPath = href.replace(/^\.\//, "").split(/[?#]/)[0];
+    assert.ok(fs.existsSync(path.join(root, localPath)), "Missing local target in " + sourceName + ": " + href);
+  }
+}
+verifyLocalTargets(home, "homepage");
+verifyLocalTargets(library, "calculator directory");
+console.log("Search/navigation checks PASS (" + searchableCards.length + " unique searchable cards; " + cards.length + " directory card links; local targets verified on both pages)");
