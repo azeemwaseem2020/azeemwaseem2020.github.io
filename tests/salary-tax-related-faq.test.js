@@ -3,6 +3,8 @@ import fs from 'node:fs';
 
 const html = fs.readFileSync(new URL('../pakistan-salary-tax-calculator.html', import.meta.url), 'utf8');
 
+assert.match(html, /href="#salary-tax-calculator">Jump to the salary tax calculator<\/a>/, 'Salary tax calculator intent should offer an immediate path to the tool');
+assert.match(html, /<section class="calculator-card" id="salary-tax-calculator">/, 'Salary tax calculator section should expose the jump target');
 assert.match(html, /How much tax is deducted on a PKR 100,000 monthly salary in Pakistan\?/i,
   'Must answer the high-intent PKR 100,000 monthly salary tax question');
 assert.match(html, /PKR 6,000[\s\S]{0,180}PKR 500/i,
@@ -11,6 +13,8 @@ assert.match(html, /What is the difference between a filer and a non-filer in Pa
   'Must answer the filer versus non-filer question');
 assert.match(html, /does not, by itself, replace the salary tax slab calculation/i,
   'Must distinguish salary slab tax from ATL-dependent withholding on other transactions');
+assert.match(html, /does not test that eligibility condition or determine full payroll take-home pay after benefits, provident-fund treatment, and other deductions/i, 'Salary tax page must distinguish estimated net after income tax from full payroll take-home pay');
+assert.doesNotMatch(html, /does not test that eligibility condition or calculate take-home pay/i, 'Salary tax introduction must not contradict its net-after-tax output');
 assert.match(html, /Should I calculate salary tax using gross salary or take-home pay\?/i,
   'Must explain the correct taxable salary input');
 
@@ -37,14 +41,17 @@ assert.match(html, /A Finance Bill is useful background but is not[\s\S]{0,100}s
   'Must distinguish a Finance Bill from enacted legislation');
 assert.match(html, /Official source set reviewed October 15, 2026\./,
   'Must display the current official-source review date');
-assert.match(html, /"dateModified":"2026-10-15"/,
+assert.match(html, /"dateModified":"2026-10-16"/,
   'Structured data dateModified must match the reviewed page version');
-assert.match(html, /article:modified_time" content="2026-10-15"/,
+assert.match(html, /article:modified_time" content="2026-10-16"/,
   'Open Graph modified time must match the reviewed page version');
 
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
 assert.match(zakat, /<h1>Pakistan Zakat Calculator — Nisab &amp; 2\.5% Estimate<\/h1>/,
   'Zakat page should not label a prior-year Nisab as the current-year default');
+assert.match(zakat, /href="#zakat-calculator">Jump to the Zakat calculator<\/a>/, 'Zakat calculator intent should offer an immediate path to the tool');
+assert.match(zakat, /<section class="calculator-card" id="zakat-calculator">/, 'Zakat calculator section should expose the jump target');
+assert.doesNotMatch(zakat, /Before entering figures, read the/, 'Zakat calculator page should not push users away before they can calculate');
 assert.match(zakat, /value="" placeholder="Enter the applicable Nisab amount"/,
   'Zakat page must not prefill the historical 1446–47 Nisab as current');
 assert.match(zakat, /PKR 503,529[\s\S]{0,220}historical Pakistan government reference/,
@@ -55,9 +62,9 @@ assert.match(zakat, /validMoneyInput/,
   'Zakat calculator must reject blank, negative and non-numeric money inputs instead of silently converting them to zero');
 assert.match(zakat, /Enter a positive Nisab threshold/,
   'Zakat calculation must require a positive user-confirmed Nisab');
-assert.match(zakat, /"dateModified":"2026-10-15"/,
+assert.match(zakat, /"dateModified":"2026-10-16"/,
   'Zakat structured-data revision date must match the current page revision');
-assert.match(zakat, /article:modified_time" content="2026-10-15"/,
+assert.match(zakat, /article:modified_time" content="2026-10-16"/,
   'Zakat Open Graph modified time must match the current page revision');
 
 const emi = fs.readFileSync(new URL('../loan-emi-calculator.html', import.meta.url), 'utf8');
@@ -115,7 +122,7 @@ assert.match(methodology, /do not prove exhaustive correctness/,
 const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
 const prioritySitemap = fs.readFileSync(new URL('../sitemap-pakistan-priority.xml', import.meta.url), 'utf8');
 for (const map of [sitemap, prioritySitemap]) {
-  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/zakat-calculator\.html<\/loc><lastmod>2026-10-15<\/lastmod>/,
+  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/zakat-calculator\.html<\/loc><lastmod>2026-10-16<\/lastmod>/,
     'Both sitemaps must record the Zakat page revision date');
   assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/loan-emi-calculator\.html<\/loc><lastmod>2026-10-15<\/lastmod>/,
     'Both sitemaps must record the EMI page revision date');
@@ -158,5 +165,43 @@ assert.match(html, /function previousYearTax\(x\)/,
   'Previous-year comparison must use a separate Tax Year 2026 formula');
 assert.match(html, /annual > 10000000/,
   'Previous-year comparison must account for the 9% surcharge above PKR 10 million');
+
+
+for (const [pageName, salary] of [
+  ['salary-tax-on-50000.html', 'PKR 50,000'],
+  ['salary-tax-on-100000.html', 'PKR 100,000'],
+  ['salary-tax-on-200000.html', 'PKR 200,000']
+]) {
+  const example = fs.readFileSync(new URL('../' + pageName, import.meta.url), 'utf8');
+  assert.match(example, /Need an estimate for a different salary\?/,
+    pageName + ' must provide a useful next step for visitors with another salary amount');
+  assert.match(example, /href="pakistan-salary-tax-calculator\.html#salary-tax-calculator"/,
+    pageName + ' must link directly to the calculator control, not just the top of the page');
+  assert.match(example, /href="pakistan-income-tax-slabs-2026-27\.html"/,
+    pageName + ' must link to the relevant official-slab explainer');
+  assert.match(example, /"dateModified":"2026-10-16"/,
+    pageName + ' structured-data revision date must match its latest content change');
+  assert.match(example, /article:modified_time" content="2026-10-16"/,
+    pageName + ' Open Graph modified time must match its latest content change');
+}
+for (const map of [sitemap, prioritySitemap]) {
+  for (const pageName of ['salary-tax-on-50000.html', 'salary-tax-on-100000.html', 'salary-tax-on-200000.html']) {
+    assert.match(map, new RegExp('<loc>https://azeemwaseem2020\\.github\\.io/' + pageName + '<\\/loc><lastmod>2026-10-16<\\/lastmod>'),
+      'Both sitemaps must record the latest revision date for ' + pageName);
+  }
+}
+
+
+for (const [pageName, otherPage] of [
+  ['salary-tax-on-50000.html', 'salary-tax-on-100000.html'],
+  ['salary-tax-on-100000.html', 'salary-tax-on-50000.html'],
+  ['salary-tax-on-200000.html', 'salary-tax-on-50000.html']
+]) {
+  const example = fs.readFileSync(new URL('../' + pageName, import.meta.url), 'utf8');
+  assert.match(example, new RegExp('compare nearby examples:[\\s\\S]*href="' + otherPage + '"'),
+    pageName + ' must connect the specific-salary answer to a related salary example');
+  const selfLinkPrefix = '<a href="' + pageName + '">Tax on PKR ';
+  assert.ok(!example.includes(selfLinkPrefix), pageName + ' related resources must not link to itself as a destination');
+}
 
 console.log('Finance calculator SEO, source and validation tests passed.');
