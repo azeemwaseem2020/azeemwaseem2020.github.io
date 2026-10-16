@@ -18,9 +18,9 @@ assert.match(library, /id="calculatorSearch"[^>]*aria-controls="calculator-list"
 assert.match(library, /id="calculatorCategoryFilters"[^>]*role="group"/);
 assert.match(library, /id="calculatorNoResults"[^>]*role="status"[^>]*hidden/);
 assert.match(library, /id="calculatorSearchCount"[^>]*aria-live="polite"/);
-const cards = [...library.matchAll(/<a\\b[^>]*class="[^"]*\\bcalculator-card\\b[^"]*"[^>]*>/g)];
+const cards = [...library.matchAll(/<a[^>]*class="[^"]*calculator-card[^"]*"[^>]*>/g)];
 assert.ok(cards.length >= 200, `Expected the calculator library to remain substantial; found ${cards.length} cards`);
-assert.ok(cards.every(([card]) => /\\bhref=/.test(card)), "Every calculator card must link to its tool");
+assert.ok(cards.every(([card]) => /href=/.test(card)), "Every calculator card must link to its tool");
 
 // Search behavior must preserve homepage queries, category filters, aliases and recovery.
 assert.match(search, /new URLSearchParams\(location\.search\)/);
