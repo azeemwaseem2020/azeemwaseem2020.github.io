@@ -78,9 +78,11 @@ for (const abs of htmlFiles) {
     .replace(/&#39;|&apos;/gi, "'");
   const bodyWords = (visibleBody.match(/[\p{L}\p{N}]+(?:[’'’-][\p{L}\p{N}]+)*/gu) || []).length;
   const priorityPage = /(?:salary-tax|income-tax|zakat|emi|loan|psx|fertilizer|tmr|animal-feed|agriculture|solar-calculator|finance-calculator)/i.test(file);
-  if (bodyWords < 250) report.contentQuality.under250Words.push({ file, bodyWords, priorityPage });
-  else if (bodyWords < 500) report.contentQuality.from250To499Words.push({ file, bodyWords, priorityPage });
-  if (priorityPage && bodyWords < 500) report.contentQuality.priorityPagesUnder500Words.push({ file, bodyWords });
+  const intentionalNoindex = /<meta\\b[^>]*\\bname\\s*=\\s*["']robots["'][^>]*\\bcontent\\s*=\\s*["'][^"']*\\bnoindex\\b/i.test(html);
+  const eligibleForContentReview = !intentionalNoindex && !verificationFile(file);
+  if (eligibleForContentReview && bodyWords < 250) report.contentQuality.under250Words.push({ file, bodyWords, priorityPage });
+  else if (eligibleForContentReview && bodyWords < 500) report.contentQuality.from250To499Words.push({ file, bodyWords, priorityPage });
+  if (eligibleForContentReview && priorityPage && bodyWords < 500) report.contentQuality.priorityPagesUnder500Words.push({ file, bodyWords });
   const title = (html.match(/<title\b[^>]*>([\s\S]*?)<\/title\s*>/i) || [])[1]?.replace(/\s+/g, ' ').trim() || '';
   const descriptionTag = (html.match(/<meta\b[^>]*\bname\s*=\s*(?:"description"|'description'|description)[^>]*>/i) || [])[0] || '';
   const description = attr(descriptionTag, 'content');
