@@ -28,3 +28,4 @@ jobs:
           node tests/psx-calculator-core.test.js
           node tests/psx-seo-integrity.test.js
           node tests/science-calculators.test.js
+          node tests/sitemap-integrity.test.js
