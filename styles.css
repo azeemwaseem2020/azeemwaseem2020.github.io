@@ -74,3 +74,9 @@
 .calculator-no-results{margin:14px 0;padding:14px 16px;border:1px solid #f0d7a6;border-radius:12px;background:#fff8e8;color:#604c25}
 .search-reset-button{border:0;background:transparent;color:#087f70;text-decoration:underline;font:inherit;font-weight:800;cursor:pointer;padding:0}
 @media(max-width:580px){.calculator-category-filters{margin-left:-2px;margin-right:-2px;padding-bottom:14px}.calculator-category-filter{padding:8px 11px;font-size:.82rem}}
+
+/* Accessible click/touch state for the primary All Calculators dropdown. */
+.site-header .nav-dropdown.is-open>.nav-dropdown-menu{display:block}
+.site-header .nav-dropdown-trigger[aria-expanded="true"]{background:#eaf8f4;color:#087f70}
+@media(max-width:900px){.site-header .nav-dropdown-menu{left:0;right:auto;max-width:calc(100vw - 24px);max-height:min(65vh,520px);overflow:auto;overscroll-behavior:contain}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.site-header nav a,.nav-tab{transition:none}}
