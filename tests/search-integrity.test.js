@@ -51,6 +51,18 @@ assert.match(navigation, /event\.key === 'Escape'/);
 assert.match(navigation, /aria-expanded/);
 assert.match(navigation, /pointerdown/);
 
+
+const salaryTaxPage = read("pakistan-salary-tax-calculator.html");
+const psxProfitPage = read("psx-calculator.html");
+assert.match(salaryTaxPage, /<title>Pakistan Salary Tax Calculator 2026-27 \| Calcora<\/title>/);
+assert.match(salaryTaxPage, /<h1>Pakistan Salary Tax Calculator 2026–27<\/h1>/);
+assert.match(salaryTaxPage, /<h2>How the Pakistan Salary Tax Calculator 2026–27 estimates tax<\/h2>/);
+assert.match(salaryTaxPage, /<h2>Pakistan salary tax slabs for 2026–27 \(Tax Year 2027\)<\/h2>/);
+assert.match(psxProfitPage, /<title>PSX Profit Calculator Pakistan \| Calcora<\/title>/);
+assert.match(psxProfitPage, /<h1>PSX Profit Calculator — Profit, Loss, Return, CGT & Dividend<\/h1>/);
+assert.match(psxProfitPage, /<h2>How to use the PSX profit calculator in Pakistan<\/h2>/);
+assert.match(psxProfitPage, /<h2>PSX profit calculator Pakistan: frequently asked questions<\/h2>/);
+
 function verifyLocalTargets(source, sourceName) {
   const links = [...source.matchAll(/\b(?:href|src)="([^"]+)"/g)].map(([match, value]) => value);
   for (const href of links) {
