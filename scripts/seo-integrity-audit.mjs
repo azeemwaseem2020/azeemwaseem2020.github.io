@@ -141,7 +141,7 @@ for (const abs of htmlFiles) {
     if (!title) report.metadata.missingTitle.push(file); else addUnique(titles, title, file);
     if (!description) report.metadata.missingDescription.push(file);
     if (!canonical) report.metadata.missingCanonical.push(file);
-    const metaTags = [...html.matchAll(/<meta\\b[^>]*>/gi)].map(match => match[0]);
+    const metaTags = [...html.matchAll(/<meta\b[^>]*>/gi)].map(match => match[0]);
     const hasMeta = (key, attrName) => metaTags.some(tag => attr(tag, attrName).toLowerCase() === key);
     if (!hasMeta('og:title', 'property')) report.socialMetadata.missingOgTitle.push(file);
     if (!hasMeta('og:description', 'property')) report.socialMetadata.missingOgDescription.push(file);
