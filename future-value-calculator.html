@@ -14,28 +14,18 @@ form.addEventListener('submit',function(e){
 e.preventDefault();
 const P=Number(document.getElementById('fv-principal').value),rate=Number(document.getElementById('fv-rate').value)/100,years=Number(document.getElementById('fv-years').value),n=Number(document.getElementById('fv-frequency').value),contribution=Number(document.getElementById('fv-contribution').value),timing=document.getElementById('fv-timing').value;
 if(![P,rate,years,n,contribution].every(Number.isFinite)||P<0||rate<=-1||years<0||contribution<0){out.textContent='Enter valid non-negative amounts and time, and an annual rate above -100%.';return;}
-const periods=Math.round(years*n);
-if(Math.abs(periods-years*n)>1e-8||periods>12000){out.textContent='Choose a duration that gives a whole number of compounding periods (maximum 12,000).';return;}
-const factor=1+rate/n;
-if(factor<=0){out.textContent='These assumptions do not produce a valid compounding factor.';return;}
+const months=Math.round(years*12);
+if(Math.abs(months-years*12)>1e-8||months>12000){out.textContent='Choose a duration that gives a whole number of months (maximum 1,000 years).';return;}
+const annualFactor=1+rate/n;
+if(annualFactor<=0){out.textContent='These assumptions do not produce a valid compounding factor.';return;}
+const monthlyFactor=Math.pow(annualFactor,n/12);
 let balance=P;
-for(let i=0;i<periods;i++){
- balance*=factor;
- const monthsPerPeriod=12/n;
- if(n<=12 && Number.isInteger(monthsPerPeriod)){
-   const monthCount=monthsPerPeriod;
-   for(let j=0;j<monthCount;j++){
-     if(timing==='beginning')balance+=contribution;
-     if(timing==='end')balance+=contribution;
-   }
- } else if(n===365){ /* Daily compounding is modeled on the initial balance; monthly contributions are added at month boundaries below. */ }
+for(let m=0;m<months;m++){
+ if(timing==='beginning')balance+=contribution;
+ balance*=monthlyFactor;
+ if(timing==='end')balance+=contribution;
 }
-if(n===365 && contribution>0){
- balance=P*Math.pow(factor,periods);
- let monthlyRate=Math.pow(factor,365/12)-1, mPeriods=Math.floor(years*12), deposits=0;
- for(let m=0;m<mPeriods;m++){deposits=(deposits+contribution)*(1+monthlyRate);}
- balance+=deposits;
-}
+const totalContributions=P+contribution*months;
 if(!Number.isFinite(balance)||balance>1e300){out.textContent='The result is too large to display reliably. Reduce the rate or duration.';return;}
 const totalContributions=P+contribution*Math.floor(years*12);
 out.innerHTML='<strong>Estimated future value: '+balance.toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:2})+'</strong><br>Starting amount: '+P.toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:2})+'<br>Scheduled contributions: '+(contribution*Math.floor(years*12)).toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:2})+'<br><small>Illustrative projection only; excludes taxes, fees, inflation and changing rates.</small>';
