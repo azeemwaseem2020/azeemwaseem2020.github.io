@@ -143,4 +143,51 @@ function inlineScript(html, marker) {
   assert.match(field('o').textContent, /greater than the first month/);
 }
 
-console.log('Zakat, EMI and loan payoff runtime regression tests passed.');
+// Mortgage: validate amortization output, zero-interest behavior and malformed rates.
+{
+  const html = read('mortgage-calculator.html');
+  const { document, elements } = makeDom(html);
+  vm.runInNewContext(inlineScript(html, 'function calc()'), { document, Math, Number, String });
+  const field = id => elements.get(id) ?? document.getElementById(id);
+  field('amount').value = '10000000';
+  field('rate').value = '12';
+  field('years').value = '20';
+  field('calc').handlers.click();
+  assert.match(field('out').innerHTML, /Monthly payment:<\/strong> 110,108\.61/);
+  assert.match(field('out').innerHTML, /Total interest:<\/strong> 16,426,067\.21/);
+
+  field('rate').value = '0';
+  field('amount').value = '1200000';
+  field('years').value = '20';
+  field('calc').handlers.click();
+  assert.match(field('out').innerHTML, /Monthly payment:<\/strong> 5,000\.00/);
+  assert.match(field('out').innerHTML, /Total interest:<\/strong> 0\.00/);
+
+  field('rate').value = 'not-a-rate';
+  field('calc').handlers.click();
+  assert.match(field('out').textContent, /non-negative annual interest rate/);
+}
+
+// Sales tax: guard against the former temporal-dead-zone error and verify the entered rate.
+{
+  const html = read('sales-tax-calculator.html');
+  const { document, elements } = makeDom(html);
+  vm.runInNewContext(inlineScript(html, "addEventListener('click'"), { document, Math, Number, String });
+  const field = id => elements.get(id) ?? document.getElementById(id);
+  field('p').value = '10000';
+  field('r').value = '18';
+  field('b').handlers.click();
+  assert.match(field('o').innerHTML, /Tax:<\/strong> 1800\.00/);
+  assert.match(field('o').innerHTML, /Total price:<\/strong> 11800\.00/);
+
+  field('r').value = '-1';
+  field('b').handlers.click();
+  assert.match(field('o').textContent, /non-negative tax rate/);
+
+  field('p').value = '1e309';
+  field('r').value = '18';
+  field('b').handlers.click();
+  assert.match(field('o').textContent, /non-negative price/);
+}
+
+console.log('Zakat, EMI, loan payoff, mortgage and sales tax runtime regression tests passed.');
