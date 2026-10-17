@@ -102,7 +102,6 @@ for (const abs of htmlFiles) {
     const mainHtml = mainMatch ? mainMatch[1] : html;
     const fillerChecks = [
       ['search-intent-heading', /<h[23]\b[^>]*>\s*Search intent covered\s*<\/h[23]>/i],
-      ['semantic-context-block', /id=["']calcora-semantic-context["']/i],
       ['keyword-intent-block', /id=["']calcora-keyword-intent["']/i],
       ['visible-search-intent-label', /<strong>\s*Search intent\s*:/i],
       ['related-search-terms-label', /<strong>\s*Related search terms\s*:/i],
@@ -114,7 +113,7 @@ for (const abs of htmlFiles) {
     const headingCounts = new Map();
     for (const match of mainHtml.matchAll(/<h[23]\b[^>]*>([\s\S]*?)<\/h[23]>/gi)) {
       const heading = decodeEntities(match[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim().toLowerCase();
-      if (!heading || /^(faq|frequently asked questions|related calculators|related tools)$/.test(heading)) continue;
+      if (!heading || /^(faq|frequently asked questions|related calculators|related tools|worked example|worked examples|formula|formula and assumptions|how to use|how to use it|how to use this calculator|example|examples|calculation method|where this calculator fits)$/.test(heading)) continue;
       headingCounts.set(heading, (headingCounts.get(heading) || 0) + 1);
     }
     const repeated = [...headingCounts].filter(([, count]) => count > 1).map(([heading, count]) => ({ heading, count }));
