@@ -18,6 +18,7 @@ const report = {
   structuredData: { invalidJsonLd: [] },
   canonicalTargetsMissing: [],
   sitemap: [],
+  contentDepth: { under100: [], under250: [], under500: [] },
   errors: []
 };
 
@@ -76,6 +77,27 @@ for (const abs of htmlFiles) {
   const isNoindex = robotsTags.some(value => /\bnoindex\b/.test(value));
   const isVerification = verificationFile(file);
   if (isNoindex) { report.metadata.noindex.push(file); noindexFiles.add(file); }
+
+  // Estimate reader-facing content depth from <main>, excluding scripts, styles and navigation chrome.
+  // Word count is a triage signal only; it does not replace a quality or search-intent review.
+  if (!isNoindex && !isVerification) {
+    const mainMatch = html.match(/<main\b[^>]*>([\s\S]*?)<\/main\s*>/i);
+    let readable = mainMatch ? mainMatch[1] : html;
+    readable = readable
+      .replace(/<script\b[\s\S]*?<\/script\s*>/gi, ' ')
+      .replace(/<style\b[\s\S]*?<\/style\s*>/gi, ' ')
+      .replace(/<svg\b[\s\S]*?<\/svg\s*>/gi, ' ')
+      .replace(/<nav\b[\s\S]*?<\/nav\s*>/gi, ' ')
+      .replace(/<header\b[\s\S]*?<\/header\s*>/gi, ' ')
+      .replace(/<footer\b[\s\S]*?<\/footer\s*>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ');
+    const readableText = decodeEntities(readable).replace(/\s+/g, ' ').trim();
+    const words = (readableText.match(/[\p{L}\p{N}]+(?:[’'-][\p{L}\p{N}]+)*/gu) || []).length;
+    const entry = { file, words };
+    if (words < 100) report.contentDepth.under100.push(entry);
+    if (words < 250) report.contentDepth.under250.push(entry);
+    if (words < 500) report.contentDepth.under500.push(entry);
+  }
 
   if (!isVerification && !isNoindex) {
     if (!/<html\b[^>]*\blang\s*=/i.test(html)) report.htmlTechnical.missingLang.push(file);
@@ -205,6 +227,11 @@ const summary = {
   canonicalTargetsMissing: report.canonicalTargetsMissing.length,
   indexablePagesMissingFromSitemap: indexablePagesMissingFromSitemap.length,
   sitemap: report.sitemap,
+  contentDepth: {
+    under100: report.contentDepth.under100.length,
+    under250: report.contentDepth.under250.length,
+    under500: report.contentDepth.under500.length
+  },
   blockingErrors: report.errors
 };
 if (report.internalLinksToNoindexPages.length) console.warn('WARNING: internal links point to noindex pages: ' + report.internalLinksToNoindexPages.length);
@@ -226,7 +253,8 @@ console.log(JSON.stringify({
     invalidJsonLd: report.structuredData.invalidJsonLd,
     canonicalTargetsMissing: report.canonicalTargetsMissing,
     indexablePagesMissingFromSitemap,
-    sitemap: report.sitemap
+    sitemap: report.sitemap,
+    contentDepth: report.contentDepth
   }
 }, null, 2));
 fs.mkdirSync(path.join(ROOT, 'audit-reports'), { recursive: true });
