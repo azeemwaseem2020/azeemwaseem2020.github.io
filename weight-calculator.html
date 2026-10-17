@@ -1,3 +1,102 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Weight Calculator | W = mg | Mass & Gravity | Calcora</title><meta name="description" content="Calculate weight, mass or gravitational acceleration using W = mg, with reverse solving, units, Earth gravity and clear steps."><meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Weight Calculator: Mass, Gravity & Weight (W = mg) | Calcora</title>
+<meta name="description" content="Calculate weight, mass or gravitational acceleration with W = mg. See SI units, a worked 60 kg example, reverse calculations and common mistakes.">
+<meta name="author" content="Abdul Qadir">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<link rel="canonical" href="https://azeemwaseem2020.github.io/weight-calculator.html">
+<link rel="stylesheet" href="styles.css">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Calcora">
+<meta property="og:title" content="Weight Calculator: Mass, Gravity & Weight | Calcora">
+<meta property="og:description" content="Use W = mg to calculate weight, mass or gravitational acceleration, with units and worked examples.">
+<meta property="og:url" content="https://azeemwaseem2020.github.io/weight-calculator.html">
+<meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<meta property="og:image:alt" content="Calcora Weight Calculator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Weight Calculator: Mass, Gravity & Weight | Calcora">
+<meta name="twitter:description" content="Calculate weight, mass or gravity with W = mg and check your units.">
 <meta name="twitter:image" content="https://azeemwaseem2020.github.io/og-image.png">
-<link rel="canonical" href="https://azeemwaseem2020.github.io/weight-calculator.html"><link rel="stylesheet" href="styles.css"><meta name="robots" content="index,follow"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Weight Calculator — Mass, Gravity & Weight","applicationCategory":"EducationalApplication","operatingSystem":"Any","url":"https://azeemwaseem2020.github.io/weight-calculator.html","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://azeemwaseem2020.github.io/"},{"@type":"ListItem","position":2,"name":"Science Hub","item":"https://azeemwaseem2020.github.io/science-calculator-hub.html"},{"@type":"ListItem","position":3,"name":"Weight Calculator — Mass, Gravity & Weight","item":"https://azeemwaseem2020.github.io/weight-calculator.html"}]}</script></head><body><header class="site-header"><div class="header-inner"><a class="brand" href="./"><span class="brand-mark">C</span>Calcora</a><nav aria-label="Primary navigation"><a href="calculators.html">Calculators</a><a href="science-calculator-hub.html">Science Hub</a><a href="blog.html">Guides</a><a href="about.html">About</a></nav></div></header><main class="section prose"><p class="eyebrow">SCIENCE • PHYSICS</p><h1>Weight Calculator — Mass, Gravity & Weight</h1><p class="lead">Calculate weight, mass or gravitational acceleration using W = mg, with reverse solving, units, Earth gravity and clear steps.</p><section class="card" style="max-width:760px"><label for="mode">Calculate</label><select id="mode"><option value="w">Weight</option><option value="m">Mass</option><option value="g">Gravity</option></select><label>Weight (N)</label><input id="w" type="number" step="any" value="588.399"><label>Mass (kg)</label><input id="m" type="number" min="0" step="any" value="60"><label>Gravity (m/s²)</label><input id="g" type="number" min="0" step="any" value="9.80665"><button class="btn" id="calc">Calculate</button><div id="result" class="callout" aria-live="polite"></div></section><h2>Formula</h2><p><strong>W = mg</strong>. Weight is a force caused by gravity, so its SI unit is newtons (N).</p><h2>Worked example</h2><p>A 60 kg mass at 9.80665 m/s² has weight ≈ 588.399 N.</p><h2>Gravity varies</h2><p>Weight depends on the local gravitational acceleration; mass does not. Use the appropriate g value for another planet or location.</p><h2>Related calculators</h2><p><a href="force-calculator.html">Force</a> · <a href="acceleration-calculator.html">Acceleration</a> · <a href="kinetic-energy-calculator.html">Kinetic Energy</a> · <a href="momentum-calculator.html">Momentum</a> · <a href="science-calculator-hub.html">Science Hub</a></p><!-- CALCORA-SEARCH-INTENT-CONTENT --><section class="search-intent-guide"><h2>Search intent: what people ask</h2><p>Use this tool when your question is about weight calculator, a formula, a missing variable, or a practical physics problem. Common searches include <strong>weight calculator, W = mg, mass to weight calculator, gravitational force, newtons, weight on Earth</strong>.</p><h2>How to use this calculator</h2><ol><li>Enter the known values using consistent SI units where applicable.</li><li>Identify the unknown quantity you want to solve.</li><li>Calculate, then check the unit and whether the magnitude makes physical sense.</li><li>For homework or study, write the formula and substitute the values so the result can be independently checked.</li></ol><h2>Quick guide and common mistakes</h2><p>Do not mix units without conversion, do not omit direction when the quantity is vector-based, and do not treat an introductory formula as a substitute for a full physical model. If the problem gives unusual conditions, read the assumptions on this page before using the result.</p><p><strong>Related searches:</strong> weight calculator, W = mg, mass to weight calculator, gravitational force, newtons, weight on Earth. Learn the surrounding concepts in the <a href="science-calculator-hub.html">Science Calculator Hub</a> and browse <a href="blog.html">Calcora guides</a>.</p></section><section class="section prose" aria-labelledby="calcora-methodology-link"><h2 id="calcora-methodology-link">How this calculation is checked</h2><p>Use compatible units, follow the formula shown on this page, and check the result against the physical assumptions of the problem.</p><p><a href="calculator-methodology.html">Read Calcora calculation methodology</a></p></section></main><script>(function(){var mode=document.getElementById('mode'),r=document.getElementById('result');function finite(){for(var i=0;i<arguments.length;i++)if(!Number.isFinite(arguments[i]))return false;return true}function err(x){r.textContent=x}function c(){var o,unit='';var p=Number(document.getElementById('p')?.value),f=Number(document.getElementById('f')?.value),a=Number(document.getElementById('a')?.value),w=Number(document.getElementById('w')?.value),m=Number(document.getElementById('m')?.value),g=Number(document.getElementById('g')?.value),j=Number(document.getElementById('j')?.value),t=Number(document.getElementById('t')?.value),mu=Number(document.getElementById('mu')?.value),n=Number(document.getElementById('n')?.value);if(mode==='w'){if(finite(m,g))o=m*g;else return err('Enter mass and gravity.')}else if(mode==='m'){if(finite(w,g)&&g!==0)o=w/g;else return err('Enter weight and non-zero gravity.')}else{if(finite(w,m)&&m!==0)o=w/m;else return err('Enter weight and non-zero mass.')} unit=mode==='m'?'kg':'m/s²';if(!Number.isFinite(o))return err('Enter valid values.');r.innerHTML='<strong>Result = '+o.toLocaleString(undefined,{maximumFractionDigits:10})+' '+unit+'</strong><br>Check the formula and units before using the result.'}document.getElementById('calc').addEventListener('click',c);c();})();</script></body></html>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Weight Calculator — Mass, Gravity & Weight","url":"https://azeemwaseem2020.github.io/weight-calculator.html","applicationCategory":"EducationalApplication","operatingSystem":"Web","isAccessibleForFree":true,"description":"Calculate weight, mass or gravitational acceleration using W = mg, with SI units and worked examples.","author":{"@type":"Person","name":"Abdul Qadir","url":"https://azeemwaseem2020.github.io/abdul-qadir.html"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://azeemwaseem2020.github.io/"},{"@type":"ListItem","position":2,"name":"Science Calculator Hub","item":"https://azeemwaseem2020.github.io/science-calculator-hub.html"},{"@type":"ListItem","position":3,"name":"Weight Calculator","item":"https://azeemwaseem2020.github.io/weight-calculator.html"}]}
+</script>
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a class="brand" href="./"><span class="brand-mark">C</span>Calcora</a><nav aria-label="Primary navigation"><a href="calculators.html">Calculators</a><a href="science-calculator-hub.html">Science Hub</a><a href="blog.html">Guides</a><a href="about.html">About</a></nav></div></header>
+<main class="section prose">
+<p class="eyebrow">SCIENCE • PHYSICS</p>
+<h1>Weight Calculator — Mass, Gravity & Weight</h1>
+<p class="lead">Use the relationship between mass and gravity to calculate an object's weight, find its mass from a known weight, or solve for gravitational acceleration.</p>
+<section class="card" style="max-width:760px" aria-labelledby="tool-heading">
+<h2 id="tool-heading">Calculate with W = mg</h2>
+<label for="mode">What do you want to calculate?</label>
+<select id="mode"><option value="weight">Weight (W)</option><option value="mass">Mass (m)</option><option value="gravity">Gravitational acceleration (g)</option></select>
+<div id="weight-fields"><label for="mass">Mass (kg)</label><input id="mass" type="number" min="0" step="any" value="60"><label for="gravity">Gravity (m/s²)</label><input id="gravity" type="number" min="0" step="any" value="9.80665"></div>
+<div id="mass-fields" hidden><label for="weight">Weight (N)</label><input id="weight" type="number" min="0" step="any" value="588.399"><label for="gravity-m">Gravity (m/s²)</label><input id="gravity-m" type="number" min="0" step="any" value="9.80665"></div>
+<div id="gravity-fields" hidden><label for="weight-g">Weight (N)</label><input id="weight-g" type="number" min="0" step="any" value="588.399"><label for="mass-g">Mass (kg)</label><input id="mass-g" type="number" min="0" step="any" value="60"></div>
+<button class="btn" id="calc" type="button">Calculate</button>
+<div id="result" class="callout" aria-live="polite">A 60 kg mass at standard Earth gravity weighs about 588.4 N.</div>
+</section>
+<h2>Formula: how weight is calculated</h2>
+<p>The standard near-surface relationship is <strong>W = m × g</strong>, where <em>W</em> is weight in newtons (N), <em>m</em> is mass in kilograms (kg), and <em>g</em> is gravitational acceleration in metres per second squared (m/s²). Because a newton equals kg·m/s², these units are consistent.</p>
+<p>If weight is known, rearrange the equation to find mass: <strong>m = W ÷ g</strong>. To find gravitational acceleration from weight and mass, use <strong>g = W ÷ m</strong>, provided mass is not zero.</p>
+<h2>Worked example: a 60 kg object on Earth</h2>
+<p>Using standard gravitational acceleration, g ≈ 9.80665 m/s²:</p>
+<ul><li>Mass = 60 kg</li><li>Weight = 60 × 9.80665 = 588.399 N</li><li>Rounded to one decimal place, the weight is about <strong>588.4 N</strong>.</li></ul>
+<p>This result is a force, not 60 kg. Kilograms measure mass; newtons measure weight. Everyday scales often display a mass-equivalent in kilograms after sensing force and applying a calibration.</p>
+<h2>Mass and weight are different</h2>
+<p>Mass describes how much matter an object contains and remains the same when the object moves between planets. Weight is the gravitational force acting on that mass, so it changes when local gravity changes. For example, the same 60 kg mass weighs less on the Moon than it does on Earth because lunar gravity is weaker.</p>
+<h2>How to use this calculator</h2>
+<ol><li>Choose whether you want to calculate weight, mass or gravitational acceleration.</li><li>Enter the two known quantities in the fields shown for that mode.</li><li>Use kilograms, newtons and m/s² respectively; convert other units before entering them.</li><li>Select Calculate and check the displayed result and unit.</li><li>For schoolwork or lab reports, show the formula and substitution so another person can verify your working.</li></ol>
+<h2>Common mistakes and limitations</h2>
+<ul><li><strong>Mixing mass and weight:</strong> do not label a result in newtons as kilograms.</li><li><strong>Using the wrong gravity:</strong> 9.80665 m/s² is a conventional standard value near Earth's surface, not a universal constant for every location.</li><li><strong>Entering incompatible units:</strong> convert grams to kilograms and kilonewtons to newtons before calculating.</li><li><strong>Ignoring the physical situation:</strong> this simple equation calculates gravitational weight. It does not calculate apparent scale readings during acceleration, orbital free fall or other situations that require a more complete force model.</li></ul>
+<p>The tool accepts non-negative values and requires a non-zero divisor when solving for mass or gravity. Results are mathematical estimates based on the inputs; use the gravity value specified by your textbook, experiment or problem statement when it differs from the default.</p>
+<h2>Frequently asked questions</h2>
+<h3>What is the weight formula?</h3><p>Near a gravitational field, weight is calculated as W = mg: mass multiplied by gravitational acceleration.</p>
+<h3>What is the weight of 1 kg on Earth?</h3><p>At standard gravity, 1 kg has a weight of about 9.80665 N, commonly rounded to 9.81 N.</p>
+<h3>Can mass change from Earth to the Moon?</h3><p>No. The object's mass stays the same, but its weight changes because the Moon's gravitational acceleration is lower.</p>
+<h3>Why is weight measured in newtons?</h3><p>Weight is a force. The SI unit of force is the newton, equal to one kilogram metre per second squared.</p>
+<h3>Can I use this for another planet?</h3><p>Yes. Choose Calculate Weight and enter the local gravitational acceleration for that planet, in m/s². Confirm the value from a reliable science reference or the problem you are solving.</p>
+<h2>Related physics tools</h2>
+<p><a href="force-calculator.html">Force Calculator</a> · <a href="acceleration-calculator.html">Acceleration Calculator</a> · <a href="kinetic-energy-calculator.html">Kinetic Energy Calculator</a> · <a href="momentum-calculator.html">Momentum Calculator</a> · <a href="science-calculator-hub.html">Science Calculator Hub</a></p>
+<section class="calculation-methodology-note"><h2>Calculation methodology</h2><p>Calcora shows the governing equation, expected units and key assumptions so results can be checked independently. Read <a href="calculator-methodology.html">Calcora's calculator methodology</a> for more about how to interpret formula-based tools.</p></section>
+<section class="calcora-result-actions" aria-label="Page actions"><h2>Save or share</h2><div><button type="button" onclick="window.print()">Print / Save PDF</button><button type="button" id="copy-link">Copy page link</button></div></section>
+</main>
+<footer class="footer-main"><div class="footer-inner"><div class="footer-bottom"><span>© 2026 Calcora</span><span>Free tools • No signup</span></div></div></footer>
+<script>
+(function(){
+const mode=document.getElementById('mode'),result=document.getElementById('result');
+const groups={weight:document.getElementById('weight-fields'),mass:document.getElementById('mass-fields'),gravity:document.getElementById('gravity-fields')};
+function showMode(){Object.keys(groups).forEach(k=>groups[k].hidden=k!==mode.value)}
+function read(id){return Number(document.getElementById(id).value)}
+function calculate(){
+let value,unit,formula;
+if(mode.value==='weight'){
+const m=read('mass'),g=read('gravity');
+if(!Number.isFinite(m)||!Number.isFinite(g)||m<0||g<0){result.textContent='Enter valid non-negative mass and gravity values.';return}
+value=m*g;unit='N';formula='W = m × g';
+}else if(mode.value==='mass'){
+const w=read('weight'),g=read('gravity-m');
+if(!Number.isFinite(w)||!Number.isFinite(g)||w<0||g<=0){result.textContent='Enter a non-negative weight and gravity greater than zero.';return}
+value=w/g;unit='kg';formula='m = W ÷ g';
+}else{
+const w=read('weight-g'),m=read('mass-g');
+if(!Number.isFinite(w)||!Number.isFinite(m)||w<0||m<=0){result.textContent='Enter a non-negative weight and a mass greater than zero.';return}
+value=w/m;unit='m/s²';formula='g = W ÷ m';
+}
+result.textContent='Result: '+Number(value.toPrecision(12)).toLocaleString(undefined,{maximumFractionDigits:10})+' '+unit+' ('+formula+'). Check the units and assumptions before using this value.';
+}
+mode.addEventListener('change',showMode);
+document.getElementById('calc').addEventListener('click',calculate);
+document.getElementById('copy-link').addEventListener('click',async function(){try{await navigator.clipboard.writeText(location.href);this.textContent='Link copied'}catch(e){this.textContent='Copy unavailable — copy the page URL from your browser'}});
+showMode();calculate();
+})();
+</script>
+</body>
+</html>
