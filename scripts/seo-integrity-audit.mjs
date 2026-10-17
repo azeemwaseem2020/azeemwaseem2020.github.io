@@ -146,7 +146,7 @@ for (const abs of htmlFiles) {
     if (!hasMeta('og:title', 'property')) report.socialMetadata.missingOgTitle.push(file);
     if (!hasMeta('og:description', 'property')) report.socialMetadata.missingOgDescription.push(file);
     if (!hasMeta('og:image', 'property')) report.socialMetadata.missingOgImage.push(file);
-    const hasTwitterCard = metaTags.some(tag => attr(tag, 'name').toLowerCase() === 'twitter:card' && /content\\s*=\\s*[\"']summary(?:_large_image)?[\"']/i.test(tag));
+    const hasTwitterCard = metaTags.some(tag => attr(tag, 'name').toLowerCase() === 'twitter:card' && /content\s*=\s*[\"']summary(?:_large_image)?[\"']/i.test(tag));
     if (!hasTwitterCard) report.socialMetadata.missingTwitterCard.push(file);
     else {
       addUnique(canonicals, canonical, file);
