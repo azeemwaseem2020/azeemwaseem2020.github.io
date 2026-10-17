@@ -10,6 +10,7 @@ const verificationFile = file => /^(?:google[a-f0-9]+|bbe1f0cb-e6f8-4328-9b7e-c4
 const report = {
   htmlFiles: htmlFiles.length,
   metadata: { missingTitle: [], missingDescription: [], missingCanonical: [], noindex: [], duplicateTitles: [], duplicateCanonicals: [] },
+  socialMetadata: { missingOgTitle: [], missingOgDescription: [], missingOgImage: [], missingTwitterCard: [] },
   imagesMissingAlt: [],
   brokenInternalLinks: [],
   internalLinksToNoindexPages: [],
@@ -140,6 +141,12 @@ for (const abs of htmlFiles) {
     if (!title) report.metadata.missingTitle.push(file); else addUnique(titles, title, file);
     if (!description) report.metadata.missingDescription.push(file);
     if (!canonical) report.metadata.missingCanonical.push(file);
+    const metaTags = [...html.matchAll(/<meta\\b[^>]*>/gi)].map(match => match[0]);
+    const hasMeta = (key, attrName) => metaTags.some(tag => attr(tag, attrName).toLowerCase() === key);
+    if (!hasMeta('og:title', 'property')) report.socialMetadata.missingOgTitle.push(file);
+    if (!hasMeta('og:description', 'property')) report.socialMetadata.missingOgDescription.push(file);
+    if (!hasMeta('og:image', 'property')) report.socialMetadata.missingOgImage.push(file);
+    if (!hasMeta('summary', 'name') && !hasMeta('summary_large_image', 'name')) report.socialMetadata.missingTwitterCard.push(file);
     else {
       addUnique(canonicals, canonical, file);
       canonicalForFile.set(file, canonical);
@@ -239,6 +246,7 @@ const summary = {
   noindexPages: report.metadata.noindex,
   duplicateTitleGroups: report.metadata.duplicateTitles.length,
   duplicateCanonicalGroups: report.metadata.duplicateCanonicals.length,
+  socialMetadata: Object.fromEntries(Object.entries(report.socialMetadata).map(([key, value]) => [key, value.length])),
   imagesMissingAlt: report.imagesMissingAlt.length,
   brokenInternalLinks: report.brokenInternalLinks.length,
   internalLinksToNoindexPages: report.internalLinksToNoindexPages.length,
@@ -270,6 +278,7 @@ console.log(JSON.stringify({
     missingCanonical: report.metadata.missingCanonical,
     duplicateTitles: report.metadata.duplicateTitles,
     duplicateCanonicals: report.metadata.duplicateCanonicals,
+    socialMetadata: report.socialMetadata,
     imagesMissingAlt: report.imagesMissingAlt,
     brokenInternalLinks: report.brokenInternalLinks,
     internalLinksToNoindexPages: report.internalLinksToNoindexPages,
