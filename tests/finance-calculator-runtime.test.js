@@ -107,4 +107,40 @@ function inlineScript(html, marker) {
   assert.match(field('result').innerHTML, /too large to calculate reliably/);
 }
 
-console.log('Zakat and EMI runtime regression tests passed.');
+// Loan payoff: verify the normal-rate model, zero-rate branch and invalid-input guardrails.
+{
+  const html = read('loan-payoff-calculator.html');
+  const { document, elements } = makeDom(html);
+  vm.runInNewContext(inlineScript(html, "addEventListener('click'"), { document, Math, Number, String });
+  const field = id => elements.get(id) ?? document.getElementById(id);
+  field('p').value = '10000';
+  field('r').value = '8';
+  field('m').value = '250';
+  field('go').handlers.click();
+  assert.match(field('o').textContent, /Estimated payoff: 47 months/);
+  assert.match(field('o').textContent, /1,669\.54/);
+
+  field('m').value = '300';
+  field('go').handlers.click();
+  assert.match(field('o').textContent, /Estimated payoff: 38 months/);
+  assert.match(field('o').textContent, /1,346\.80/);
+
+  field('p').value = '1000';
+  field('r').value = '0';
+  field('m').value = '250';
+  field('go').handlers.click();
+  assert.match(field('o').textContent, /Estimated payoff: 4 months/);
+  assert.match(field('o').textContent, /0\.00/);
+
+  field('r').value = '-2';
+  field('go').handlers.click();
+  assert.match(field('o').textContent, /non-negative annual rate/);
+
+  field('p').value = '10000';
+  field('r').value = '12';
+  field('m').value = '50';
+  field('go').handlers.click();
+  assert.match(field('o').textContent, /greater than the first month/);
+}
+
+console.log('Zakat, EMI and loan payoff runtime regression tests passed.');
