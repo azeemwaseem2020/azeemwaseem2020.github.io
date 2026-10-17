@@ -101,19 +101,19 @@ for (const abs of htmlFiles) {
 
     const mainHtml = mainMatch ? mainMatch[1] : html;
     const fillerChecks = [
-      ['search-intent-heading', /<h[23]\\b[^>]*>\\s*Search intent covered\\s*<\\/h[23]>/i],
+      ['search-intent-heading', /<h[23]\b[^>]*>\s*Search intent covered\s*<\/h[23]>/i],
       ['semantic-context-block', /id=["']calcora-semantic-context["']/i],
       ['keyword-intent-block', /id=["']calcora-keyword-intent["']/i],
-      ['visible-search-intent-label', /<strong>\\s*Search intent\\s*:/i],
-      ['related-search-terms-label', /<strong>\\s*Related search terms\\s*:/i],
-      ['generic-how-to-copy', /Enter the requested values and calculate\\. Review the result and the assumptions before using it for a real decision\\./i],
-      ['generic-formula-copy', /Results are estimates based on the inputs and standard formulas shown or described on this page\\./i]
+      ['visible-search-intent-label', /<strong>\s*Search intent\s*:/i],
+      ['related-search-terms-label', /<strong>\s*Related search terms\s*:/i],
+      ['generic-how-to-copy', /Enter the requested values and calculate\. Review the result and the assumptions before using it for a real decision\./i],
+      ['generic-formula-copy', /Results are estimates based on the inputs and standard formulas shown or described on this page\./i]
     ];
     const fillerFound = fillerChecks.filter(([, pattern]) => pattern.test(mainHtml)).map(([label]) => label);
     if (fillerFound.length) report.contentQuality.genericFiller.push({ file, signals: fillerFound });
     const headingCounts = new Map();
-    for (const match of mainHtml.matchAll(/<h[23]\\b[^>]*>([\\s\\S]*?)<\\/h[23]>/gi)) {
-      const heading = decodeEntities(match[1].replace(/<[^>]+>/g, ' ')).replace(/\\s+/g, ' ').trim().toLowerCase();
+    for (const match of mainHtml.matchAll(/<h[23]\b[^>]*>([\s\S]*?)<\/h[23]>/gi)) {
+      const heading = decodeEntities(match[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim().toLowerCase();
       if (!heading || /^(faq|frequently asked questions|related calculators|related tools)$/.test(heading)) continue;
       headingCounts.set(heading, (headingCounts.get(heading) || 0) + 1);
     }
