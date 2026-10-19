@@ -4,7 +4,7 @@
   const style=document.createElement('style');
   style.textContent='.calcora-result-actions{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px;padding:10px 0;border:0;background:transparent}.calcora-result-actions button{border:1px solid #cfdbe6;background:#f7fafc;color:#233149;border-radius:9px;padding:9px 13px;font:inherit;font-size:.9rem;font-weight:750;cursor:pointer;min-height:40px}.calcora-result-actions .calcora-copy{background:#087f70;border-color:#087f70;color:#fff}.calcora-result-actions button:focus-visible{outline:3px solid #ffb84d;outline-offset:3px}@media print{.calcora-result-actions,.site-header,.topbar,.tool-tabs,.footer-main,footer,.skip-link{display:none!important}body{background:#fff!important;color:#000!important}.result-box,#result,#out,#divout,#avgout,#bonusout,#rightout,#loadOut,#output,#answer{box-shadow:none!important;break-inside:avoid}}';
   document.head.appendChild(style);
-  const selectors='.result-box,#result,#out,#divout,#avgout,#bonusout,#rightout,#loadOut,#output,#answer,#result-content,#salary-tax-result-content,#home-emi-result,#extra-payoff-result,#reverse-tax-result,#aff-result';
+  const selectors='.result-box,.calculator-result,#result,#out,#o,#divout,#avgout,#bonusout,#rightout,#loadOut,[id$=\"Out\"],#output,#answer,#result-content,#salary-tax-result-content,#home-emi-result,#extra-payoff-result,#reverse-tax-result,#aff-result';
   function plainResult(el){
     const clone=el.cloneNode(true);
     clone.querySelectorAll('.calcora-result-actions,button,script,style').forEach(n=>n.remove());
