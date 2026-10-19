@@ -47,4 +47,12 @@
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scan,{once:true});else scan();
   new MutationObserver(scan).observe(document.documentElement,{subtree:true,childList:true});
+
+  // Load the shared feedback widget on every page that uses result actions.
+  if (!document.querySelector('script[src$="feedback.js"]')) {
+    const feedbackScript = document.createElement('script');
+    feedbackScript.src = 'feedback.js';
+    feedbackScript.defer = true;
+    document.head.appendChild(feedbackScript);
+  }
 })();
