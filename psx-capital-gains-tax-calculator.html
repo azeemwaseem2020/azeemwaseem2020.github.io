@@ -51,4 +51,4 @@
 </main><footer class="footer-main"><div class="footer-inner"><div class="footer-bottom"><span>© 2026 Calcora</span><span>Free tools • No signup</span></div></div></footer><script>
 const go=document.getElementById('go'),g=document.getElementById('g'),r=document.getElementById('r'),o=document.getElementById('o');
 go.addEventListener('click',()=>{const gain=Number(g.value),rate=Number(r.value);if(!Number.isFinite(gain)||gain<0||!Number.isFinite(rate)||rate<0||rate>100){o.innerHTML='<p role="alert">Enter a valid gain and a CGT rate from 0% to 100%.</p>';return}const tax=gain*rate/100;o.innerHTML='<strong>Estimated CGT:</strong> PKR '+tax.toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2})+'<br><strong>Gain after entered CGT:</strong> PKR '+(gain-tax).toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2});});
-</script></body></html>
+</script><script src="result-actions.js" defer></script></body></html>
