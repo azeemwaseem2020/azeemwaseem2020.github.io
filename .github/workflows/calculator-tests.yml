@@ -33,3 +33,4 @@ jobs:
           node tests/salary-tax-components.test.js
           node tests/salary-tax-calculation.test.js
           node tests/finance-calculator-runtime.test.js
+          node tests/top10-thin-pages.test.js
