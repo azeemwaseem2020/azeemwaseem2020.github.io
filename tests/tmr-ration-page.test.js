@@ -150,9 +150,9 @@ assert.match(feedCalc, /cannot confirm nutrient balance, palatability, safety or
 
 
 assert.match(dryMatter, /Updated: October 9, 2026/, 'Dry matter page visible update date should reflect the worked-example revision');
-assert.match(dryMatter, /article:modified_time" content="2026-10-09"/, 'Dry matter modification metadata should match visible update date');
-assert.match(feedCost, /Updated October 9, 2026/, 'Feed cost page should show a visible update date');
-assert.match(feedCost, /article:modified_time" content="2026-10-09"/, 'Feed cost modification metadata should match visible update date');
+assert.match(dryMatter, /article:modified_time" content="2026-10-15"/, 'Dry matter modification metadata should match visible update date');
+assert.match(feedCost, /Updated October 15, 2026/, 'Feed cost page should show a visible update date');
+assert.match(feedCost, /article:modified_time" content="2026-10-15"/, 'Feed cost modification metadata should match visible update date');
 assert.match(feedCost, /property="og:site_name" content="Calcora"/, 'Feed cost page should identify the site in social metadata');
 const clusterPages = [
   ['TMR Feed Calculator', feedCalc],
