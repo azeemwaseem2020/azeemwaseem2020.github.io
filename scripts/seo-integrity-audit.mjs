@@ -105,8 +105,8 @@ for (const abs of htmlFiles) {
       ['search-intent-heading', /<h[23]\b[^>]*>\s*Search intent covered\s*<\/h[23]>/i],
       ['keyword-intent-block', /id=["']calcora-keyword-intent["']/i],
       ['visible-search-intent-label', /<strong>\s*Search intent\s*:/i],
-      ['visible-search-intent-heading', /<h[1-6]\\b[^>]*>[^<]*(?:search intent|keyword intent|intent map)[^<]*<\\/h[1-6]>/i],
-      ['visible-search-intent-map', /<p\\b[^>]*>\\s*[^<]*(?:search intent map|keyword intent map)[^<]*<\\/p>/i],
+      ['visible-search-intent-heading', /<h[1-6]\b[^>]*>[^<]*(?:search intent|keyword intent|intent map)[^<]*<\/h[1-6]>/i],
+      ['visible-search-intent-map', /<p\b[^>]*>\s*[^<]*(?:search intent map|keyword intent map)[^<]*<\/p>/i],
       ['related-search-terms-label', /<strong>\s*Related search terms\s*:/i],
       ['generic-how-to-copy', /Enter the requested values and calculate\. Review the result and the assumptions before using it for a real decision\./i],
       ['generic-formula-copy', /Results are estimates based on the inputs and standard formulas shown or described on this page\./i]
