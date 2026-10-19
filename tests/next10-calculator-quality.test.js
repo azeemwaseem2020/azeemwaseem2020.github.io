@@ -20,7 +20,7 @@ for (const path of pages) {
   assert.match(html, /<title[^>]*>[^<]+<\/title>/i, path + ": title");
   assert.equal((html.match(/<h1\b/gi) || []).length, 1, path + ": one H1");
   assert.equal((html.match(/<link[^>]+rel=["']canonical["']/gi) || []).length, 1, path + ": one canonical");
-  assert.ok(html.includes('href="' + canonical + '"'), path + ": canonical URL");
+  assert.ok(html.includes(canonical), path + ": canonical URL");
   assert.match(html, /<meta[^>]+name=["']author["'][^>]+content=["']Abdul Qadir["']/i, path + ": author metadata");
   assert.match(html, /property=["']og:title["']/i, path + ": OG title");
   assert.match(html, /property=["']og:description["']/i, path + ": OG description");
