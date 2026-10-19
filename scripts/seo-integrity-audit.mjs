@@ -10,6 +10,7 @@ const verificationFile = file => /^(?:google[a-f0-9]+|bbe1f0cb-e6f8-4328-9b7e-c4
 const report = {
   htmlFiles: htmlFiles.length,
   metadata: { missingTitle: [], missingDescription: [], missingCanonical: [], noindex: [], duplicateTitles: [], duplicateCanonicals: [] },
+  socialMetadata: { missingOgTitle: [], missingOgDescription: [], missingOgImage: [], missingTwitterCard: [] },
   imagesMissingAlt: [],
   brokenInternalLinks: [],
   internalLinksToNoindexPages: [],
@@ -18,6 +19,8 @@ const report = {
   structuredData: { invalidJsonLd: [] },
   canonicalTargetsMissing: [],
   sitemap: [],
+  contentDepth: { under100: [], under250: [], under500: [] },
+  contentQuality: { genericFiller: [], repeatedHeadings: [] },
   errors: []
 };
 
@@ -77,6 +80,49 @@ for (const abs of htmlFiles) {
   const isVerification = verificationFile(file);
   if (isNoindex) { report.metadata.noindex.push(file); noindexFiles.add(file); }
 
+  // Estimate reader-facing content depth from <main>, excluding scripts, styles and navigation chrome.
+  // Word count is a triage signal only; it does not replace a quality or search-intent review.
+  if (!isNoindex && !isVerification) {
+    const mainMatch = html.match(/<main\b[^>]*>([\s\S]*?)<\/main\s*>/i);
+    let readable = mainMatch ? mainMatch[1] : html;
+    readable = readable
+      .replace(/<script\b[\s\S]*?<\/script\s*>/gi, ' ')
+      .replace(/<style\b[\s\S]*?<\/style\s*>/gi, ' ')
+      .replace(/<svg\b[\s\S]*?<\/svg\s*>/gi, ' ')
+      .replace(/<nav\b[\s\S]*?<\/nav\s*>/gi, ' ')
+      .replace(/<header\b[\s\S]*?<\/header\s*>/gi, ' ')
+      .replace(/<footer\b[\s\S]*?<\/footer\s*>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ');
+    const readableText = decodeEntities(readable).replace(/\s+/g, ' ').trim();
+    const words = (readableText.match(/[\p{L}\p{N}]+(?:[’'-][\p{L}\p{N}]+)*/gu) || []).length;
+    const entry = { file, words };
+    if (words < 100) report.contentDepth.under100.push(entry);
+    if (words < 250) report.contentDepth.under250.push(entry);
+    if (words < 500) report.contentDepth.under500.push(entry);
+
+    const mainHtml = mainMatch ? mainMatch[1] : html;
+    const fillerChecks = [
+      ['search-intent-heading', /<h[23]\b[^>]*>\s*Search intent covered\s*<\/h[23]>/i],
+      ['keyword-intent-block', /id=["']calcora-keyword-intent["']/i],
+      ['visible-search-intent-label', /<strong>\s*Search intent\s*:/i],
+      ['visible-search-intent-heading', /<h[1-6]\b[^>]*>[^<]*(?:search intent|keyword intent|intent map)[^<]*<\/h[1-6]>/i],
+      ['visible-search-intent-map', /<p\b[^>]*>\s*[^<]*(?:search intent map|keyword intent map)[^<]*<\/p>/i],
+      ['related-search-terms-label', /<strong>\s*Related search terms\s*:/i],
+      ['generic-how-to-copy', /Enter the requested values and calculate\. Review the result and the assumptions before using it for a real decision\./i],
+      ['generic-formula-copy', /Results are estimates based on the inputs and standard formulas shown or described on this page\./i]
+    ];
+    const fillerFound = fillerChecks.filter(([, pattern]) => pattern.test(mainHtml)).map(([label]) => label);
+    if (fillerFound.length) report.contentQuality.genericFiller.push({ file, signals: fillerFound });
+    const headingCounts = new Map();
+    for (const match of mainHtml.matchAll(/<h[23]\b[^>]*>([\s\S]*?)<\/h[23]>/gi)) {
+      const heading = decodeEntities(match[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim().toLowerCase();
+      if (!heading || /^(faq|frequently asked questions|related calculators|related tools|worked example|worked examples|formula|formula and assumptions|how to use|how to use it|how to use this calculator|example|examples|calculation method|where this calculator fits)$/.test(heading)) continue;
+      headingCounts.set(heading, (headingCounts.get(heading) || 0) + 1);
+    }
+    const repeated = [...headingCounts].filter(([, count]) => count > 1).map(([heading, count]) => ({ heading, count }));
+    if (repeated.length) report.contentQuality.repeatedHeadings.push({ file, headings: repeated });
+  }
+
   if (!isVerification && !isNoindex) {
     if (!/<html\b[^>]*\blang\s*=/i.test(html)) report.htmlTechnical.missingLang.push(file);
     if (!/<meta\b[^>]*\bname\s*=\s*["']viewport["']/i.test(html)) report.htmlTechnical.missingViewport.push(file);
@@ -97,6 +143,13 @@ for (const abs of htmlFiles) {
     if (!title) report.metadata.missingTitle.push(file); else addUnique(titles, title, file);
     if (!description) report.metadata.missingDescription.push(file);
     if (!canonical) report.metadata.missingCanonical.push(file);
+    const metaTags = [...html.matchAll(/<meta\b[^>]*>/gi)].map(match => match[0]);
+    const hasMeta = (key, attrName) => metaTags.some(tag => attr(tag, attrName).toLowerCase() === key);
+    if (!hasMeta('og:title', 'property')) report.socialMetadata.missingOgTitle.push(file);
+    if (!hasMeta('og:description', 'property')) report.socialMetadata.missingOgDescription.push(file);
+    if (!hasMeta('og:image', 'property')) report.socialMetadata.missingOgImage.push(file);
+    const hasTwitterCard = metaTags.some(tag => attr(tag, 'name').toLowerCase() === 'twitter:card' && /content\s*=\s*[\"']summary(?:_large_image)?[\"']/i.test(tag));
+    if (!hasTwitterCard) report.socialMetadata.missingTwitterCard.push(file);
     else {
       addUnique(canonicals, canonical, file);
       canonicalForFile.set(file, canonical);
@@ -196,6 +249,7 @@ const summary = {
   noindexPages: report.metadata.noindex,
   duplicateTitleGroups: report.metadata.duplicateTitles.length,
   duplicateCanonicalGroups: report.metadata.duplicateCanonicals.length,
+  socialMetadata: Object.fromEntries(Object.entries(report.socialMetadata).map(([key, value]) => [key, value.length])),
   imagesMissingAlt: report.imagesMissingAlt.length,
   brokenInternalLinks: report.brokenInternalLinks.length,
   internalLinksToNoindexPages: report.internalLinksToNoindexPages.length,
@@ -205,6 +259,15 @@ const summary = {
   canonicalTargetsMissing: report.canonicalTargetsMissing.length,
   indexablePagesMissingFromSitemap: indexablePagesMissingFromSitemap.length,
   sitemap: report.sitemap,
+  contentDepth: {
+    under100: report.contentDepth.under100.length,
+    under250: report.contentDepth.under250.length,
+    under500: report.contentDepth.under500.length
+  },
+  contentQuality: {
+    pagesWithGenericFillerSignals: report.contentQuality.genericFiller.length,
+    pagesWithRepeatedHeadings: report.contentQuality.repeatedHeadings.length
+  },
   blockingErrors: report.errors
 };
 if (report.internalLinksToNoindexPages.length) console.warn('WARNING: internal links point to noindex pages: ' + report.internalLinksToNoindexPages.length);
@@ -218,6 +281,7 @@ console.log(JSON.stringify({
     missingCanonical: report.metadata.missingCanonical,
     duplicateTitles: report.metadata.duplicateTitles,
     duplicateCanonicals: report.metadata.duplicateCanonicals,
+    socialMetadata: report.socialMetadata,
     imagesMissingAlt: report.imagesMissingAlt,
     brokenInternalLinks: report.brokenInternalLinks,
     internalLinksToNoindexPages: report.internalLinksToNoindexPages,
@@ -226,7 +290,9 @@ console.log(JSON.stringify({
     invalidJsonLd: report.structuredData.invalidJsonLd,
     canonicalTargetsMissing: report.canonicalTargetsMissing,
     indexablePagesMissingFromSitemap,
-    sitemap: report.sitemap
+    sitemap: report.sitemap,
+    contentDepth: report.contentDepth,
+    contentQuality: report.contentQuality
   }
 }, null, 2));
 fs.mkdirSync(path.join(ROOT, 'audit-reports'), { recursive: true });
