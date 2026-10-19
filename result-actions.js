@@ -1,1 +1,50 @@
-(()=>{const s=document.createElement('style');s.textContent='.calcora-result-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding:12px;border:1px solid #dce5ee;border-radius:14px;background:#fff}.calcora-result-actions button{border:1px solid #cfdbe6;background:#f7fafc;color:#233149;border-radius:10px;padding:9px 13px;font-weight:700;cursor:pointer}.calcora-result-actions .primary{background:#087f70;color:#fff}.calcora-result-actions .whatsapp{background:#eafaf1;border-color:#bfe6cf;color:#176b3a}@media print{.calcora-result-actions,.site-header,.topbar,.tool-tabs,.footer-main{display:none!important}}';document.head.appendChild(s);function resultText(el){return(document.querySelector('main h1')?.textContent||document.title)+'\n\n'+el.innerText+'\n\n'+location.href}function add(el){if(!el||el.dataset.actions)return;if(!el.textContent.trim())return;if(el.querySelector('.calcora-result-actions'))return;el.dataset.actions='1';const b=document.createElement('div');b.className='calcora-result-actions';b.setAttribute('aria-label','Result actions');b.innerHTML='<button class="primary" type="button">Print / Save PDF</button><button class="whatsapp" type="button">Share on WhatsApp</button><button type="button">Share Result</button><button type="button">Copy Result</button>';el.appendChild(b);const bs=b.querySelectorAll('button');bs[0].onclick=()=>window.print();bs[1].onclick=()=>{const t=encodeURIComponent(resultText(el));window.open('https://wa.me/?text='+t,'_blank','noopener,noreferrer')};bs[2].onclick=()=>{const t=resultText(el);if(navigator.share){navigator.share({title:document.title,text:t,url:location.href}).catch(()=>{})}else if(navigator.clipboard){navigator.clipboard.writeText(t);bs[2].textContent='Copied ✓';setTimeout(()=>bs[2].textContent='Share Result',1500)}};bs[3].onclick=async()=>{try{await navigator.clipboard.writeText(resultText(el));bs[3].textContent='Copied ✓';setTimeout(()=>bs[3].textContent='Copy Result',1500)}catch{}}}function scan(){document.querySelectorAll('.result-box,#result,#out,#divout,#avgout,#bonusout,#rightout,#loadOut').forEach(add)}scan();new MutationObserver(scan).observe(document.body,{subtree:true,childList:true})})();
+(()=>{ 
+  if(window.__calcoraResultActionsLoaded)return;
+  window.__calcoraResultActionsLoaded=true;
+  const style=document.createElement('style');
+  style.textContent='.calcora-result-actions{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px;padding:10px 0;border:0;background:transparent}.calcora-result-actions button{border:1px solid #cfdbe6;background:#f7fafc;color:#233149;border-radius:9px;padding:9px 13px;font:inherit;font-size:.9rem;font-weight:750;cursor:pointer;min-height:40px}.calcora-result-actions .calcora-copy{background:#087f70;border-color:#087f70;color:#fff}.calcora-result-actions button:focus-visible{outline:3px solid #ffb84d;outline-offset:3px}@media print{.calcora-result-actions,.site-header,.topbar,.tool-tabs,.footer-main,footer,.skip-link{display:none!important}body{background:#fff!important;color:#000!important}.result-box,#result,#out,#divout,#avgout,#bonusout,#rightout,#loadOut,#output,#answer{box-shadow:none!important;break-inside:avoid}}';
+  document.head.appendChild(style);
+  const selectors='.result-box,#result,#out,#divout,#avgout,#bonusout,#rightout,#loadOut,#output,#answer,#result-content,#salary-tax-result-content,#home-emi-result,#extra-payoff-result,#reverse-tax-result,#aff-result';
+  function plainResult(el){
+    const clone=el.cloneNode(true);
+    clone.querySelectorAll('.calcora-result-actions,button,script,style').forEach(n=>n.remove());
+    const heading=document.querySelector('main h1')?.textContent||document.querySelector('h1')?.textContent||document.title;
+    return (heading.trim()+'\n\n'+clone.innerText.trim()+'\n\nPage: '+location.href).trim();
+  }
+  function add(el){
+    if(!el||el.dataset.calcoraActions==='1'||el.querySelector(':scope > .calcora-result-actions'))return;
+    if(!el.textContent.trim())return;
+    if(el.querySelector(selectors))return;
+    const actions=document.createElement('div');
+    actions.className='calcora-result-actions';
+    actions.setAttribute('role','group');
+    actions.setAttribute('aria-label','Calculator result actions');
+    actions.innerHTML='<button class="calcora-copy" type="button">Copy Result</button><button class="calcora-print" type="button">Download PDF / Print</button>';
+    el.appendChild(actions);
+    el.dataset.calcoraActions='1';
+    const copy=actions.querySelector('.calcora-copy');
+    copy.addEventListener('click',async()=>{
+      const text=plainResult(el);
+      try{
+        if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
+        else{
+          const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
+          const ok=document.execCommand('copy');ta.remove();if(!ok)throw new Error('Copy unavailable');
+        }
+        copy.textContent='Copied ✓';copy.setAttribute('aria-live','polite');
+        setTimeout(()=>{copy.textContent='Copy Result'},1800);
+      }catch(e){
+        copy.textContent='Select result to copy';setTimeout(()=>{copy.textContent='Copy Result'},2200);
+      }
+    });
+    actions.querySelector('.calcora-print').addEventListener('click',()=>window.print());
+  }
+  function scan(){
+    document.querySelectorAll(selectors).forEach(el=>{
+      if(el.querySelector(selectors))return;
+      add(el);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scan,{once:true});else scan();
+  new MutationObserver(scan).observe(document.documentElement,{subtree:true,childList:true});
+})();
