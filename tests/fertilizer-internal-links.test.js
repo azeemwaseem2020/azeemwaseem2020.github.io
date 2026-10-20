@@ -209,7 +209,7 @@ const pasturePrioritySitemap = fs.readFileSync(new URL('sitemap-pakistan-priorit
 assert.match(pasture, /<title>Pasture Fertilizer Calculator \| Rate, NPK &amp; Cost \| Calcora<\/title>/);
 assert.match(pasture, /<link rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\/pasture-fertilizer-calculator\.html">/);
 assert.match(pasture, /<h1>Pasture Fertilizer Calculator/);
-assert.match(pasture, /<meta name="description" content="Use this pasture fertilizer calculator to compare N, P₂O₅, K₂O and sulfur, estimate product rates per acre or hectare, whole bags and field cost\.">/);
+assert.match(pasture, /<meta name="description" content="Estimate pasture fertilizer rates, NPK product quantities and cost per acre or hectare\. Confirm nutrient targets with soil tests and local agronomy advice\."\/>/);
 assert.match(pasture, /<meta property="og:site_name" content="Calcora">/);
 assert.match(pasture, /<meta name="twitter:card" content="summary_large_image">/);
 assert.match(pasture, /Updated 11 October 2026/);
