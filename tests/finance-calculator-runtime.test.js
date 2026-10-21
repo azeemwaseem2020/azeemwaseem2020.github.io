@@ -28,6 +28,8 @@ function makeDom(html) {
   return {
     elements,
     document: {
+      head: { appendChild() {} },
+      createElement() { return { src: '', onload: null, onerror: null }; },
       getElementById(id) {
         if (!elements.has(id)) elements.set(id, {
           id, value: '', innerHTML: '', textContent: '', handlers: {},
