@@ -80,7 +80,7 @@ for (const id of ['tmr-calculator-tool','species','batch','animals','feed','milk
 }
 assert.ok(feedCalc.includes('Estimated feed cost per litre of milk'), 'TMR results should estimate feed cost per litre when milk yield is entered');
 assert.ok(feedCalc.includes('enter a price for every ingredient'), 'TMR must not show a misleading total when some ingredient prices are missing');
-assert.ok(feedCalc.includes("(hasAllPrices?'Rs '+(kg*pricePerKg[i]).toFixed(2):'—')"), 'Ingredient cost rows should use the normalized price basis');
+assert.ok(feedCalc.includes("(hasAllPrices?currencyCode()+' '+(kg*pricePerKg[i]).toFixed(2):'—')"), 'Ingredient cost rows should display the selected currency using normalized per-kg prices');
 assert.ok(feedCalc.includes("milkYield=document.getElementById('milkYield')"), 'Milk yield input must be wired to the calculation script');
 assert.ok(feedCalc.includes('Dry-matter intake (DMI) screening check'), 'TMR calculator should show an optional target-based DMI screening result');
 assert.ok(feedCalc.includes('Your target DM intake (% of body weight, optional)'), 'DMI screening should request a user-supplied target rather than assume a universal benchmark');
