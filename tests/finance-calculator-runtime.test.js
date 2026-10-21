@@ -54,7 +54,7 @@ function inlineScript(html, marker) {
 {
   const html = read('loan-emi-calculator.html');
   const { document, elements } = makeDom(html);
-  vm.runInNewContext(inlineScript(html, 'const amount='), { document, Math, Number, String, encodeURIComponent });
+  vm.runInNewContext(inlineScript(html, 'const amount='), { document, window: {}, Math, Number, String, encodeURIComponent });
   const field = id => elements.get(id) ?? document.getElementById(id);
   field('amount').value = '100000';
   field('down').value = '0';
