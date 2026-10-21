@@ -124,8 +124,8 @@ assert.match(rationCheck, /does not prove the ration meets an animal’s needs/i
 console.log('Advanced TMR checker trust, currency and weighted-nutrient example checks: PASS');
 
 
-assert.match(feedCalc, /Last updated:<\/strong> October 15, 2026/, 'Visible TMR feed calculator review date should match the latest content update');
-assert.match(feedCalc, /article:modified_time" content="2026-10-15"/, 'TMR feed calculator modification metadata should match its visible review date');
+assert.match(feedCalc, /Last updated:<\/strong> October 19, 2026/, 'Visible TMR feed calculator review date should match the latest content update');
+assert.match(feedCalc, /article:modified_time" content="2026-10-19"/, 'TMR feed calculator modification metadata should match its visible review date');
 for (const [path, html] of [
   ['tmr-feed-calculator.html', feedCalc],
   ['tmr-dry-matter-calculator.html', dryMatter],
