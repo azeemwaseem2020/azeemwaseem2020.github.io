@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tiered Electricity Rate Calculator (US) | Calcora</title>
+<meta name="description" content="Calculate a US electricity bill with block-based tiered kWh rates. Enter usage, tier limits, rates and monthly charges to estimate each tier's cost.">
+<meta name="author" content="Abdul Qadir">
+<link rel="canonical" href="https://azeemwaseem2020.github.io/tiered-electricity-rate-calculator.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tiered Electricity Rate Calculator | Calcora">
+<meta property="og:description" content="Estimate energy charges across up to three usage tiers, plus fixed and other bill charges.">
+<meta property="og:url" content="https://azeemwaseem2020.github.io/tiered-electricity-rate-calculator.html">
+<meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://azeemwaseem2020.github.io/"},{"@type":"ListItem","position":2,"name":"Tiered Electricity Rate Calculator","item":"https://azeemwaseem2020.github.io/tiered-electricity-rate-calculator.html"}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a class="brand" href="./"><span class="brand-mark">C</span>Calcora</a><nav aria-label="Primary navigation"><a href="calculators.html">Calculators</a><a href="categories.html">Categories</a><a href="blog.html">Guides</a><a href="about.html">About</a></nav></div></header>
+<main class="section calculator-page">
+<p class="page-author">Written and maintained by <a href="abdul-qadir.html" rel="author">Abdul Qadir</a> · <a href="calculator-methodology.html">Calculation methodology</a></p>
+<p class="eyebrow">US HOUSEHOLD UTILITIES</p>
+<h1>Tiered Electricity Rate Calculator</h1>
+<p class="lead">Estimate an electricity bill when the price per kWh changes at usage thresholds. Enter the block sizes and rates shown on your utility tariff; this tool does not assume a universal US rate.</p>
+<div class="policy-grid" style="align-items:start">
+<section class="calculator-card">
+<h2>Enter usage and tier rates</h2>
+<label for="usage">Monthly usage (kWh)</label><input id="usage" type="number" min="0" max="1000000" step="1" value="900" inputmode="decimal">
+<h3>Tier 1 — first block</h3>
+<label for="limit1">Tier 1 block size (kWh)</label><input id="limit1" type="number" min="0.01" max="1000000" step="1" value="500" inputmode="decimal">
+<label for="rate1">Tier 1 rate (cents/kWh)</label><input id="rate1" type="number" min="0" max="100000" step="0.1" value="12" inputmode="decimal">
+<h3>Tier 2 — next block</h3>
+<label for="limit2">Tier 2 block size (kWh)</label><input id="limit2" type="number" min="0" max="1000000" step="1" value="300" inputmode="decimal">
+<label for="rate2">Tier 2 rate (cents/kWh)</label><input id="rate2" type="number" min="0" max="100000" step="0.1" value="16" inputmode="decimal">
+<h3>Tier 3 — remaining usage</h3>
+<label for="rate3">Tier 3 rate (cents/kWh)</label><input id="rate3" type="number" min="0" max="100000" step="0.1" value="20" inputmode="decimal">
+<label for="fixed">Fixed monthly charges ($)</label><input id="fixed" type="number" min="0" max="100000" step="0.01" value="15" inputmode="decimal">
+<label for="extra">Other charges or taxes ($)</label><input id="extra" type="number" min="0" max="100000" step="0.01" value="0" inputmode="decimal">
+<button class="btn" type="button" id="calculate">Calculate tiered bill</button>
+<div id="result" class="result-box" aria-live="polite" role="status"></div>
+<button class="btn btn-secondary" type="button" id="copy" style="margin-top:10px">Copy estimate</button>
+</section>
+<aside class="hero-card"><h2>How block-based tiers work</h2><ul><li>Tier 1 rate applies to the first block of kWh.</li><li>Tier 2 rate applies only to the next block after Tier 1.</li><li>Tier 3 rate applies to usage above both block limits.</li><li>Fixed and other charges are added after energy charges.</li></ul><p class="muted">Example defaults are illustrative, not current utility prices. Replace them with your tariff values.</p></aside>
+</div>
+<section class="prose">
+<h2>Formula</h2>
+<p>Tier 1 kWh = the smaller of total usage and the Tier 1 block size. Tier 2 kWh = the smaller of the remaining usage and the Tier 2 block size. Tier 3 kWh = any usage left after both blocks. Each tier's energy charge is its kWh multiplied by its rate in cents and divided by 100. The estimated bill adds all three energy charges, fixed charges and other charges entered.</p>
+<h2>Worked example</h2>
+<p>For 900 kWh, with the first 500 kWh at 12 cents, the next 300 kWh at 16 cents, and the remaining 100 kWh at 20 cents, the tier charges are $60, $48 and $20. Energy charges total $128. With $15 in fixed charges and no other charges entered, the estimated total is $143.</p>
+<h2>Important tariff limitation</h2>
+<p>This calculator models block-based energy pricing only. It does not calculate time-of-use periods, demand charges, minimum bills, seasonal adjustments, export credits, taxes by jurisdiction or complex utility-specific riders. Some tariffs use different rules or separate delivery and supply charges. Check your current utility tariff and bill before relying on the estimate.</p>
+<p>For a simpler estimate using one average energy rate, use the <a href="us-electricity-bill-calculator.html">US Electricity Bill Calculator</a>. A single-rate estimate is not a substitute for a tiered tariff calculation.</p>
+<h2>Frequently asked questions</h2>
+<details><summary>Does each rate apply to all my electricity?</summary><p>No. In this block-based model, each rate applies only to the kWh inside its tier. For example, the Tier 2 rate applies to the next block, not the whole bill.</p></details>
+<details><summary>What if my usage is below the first tier limit?</summary><p>All usage is charged at the Tier 1 rate; Tier 2 and Tier 3 usage is zero.</p></details>
+<details><summary>Is this a time-of-use calculator?</summary><p>No. Time-of-use plans price electricity by time periods, such as peak and off-peak hours. This calculator uses total monthly kWh and usage blocks.</p></details>
+<p class="muted">Educational estimate only. Utility tariffs change and may include charges this simplified model does not cover.</p>
+</section>
+</main>
+<footer class="footer-main"><div class="footer-inner"><div class="footer-bottom"><span>© 2026 Calcora. All rights reserved.</span><span><a href="privacy-policy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="disclaimer.html">Disclaimer</a></span></div></div></footer>
+<script>
+(function(){
+const el=(id)=>document.getElementById(id);
+const result=el('result');
+function estimate(){
+ const v={usage:Number(el('usage').value),limit1:Number(el('limit1').value),rate1:Number(el('rate1').value),limit2:Number(el('limit2').value),rate2:Number(el('rate2').value),rate3:Number(el('rate3').value),fixed:Number(el('fixed').value),extra:Number(el('extra').value)};
+ if(Object.values(v).some((n)=>!Number.isFinite(n)||n<0)||v.usage>1000000||v.limit1<=0||v.limit1>1000000||v.limit2>1000000||[v.rate1,v.rate2,v.rate3].some((n)=>n>100000)||v.fixed>100000||v.extra>100000){result.innerHTML='<p role="alert">Enter valid non-negative values within the stated limits. Tier 1 block size must be greater than zero.</p>';return null;}
+ const k1=Math.min(v.usage,v.limit1);
+ const k2=Math.min(Math.max(0,v.usage-k1),v.limit2);
+ const k3=Math.max(0,v.usage-k1-k2);
+ const c1=k1*v.rate1/100,c2=k2*v.rate2/100,c3=k3*v.rate3/100;
+ const energy=c1+c2+c3,total=energy+v.fixed+v.extra,eff=v.usage>0?total/v.usage:null;
+ const money=(n)=>n.toLocaleString('en-US',{style:'currency',currency:'USD'});
+ result.innerHTML='<h2>Estimated monthly bill</h2><p><strong>Tier 1:</strong> '+k1.toLocaleString('en-US')+' kWh × '+v.rate1+'¢ = '+money(c1)+'</p><p><strong>Tier 2:</strong> '+k2.toLocaleString('en-US')+' kWh × '+v.rate2+'¢ = '+money(c2)+'</p><p><strong>Tier 3:</strong> '+k3.toLocaleString('en-US')+' kWh × '+v.rate3+'¢ = '+money(c3)+'</p><p><strong>Total energy charges:</strong> '+money(energy)+'</p><p><strong>Fixed charges:</strong> '+money(v.fixed)+'</p><p><strong>Other charges/taxes:</strong> '+money(v.extra)+'</p><p><strong>Estimated total:</strong> '+money(total)+'</p><p><strong>Effective cost per kWh:</strong> '+(eff===null?'Not available at zero usage':money(eff)+'/kWh')+'</p>';
+ return {v,k1,k2,k3,c1,c2,c3,energy,total,eff};
+}
+el('calculate').addEventListener('click',estimate);
+el('copy').addEventListener('click',()=>{const x=estimate();if(!x)return;const t='Tiered electricity bill estimate\nUsage: '+x.v.usage+' kWh\nTier 1: '+x.k1+' kWh = $'+x.c1.toFixed(2)+'\nTier 2: '+x.k2+' kWh = $'+x.c2.toFixed(2)+'\nTier 3: '+x.k3+' kWh = $'+x.c3.toFixed(2)+'\nEnergy charges: $'+x.energy.toFixed(2)+'\nFixed charges: $'+x.v.fixed.toFixed(2)+'\nOther charges: $'+x.v.extra.toFixed(2)+'\nEstimated total: $'+x.total.toFixed(2)+'\nEstimate only; utility tariff rules may vary.';if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>{el('copy').textContent='Estimate copied'}).catch(()=>{result.insertAdjacentHTML('beforeend','<p role="status">Copy unavailable; select and copy the result manually.</p>')})}else{result.insertAdjacentHTML('beforeend','<p role="status">Copy unavailable; select and copy the result manually.</p>')}});
+ estimate();
+})();
+</script>
+</body></html>
