@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>US Electricity Bill Calculator: kWh, Rate & Monthly Cost | Calcora</title>
+<meta name="description" content="Estimate a US electricity bill from monthly kWh, your utility energy rate and fixed charges. See energy cost, estimated total and effective cost per kWh.">
+<meta name="author" content="Abdul Qadir">
+<link rel="canonical" href="https://azeemwaseem2020.github.io/us-electricity-bill-calculator.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:title" content="US Electricity Bill Calculator | Calcora">
+<meta property="og:description" content="Estimate electricity energy charges and monthly cost using your own kWh usage, rate and fixed charges.">
+<meta property="og:url" content="https://azeemwaseem2020.github.io/us-electricity-bill-calculator.html">
+<meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://azeemwaseem2020.github.io/"},{"@type":"ListItem","position":2,"name":"US Electricity Bill Calculator","item":"https://azeemwaseem2020.github.io/us-electricity-bill-calculator.html"}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a class="brand" href="./"><span class="brand-mark">C</span>Calcora</a><nav aria-label="Primary navigation"><a href="calculators.html">Calculators</a><a href="categories.html">Categories</a><a href="blog.html">Guides</a><a href="about.html">About</a></nav></div></header>
+<main class="section calculator-page">
+<p class="page-author">Written and maintained by <a href="abdul-qadir.html" rel="author">Abdul Qadir</a> · <a href="calculator-methodology.html">Calculation methodology</a></p>
+<p class="eyebrow">US HOUSEHOLD UTILITIES</p>
+<h1>US Electricity Bill Calculator</h1>
+<p class="lead">Estimate a monthly electricity cost from the kWh shown on your utility bill, the energy rate in cents per kWh and fixed monthly charges.</p>
+<div class="policy-grid" style="align-items:start">
+<section class="calculator-card">
+<h2>Enter your bill details</h2>
+<label for="usage">Monthly electricity usage (kWh)</label><input id="usage" type="number" min="0" max="1000000" step="1" value="900" inputmode="decimal">
+<label for="rate">Energy rate (cents per kWh)</label><input id="rate" type="number" min="0" max="100000" step="0.1" value="16" inputmode="decimal">
+<label for="fixed">Fixed monthly charges ($)</label><input id="fixed" type="number" min="0" max="100000" step="0.01" value="15" inputmode="decimal">
+<label for="extra">Other monthly charges or taxes ($)</label><input id="extra" type="number" min="0" max="100000" step="0.01" value="0" inputmode="decimal">
+<button class="btn" type="button" id="calculateBill">Calculate estimated bill</button>
+<div id="result" class="result-box" aria-live="polite" role="status"><p>Enter your usage and rates, then calculate your estimate.</p></div>
+<button class="btn btn-secondary" type="button" id="copyBill" style="margin-top:10px">Copy estimate</button>
+</section>
+<aside class="hero-card"><h2>How to use your utility bill</h2><ul><li>Use measured kWh, not just the amount due.</li><li>Find your energy charge or price per kWh on the rate details.</li><li>Enter fixed charges separately; include other taxes or fees only if you know the amount.</li><li>For time-of-use or tiered plans, a single average rate is only an approximation.</li></ul><p class="muted">This estimator does not use your location or assume a national average rate. Enter figures from your own bill.</p></aside>
+</div>
+<section class="prose">
+<h2>Electricity bill formula</h2>
+<p><strong>Energy charge = monthly kWh × energy rate (cents/kWh) ÷ 100.</strong> The estimated total adds the fixed monthly charges and any extra charges you enter. Effective cost per kWh divides that total by monthly usage; it is not necessarily the utility's advertised energy rate.</p>
+<h2>Example calculation</h2>
+<p>If a home uses 900 kWh, has an energy rate of 16 cents per kWh and $15 in fixed charges, the energy charge is $144 and the estimated total before other fees is $159. Your actual bill may differ due to rate tiers, time-of-use periods, taxes, credits, delivery charges and local utility rules.</p>
+<h2>Does this calculate solar savings?</h2>
+<p>No. A bill estimate alone cannot predict solar savings. That requires a site-specific solar production estimate, utility export-credit rules, system costs, financing, degradation and tariff details. For a first solar-load estimate, use our <a href="solar-load-calculator.html">Solar Load Calculator</a> and read the <a href="blog-home-solar-load-calculator-usa.html">US home solar load guide</a>.</p>
+<h2>Frequently asked questions</h2>
+<details><summary>What is a kWh?</summary><p>A kilowatt-hour is a unit of electrical energy. It represents using 1,000 watts for one hour, or an equivalent combination of power and time.</p></details>
+<details><summary>Should I enter cents or dollars per kWh?</summary><p>Enter cents. For example, a rate of 16 cents per kWh should be entered as 16, not 0.16.</p></details>
+<details><summary>Why is my actual bill different?</summary><p>Your bill may include delivery charges, tiered pricing, time-of-use rates, taxes, credits, minimum charges or adjustments not captured by this simplified estimate.</p></details>
+<p class="muted">Educational estimate only. Check your current utility tariff and bill details before making budgeting or purchasing decisions.</p>
+</section>
+</main>
+<footer class="footer-main"><div class="footer-inner"><div class="footer-bottom"><span>© 2026 Calcora. All rights reserved.</span><span><a href="privacy-policy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="disclaimer.html">Disclaimer</a></span></div></div></footer>
+<script>
+(function(){
+const usage=document.getElementById('usage'),rate=document.getElementById('rate'),fixed=document.getElementById('fixed'),extra=document.getElementById('extra'),result=document.getElementById('result');
+function estimate(){
+const values=[Number(usage.value),Number(rate.value),Number(fixed.value),Number(extra.value)];
+if(values.some((v)=>!Number.isFinite(v)||v<0)||values[0]>1000000||values[1]>100000||values[2]>100000||values[3]>100000){result.innerHTML='<p role="alert">Enter valid non-negative values within the stated limits.</p>';return null}
+const energy=values[0]*values[1]/100,total=energy+values[2]+values[3],effective=values[0]>0?total/values[0]:null;
+const money=(n)=>n.toLocaleString('en-US',{style:'currency',currency:'USD'});
+result.innerHTML='<h2>Estimated monthly bill</h2><p><strong>Energy charge:</strong> '+money(energy)+'</p><p><strong>Fixed charges:</strong> '+money(values[2])+'</p><p><strong>Other charges/taxes:</strong> '+money(values[3])+'</p><p><strong>Estimated total:</strong> '+money(total)+'</p><p><strong>Effective cost per kWh:</strong> '+(effective===null?'Not available at zero usage':money(effective)+'/kWh')+'</p><p class="muted">Formula: kWh × cents per kWh ÷ 100 + fixed charges + other charges entered.</p>';
+return {usage:values[0],rate:values[1],energy,fixed:values[2],extra:values[3],total,effective};
+}
+document.getElementById('calculateBill').addEventListener('click',estimate);
+document.getElementById('copyBill').addEventListener('click',()=>{const v=estimate();if(!v)return;const text='US electricity bill estimate\nUsage: '+v.usage+' kWh\nEnergy rate: '+v.rate+' cents/kWh\nEnergy charge: $'+v.energy.toFixed(2)+'\nFixed charges: $'+v.fixed.toFixed(2)+'\nOther charges/taxes: $'+v.extra.toFixed(2)+'\nEstimated total: $'+v.total.toFixed(2)+'\nEffective cost/kWh: '+(v.effective===null?'N/A':'$'+v.effective.toFixed(3))+'\nEstimate only; actual utility bills may vary.';if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>{document.getElementById('copyBill').textContent='Estimate copied'}).catch(()=>{result.insertAdjacentHTML('beforeend','<p role="status">Copy was unavailable in this browser. Select and copy the result manually.</p>')})}else{result.insertAdjacentHTML('beforeend','<p role="status">Copy is unavailable in this browser. Select and copy the result manually.</p>')}});
+estimate();
+})();
+</script>
+</body></html>
