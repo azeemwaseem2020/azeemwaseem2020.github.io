@@ -89,7 +89,7 @@ function calc(){
  if(!(inputWatts>0)||!Number.isFinite(inputWatts)||![hours,duty,days,weeks,rate].every(Number.isFinite)||hours<0||hours>24||duty<=0||duty>100||days<0||days>7||weeks<0||weeks>52||rate<0){
    result.textContent='Check your inputs: watts must be positive, hours 0–24, active share 1–100%, days 0–7, weeks 0–52 and rate non-negative.';return null;
  }
- const symbol=currency.value==='custom'?($('custom').value.trim()||'CUR'):currency.value;
+ const symbol=currency.value==='custom'?(($('custom').value.trim().replace(/[^A-Za-z$£€₹₨]/g,'').slice(0,8))||'CUR'):currency.value;
  const dailyKwh=inputWatts/1000*hours*duty/100;
  const daily=dailyKwh*rate, monthly=daily*30, season=daily*days*weeks;
  result.innerHTML='<strong>Estimated running cost</strong><p>Estimated electrical input: '+inputWatts.toFixed(0)+' W</p><p>Energy per scheduled day: '+dailyKwh.toFixed(2)+' kWh</p><p>Cost per active hour at entered duty share: '+money(inputWatts/1000*duty/100*rate,symbol)+'</p><p>Cost per day: '+money(daily,symbol)+'</p><p>Cost per 30-day month: '+money(monthly,symbol)+'</p><p>Cost for entered cooling season: '+money(season,symbol)+'</p><p class="muted">Estimate uses the active-power share you entered and excludes unentered bill charges.</p>';
