@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Return-to-Office Cost Calculator | Remote vs Hybrid vs Office | Calcora</title>
+<meta name="description" content="Compare the annual cash cost and time cost of remote, hybrid and office work. Estimate commuting, parking, meals, childcare, home-office expenses and the salary increase needed to break even.">
+<meta name="author" content="Abdul Qadir">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<link rel="canonical" href="https://azeemwaseem2020.github.io/return-to-office-cost-calculator.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<meta name="theme-color" content="#10243a">
+<meta property="og:site_name" content="Calcora">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Return-to-Office Cost Calculator | Remote vs Hybrid vs Office">
+<meta property="og:description" content="Compare work arrangements by annual out-of-pocket spending, commute time, hidden costs and the compensation increase needed to offset a return to the office.">
+<meta property="og:url" content="https://azeemwaseem2020.github.io/return-to-office-cost-calculator.html">
+<meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Calcora return-to-office cost comparison calculator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Return-to-Office Cost Calculator | Calcora">
+<meta name="twitter:description" content="Compare remote, hybrid and office work costs, commute time and break-even compensation.">
+<meta name="twitter:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Return-to-Office Cost Calculator","url":"https://azeemwaseem2020.github.io/return-to-office-cost-calculator.html","applicationCategory":"FinanceApplication","operatingSystem":"Any","isAccessibleForFree":true,"description":"Compare annual out-of-pocket and time-valued costs across remote, hybrid and office work arrangements.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Abdul Qadir","url":"https://azeemwaseem2020.github.io/abdul-qadir.html"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Calcora","item":"https://azeemwaseem2020.github.io/"},{"@type":"ListItem","position":2,"name":"Calculators","item":"https://azeemwaseem2020.github.io/calculators.html"},{"@type":"ListItem","position":3,"name":"Return-to-Office Cost Calculator","item":"https://azeemwaseem2020.github.io/return-to-office-cost-calculator.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does this return-to-office calculator include?","acceptedAnswer":{"@type":"Answer","text":"It estimates commuting fuel, parking and tolls, extra meals, childcare, work clothing, home-office costs, employer stipends and the value of commute time for remote, hybrid and office schedules."}},{"@type":"Question","name":"Does the salary increase needed mean take-home pay?","acceptedAnswer":{"@type":"Answer","text":"No. It is a pre-tax compensation comparison based on the costs and time value entered. Taxes, benefits, payroll deductions and employer-specific compensation rules are not modeled."}},{"@type":"Question","name":"Can I use public transit instead of driving?","acceptedAnswer":{"@type":"Answer","text":"Yes. Set fuel price and fuel economy to zero, then enter your average round-trip transit cost in the parking and tolls field or the other per-office-day expense fields. Keep the same method across scenarios."}},{"@type":"Question","name":"Are the results exact?","acceptedAnswer":{"@type":"Answer","text":"No. Results are estimates based on your inputs and working weeks. Actual spending, travel time, fuel economy, childcare and tax treatment can differ."}},{"@type":"Question","name":"Does this calculator convert currencies?","acceptedAnswer":{"@type":"Answer","text":"No. The currency selector changes the displayed currency label only. Enter every monetary value in the same currency; it does not fetch exchange rates or convert amounts."}}]}</script>
+<style>
+.rto-wrap{max-width:1040px;margin:auto}.rto-panel{padding:clamp(18px,3vw,30px);margin:24px 0}.rto-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.rto-fields label{display:flex;flex-direction:column;gap:6px;font-weight:750;color:#344256}.rto-fields input,.rto-fields select{width:100%;min-width:0;border:1px solid #cbd5e1;border-radius:10px;padding:11px 12px;font:inherit;background:#fff;color:#172033}.rto-fields small{font-weight:400;color:#68778b}.rto-subhead{margin:25px 0 10px;font-size:1.1rem}.rto-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0}.rto-metric{background:#f7fafc;border:1px solid #dce5ee;border-radius:15px;padding:15px}.rto-metric span{display:block;color:#627086;font-size:.88rem}.rto-metric strong{display:block;font-size:1.3rem;overflow-wrap:anywhere;color:#14213d}.rto-table-wrap{overflow-x:auto}.rto-table{width:100%;border-collapse:collapse;min-width:680px;background:#fff}.rto-table th,.rto-table td{text-align:left;padding:12px;border-bottom:1px solid #e0e7ef}.rto-table th{background:#edf4f7}.rto-table td:not(:first-child),.rto-table th:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}.rto-bars{display:grid;gap:15px;margin:20px 0}.rto-bar-row{display:grid;grid-template-columns:115px minmax(0,1fr) 110px;gap:10px;align-items:center}.rto-bar-track{height:18px;background:#e7edf3;border-radius:999px;overflow:hidden}.rto-bar-fill{height:100%;width:0;background:linear-gradient(90deg,#087f70,#35c6a5);border-radius:999px;transition:width .25s ease}.rto-note{padding:14px 16px;border-left:4px solid #087f70;background:#edf8f5;border-radius:8px}.rto-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.rto-actions .btn{margin-top:12px}.rto-error{color:#a11b1b;font-weight:700}.rto-faq{padding:18px 0;border-bottom:1px solid #dce5ee}.rto-faq h3{margin:0 0 6px}.rto-small{font-size:.9rem;color:#637186}@media(max-width:700px){.rto-fields{grid-template-columns:1fr}.rto-results{grid-template-columns:1fr}.rto-bar-row{grid-template-columns:90px minmax(0,1fr);}.rto-bar-row strong{grid-column:2}.rto-panel{padding:16px}}@media(prefers-reduced-motion:reduce){.rto-bar-fill{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="topbar"><div class="topbar-inner"><span>Calcora • Work & Compensation Planning</span><span>Free • Private calculations • No signup</span></div></div>
+<header class="site-header"><div class="header-inner"><a class="brand" href="./" aria-label="Calcora home"><span class="brand-mark" aria-hidden="true">C</span>Calcora</a><nav aria-label="Primary navigation"><a href="calculators.html">All Calculators</a><a href="salary-calculator.html">Salary Calculator</a><a href="fuel-cost-calculator.html">Fuel Cost</a><a href="about.html">About</a></nav></div></header>
+<main id="main-content" class="section prose rto-wrap">
+<p class="eyebrow">WORK ARRANGEMENT & COMPENSATION</p>
+<h1>Return-to-Office Cost Calculator</h1>
+<p class="lead">Compare remote, hybrid and full-time office schedules using the costs that show up in a real budget—not just the commute. Estimate annual cash spending, commute hours, the economic value of that time and the compensation increase that would offset a change in policy.</p>
+<p class="rto-small">Enter your own figures. Calculations run in this browser; no form data is sent to Calcora.</p>
+<section class="card rto-panel" aria-labelledby="inputs-title">
+<h2 id="inputs-title">1. Your work and cost assumptions</h2>
+<div class="rto-fields">
+<label for="rto-currency">Currency for all money fields<select id="rto-currency"><option value="USD">USD — US dollar</option><option value="CAD">CAD — Canadian dollar</option><option value="GBP">GBP — British pound</option><option value="EUR">EUR — euro</option><option value="PKR">PKR — Pakistani rupee</option><option value="AUD">AUD — Australian dollar</option></select><small>Display only; this tool does not exchange currencies.</small></label>
+<label for="rto-salary">Annual gross salary (<span class="currency-label">USD</span>)<input id="rto-salary" type="number" min="0" step="any" value="75000" inputmode="decimal"></label>
+<label for="rto-weeks">Working weeks per year<input id="rto-weeks" type="number" min="1" max="53" step="1" value="48" inputmode="numeric"><small>Allows for leave, holidays or seasonal work.</small></label>
+<label for="rto-miles">One-way commute distance (miles)<input id="rto-miles" type="number" min="0" step="any" value="15" inputmode="decimal"><small>For a different distance unit, convert to miles first.</small></label>
+<label for="rto-mpg">Vehicle fuel economy (miles per US gallon)<input id="rto-mpg" type="number" min="0" step="any" value="28" inputmode="decimal"><small>Set to 0 if you do not drive; add transit fares below.</small></label>
+<label for="rto-gas">Fuel price per US gallon (<span class="currency-label">USD</span>)<input id="rto-gas" type="number" min="0" step="any" value="3.50" inputmode="decimal"></label>
+<label for="rto-minutes">One-way commute time (minutes)<input id="rto-minutes" type="number" min="0" step="any" value="35" inputmode="decimal"><small>Use your typical door-to-door time.</small></label>
+<label for="rto-hourly-value">Value of one hour of your time (<span class="currency-label">USD</span>)<input id="rto-hourly-value" type="number" min="0" step="any" value="36.06" inputmode="decimal"><small>Optional personal value; gross salary ÷ 2,080 is a common comparison baseline.</small></label>
+<label for="rto-parking">Parking, tolls or transit per office day (<span class="currency-label">USD</span>)<input id="rto-parking" type="number" min="0" step="any" value="8" inputmode="decimal"></label>
+<label for="rto-meals">Extra meals or coffee per office day (<span class="currency-label">USD</span>)<input id="rto-meals" type="number" min="0" step="any" value="12" inputmode="decimal"></label>
+<label for="rto-childcare">Additional childcare per office day (<span class="currency-label">USD</span>)<input id="rto-childcare" type="number" min="0" step="any" value="0" inputmode="decimal"></label>
+<label for="rto-clothing">Additional work clothing / upkeep per year (<span class="currency-label">USD</span>)<input id="rto-clothing" type="number" min="0" step="any" value="600" inputmode="decimal"><small>Annual amount at a five-day office schedule; prorated by office days.</small></label>
+<label for="rto-home-office">Home-office expenses per month (<span class="currency-label">USD</span>)<input id="rto-home-office" type="number" min="0" step="any" value="65" inputmode="decimal"><small>For example, incremental electricity, internet or supplies.</small></label>
+<label for="rto-stipend">Employer home-office stipend per month (<span class="currency-label">USD</span>)<input id="rto-stipend" type="number" min="0" step="any" value="25" inputmode="decimal"></label>
+</div>
+<h2 class="rto-subhead">2. Compare weekly schedules</h2>
+<div class="rto-fields">
+<label for="rto-remote-days">Remote schedule: office days per week<input id="rto-remote-days" type="number" min="0" max="5" step="0.5" value="0"></label>
+<label for="rto-hybrid-days">Hybrid schedule: office days per week<input id="rto-hybrid-days" type="number" min="0" max="5" step="0.5" value="2"></label>
+<label for="rto-office-days">Office schedule: office days per week<input id="rto-office-days" type="number" min="0" max="5" step="0.5" value="5"></label>
+<label for="rto-one-time">One-time transition expense (<span class="currency-label">USD</span>)<input id="rto-one-time" type="number" min="0" step="any" value="250" inputmode="decimal"><small>Applied to the selected comparison as a first-year cost for any schedule with office days.</small></label>
+</div>
+<div class="rto-actions"><button class="btn" type="button" id="rto-calculate">Compare work arrangements</button><button class="btn btn-secondary" type="button" id="rto-reset">Reset example</button></div>
+<p id="rto-error" class="rto-error" role="alert" hidden></p>
+</section>
+<section class="card rto-panel" aria-labelledby="results-title" aria-live="polite">
+<h2 id="results-title">Your comparison</h2>
+<p id="rto-summary" class="rto-note">Enter your assumptions and select Compare work arrangements to calculate results.</p>
+<div class="rto-results">
+<div class="rto-metric"><span>Lowest annual cash cost</span><strong id="rto-lowest-cash">—</strong><span id="rto-lowest-cash-name">—</span></div>
+<div class="rto-metric"><span>Highest annual economic cost</span><strong id="rto-highest-economic">—</strong><span id="rto-highest-economic-name">—</span></div>
+<div class="rto-metric"><span>Office vs remote: extra annual cost</span><strong id="rto-delta">—</strong><span id="rto-delta-note">Cash cost and time value shown separately below.</span></div>
+</div>
+<h3>Annual cost by schedule</h3>
+<div class="rto-bars" id="rto-bars" aria-label="Bar chart comparing annual economic cost"></div>
+<div class="rto-table-wrap"><table class="rto-table"><caption class="rto-small">Annual estimates; all money amounts use the selected display currency.</caption><thead><tr><th scope="col">Measure</th><th scope="col">Remote</th><th scope="col">Hybrid</th><th scope="col">Office</th></tr></thead><tbody>
+<tr><th scope="row">Office days per year</th><td id="rto-remote-office-days">—</td><td id="rto-hybrid-office-days">—</td><td id="rto-office-office-days">—</td></tr>
+<tr><th scope="row">Direct commute, parking, meals & childcare</th><td id="rto-remote-direct">—</td><td id="rto-hybrid-direct">—</td><td id="rto-office-direct">—</td></tr>
+<tr><th scope="row">Net home-office expense after stipend</th><td id="rto-remote-home">—</td><td id="rto-hybrid-home">—</td><td id="rto-office-home">—</td></tr>
+<tr><th scope="row">Clothing / upkeep and first-year transition</th><td id="rto-remote-other">—</td><td id="rto-hybrid-other">—</td><td id="rto-office-other">—</td></tr>
+<tr><th scope="row">Annual cash cost</th><td id="rto-remote-cash">—</td><td id="rto-hybrid-cash">—</td><td id="rto-office-cash">—</td></tr>
+<tr><th scope="row">Commute hours per year</th><td id="rto-remote-hours">—</td><td id="rto-hybrid-hours">—</td><td id="rto-office-hours">—</td></tr>
+<tr><th scope="row">Value assigned to commute time</th><td id="rto-remote-time">—</td><td id="rto-hybrid-time">—</td><td id="rto-office-time">—</td></tr>
+<tr><th scope="row">Annual economic cost (cash + time)</th><td id="rto-remote-economic">—</td><td id="rto-hybrid-economic">—</td><td id="rto-office-economic">—</td></tr>
+<tr><th scope="row">Monthly economic cost</th><td id="rto-remote-monthly">—</td><td id="rto-hybrid-monthly">—</td><td id="rto-office-monthly">—</td></tr>
+<tr><th scope="row">Cash-only compensation increase to offset office vs remote</th><td>Baseline</td><td id="rto-hybrid-cash-raise">—</td><td id="rto-office-cash-raise">—</td></tr>
+<tr><th scope="row">Compensation increase including commute time value</th><td>Baseline</td><td id="rto-hybrid-economic-raise">—</td><td id="rto-office-economic-raise">—</td></tr>
+</tbody></table></div>
+<p class="rto-small">Compensation increases are annual, pre-tax estimates—not take-home-pay guarantees. Negative differences mean the alternative has lower modeled costs than remote work. Transition expenses are included only in year one.</p>
+<div class="rto-actions"><button class="btn" type="button" id="rto-csv">Download comparison CSV</button><button class="btn btn-secondary" type="button" id="rto-print">Print / Save as PDF</button></div>
+</section>
+<section class="section prose" id="method">
+<h2>How the return-to-office cost formula works</h2>
+<p>This tool separates cash spending from the value you assign to commute time. That distinction matters: an extra 45 minutes in traffic is not a fuel receipt, but it can still affect how you evaluate a work arrangement. Results are estimates rather than a prediction of your actual budget.</p>
+<h3>1. Annual office days</h3>
+<p>Annual office days = office days per week × working weeks per year. Enter a working-weeks assumption that reflects your paid leave and calendar. The calculator uses that same assumption for all three schedules so the comparison stays consistent.</p>
+<h3>2. Direct commuting and workday costs</h3>
+<p>Round-trip driving fuel per office day = (one-way miles × 2 ÷ miles per gallon) × fuel price per gallon. Add the parking, toll or transit amount, incremental meals and additional childcare you expect to pay on each office day. If you use public transit, set vehicle fuel economy to zero and include the round-trip fare in the per-day transit field. Do not count an expense twice.</p>
+<h3>3. Home-office costs and stipend</h3>
+<p>The model prorates the monthly home-office expense and employer stipend by the share of the five-day workweek spent working remotely. It subtracts the modeled stipend from the home-office expense; if the stipend is greater than that expense, the net can be negative. This is a planning convention, not a statement about how an employer or tax authority treats a stipend.</p>
+<h3>4. Commute time and economic cost</h3>
+<p>Annual commute hours = office days per year × round-trip commute minutes ÷ 60. The value of commute time = annual commute hours × your chosen hourly time value. Annual cash cost includes the modeled direct costs, net home-office expenses, prorated clothing/upkeep and first-year transition expense. Annual economic cost adds the value assigned to commute time. The two figures are shown separately so you can decide which is most relevant to your situation.</p>
+<h3>5. Break-even compensation increase</h3>
+<p>The cash-only compensation increase is the difference in annual cash cost between the alternative schedule and the remote baseline. The economic compensation increase also includes the difference in commute-time value. These are pre-tax estimates and do not model income tax, benefits, commuting reimbursements, salary negotiation probability or changes in productivity. A negative result means the alternative has lower modeled costs than the remote baseline.</p>
+<h2>Example: what hybrid work can change</h2>
+<p>Suppose a worker commutes 15 miles each way, spends 35 minutes traveling in each direction, drives a car averaging 28 miles per gallon, and works 48 weeks per year. At two office days a week, the model estimates 96 annual commute days and 112 annual commute hours. At five days a week, it estimates 240 commute days and 280 commute hours. The difference is 144 commute days and 168 hours in a year, before counting fuel, parking, meals or childcare. These are illustrative inputs, not a claim about typical U.S. workers or current fuel prices.</p>
+<h2>Use the result for a fair comparison</h2>
+<p>Start with receipts or realistic averages for parking, transit, fuel and meals. Include only costs that change because of the work arrangement; ordinary household spending that would happen anyway should not be counted as an office cost. For childcare, enter the additional expense caused by the schedule rather than the full weekly childcare bill. If your route changes by day, use a representative average or run separate comparisons.</p>
+<p>Review both annual cash cost and annual economic cost. The cash figure is usually more useful for monthly budgeting; the economic figure helps compare arrangements when time matters to you. Employer reimbursements, tax rules, benefits, commuting deductions, insurance and the personal value of time vary, so verify them independently before making a job or compensation decision.</p>
+<h2>Frequently asked questions</h2>
+<div class="rto-faq"><h3>What does this calculator include?</h3><p>It models commuting fuel, parking and tolls or transit, extra meals, childcare, clothing/upkeep, home-office expenses, employer stipends, commute time and a one-time transition expense.</p></div>
+<div class="rto-faq"><h3>Does the break-even raise mean after-tax pay?</h3><p>No. It is a pre-tax comparison of modeled annual costs. Your take-home amount depends on tax rules, benefits and payroll deductions that this calculator does not estimate.</p></div>
+<div class="rto-faq"><h3>Can I compare a three-day hybrid schedule?</h3><p>Yes. Change the hybrid office-days-per-week input to 3 or any value from 0 to 5. You can also change the remote and office scenarios to match a particular company policy.</p></div>
+<div class="rto-faq"><h3>Does the currency selector convert my inputs?</h3><p>No. It changes the currency label and formatting only. All money inputs must use the same currency; no exchange rate is retrieved.</p></div>
+<div class="rto-faq"><h3>Are employer stipends or work clothing tax-deductible?</h3><p>This calculator does not determine tax deductibility or how stipends should be reported. Rules depend on jurisdiction and personal circumstances; check current official guidance or a qualified tax professional.</p></div>
+</section>
+<section class="section prose"><h2>Related calculators</h2><p>Use the <a href="salary-calculator.html">Salary Calculator</a> to compare gross pay across pay periods, the <a href="fuel-cost-calculator.html">Fuel Cost Calculator</a> for a trip-level fuel estimate, and the <a href="bill-split-calculator.html">Bill Split Calculator</a> for shared expenses. Browse <a href="calculators.html">all Calcora calculators</a> for more tools.</p><p>Maintained by <a href="abdul-qadir.html" rel="author">Abdul Qadir</a>. Read the <a href="calculator-methodology.html">calculation methodology</a> for general information about assumptions and checking.</p></section>
+</main>
+<footer class="footer-main"><div class="footer-inner"><div class="footer-legal"><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a><a href="disclaimer.html">Disclaimer</a><a href="about.html">About</a><a href="contact.html">Contact</a></div><div class="footer-bottom"><span>© 2026 Calcora. All rights reserved.</span><span>Free tools • No signup</span></div></div></footer>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const ids=['rto-salary','rto-weeks','rto-miles','rto-mpg','rto-gas','rto-minutes','rto-hourly-value','rto-parking','rto-meals','rto-childcare','rto-clothing','rto-home-office','rto-stipend','rto-remote-days','rto-hybrid-days','rto-office-days','rto-one-time'];
+const defaults={'rto-salary':75000,'rto-weeks':48,'rto-miles':15,'rto-mpg':28,'rto-gas':3.5,'rto-minutes':35,'rto-hourly-value':36.06,'rto-parking':8,'rto-meals':12,'rto-childcare':0,'rto-clothing':600,'rto-home-office':65,'rto-stipend':25,'rto-remote-days':0,'rto-hybrid-days':2,'rto-office-days':5,'rto-one-time':250};
+let latest=null;
+const currency=()=> $('rto-currency').value;
+const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:currency(),maximumFractionDigits:0}).format(n);
+const money2=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:currency(),maximumFractionDigits:2}).format(n);
+const num=id=>Number($(id).value);
+function updateCurrencyLabels(){document.querySelectorAll('.currency-label').forEach(el=>el.textContent=currency());}
+function calculate(){
+ const vals={};for(const id of ids){const el=$(id),v=Number(el.value);if(el.value.trim()===''||!Number.isFinite(v)||v<0){return fail('Enter a valid non-negative number for every field.');}vals[id]=v;}
+ const weeks=vals['rto-weeks'];if(weeks<1||weeks>53)return fail('Working weeks must be between 1 and 53.');
+ for(const id of ['rto-remote-days','rto-hybrid-days','rto-office-days'])if(vals[id]>5)return fail('Each schedule must be between 0 and 5 office days per week.');
+ const mpg=vals['rto-mpg'];if(mpg===0&&vals['rto-miles']>0&&vals['rto-gas']>0){/* zero disables driving fuel; transit is entered separately */}
+ const annualHours=weeks*40;
+ const hourlyBaseline=annualHours>0?vals['rto-salary']/annualHours:0;
+ const timeRate=vals['rto-hourly-value'];
+ const miles=vals['rto-miles'], fuelDay=mpg>0?(miles*2/mpg)*vals['rto-gas']:0;
+ const perOfficeDay=fuelDay+vals['rto-parking']+vals['rto-meals']+vals['rto-childcare'];
+ const oneTime=vals['rto-one-time'];
+ const scenarios=[
+  {key:'remote',name:'Remote',days:vals['rto-remote-days']},
+  {key:'hybrid',name:'Hybrid',days:vals['rto-hybrid-days']},
+  {key:'office',name:'Office',days:vals['rto-office-days']}
+ ];
+ const data=scenarios.map(s=>{
+  const officeDays=s.days*weeks,remoteDays=Math.max(0,5-s.days)*weeks;
+  const direct=perOfficeDay*officeDays;
+  const homeNet=(vals['rto-home-office']-vals['rto-stipend'])*12*(Math.max(0,5-s.days)/5);
+  const clothing=vals['rto-clothing']*(s.days/5);
+  const transition=s.days>0?oneTime:0;
+  const cash=direct+homeNet+clothing+transition;
+  const commuteHours=officeDays*(vals['rto-minutes']*2/60);
+  const timeValue=commuteHours*timeRate;
+  return {...s,officeDays,remoteDays,direct,homeNet,clothing,transition,other:clothing+transition,cash,commuteHours,timeValue,economic:cash+timeValue,monthly:(cash+timeValue)/12};
+ });
+ const byKey=Object.fromEntries(data.map(d=>[d.key,d]));
+ const deltaCash=byKey.office.cash-byKey.remote.cash;
+ const deltaEconomic=byKey.office.economic-byKey.remote.economic;
+ latest={currency:currency(),vals,data,deltaCash,deltaEconomic,fuelDay,perOfficeDay,hourlyBaseline};
+ render(latest);$('rto-error').hidden=true;
+}
+function fail(message){$('rto-error').textContent=message;$('rto-error').hidden=false;}
+function set(id,value){$(id).textContent=value;}
+function signedMoney(n){return (n>0?'+':n<0?'−':'')+money(Math.abs(n));}
+function render(r){
+ const d=Object.fromEntries(r.data.map(x=>[x.key,x]));
+ const lowest=[...r.data].sort((a,b)=>a.cash-b.cash)[0];
+ const highest=[...r.data].sort((a,b)=>b.economic-a.economic)[0];
+ set('rto-lowest-cash',money(lowest.cash));set('rto-lowest-cash-name',lowest.name+' schedule');
+ set('rto-highest-economic',money(highest.economic));set('rto-highest-economic-name',highest.name+' schedule');
+ set('rto-delta',signedMoney(r.deltaEconomic));set('rto-delta-note','Office vs remote, including time value; cash-only difference: '+signedMoney(r.deltaCash)+'.');
+ $('rto-summary').textContent=r.deltaEconomic>0?'Under these assumptions, the office schedule costs '+money(r.deltaCash)+' more per year in cash and '+money(r.deltaEconomic)+' more when commute time is valued, compared with the remote baseline.':r.deltaEconomic<0?'Under these assumptions, the office schedule costs '+money(Math.abs(r.deltaCash))+' less per year in cash and '+money(Math.abs(r.deltaEconomic))+' less when commute time is valued, compared with the remote baseline.':'Under these assumptions, the office and remote schedules have the same modeled annual economic cost.';
+ for(const x of r.data){
+  const k=x.key;
+  set('rto-'+k+'-office-days',x.officeDays.toLocaleString('en-US',{maximumFractionDigits:1}));
+  set('rto-'+k+'-direct',money(x.direct));set('rto-'+k+'-home',money(x.homeNet));set('rto-'+k+'-other',money(x.other));
+  set('rto-'+k+'-cash',money(x.cash));set('rto-'+k+'-hours',x.commuteHours.toLocaleString('en-US',{maximumFractionDigits:1})+' h');
+  set('rto-'+k+'-time',money(x.timeValue));set('rto-'+k+'-economic',money(x.economic));set('rto-'+k+'-monthly',money(x.monthly));
+  if(k!=='remote'){
+   set('rto-'+k+'-cash-raise',signedMoney(x.cash-d.remote.cash)+'/yr');
+   set('rto-'+k+'-economic-raise',signedMoney(x.economic-d.remote.economic)+'/yr');
+  }
+ }
+ const max=Math.max(1,...r.data.map(x=>Math.max(0,x.economic)));
+ $('rto-bars').innerHTML=r.data.map(x=>'<div class="rto-bar-row"><span>'+x.name+'</span><div class="rto-bar-track" role="img" aria-label="'+x.name+' annual economic cost '+money(x.economic)+'"><div class="rto-bar-fill" style="width:'+Math.max(0,Math.min(100,x.economic/max*100))+'%"></div></div><strong>'+money(x.economic)+'</strong></div>').join('');
+}
+function csv(){
+ if(!latest)calculate();if(!latest)return;
+ const r=latest,rows=[['Return-to-Office Cost Comparison'],['Currency',r.currency],['Measure','Remote','Hybrid','Office']];
+ const fields=[['Office days per year','officeDays'],['Direct commute, parking, meals and childcare','direct'],['Net home-office expense','homeNet'],['Clothing and transition cost','other'],['Annual cash cost','cash'],['Commute hours per year','commuteHours'],['Value assigned to commute time','timeValue'],['Annual economic cost','economic'],['Monthly economic cost','monthly']];
+ for(const [label,key] of fields)rows.push([label,...r.data.map(x=>x[key])]);
+ rows.push(['Cash-only compensation increase vs remote',0,r.data[1].cash-r.data[0].cash,r.data[2].cash-r.data[0].cash]);
+ rows.push(['Economic compensation increase vs remote',0,r.data[1].economic-r.data[0].economic,r.data[2].economic-r.data[0].economic]);
+ const csvText=rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+ const blob=new Blob(['\ufeff'+csvText],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='calcora-return-to-office-comparison.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+$('rto-calculate').addEventListener('click',calculate);
+$('rto-reset').addEventListener('click',()=>{for(const id of ids)$(id).value=defaults[id];$('rto-currency').value='USD';updateCurrencyLabels();calculate();});
+$('rto-currency').addEventListener('change',()=>{updateCurrencyLabels();if(latest)calculate();});
+$('rto-csv').addEventListener('click',csv);
+$('rto-print').addEventListener('click',()=>window.print());
+for(const id of ids)$(id).addEventListener('change',()=>{if(latest)calculate();});
+updateCurrencyLabels();calculate();
+})();
+</script>
+</body>
+</html>
