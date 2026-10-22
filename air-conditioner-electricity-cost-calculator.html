@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Abdul Qadir">
+<title>Air Conditioner Electricity Cost Calculator | Calcora</title>
+<meta name="description" content="Estimate air conditioner electricity use and running cost per hour, day, month and cooling season from watts or BTU and EER, runtime, duty cycle and your tariff.">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<link rel="canonical" href="https://azeemwaseem2020.github.io/air-conditioner-electricity-cost-calculator.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Air Conditioner Electricity Cost Calculator | Calcora">
+<meta property="og:description" content="Calculate AC running cost per hour, day, month and season using input watts or cooling BTU and EER, runtime and your electricity rate.">
+<meta property="og:url" content="https://azeemwaseem2020.github.io/air-conditioner-electricity-cost-calculator.html">
+<meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Air Conditioner Electricity Cost Calculator | Calcora">
+<meta name="twitter:description" content="Estimate AC energy use and running cost from real-world usage assumptions.">
+<meta name="twitter:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Air Conditioner Electricity Cost Calculator","url":"https://azeemwaseem2020.github.io/air-conditioner-electricity-cost-calculator.html","applicationCategory":"CalculatorApplication","operatingSystem":"Any","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Estimate air conditioner energy use and cost from rated electrical input or cooling capacity and EER, runtime, duty cycle and an entered tariff."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I calculate air conditioner electricity cost?","acceptedAnswer":{"@type":"Answer","text":"Convert electrical input watts to kilowatts, multiply by hours of active operation to estimate kWh, then multiply kWh by your electricity price per kWh."}},{"@type":"Question","name":"Can I calculate AC power from BTU and EER?","acceptedAnswer":{"@type":"Answer","text":"If cooling capacity is in BTU per hour and EER is in BTU per watt-hour, estimated electrical input watts equals cooling BTU per hour divided by EER. This is a rating-based estimate, not a measurement of actual draw."}},{"@type":"Question","name":"Does the result equal my full electricity bill?","acceptedAnswer":{"@type":"Answer","text":"No. It estimates the air conditioner's energy cost only. Fixed charges, taxes, delivery fees and other appliances are excluded unless included in your entered rate."}}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a class="brand" href="./"><span class="brand-mark">C</span>Calcora</a><nav aria-label="Primary navigation"><a href="calculators.html">Calculators</a><a href="categories.html">Categories</a><a href="blog.html">Guides</a><a href="about.html">About</a></nav></div></header>
+<main class="section">
+<p class="eyebrow">HOME ENERGY • INTERNATIONAL TARIFF INPUT</p>
+<h1>Air Conditioner Electricity Cost Calculator</h1>
+<p class="lead">Estimate how much it costs to run an air conditioner per hour, day, month or cooling season. Enter the electrical watts from the unit label, or estimate input watts from cooling capacity in BTU/h and EER. Use the electricity price and currency that match your own bill.</p>
+<p class="page-author">Written and maintained by <a href="abdul-qadir.html" rel="author">Abdul Qadir</a> · <a href="calculator-methodology.html">Calculation methodology</a></p>
+<div class="calculator-layout">
+<section class="calculator-card" aria-labelledby="inputs-title">
+<h2 id="inputs-title">Enter your AC details</h2>
+<label for="mode">How will you enter power?</label>
+<select id="mode"><option value="watts">Electrical input watts from label</option><option value="eer">Cooling capacity (BTU/h) and EER</option></select>
+<div id="wattsBox"><label for="watts">Electrical input power (watts)</label><input id="watts" type="number" min="1" max="100000" step="1" value="1200" inputmode="decimal"><p class="muted">Use rated input watts where available. Do not enter cooling capacity as electrical watts.</p></div>
+<div id="eerBox" hidden><label for="btu">Cooling capacity (BTU per hour)</label><input id="btu" type="number" min="1" max="1000000" step="100" value="12000" inputmode="decimal"><label for="eer">EER (BTU per watt-hour)</label><input id="eer" type="number" min="0.1" max="100" step="0.1" value="10" inputmode="decimal"><p class="muted">Estimated input watts = BTU/h ÷ EER. Use the EER rating, not SEER, in this field.</p></div>
+<label for="hours">Hours switched on per day</label><input id="hours" type="number" min="0" max="24" step="0.25" value="8" inputmode="decimal">
+<label for="duty">Average active-power share (%)</label><input id="duty" type="number" min="1" max="100" step="1" value="70" inputmode="decimal">
+<p class="muted">If the compressor cycles, active power may be lower than the full scheduled time. Use 100% for a conservative full-load estimate; this is an assumption, not a sensor reading.</p>
+<label for="days">Days used per week</label><input id="days" type="number" min="0" max="7" step="1" value="7" inputmode="decimal">
+<label for="weeks">Weeks used per year</label><input id="weeks" type="number" min="0" max="52" step="1" value="20" inputmode="decimal">
+<label for="rate">Electricity price per kWh</label><input id="rate" type="number" min="0" max="100000" step="0.001" value="0.18" inputmode="decimal">
+<label for="currency">Currency label</label><select id="currency"><option value="$">$ — USD or other dollar tariff</option><option value="£">£ — GBP</option><option value="€">€ — EUR</option><option value="₹">₹ — INR</option><option value="₨">₨ — PKR</option><option value="custom">Other (enter label)</option></select>
+<div id="customBox" hidden><label for="custom">Currency label (e.g. CAD, AUD)</label><input id="custom" type="text" maxlength="8" value="CAD"></div>
+<button class="btn" type="button" id="calculate">Calculate AC running cost</button>
+<div class="result-box" id="result" role="status" aria-live="polite">Enter your details and calculate an estimate.</div>
+<button class="btn btn-secondary" type="button" id="copy" style="margin-top:10px">Copy estimate</button>
+</section>
+<aside class="hero-card"><h2>What the estimate includes</h2><ul><li>Estimated electrical input and energy use in kWh.</li><li>Cost per active hour, typical day, 30-day month and entered cooling season.</li><li>An adjustable duty-cycle assumption for compressor cycling.</li><li>Your own tariff and currency label—no automatic exchange-rate conversion.</li></ul><p class="muted">All example inputs are illustrative. Replace them with the unit label, measured consumption and tariff from your own situation.</p></aside>
+</div>
+<section class="prose">
+<h2>Air conditioner running cost formula</h2>
+<p>When the electrical input is known, energy use (kWh) = input watts ÷ 1,000 × scheduled hours × active-power share. Estimated cost = energy use × your price per kWh. The active-power share is entered as a percentage, so 70% is treated as 0.70. Seasonal cost multiplies the daily estimate by days used per week and weeks used per year.</p>
+<p>If you know cooling capacity but not input watts, this tool can estimate electrical input from EER: input watts ≈ cooling capacity in BTU/h ÷ EER. For example, 12,000 BTU/h ÷ EER 10 gives about 1,200 W under the rating conditions. Actual draw changes with model, compressor speed, outdoor temperature, thermostat setting, maintenance and operating conditions. If the label lists electrical input watts or measured kWh, prefer that information.</p>
+<h2>Example: estimate a cooling season</h2>
+<p>Suppose an AC has 1,200 W input, is scheduled for 8 hours daily, averages 70% active-power share, runs 7 days each week for 20 weeks, and your tariff is $0.18 per kWh. Estimated active energy is 1.2 kW × 8 × 0.70 = 6.72 kWh per day. At $0.18/kWh, that is about $1.21 per day, $36.29 over 30 days at the same schedule, and $169.34 over the 140-day season. This is an illustrative calculation, not a prediction for every AC.</p>
+<h2>What changes an air conditioner’s electricity use?</h2>
+<p>Electrical input, cooling capacity, efficiency rating, room heat gain, insulation, outdoor temperature, thermostat setting, filters, installation and runtime all matter. A larger BTU rating does not by itself tell you the exact electricity draw. Inverter models can vary their input instead of running continuously at one fixed level. For a more accurate estimate, use measured energy from a compatible energy monitor or the manufacturer’s published electrical input for the exact model.</p>
+<h2>How to use this for different countries</h2>
+<p>The formula works in the US, UK, Europe and elsewhere, but the currency label does not convert money. Enter the price per kWh in the same currency selected on this page: for example, dollars per kWh with USD, pounds per kWh with GBP, or euros per kWh with EUR. Electricity prices differ by country, supplier, plan, taxes and time of use. Use the rate from your own bill rather than assuming a national average applies to you.</p>
+<p>To estimate other appliances, use the <a href="electricity-cost-calculator.html">Electricity Cost Calculator</a>. For a household total, use the <a href="us-electricity-bill-calculator.html">US Electricity Bill Calculator</a>; for block-based pricing, try the <a href="tiered-electricity-rate-calculator.html">Tiered Electricity Rate Calculator</a>. Read our <a href="blog-read-us-electricity-bill.html">guide to reading an electricity bill</a> to understand kWh, rates and fixed charges.</p>
+<h2>Frequently asked questions</h2>
+<details><summary>How much electricity does a 12,000 BTU air conditioner use?</summary><p>BTU/h describes cooling capacity, not electrical input. If the unit has a 12,000 BTU/h capacity and EER 10, input is estimated at 1,200 W under the rating conditions. Use the unit’s electrical input label where possible and account for runtime and cycling.</p></details>
+<details><summary>How much does it cost to run an AC for 8 hours?</summary><p>Multiply electrical input in kilowatts by eight hours and by your tariff per kWh. If it cycles or varies its power, adjust the active-power share or use measured energy for a better estimate.</p></details>
+<details><summary>Can I use this calculator in the UK or Europe?</summary><p>Yes. Enter the tariff from your bill and choose the matching currency label. The tool does not fetch current prices or convert between currencies automatically.</p></details>
+<details><summary>Does the estimate include the whole electricity bill?</summary><p>No. It estimates the air conditioner’s energy cost. Fixed standing charges, taxes, delivery charges and other household loads are not added unless included in the rate you enter.</p></details>
+<p class="callout"><strong>Important:</strong> This is an educational estimate, not an electrical assessment or a guarantee of actual consumption. Follow the manufacturer's instructions and use suitable metering equipment.</p>
+</section>
+</main>
+<footer class="footer-main"><div class="footer-bottom"><span>© 2026 Calcora</span><span><a href="privacy-policy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="disclaimer.html">Disclaimer</a></span></div></footer>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const mode=$('mode'), wattsBox=$('wattsBox'), eerBox=$('eerBox'), currency=$('currency'), customBox=$('customBox'), result=$('result');
+mode.addEventListener('change',()=>{wattsBox.hidden=mode.value!=='watts';eerBox.hidden=mode.value!=='eer';});
+currency.addEventListener('change',()=>{customBox.hidden=currency.value!=='custom';});
+function money(n,s){return s+(Number.isFinite(n)?n.toFixed(2):'—');}
+function calc(){
+ const vals=['hours','duty','days','weeks','rate'].map(id=>Number($(id).value));
+ const [hours,duty,days,weeks,rate]=vals;
+ let inputWatts=Number($('watts').value);
+ if(mode.value==='eer'){
+   const btu=Number($('btu').value), eer=Number($('eer').value);
+   if(!(btu>0&&eer>0)){result.textContent='Enter a positive cooling capacity and EER.';return null;}
+   inputWatts=btu/eer;
+ }
+ if(!(inputWatts>0)||!Number.isFinite(inputWatts)||![hours,duty,days,weeks,rate].every(Number.isFinite)||hours<0||hours>24||duty<=0||duty>100||days<0||days>7||weeks<0||weeks>52||rate<0){
+   result.textContent='Check your inputs: watts must be positive, hours 0–24, active share 1–100%, days 0–7, weeks 0–52 and rate non-negative.';return null;
+ }
+ const symbol=currency.value==='custom'?($('custom').value.trim()||'CUR'):currency.value;
+ const dailyKwh=inputWatts/1000*hours*duty/100;
+ const daily=dailyKwh*rate, monthly=daily*30, season=daily*days*weeks;
+ result.innerHTML='<strong>Estimated running cost</strong><p>Estimated electrical input: '+inputWatts.toFixed(0)+' W</p><p>Energy per scheduled day: '+dailyKwh.toFixed(2)+' kWh</p><p>Cost per active hour at entered duty share: '+money(inputWatts/1000*duty/100*rate,symbol)+'</p><p>Cost per day: '+money(daily,symbol)+'</p><p>Cost per 30-day month: '+money(monthly,symbol)+'</p><p>Cost for entered cooling season: '+money(season,symbol)+'</p><p class="muted">Estimate uses the active-power share you entered and excludes unentered bill charges.</p>';
+ return 'Air conditioner electricity cost estimate\nEstimated input: '+inputWatts.toFixed(0)+' W\nEnergy per scheduled day: '+dailyKwh.toFixed(2)+' kWh\nCost per hour: '+money(inputWatts/1000*duty/100*rate,symbol)+'\nCost per day: '+money(daily,symbol)+'\nCost per 30-day month: '+money(monthly,symbol)+'\nCost for entered season: '+money(season,symbol)+'\nRate: '+rate+' '+symbol+'/kWh';
+}
+$('calculate').addEventListener('click',calc);
+$('copy').addEventListener('click',async()=>{const text=calc();if(!text)return;try{await navigator.clipboard.writeText(text);$('copy').textContent='Copied';}catch(e){result.insertAdjacentHTML('beforeend','<p>Select and copy the estimate manually if clipboard access is unavailable.</p>');}});
+calc();
+})();
+</script>
+</body></html>
