@@ -84,7 +84,7 @@ function csvText(){
  const esc=v=>'"'+safe(v).replace(/"/g,'""')+'"';
  const meta=[['Field / farm ID',$('fieldName').value.trim()],['Crop',$('cropName').value.trim()],['Application date',$('recordDate').value],['Notes',$('recordNotes').value.trim()]];
  const head='Application,Label N %,Planned product kg,Actual product kg,Product variance kg,Variance %,Planned N kg,Actual N kg,N variance kg';
- return [...meta.map(r=>r.map(esc).join(',')), '', head, ...reportRows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].map(esc).join(','))].join('\\r\\n');
+ return [...meta.map(r=>r.map(esc).join(',')), '', head, ...reportRows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].map(esc).join(','))].join(String.fromCharCode(13,10))
 }
 $('check').addEventListener('click',compare);
 $('copy').addEventListener('click',async()=>{if(!copyText){result.insertAdjacentHTML('beforeend','<p>Compare the records before copying.</p>');return;}try{await navigator.clipboard.writeText(copyText);result.insertAdjacentHTML('beforeend','<p>Record copied.</p>')}catch(e){result.insertAdjacentHTML('beforeend','<p>Clipboard access is unavailable; select the result and copy it manually.</p>')}});
