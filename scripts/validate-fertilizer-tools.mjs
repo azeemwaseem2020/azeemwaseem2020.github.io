@@ -46,6 +46,10 @@ for (const file of files) {
   }
 }
 
+const fertilizerCalculator = read("fertilizer-calculator.html");
+assertCheck(fertilizerCalculator.includes("Label-based cost per kg of nutrient"), "Fertilizer calculator: missing cost-per-nutrient comparison");
+assertCheck(fertilizerCalculator.includes("x.price/(x.bag*p/100)"), "Fertilizer calculator: missing label-based unit-cost formula");
+
 const hub = read("agriculture-fertilizer-hub.html");
 assertCheck(hub.includes("fertilizer-application-variance-checker.html"), "Hub: missing application variance checker link");
 assertCheck(hub.includes("fertilizer-split-application-planner.html"), "Hub: missing split application planner link");
@@ -78,6 +82,8 @@ const plannedN = 100 * 0.46;
 const actualN = 95 * 0.46;
 assertCheck(Math.abs((actualN - plannedN) - (-2.3)) < 1e-9, "Variance checker math: labelled-N variance mismatch");
 assertCheck(Math.abs(((95 - 100) / 100 * 100) - (-5)) < 1e-9, "Variance checker math: product percentage variance mismatch");
+const unitCost = 4500 / (50 * 0.46);
+assertCheck(Math.abs(unitCost - 195.65217391304347) < 1e-9, "Cost-per-nutrient formula: cost per kg labelled N mismatch");
 
 if (errors.length) {
   console.error(`Fertilizer QA failed with ${errors.length} issue(s):`);
