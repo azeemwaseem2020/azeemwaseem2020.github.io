@@ -46,6 +46,11 @@ for (const file of files) {
   }
 }
 
+const varianceChecker = read("fertilizer-application-variance-checker.html");
+assertCheck(varianceChecker.includes("const totalRow="), "Variance checker: CSV export should include totals");
+assertCheck(varianceChecker.includes("const probe=s.replace"), "Variance checker: CSV formula-injection guard should check leading whitespace");
+assertCheck(varianceChecker.includes("String.fromCharCode(13,10)"), "Variance checker: CSV should use CRLF row separators");
+
 const fertilizerCalculator = read("fertilizer-calculator.html");
 assertCheck(fertilizerCalculator.includes("Label-based cost per kg of nutrient"), "Fertilizer calculator: missing cost-per-nutrient comparison");
 assertCheck(fertilizerCalculator.includes("x.price/(x.bag*p/100)"), "Fertilizer calculator: missing label-based unit-cost formula");
