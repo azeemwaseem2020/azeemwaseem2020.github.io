@@ -79,8 +79,8 @@ for (const [filename] of cropGuides) assert.ok(fertilizerGuide.includes('href="'
 const hubSchemas = [...hub.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
 const collectionSchema = hubSchemas.find(schema => schema['@type'] === 'CollectionPage');
 assert.ok(collectionSchema, 'agriculture hub must retain valid CollectionPage structured data');
-assert.equal(collectionSchema.mainEntity.numberOfItems, 18, 'hub ItemList count must match the 18 linked tools and guides');
-assert.equal(collectionSchema.mainEntity.itemListElement.length, 18, 'hub ItemList entries must match its declared count');
+assert.equal(collectionSchema.mainEntity.numberOfItems, 20, 'hub ItemList count must match the 20 linked tools and guides');
+assert.equal(collectionSchema.mainEntity.itemListElement.length, 20, 'hub ItemList entries must match its declared count');
 
 assert.match(hub, /id="crop-specific-fertilizer-planning"/, 'hub must expose the dedicated crop guide cluster');
 for (const [filename] of cropGuides) assert.ok(hub.includes('href="' + filename + '"'), 'hub must link to ' + filename);
@@ -246,7 +246,7 @@ assert.equal(pastureSchemas[3].mainEntity.length, 6, 'FAQ structured data must m
 assert.ok(Math.abs(40 / 0.46 - 86.9565217391) < 1e-8, 'illustrative 40 kg N at 46% N should equal about 86.96 kg product');
 assert.ok(Math.abs((40 / 0.46) * 3 - 260.869565217) < 1e-6, 'three-acre product example should be about 260.87 kg before purchasing-rounding');
 
-console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (18 guides + hydroponics and pasture calculator checks)');
+console.log('Fertilizer guide-to-calculator and conversion-path checks: PASS (20 hub entries, crop guides, hydroponics and pasture calculator checks)');
 
 const mainFertilizer = fs.readFileSync(new URL('fertilizer-calculator.html', root), 'utf8');
 assert.ok(mainFertilizer.includes('id="splitSchedule"'), 'main fertilizer calculator must offer a custom split-application schedule');
@@ -260,8 +260,8 @@ const mainFertilizerScript = mainFertilizer.split('<script>').at(-1).split('</sc
 assert.doesNotThrow(() => new Function(mainFertilizerScript), 'main fertilizer calculator JavaScript must parse without syntax errors');
 assert.ok(Math.abs(100 * 0.30 - 30) < 1e-9 && Math.abs(100 * 0.70 - 70) < 1e-9, '30/70 split schedule must preserve the total product quantity');
 assert.ok(Math.abs(30 * 0.46 - 13.8) < 1e-9 && Math.abs(70 * 0.46 - 32.2) < 1e-9, 'split schedule must preserve nutrient contribution from a 46% N product');
-assert.match(mainFertilizer, /Last updated:<\/strong> October 19, 2026/);
-assert.match(mainFertilizer, /article:modified_time" content="2026-10-19"/);
+assert.match(mainFertilizer, /Last updated:<\/strong> October 23, 2026/);
+assert.match(mainFertilizer, /article:modified_time" content="2026-10-23"/);
 console.log('Main fertilizer split schedule, validation, export, formula and freshness checks: PASS');
 assert.match(mainFertilizer, /function optimizeCostPlan\(\)/, 'target planner must include an explicit cost-aware solver');
 assert.match(mainFertilizer, /function solveLinearSystem\(matrix,vector\)/, 'optimizer must solve candidate nutrient-balance equations');
