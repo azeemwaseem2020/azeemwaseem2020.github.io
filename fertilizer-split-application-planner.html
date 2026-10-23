@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fertilizer Split Application Planner | N Target, Product & Cost | Calcora</title>
+<meta name="description" content="Split a user-provided nitrogen target across application timings. Estimate fertilizer kilograms, bag equivalents and cost per split for your field area and product label.">
+<meta name="author" content="Abdul Qadir">
+<link rel="canonical" href="https://azeemwaseem2020.github.io/fertilizer-split-application-planner.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta property="og:type" content="website"><meta property="og:title" content="Fertilizer Split Application Planner | Calcora">
+<meta property="og:description" content="Calculate product quantities, bag equivalents and estimated cost for each split of a nutrient target you provide.">
+<meta property="og:url" content="https://azeemwaseem2020.github.io/fertilizer-split-application-planner.html"><meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Fertilizer Split Application Planner | Calcora"><meta name="twitter:description" content="Plan the arithmetic for each fertilizer split using your own nutrient target and product label."><meta name="twitter:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Fertilizer Split Application Planner","url":"https://azeemwaseem2020.github.io/fertilizer-split-application-planner.html","applicationCategory":"AgricultureApplication","operatingSystem":"Any","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Calculates user-defined fertilizer split quantities, bag equivalents and estimated cost from a supplied nutrient target, field area and product label."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://azeemwaseem2020.github.io/"},{"@type":"ListItem","position":2,"name":"Fertilizer & NPK","item":"https://azeemwaseem2020.github.io/agriculture-fertilizer-hub.html"},{"@type":"ListItem","position":3,"name":"Fertilizer Split Application Planner","item":"https://azeemwaseem2020.github.io/fertilizer-split-application-planner.html"}]}</script>
+<style>
+.planner-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.planner-grid .field{display:flex;flex-direction:column;gap:6px}.planner-grid label{font-weight:650}.planner-grid input,.planner-grid select{width:100%;min-width:0;padding:11px;border:1px solid #cbd5e1;border-radius:8px;font:inherit}.split-table{width:100%;border-collapse:collapse;margin:14px 0}.split-table th,.split-table td{border-bottom:1px solid #dbe2ea;padding:10px;text-align:left}.split-table input{width:100%;min-width:65px;padding:8px;border:1px solid #cbd5e1;border-radius:7px;font:inherit}.planner-result{padding:14px;border:1px solid #cbd5e1;border-radius:10px;margin-top:14px;overflow-wrap:anywhere}.planner-result table{width:100%;border-collapse:collapse}.planner-result th,.planner-result td{padding:8px;border-bottom:1px solid #dbe2ea;text-align:right}.planner-result th:first-child,.planner-result td:first-child{text-align:left}.warning{color:#9a3412}.muted{color:#64748b}@media(max-width:650px){.planner-grid{grid-template-columns:1fr}.split-table th,.split-table td{padding:6px;font-size:.92rem}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a class="brand" href="./" aria-label="Calcora home"><span class="brand-mark" aria-hidden="true">C</span>Calcora</a><nav aria-label="Primary navigation"><a href="calculators.html">Calculators</a><a href="categories.html">Categories</a><a href="blog.html">Guides</a><a href="about.html">About</a></nav></div></header>
+<main class="section calculator-page">
+<p class="page-author">Written and maintained by <a href="abdul-qadir.html" rel="author">Abdul Qadir</a> · <a href="calculator-methodology.html">Calculation methodology</a></p>
+<p class="eyebrow">AGRICULTURE • FIELD APPLICATION RECORDS</p>
+<h1>Fertilizer Split Application Planner</h1>
+<p class="lead">Convert a nitrogen target that you already have into product quantities for each planned application. Enter the field area, the nitrogen recommendation, the product's labelled nitrogen percentage and your own split percentages. This tool checks the arithmetic; it does not recommend a crop rate or application schedule.</p>
+<div class="policy-grid" style="align-items:start">
+<section class="calculator-card">
+<h2>1. Field and product details</h2>
+<div class="planner-grid">
+<div class="field"><label for="area">Field area (acres)</label><input id="area" type="number" min="0.001" max="1000000" step="any" value="5"></div>
+<div class="field"><label for="target">Your nitrogen target (kg N/acre)</label><input id="target" type="number" min="0" max="100000" step="any" value="30"></div>
+<div class="field"><label for="grade">Nitrogen on product label (%)</label><input id="grade" type="number" min="0.01" max="100" step="any" value="46"></div>
+<div class="field"><label for="bag">Bag net weight (kg)</label><input id="bag" type="number" min="0.01" max="100000" step="any" value="50"></div>
+<div class="field"><label for="price">Price per bag (PKR, optional)</label><input id="price" type="number" min="0" max="100000000" step="any" value="4500"></div>
+<div class="field"><label for="currency">Cost display</label><select id="currency"><option value="PKR">PKR</option><option value="USD">USD</option><option value="INR">INR</option><option value="none">Do not show cost</option></select></div>
+</div>
+<h2 style="margin-top:24px">2. Define your application splits</h2>
+<p class="muted">The stage labels and percentages are yours to set from your approved crop plan. Percentages must add up to exactly 100% (within a small rounding tolerance).</p>
+<table class="split-table"><thead><tr><th>Application label</th><th>Target share (%)</th></tr></thead><tbody>
+<tr><td><input id="label1" aria-label="First application label" value="Split 1"></td><td><input id="share1" aria-label="First application share percent" type="number" min="0" max="100" step="any" value="40"></td></tr>
+<tr><td><input id="label2" aria-label="Second application label" value="Split 2"></td><td><input id="share2" aria-label="Second application share percent" type="number" min="0" max="100" step="any" value="40"></td></tr>
+<tr><td><input id="label3" aria-label="Third application label" value="Split 3"></td><td><input id="share3" aria-label="Third application share percent" type="number" min="0" max="100" step="any" value="20"></td></tr>
+</tbody></table>
+<button class="btn" type="button" id="calculate">Calculate split quantities</button>
+<button class="btn btn-secondary" type="button" id="copy" style="margin-top:8px">Copy plan</button>
+<div class="planner-result" id="result" role="status" aria-live="polite">Enter your field and product information, then calculate the split plan.</div>
+</section>
+<aside class="hero-card"><h2>What this planner calculates</h2><ul><li>Total nitrogen represented by your entered target and field area.</li><li>Total product kilograms needed to supply that nitrogen at the entered label percentage.</li><li>Product kilograms, bag-equivalents and estimated cost for each user-defined split.</li><li>A check that split percentages total 100%.</li></ul><p class="muted">Example inputs are illustrative only. Confirm crop, soil-test results, target units, product grade and timing with current local agronomic guidance before field use.</p></aside>
+</div>
+<section class="prose">
+<h2>Formula used</h2>
+<p><strong>Total nitrogen (kg) = field area (acres) × nitrogen target (kg N/acre).</strong> <strong>Total product (kg) = total nitrogen ÷ (label nitrogen percentage ÷ 100).</strong> For each split, product quantity equals total product multiplied by the split percentage divided by 100. Bag-equivalents equal product kilograms divided by the bag's net weight.</p>
+<h2>Worked example: arithmetic only</h2>
+<p>Suppose a field is 5 acres and the user-entered target is 30 kg N per acre. The total target is 150 kg N. At a product grade of 46% N, the mathematical product quantity is 150 ÷ 0.46 ≈ 326.09 kg. If the user's planned shares are 40%, 40% and 20%, the product quantities are approximately 130.43 kg, 130.43 kg and 65.22 kg. For 50 kg bags, these equal 2.61, 2.61 and 1.30 bag-equivalents. Bag-equivalents are not whole-bag purchase advice; stock and leftovers must be reconciled separately.</p>
+<h2>Important limitations</h2>
+<p>This planner handles one nutrient percentage and a target supplied by the user. It does not account for nitrogen already supplied by DAP or compound fertilizers, soil mineralization, irrigation water, manure, losses, crop uptake, product compatibility, weather or application equipment. If another product contributes nitrogen, account for it in the documented nutrient plan before using a remaining nitrogen target here. Do not interpret this arithmetic as a recommendation to apply the example quantity.</p>
+<h2>Related Calcora tools and guides</h2>
+<ul><li><a href="fertilizer-calculator.html">Fertilizer & NPK Calculator</a> — check multiple products and nutrient contributions.</li><li><a href="fertilizer-blend-calculator.html">Fertilizer Blend Calculator</a> — calculate a mathematical N-P₂O₅-K₂O blend from a known target.</li><li><a href="fertilizer-bag-calculator.html">Fertilizer Bag Calculator</a> — estimate bag equivalents and purchase quantities.</li><li><a href="blog-fertilizer-split-application.html">Split Fertilizer Application Guide</a> — understand the planning context before using split quantities.</li><li><a href="blog-fertilizer-soil-test-guide.html">Soil-Test Fertilizer Guide</a> — learn why nutrient targets should be grounded in field evidence.</li><li><a href="agriculture-fertilizer-hub.html">Agriculture & Fertilizer Hub</a> — browse the full tool collection.</li></ul>
+<p><strong>Pakistan resource:</strong> review the <a href="https://sfri.punjab.gov.pk/node/149" target="_blank" rel="noopener noreferrer">Soil Fertility Research Institute's Khad Hisab service</a> and use current soil-test interpretation or locally appropriate crop guidance to establish the target.</p>
+</section>
+</main>
+<footer class="footer-main"><div class="footer-inner"><div class="footer-bottom"><span>© 2026 Calcora. All rights reserved.</span><span><a href="privacy-policy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="disclaimer.html">Disclaimer</a></span></div></div></footer>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const num=id=>Number($(id).value);
+const result=$('result');
+let copyText='';
+function calculate(){
+ const area=num('area'), target=num('target'), grade=num('grade'), bag=num('bag'), price=num('price');
+ const shares=[num('share1'),num('share2'),num('share3')];
+ const labels=[1,2,3].map(i=>$('label'+i).value.trim()||('Split '+i));
+ const vals=[area,target,grade,bag,price,...shares];
+ if(vals.some(v=>!Number.isFinite(v)||v<0)||area<=0||grade<=0||grade>100||bag<=0||shares.some(v=>v>100)){
+  result.innerHTML='<p class="warning"><strong>Check your inputs.</strong> Area, label percentage and bag weight must be above zero. Other values cannot be negative, and each share must be 0–100%.</p>';copyText='';return;
+ }
+ const shareTotal=shares.reduce((a,b)=>a+b,0);
+ if(Math.abs(shareTotal-100)>0.01){
+  result.innerHTML='<p class="warning"><strong>Split shares total '+shareTotal.toFixed(2)+'%.</strong> Adjust them to total 100% before calculating. No split plan has been produced.</p>';copyText='';return;
+ }
+ const totalN=area*target, totalProduct=totalN/(grade/100);
+ const currency=$('currency').value;
+ const fmt=n=>n.toLocaleString('en-US',{maximumFractionDigits:2,minimumFractionDigits:0});
+ const money=n=>currency==='none'?'Not shown':currency+' '+fmt(n);
+ const rows=shares.map((share,i)=>{const product=totalProduct*share/100;const bags=product/bag;return {label:labels[i],share,product,bags,cost:price>0?bags*price:null}});
+ const costTotal=price>0?totalProduct/bag*price:null;
+ let html='<p><strong>Total nitrogen target:</strong> '+fmt(totalN)+' kg N</p><p><strong>Calculated product quantity:</strong> '+fmt(totalProduct)+' kg</p><p><strong>Bag-equivalents:</strong> '+fmt(totalProduct/bag)+' bags of '+fmt(bag)+' kg</p><div style="overflow-x:auto"><table><thead><tr><th>Application</th><th>Share</th><th>Product (kg)</th><th>Bag-equivalents</th><th>Estimated cost</th></tr></thead><tbody>';
+ rows.forEach(r=>{html+='<tr><td>'+r.label.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))+'</td><td>'+fmt(r.share)+'%</td><td>'+fmt(r.product)+'</td><td>'+fmt(r.bags)+'</td><td>'+ (r.cost===null?'—':money(r.cost))+'</td></tr>'});
+ html+='</tbody></table></div><p><strong>Total estimated product cost:</strong> '+(costTotal===null?'Not calculated (enter a bag price above zero).':money(costTotal))+'</p><p class="muted">The split percentages total '+fmt(shareTotal)+'%. Values are mathematical estimates; whole bags purchased may differ.</p>';
+ result.innerHTML=html;
+ copyText='Fertilizer Split Application Plan\nField: '+fmt(area)+' acres\nUser-entered target: '+fmt(target)+' kg N/acre\nTotal N: '+fmt(totalN)+' kg\nProduct label: '+fmt(grade)+'% N\nTotal product: '+fmt(totalProduct)+' kg\nBag size: '+fmt(bag)+' kg\n'+rows.map(r=>r.label+': '+fmt(r.share)+'%, '+fmt(r.product)+' kg, '+fmt(r.bags)+' bag-equivalents, cost '+(r.cost===null?'not calculated':money(r.cost))).join('\n')+'\nTotal cost: '+(costTotal===null?'not calculated':money(costTotal))+'\nArithmetic only; verify target and timing with local agronomic guidance.';
+}
+$('calculate').addEventListener('click',calculate);
+$('copy').addEventListener('click',()=>{if(!copyText){result.insertAdjacentHTML('beforeend','<p class="warning">Calculate a valid plan before copying.</p>');return;}const t=document.createElement('textarea');t.value=copyText;t.setAttribute('readonly','');t.style.position='absolute';t.style.left='-9999px';document.body.appendChild(t);t.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}t.remove();result.insertAdjacentHTML('beforeend',ok?'<p>Plan copied.</p>':'<p>Copy was not available in this browser. Select and copy the result manually.</p>');});
+})();
+</script>
+</body></html>
