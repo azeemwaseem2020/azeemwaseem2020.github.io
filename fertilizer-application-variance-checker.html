@@ -24,6 +24,13 @@
 <h1>Fertilizer Application Variance Checker</h1>
 <p class="lead">Compare a documented plan with the quantity actually applied. This record checker calculates product and labelled-nitrogen differences by application, helping you reconcile field notes and stock records. It does not decide whether an application rate is agronomically appropriate.</p>
 <section class="calculator-card">
+<h2>Farm record details</h2>
+<div class="record-wrap"><table class="record-table"><tbody>
+<tr><th><label for="fieldName">Field / farm ID</label></th><td><input id="fieldName" maxlength="100" placeholder="e.g. Field A-03"></td></tr>
+<tr><th><label for="cropName">Crop</label></th><td><input id="cropName" maxlength="80" placeholder="e.g. Wheat"></td></tr>
+<tr><th><label for="recordDate">Application date</label></th><td><input id="recordDate" type="date" value="2026-10-23"></td></tr>
+<tr><th><label for="recordNotes">Notes (optional)</label></th><td><input id="recordNotes" maxlength="240" placeholder="e.g. operator, equipment, field conditions"></td></tr>
+</tbody></table></div>
 <h2>Enter planned and actual product quantities</h2>
 <p class="record-note">Use kilograms of product—not kilograms of nutrient—in the planned and actual columns. Enter the nitrogen percentage printed on the product label. Leave unused rows blank.</p>
 <div class="record-wrap"><table class="record-table"><thead><tr><th>Application / field note</th><th>Product N (%)</th><th>Planned product (kg)</th><th>Actual product (kg)</th></tr></thead><tbody>
@@ -69,9 +76,16 @@ let html='<div class="record-wrap"><table><thead><tr><th>Application</th><th>Pla
 rows.forEach(r=>{html+='<tr><td>'+r.name.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))+'</td><td>'+fmt(r.planned)+'</td><td>'+fmt(r.actual)+'</td><td>'+fmt(r.delta)+'</td><td>'+(r.percent===null?'N/A':fmt(r.percent)+'%')+'</td><td>'+fmt(r.pn)+'</td><td>'+fmt(r.an)+'</td><td>'+fmt(r.nDelta)+'</td></tr>'});
 html+='</tbody></table></div><p><strong>Total product:</strong> planned '+fmt(totals.planned)+' kg; actual '+fmt(totals.actual)+' kg; variance '+fmt(totals.actual-totals.planned)+' kg.</p><p><strong>Total labelled nitrogen:</strong> planned '+fmt(totals.pn)+' kg N; actual '+fmt(totals.an)+' kg N; variance '+fmt(totals.an-totals.pn)+' kg N.</p><p class="record-note">Positive variance means actual exceeds planned; negative means actual is below plan. These are records-only comparisons, not instructions to apply more or less fertilizer.</p>';
 result.innerHTML=html;reportRows=rows;
-copyText='Fertilizer Application Variance Record\nApplication,Label N %,Planned product kg,Actual product kg,Product variance kg,Variance %,Planned N kg,Actual N kg,N variance kg\n'+rows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].join(',')).join('\n')+'\nTOTAL,,'+totals.planned+','+totals.actual+','+(totals.actual-totals.planned)+','+(totals.planned===0?'N/A':(totals.actual-totals.planned)/totals.planned*100)+','+totals.pn+','+totals.an+','+(totals.an-totals.pn)+'\nRecord comparison only; verify differences before taking agronomic action.';
+const meta={field:$('fieldName').value.trim(),crop:$('cropName').value.trim(),date:$('recordDate').value,notes:$('recordNotes').value.trim()};
+copyText='Fertilizer Application Variance Record\nField / farm ID: '+meta.field+'\nCrop: '+meta.crop+'\nApplication date: '+meta.date+'\nNotes: '+meta.notes+'\nApplication,Label N %,Planned product kg,Actual product kg,Product variance kg,Variance %,Planned N kg,Actual N kg,N variance kg\n'+rows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].join(',')).join('\n')+'\nTOTAL,,'+totals.planned+','+totals.actual+','+(totals.actual-totals.planned)+','+(totals.planned===0?'N/A':(totals.actual-totals.planned)/totals.planned*100)+','+totals.pn+','+totals.an+','+(totals.an-totals.pn)+'\nRecord comparison only; verify differences before taking agronomic action.';
 }
-function csvText(){const esc=v=>'"'+String(v).replace(/"/g,'""')+'"';return ['Application,Label N %,Planned product kg,Actual product kg,Product variance kg,Variance %,Planned N kg,Actual N kg,N variance kg',...reportRows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].map(esc).join(','))].join('\r\n');}
+function csvText(){
+ const safe=v=>{const s=String(v??'');return /^[=+@\\-\\t\\r]/.test(s)?"'"+s:s;};
+ const esc=v=>'"'+safe(v).replace(/"/g,'""')+'"';
+ const meta=[['Field / farm ID',$('fieldName').value.trim()],['Crop',$('cropName').value.trim()],['Application date',$('recordDate').value],['Notes',$('recordNotes').value.trim()]];
+ const head='Application,Label N %,Planned product kg,Actual product kg,Product variance kg,Variance %,Planned N kg,Actual N kg,N variance kg';
+ return [...meta.map(r=>r.map(esc).join(',')), '', head, ...reportRows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].map(esc).join(','))].join('\\r\\n');
+}
 $('check').addEventListener('click',compare);
 $('copy').addEventListener('click',async()=>{if(!copyText){result.insertAdjacentHTML('beforeend','<p>Compare the records before copying.</p>');return;}try{await navigator.clipboard.writeText(copyText);result.insertAdjacentHTML('beforeend','<p>Record copied.</p>')}catch(e){result.insertAdjacentHTML('beforeend','<p>Clipboard access is unavailable; select the result and copy it manually.</p>')}});
 $('csv').addEventListener('click',()=>{if(!reportRows.length){result.insertAdjacentHTML('beforeend','<p>Compare the records before exporting.</p>');return;}const blob=new Blob([csvText()],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='fertilizer-application-variance.csv';a.click();URL.revokeObjectURL(url);});
