@@ -56,6 +56,11 @@ assertCheck(varianceChecker.includes("String.fromCharCode(13,10)"), "Variance ch
 const fertilizerCalculator = read("fertilizer-calculator.html");
 assertCheck(fertilizerCalculator.includes("Label-based cost per kg of nutrient"), "Fertilizer calculator: missing cost-per-nutrient comparison");
 assertCheck(fertilizerCalculator.includes("x.price/(x.bag*p/100)"), "Fertilizer calculator: missing label-based unit-cost formula");
+assertCheck(fertilizerCalculator.includes('data-calculator-mode="target"'), "Fertilizer calculator: target-planning shortcut must be actionable");
+assertCheck(fertilizerCalculator.includes('data-calculator-mode="manual"'), "Fertilizer calculator: rate-check shortcut must be actionable");
+assertCheck(fertilizerCalculator.includes('link.dataset.calculatorMode'), "Fertilizer calculator: task shortcuts must switch calculation mode");
+assertCheck(fertilizerCalculator.includes('href="fertilizer-blend-calculator.html"'), "Fertilizer calculator: blend shortcut should open the dedicated blend tool");
+assertCheck(fertilizerCalculator.includes('href="fertilizer-application-variance-checker.html"'), "Fertilizer calculator: field-record shortcut should open the variance checker");
 
 const hub = read("agriculture-fertilizer-hub.html");
 assertCheck(hub.includes("fertilizer-application-variance-checker.html"), "Hub: missing application variance checker link");
