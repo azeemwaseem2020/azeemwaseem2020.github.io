@@ -83,8 +83,8 @@ function csvText(){
  const safe=v=>{
   if(typeof v==='number'&&Number.isFinite(v))return String(v);
   const s=String(v??'');
-  const probe=s.replace(/^[\\s\\uFEFF]+/,'');
-  return /^[=+@-]/.test(probe)||/^[\\t\\r]/.test(s)?"'"+s:s;
+  const probe=s.replace(/^[\s\uFEFF]+/,'');
+  return /^[=+@-]/.test(probe)||/^[\t\r]/.test(s)?"'"+s:s;
  };
  const esc=v=>'"'+safe(v).replace(/"/g,'""')+'"';
  const meta=[['Field / farm ID',$('fieldName').value.trim()],['Crop',$('cropName').value.trim()],['Application date',$('recordDate').value],['Notes',$('recordNotes').value.trim()]];
