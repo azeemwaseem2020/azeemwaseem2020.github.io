@@ -63,7 +63,7 @@ assertCheck(fertilizerCalculator.includes('href="fertilizer-blend-calculator.htm
 assertCheck(fertilizerCalculator.includes('href="fertilizer-application-variance-checker.html"'), "Fertilizer calculator: field-record shortcut should open the variance checker");
 assertCheck(fertilizerCalculator.includes("productIdCounter"), "Fertilizer calculator: dynamically added product fields need stable unique IDs");
 assertCheck(fertilizerCalculator.includes('<label for="pn\'+productId+\'">Product name</label>'), "Fertilizer calculator: product-name input needs an associated label");
-assertCheck(fertilizerCalculator.includes('<label for="pr\'+productId+\'">Rate'), "Fertilizer calculator: rate input needs an associated label");
+assertCheck(/<label class="rate-label" for="pr'\+productId\+'">Rate/.test(fertilizerCalculator), "Fertilizer calculator: rate input needs an associated label");
 assertCheck(fertilizerCalculator.includes(':focus-visible{outline:3px solid #2563eb'), "Fertilizer calculator: visible keyboard focus style is required");
 assertCheck(read("fertilizer-split-application-planner.html").includes(":focus-visible{outline:3px solid #2563eb"), "Split planner: visible keyboard focus style is required");
 assertCheck(read("fertilizer-application-variance-checker.html").includes(":focus-visible{outline:3px solid #2563eb"), "Variance checker: visible keyboard focus style is required");
