@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fertilizer Application Variance Checker | Planned vs Actual | Calcora</title>
+<meta name="description" content="Compare planned and actual fertilizer quantities by field application. Calculate nutrient delivered, kilogram variance and percentage variance for farm records.">
+<meta name="author" content="Abdul Qadir">
+<link rel="canonical" href="https://azeemwaseem2020.github.io/fertilizer-application-variance-checker.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Calcora"><meta property="og:title" content="Fertilizer Application Variance Checker | Calcora"><meta property="og:description" content="Compare planned versus actual fertilizer product applied and calculate the nutrient difference for each field record."><meta property="og:url" content="https://azeemwaseem2020.github.io/fertilizer-application-variance-checker.html"><meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Fertilizer Application Variance Checker | Calcora"><meta name="twitter:description" content="A practical planned-versus-actual fertilizer application record checker."><meta name="twitter:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Fertilizer Application Variance Checker","url":"https://azeemwaseem2020.github.io/fertilizer-application-variance-checker.html","applicationCategory":"AgricultureApplication","operatingSystem":"Any","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Compares user-entered planned and actual fertilizer product quantities and calculates nutrient and percentage variances for farm records."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://azeemwaseem2020.github.io/"},{"@type":"ListItem","position":2,"name":"Agriculture & Fertilizer Hub","item":"https://azeemwaseem2020.github.io/agriculture-fertilizer-hub.html"},{"@type":"ListItem","position":3,"name":"Fertilizer Application Variance Checker","item":"https://azeemwaseem2020.github.io/fertilizer-application-variance-checker.html"}]}</script>
+<style>
+.record-table{width:100%;border-collapse:collapse;margin:14px 0}.record-table th,.record-table td{padding:9px;border-bottom:1px solid #dbe2ea;text-align:left;vertical-align:top}.record-table input{box-sizing:border-box;width:100%;min-width:90px;padding:9px;border:1px solid #cbd5e1;border-radius:7px;font:inherit}.record-wrap{overflow-x:auto}.record-result{padding:14px;border:1px solid #cbd5e1;border-radius:10px;margin-top:14px;overflow-wrap:anywhere}.record-result table{width:100%;border-collapse:collapse}.record-result th,.record-result td{padding:8px;border-bottom:1px solid #dbe2ea;text-align:right}.record-result th:first-child,.record-result td:first-child{text-align:left}.record-note{color:#64748b}.record-actions{display:flex;gap:8px;flex-wrap:wrap}@media(max-width:650px){.record-table th,.record-table td{padding:6px;font-size:.9rem}.record-table input{min-width:100px}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a class="brand" href="./" aria-label="Calcora home"><span class="brand-mark" aria-hidden="true">C</span>Calcora</a><nav aria-label="Primary navigation"><a href="calculators.html">Calculators</a><a href="categories.html">Categories</a><a href="blog.html">Guides</a><a href="about.html">About</a></nav></div></header>
+<main class="section calculator-page">
+<p class="page-author">Written and maintained by <a href="abdul-qadir.html" rel="author">Abdul Qadir</a> · <a href="calculator-methodology.html">Calculation methodology</a></p>
+<p class="eyebrow">AGRICULTURE • FIELD RECORDS & QUALITY CONTROL</p>
+<h1>Fertilizer Application Variance Checker</h1>
+<p class="lead">Compare a documented plan with the quantity actually applied. This record checker calculates product and labelled-nitrogen differences by application, helping you reconcile field notes and stock records. It does not decide whether an application rate is agronomically appropriate.</p>
+<section class="calculator-card">
+<h2>Enter planned and actual product quantities</h2>
+<p class="record-note">Use kilograms of product—not kilograms of nutrient—in the planned and actual columns. Enter the nitrogen percentage printed on the product label. Leave unused rows blank.</p>
+<div class="record-wrap"><table class="record-table"><thead><tr><th>Application / field note</th><th>Product N (%)</th><th>Planned product (kg)</th><th>Actual product (kg)</th></tr></thead><tbody>
+<tr><td><input id="name1" aria-label="Application one name" value="Application 1"></td><td><input id="grade1" aria-label="Application one nitrogen percentage" type="number" min="0" max="100" step="any" value="46"></td><td><input id="plan1" aria-label="Application one planned product kilograms" type="number" min="0" step="any" value="100"></td><td><input id="actual1" aria-label="Application one actual product kilograms" type="number" min="0" step="any" value="95"></td></tr>
+<tr><td><input id="name2" aria-label="Application two name" value="Application 2"></td><td><input id="grade2" aria-label="Application two nitrogen percentage" type="number" min="0" max="100" step="any" value="46"></td><td><input id="plan2" aria-label="Application two planned product kilograms" type="number" min="0" step="any" value="80"></td><td><input id="actual2" aria-label="Application two actual product kilograms" type="number" min="0" step="any" value="85"></td></tr>
+<tr><td><input id="name3" aria-label="Application three name" value="Application 3"></td><td><input id="grade3" aria-label="Application three nitrogen percentage" type="number" min="0" max="100" step="any" value="46"></td><td><input id="plan3" aria-label="Application three planned product kilograms" type="number" min="0" step="any" value="0"></td><td><input id="actual3" aria-label="Application three actual product kilograms" type="number" min="0" step="any" value="0"></td></tr>
+</tbody></table></div>
+<div class="record-actions"><button class="btn" type="button" id="check">Compare plan and actual</button><button class="btn btn-secondary" type="button" id="copy">Copy record</button><button class="btn btn-secondary" type="button" id="csv">Download CSV</button></div>
+<div id="result" class="record-result" role="status" aria-live="polite">Enter field records and select Compare plan and actual.</div>
+</section>
+<section class="prose">
+<h2>How the variance is calculated</h2>
+<p><strong>Product variance (kg) = actual product applied − planned product.</strong> A positive result means more product was recorded than planned; a negative result means less product was recorded. <strong>Labelled nitrogen (kg) = product kilograms × nitrogen percentage ÷ 100.</strong> Nitrogen variance is the actual labelled nitrogen minus the planned labelled nitrogen. Percentage variance is product variance divided by planned product, multiplied by 100; it is not defined when the planned quantity is zero.</p>
+<h2>Example interpretation</h2>
+<p>If the plan records 100 kg of a 46% nitrogen product but the field record shows 95 kg applied, the product variance is −5 kg and the labelled-nitrogen variance is −2.3 kg N. This is a bookkeeping comparison, not proof that the crop is deficient or that more fertilizer should be applied. Reconcile weighing, field area, product grade, spills, remaining stock and the approved agronomic plan before making decisions.</p>
+<h2>Recordkeeping checklist</h2>
+<ul><li>Record the field identifier, crop, date, operator and equipment separately in your farm log.</li><li>Use the net product weight actually applied; do not treat bag-equivalents as precise field measurements.</li><li>Check whether different products were used in the same application. This checker compares one nitrogen-labelled product per row.</li><li>Keep planned and actual records separate; never overwrite the original plan with actual figures.</li><li>Investigate large differences with a qualified local adviser and your original recommendation before changing future applications.</li></ul>
+<h2>Limitations</h2>
+<p>This tool compares the entered quantities only. It does not account for phosphate or potash, nitrogen from other products, soil supply, manure, irrigation, nutrient losses, field-area errors or product distribution uniformity. Its result is not a fertilizer prescription, crop diagnosis or safety determination.</p>
+<h2>Related tools</h2>
+<ul><li><a href="fertilizer-split-application-planner.html">Fertilizer Split Application Planner</a> — divide a user-provided target across planned applications.</li><li><a href="fertilizer-calculator.html">Fertilizer & NPK Calculator</a> — calculate nutrient contributions from products.</li><li><a href="fertilizer-bag-calculator.html">Fertilizer Bag Calculator</a> — reconcile bag sizes and quantities.</li><li><a href="blog-fertilizer-soil-test-guide.html">Soil-Test Fertilizer Guide</a> — understand how field-specific targets are established.</li><li><a href="agriculture-fertilizer-hub.html">Agriculture & Fertilizer Hub</a> — browse related calculators and guides.</li></ul>
+<p><strong>Pakistan resource:</strong> establish nutrient targets using current local guidance and suitable testing, such as the <a href="https://sfri.punjab.gov.pk/node/149" target="_blank" rel="noopener noreferrer">Punjab Soil Fertility Research Institute's Khad Hisab service</a>.</p>
+</section>
+</main>
+<footer class="footer-main"><div class="footer-inner"><div class="footer-bottom"><span>© 2026 Calcora. All rights reserved.</span><span><a href="privacy-policy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="disclaimer.html">Disclaimer</a></span></div></div></footer>
+<script>
+(function(){
+const $=id=>document.getElementById(id), result=$('result');let reportRows=[],copyText='';
+const fmt=n=>n.toLocaleString('en-US',{maximumFractionDigits:3});
+function compare(){
+const rows=[];
+for(let i=1;i<=3;i++){
+ const name=$('name'+i).value.trim()||('Application '+i), grade=Number($('grade'+i).value), planned=Number($('plan'+i).value), actual=Number($('actual'+i).value);
+ if(![grade,planned,actual].every(Number.isFinite)||grade<0||grade>100||planned<0||actual<0){result.innerHTML='<p><strong>Input error:</strong> use non-negative product quantities and a label percentage from 0 to 100.</p>';reportRows=[];copyText='';return;}
+ if(planned===0&&actual===0)continue;
+ if(grade===0){result.innerHTML='<p><strong>Input check:</strong> enter the nitrogen percentage from the label for every used row.</p>';reportRows=[];copyText='';return;}
+ const delta=actual-planned, pn=planned*grade/100, an=actual*grade/100;
+ rows.push({name,grade,planned,actual,delta,percent:planned===0?null:delta/planned*100,pn,an,nDelta:an-pn});
+}
+if(!rows.length){result.innerHTML='<p>Enter at least one non-zero planned or actual quantity.</p>';reportRows=[];copyText='';return;}
+const totals=rows.reduce((a,r)=>({planned:a.planned+r.planned,actual:a.actual+r.actual,pn:a.pn+r.pn,an:a.an+r.an}),{planned:0,actual:0,pn:0,an:0});
+let html='<div class="record-wrap"><table><thead><tr><th>Application</th><th>Planned kg</th><th>Actual kg</th><th>Product Δ kg</th><th>Variance %</th><th>Planned N kg</th><th>Actual N kg</th><th>N Δ kg</th></tr></thead><tbody>';
+rows.forEach(r=>{html+='<tr><td>'+r.name.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))+'</td><td>'+fmt(r.planned)+'</td><td>'+fmt(r.actual)+'</td><td>'+fmt(r.delta)+'</td><td>'+(r.percent===null?'N/A':fmt(r.percent)+'%')+'</td><td>'+fmt(r.pn)+'</td><td>'+fmt(r.an)+'</td><td>'+fmt(r.nDelta)+'</td></tr>'});
+html+='</tbody></table></div><p><strong>Total product:</strong> planned '+fmt(totals.planned)+' kg; actual '+fmt(totals.actual)+' kg; variance '+fmt(totals.actual-totals.planned)+' kg.</p><p><strong>Total labelled nitrogen:</strong> planned '+fmt(totals.pn)+' kg N; actual '+fmt(totals.an)+' kg N; variance '+fmt(totals.an-totals.pn)+' kg N.</p><p class="record-note">Positive variance means actual exceeds planned; negative means actual is below plan. These are records-only comparisons, not instructions to apply more or less fertilizer.</p>';
+result.innerHTML=html;reportRows=rows;
+copyText='Fertilizer Application Variance Record\nApplication,Label N %,Planned product kg,Actual product kg,Product variance kg,Variance %,Planned N kg,Actual N kg,N variance kg\n'+rows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].join(',')).join('\n')+'\nTOTAL,,'+totals.planned+','+totals.actual+','+(totals.actual-totals.planned)+','+(totals.planned===0?'N/A':(totals.actual-totals.planned)/totals.planned*100)+','+totals.pn+','+totals.an+','+(totals.an-totals.pn)+'\nRecord comparison only; verify differences before taking agronomic action.';
+}
+function csvText(){const esc=v=>'"'+String(v).replace(/"/g,'""')+'"';return ['Application,Label N %,Planned product kg,Actual product kg,Product variance kg,Variance %,Planned N kg,Actual N kg,N variance kg',...reportRows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].map(esc).join(','))].join('\r\n');}
+$('check').addEventListener('click',compare);
+$('copy').addEventListener('click',async()=>{if(!copyText){result.insertAdjacentHTML('beforeend','<p>Compare the records before copying.</p>');return;}try{await navigator.clipboard.writeText(copyText);result.insertAdjacentHTML('beforeend','<p>Record copied.</p>')}catch(e){result.insertAdjacentHTML('beforeend','<p>Clipboard access is unavailable; select the result and copy it manually.</p>')}});
+$('csv').addEventListener('click',()=>{if(!reportRows.length){result.insertAdjacentHTML('beforeend','<p>Compare the records before exporting.</p>');return;}const blob=new Blob([csvText()],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='fertilizer-application-variance.csv';a.click();URL.revokeObjectURL(url);});
+compare();
+})();
+</script>
+</body></html>
