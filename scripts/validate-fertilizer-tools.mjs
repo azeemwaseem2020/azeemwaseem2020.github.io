@@ -60,6 +60,7 @@ assertCheck(fertilizerCalculator.includes('id="exportWholeBagPurchase"'), "Ferti
 assertCheck(fertilizerCalculator.includes("calcora-whole-bag-fertilizer-purchase.csv"), "Fertilizer calculator: purchase CSV filename missing");
 assertCheck(fertilizerCalculator.includes("Purchased supply kg"), "Fertilizer calculator: purchase CSV must include nutrient supply columns");
 assertCheck(fertilizerCalculator.includes("const probe=s.replace(/^[\\s\\uFEFF]+/,'')"), "Fertilizer calculator: purchase CSV must guard leading whitespace and BOM");
+assertCheck(fertilizerCalculator.includes("const safe=v=>{let s=String(v??'');const probe=s.replace(/^[\\s\\uFEFF]+/,'');if(/^[=+@-]/.test(probe)||/^[\\t\\r]/.test(s))"), "Fertilizer calculator: split schedule CSV must guard formula prefixes after whitespace/BOM and leading tab/CR");
 assertCheck(fertilizerCalculator.includes("wb.products.forEach(x=>rows.push(['purchase'"), "Fertilizer calculator: purchase CSV must include product rows");
 assertCheck(fertilizerCalculator.includes("['N','P','K','S'].forEach(k=>rows.push(['nutrient'"), "Fertilizer calculator: purchase CSV must include nutrient summary rows");
 assertCheck(fertilizerCalculator.includes('data-calculator-mode="target"'), "Fertilizer calculator: target-planning shortcut must be actionable");
