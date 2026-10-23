@@ -49,6 +49,8 @@ for (const file of files) {
 const varianceChecker = read("fertilizer-application-variance-checker.html");
 assertCheck(varianceChecker.includes("const totalRow="), "Variance checker: CSV export should include totals");
 assertCheck(varianceChecker.includes("const probe=s.replace"), "Variance checker: CSV formula-injection guard should check leading whitespace");
+assertCheck(varianceChecker.includes("uFEFF"), "Variance checker: whitespace regex should include BOM/whitespace handling");
+assertCheck(varianceChecker.includes("return /^[=+@-]/.test(probe)"), "Variance checker: formula-prefix guard should inspect normalized text");
 assertCheck(varianceChecker.includes("String.fromCharCode(13,10)"), "Variance checker: CSV should use CRLF row separators");
 
 const fertilizerCalculator = read("fertilizer-calculator.html");
