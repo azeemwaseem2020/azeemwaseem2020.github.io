@@ -14,6 +14,6 @@ assert.match(html, /construction-calculators\.html/);
 const base = 200 * 3 / 12;
 const adjusted = base * 1.10;
 assert.equal(base, 50);
-assert.equal(adjusted, 55);
+assert.ok(Math.abs(adjusted - 55) < 1e-9);
 assert.equal(Math.ceil(adjusted / 2), 28);
 console.log('Mulch calculator volume, bag rounding, validation and output checks passed.');
