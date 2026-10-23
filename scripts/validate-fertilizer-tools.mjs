@@ -61,6 +61,11 @@ const hub = read("agriculture-fertilizer-hub.html");
 assertCheck(hub.includes("fertilizer-application-variance-checker.html"), "Hub: missing application variance checker link");
 assertCheck(hub.includes("fertilizer-split-application-planner.html"), "Hub: missing split application planner link");
 assertCheck(hub.includes('"numberOfItems":20'), "Hub: ItemList count should be 20");
+assertCheck(hub.includes('id="fertilizer-source-register"'), "Hub: missing source and review register");
+assertCheck(hub.includes("No independent agronomist or soil-testing specialist is currently identified as reviewer"), "Hub: review limitation must remain transparent");
+assertCheck(fertilizerCalculator.includes("These are external reference resources; they have not reviewed or endorsed Calcora"), "Fertilizer calculator: external sources must not be presented as endorsing Calcora");
+const soilGuide = read("blog-fertilizer-soil-test-guide.html");
+assertCheck(soilGuide.includes("No independent agronomist is identified as reviewer"), "Soil-test guide: review limitation should be explicit");
 for (const guide of ["blog-fertilizer-split-application.html", "blog-fertilizer-label-reading-guide.html", "blog-fertilizer-soil-test-guide.html"]) {
   const html = read(guide);
   assertCheck(html.includes("fertilizer-application-variance-checker.html"), `${guide}: missing link to variance checker`);
