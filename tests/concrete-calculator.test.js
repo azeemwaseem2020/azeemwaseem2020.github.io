@@ -1,0 +1,18 @@
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const html = fs.readFileSync('concrete-calculator.html', 'utf8');
+assert.match(html, /Concrete Calculator: Cubic Yards &amp; Bag Estimate|Concrete Calculator: Cubic Yards & Bag Estimate/);
+assert.match(html, /og:title/);
+assert.match(html, /og:description/);
+assert.match(html, /60 lb bag/);
+assert.match(html, /80 lb bag/);
+assert.match(html, /0\.45/);
+assert.match(html, /0\.60/);
+assert.match(html, /Math\.ceil\(adjustedFt3\/0\.45\)/);
+assert.match(html, /Math\.ceil\(adjustedFt3\/0\.60\)/);
+assert.match(html, /Z>100/);
+assert.match(html, /Number\.isFinite/);
+assert.match(html, /aria-live="polite"/);
+assert.match(html, /Bag yields are estimates/);
+assert.doesNotMatch(html, /o\.innerHTML/);
+console.log('Concrete calculator US bag-estimate and input-validation checks passed.');
