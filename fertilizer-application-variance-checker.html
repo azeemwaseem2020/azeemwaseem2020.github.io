@@ -28,7 +28,7 @@
 <div class="record-wrap"><table class="record-table"><tbody>
 <tr><th><label for="fieldName">Field / farm ID</label></th><td><input id="fieldName" maxlength="100" placeholder="e.g. Field A-03"></td></tr>
 <tr><th><label for="cropName">Crop</label></th><td><input id="cropName" maxlength="80" placeholder="e.g. Wheat"></td></tr>
-<tr><th><label for="recordDate">Application date</label></th><td><input id="recordDate" type="date" value="2026-10-23"></td></tr>
+<tr><th><label for="recordDate">Application date</label></th><td><input id="recordDate" type="date"></td></tr>
 <tr><th><label for="recordNotes">Notes (optional)</label></th><td><input id="recordNotes" maxlength="240" placeholder="e.g. operator, equipment, field conditions"></td></tr>
 </tbody></table></div>
 <h2>Enter planned and actual product quantities</h2>
@@ -80,7 +80,7 @@ const meta={field:$('fieldName').value.trim(),crop:$('cropName').value.trim(),da
 copyText='Fertilizer Application Variance Record\nField / farm ID: '+meta.field+'\nCrop: '+meta.crop+'\nApplication date: '+meta.date+'\nNotes: '+meta.notes+'\nApplication,Label N %,Planned product kg,Actual product kg,Product variance kg,Variance %,Planned N kg,Actual N kg,N variance kg\n'+rows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].join(',')).join('\n')+'\nTOTAL,,'+totals.planned+','+totals.actual+','+(totals.actual-totals.planned)+','+(totals.planned===0?'N/A':(totals.actual-totals.planned)/totals.planned*100)+','+totals.pn+','+totals.an+','+(totals.an-totals.pn)+'\nRecord comparison only; verify differences before taking agronomic action.';
 }
 function csvText(){
- const safe=v=>{const s=String(v??'');return /^[=+@\\-\\t\\r]/.test(s)?"'"+s:s;};
+ const safe=v=>{const s=String(v??'');return (s[0]==='='||s[0]==='+'||s[0]==='-'||s[0]==='@'||s.charCodeAt(0)===9||s.charCodeAt(0)===13)?"'"+s:s;};
  const esc=v=>'"'+safe(v).replace(/"/g,'""')+'"';
  const meta=[['Field / farm ID',$('fieldName').value.trim()],['Crop',$('cropName').value.trim()],['Application date',$('recordDate').value],['Notes',$('recordNotes').value.trim()]];
  const head='Application,Label N %,Planned product kg,Actual product kg,Product variance kg,Variance %,Planned N kg,Actual N kg,N variance kg';
