@@ -56,6 +56,12 @@ assertCheck(varianceChecker.includes("String.fromCharCode(13,10)"), "Variance ch
 const fertilizerCalculator = read("fertilizer-calculator.html");
 assertCheck(fertilizerCalculator.includes("Label-based cost per kg of nutrient"), "Fertilizer calculator: missing cost-per-nutrient comparison");
 assertCheck(fertilizerCalculator.includes("x.price/(x.bag*p/100)"), "Fertilizer calculator: missing label-based unit-cost formula");
+assertCheck(fertilizerCalculator.includes('id="exportWholeBagPurchase"'), "Fertilizer calculator: whole-bag purchase list needs a CSV export control");
+assertCheck(fertilizerCalculator.includes("calcora-whole-bag-fertilizer-purchase.csv"), "Fertilizer calculator: purchase CSV filename missing");
+assertCheck(fertilizerCalculator.includes("Purchased supply kg"), "Fertilizer calculator: purchase CSV must include nutrient supply columns");
+assertCheck(fertilizerCalculator.includes("const probe=s.replace(/^[\\s\\uFEFF]+/,'')"), "Fertilizer calculator: purchase CSV must guard leading whitespace and BOM");
+assertCheck(fertilizerCalculator.includes("wb.products.forEach(x=>rows.push(['purchase'"), "Fertilizer calculator: purchase CSV must include product rows");
+assertCheck(fertilizerCalculator.includes("['N','P','K','S'].forEach(k=>rows.push(['nutrient'"), "Fertilizer calculator: purchase CSV must include nutrient summary rows");
 assertCheck(fertilizerCalculator.includes('data-calculator-mode="target"'), "Fertilizer calculator: target-planning shortcut must be actionable");
 assertCheck(fertilizerCalculator.includes('data-calculator-mode="manual"'), "Fertilizer calculator: rate-check shortcut must be actionable");
 assertCheck(fertilizerCalculator.includes('link.dataset.calculatorMode'), "Fertilizer calculator: task shortcuts must switch calculation mode");
