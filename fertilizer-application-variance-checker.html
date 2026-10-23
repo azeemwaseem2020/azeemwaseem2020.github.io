@@ -80,11 +80,18 @@ const meta={field:$('fieldName').value.trim(),crop:$('cropName').value.trim(),da
 copyText='Fertilizer Application Variance Record\nField / farm ID: '+meta.field+'\nCrop: '+meta.crop+'\nApplication date: '+meta.date+'\nNotes: '+meta.notes+'\nApplication,Label N %,Planned product kg,Actual product kg,Product variance kg,Variance %,Planned N kg,Actual N kg,N variance kg\n'+rows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].join(',')).join('\n')+'\nTOTAL,,'+totals.planned+','+totals.actual+','+(totals.actual-totals.planned)+','+(totals.planned===0?'N/A':(totals.actual-totals.planned)/totals.planned*100)+','+totals.pn+','+totals.an+','+(totals.an-totals.pn)+'\nRecord comparison only; verify differences before taking agronomic action.';
 }
 function csvText(){
- const safe=v=>{const s=String(v??'');return (s[0]==='='||s[0]==='+'||s[0]==='-'||s[0]==='@'||s.charCodeAt(0)===9||s.charCodeAt(0)===13)?"'"+s:s;};
+ const safe=v=>{
+  if(typeof v==='number'&&Number.isFinite(v))return String(v);
+  const s=String(v??'');
+  const probe=s.replace(/^[\\s\\uFEFF]+/,'');
+  return /^[=+@-]/.test(probe)||/^[\\t\\r]/.test(s)?"'"+s:s;
+ };
  const esc=v=>'"'+safe(v).replace(/"/g,'""')+'"';
  const meta=[['Field / farm ID',$('fieldName').value.trim()],['Crop',$('cropName').value.trim()],['Application date',$('recordDate').value],['Notes',$('recordNotes').value.trim()]];
  const head='Application,Label N %,Planned product kg,Actual product kg,Product variance kg,Variance %,Planned N kg,Actual N kg,N variance kg';
- return [...meta.map(r=>r.map(esc).join(',')), '', head, ...reportRows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].map(esc).join(','))].join(String.fromCharCode(13,10))
+ const totals=reportRows.reduce((a,r)=>({planned:a.planned+r.planned,actual:a.actual+r.actual,pn:a.pn+r.pn,an:a.an+r.an}),{planned:0,actual:0,pn:0,an:0});
+ const totalRow=['TOTAL','',totals.planned,totals.actual,totals.actual-totals.planned,totals.planned===0?'N/A':(totals.actual-totals.planned)/totals.planned*100,totals.pn,totals.an,totals.an-totals.pn];
+ return [...meta.map(r=>r.map(esc).join(',')), '', head, ...reportRows.map(r=>[r.name,r.grade,r.planned,r.actual,r.delta,r.percent===null?'N/A':r.percent,r.pn,r.an,r.nDelta].map(esc).join(',')),totalRow.map(esc).join(',')].join(String.fromCharCode(13,10))
 }
 $('check').addEventListener('click',compare);
 $('copy').addEventListener('click',async()=>{if(!copyText){result.insertAdjacentHTML('beforeend','<p>Compare the records before copying.</p>');return;}try{await navigator.clipboard.writeText(copyText);result.insertAdjacentHTML('beforeend','<p>Record copied.</p>')}catch(e){result.insertAdjacentHTML('beforeend','<p>Clipboard access is unavailable; select the result and copy it manually.</p>')}});
