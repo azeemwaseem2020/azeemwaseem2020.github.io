@@ -12,7 +12,10 @@ const files = [
   "cotton-fertilizer-calculator-pakistan.html",
   "rice-fertilizer-calculator-pakistan.html",
   "sugarcane-fertilizer-calculator-pakistan.html",
-  "maize-fertilizer-calculator-pakistan.html"
+  "maize-fertilizer-calculator-pakistan.html",
+  "blog-fertilizer-split-application.html",
+  "blog-fertilizer-label-reading-guide.html",
+  "blog-fertilizer-soil-test-guide.html"
 ];
 const errors = [];
 const read = (p) => {
@@ -47,7 +50,11 @@ const hub = read("agriculture-fertilizer-hub.html");
 assertCheck(hub.includes("fertilizer-application-variance-checker.html"), "Hub: missing application variance checker link");
 assertCheck(hub.includes("fertilizer-split-application-planner.html"), "Hub: missing split application planner link");
 assertCheck(hub.includes('"numberOfItems":20'), "Hub: ItemList count should be 20");
-for (const guide of ["blog-fertilizer-split-application.html", "blog-fertilizer-label-reading-guide.html", "blog-fertilizer-soil-test-guide.html"]) {\n  const html = read(guide);\n  assertCheck(html.includes("fertilizer-application-variance-checker.html"), `${guide}: missing link to variance checker`);\n}\nfor (const crop of ["wheat", "cotton", "rice", "sugarcane", "maize"]) {
+for (const guide of ["blog-fertilizer-split-application.html", "blog-fertilizer-label-reading-guide.html", "blog-fertilizer-soil-test-guide.html"]) {
+  const html = read(guide);
+  assertCheck(html.includes("fertilizer-application-variance-checker.html"), `${guide}: missing link to variance checker`);
+}
+for (const crop of ["wheat", "cotton", "rice", "sugarcane", "maize"]) {
   const html = read(`${crop}-fertilizer-calculator-pakistan.html`);
   assertCheck(html.includes("fertilizer-application-variance-checker.html"), `${crop}: missing link to variance checker`);
 }
