@@ -35,5 +35,7 @@ jobs:
           node tests/finance-calculator-runtime.test.js
           node tests/solar-load-calculator.test.js
           node tests/concrete-calculator.test.js
+          node tests/gravel-calculator.test.js
+          node tests/mulch-calculator.test.js
           node tests/top10-thin-pages.test.js
       - run: node tests/next10-calculator-quality.test.js
