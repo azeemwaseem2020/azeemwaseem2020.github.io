@@ -47,7 +47,7 @@ assert.match(elements.result.textContent, /Approximate bag count at this allowan
 elements.z.value = "0";
 calculate();
 assert.match(elements.result.textContent, /With 0% allowance: 66\.67 ft³/);
-assert.match(elements.result.textContent, /148 × 60 lb bags or 112 × 80 lb bags/);
+assert.match(elements.result.textContent, /149 × 60 lb bags or 112 × 80 lb bags/);
 
 elements.z.value = "101";
 calculate();
