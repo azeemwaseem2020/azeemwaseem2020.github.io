@@ -53,7 +53,7 @@ for (const path of pages) {
 
   const sitemapEntry = sitemap.split("<url>").map(entry => entry.split("</url>")[0]).find(entry => entry.includes(`<loc>${canonical}</loc>`));
   assert.ok(sitemapEntry, `${path}: canonical URL missing from sitemap`);
-  const lastmod = sitemapEntry.match(/<lastmod>(\\d{4}-\\d{2}-\\d{2})<\\/lastmod>/)?.[1];
+  const lastmod = sitemapEntry.split("<lastmod>")[1]?.split("</lastmod>")[0];
   assert.ok(lastmod, `${path}: sitemap lastmod missing`);
   assert.ok(!Number.isNaN(Date.parse(lastmod)), `${path}: invalid sitemap lastmod`);
   assert.ok(lastmod <= new Date().toISOString().slice(0, 10), `${path}: sitemap lastmod is in the future`);
