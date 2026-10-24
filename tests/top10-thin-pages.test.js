@@ -51,10 +51,9 @@ for (const path of pages) {
   }
   assert.ok(executableScripts > 0, `${path}: no executable inline script found`);
 
-  const escapedCanonical = canonical.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\  assert.ok(sitemap.includes(`<url><loc>${canonical}</loc><lastmod>2026-10-19</lastmod></url>`), `${path}: sitemap lastmod missing or stale`);");
-  const sitemapEntry = sitemap.match(new RegExp(`<url>\\s*<loc>${escapedCanonical}</loc>([\\s\\S]*?)</url>`));
+  const sitemapEntry = sitemap.split("<url>").map(entry => entry.split("</url>")[0]).find(entry => entry.includes(`<loc>${canonical}</loc>`));
   assert.ok(sitemapEntry, `${path}: canonical URL missing from sitemap`);
-  const lastmod = sitemapEntry[1].match(/<lastmod>(\\d{4}-\\d{2}-\\d{2})<\\/lastmod>/)?.[1];
+  const lastmod = sitemapEntry.match(/<lastmod>(\\d{4}-\\d{2}-\\d{2})<\\/lastmod>/)?.[1];
   assert.ok(lastmod, `${path}: sitemap lastmod missing`);
   assert.ok(!Number.isNaN(Date.parse(lastmod)), `${path}: invalid sitemap lastmod`);
   assert.ok(lastmod <= new Date().toISOString().slice(0, 10), `${path}: sitemap lastmod is in the future`);
