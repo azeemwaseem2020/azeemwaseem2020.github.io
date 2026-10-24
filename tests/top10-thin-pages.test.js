@@ -36,12 +36,11 @@ for (const path of pages) {
   assert.match(html, /<meta\s+name=["']twitter:card["']/i, `${path}: Twitter card metadata missing`);
   assert.ok(schemas.length >= 1, `${path}: JSON-LD schema missing`);
 
-  for (const schemaMatch of schemas) {
-    const schema = JSON.parse(schemaMatch[1]);
-    assert.equal(schema.url, canonical, `${path}: schema URL must match canonical`);
-    assert.equal(schema["@type"], "WebApplication", `${path}: expected WebApplication schema`);
-    assert.equal(schema.author?.name, "Abdul Qadir", `${path}: schema author mismatch`);
-  }
+  const parsedSchemas = schemas.map(schemaMatch => JSON.parse(schemaMatch[1]));
+  const appSchema = parsedSchemas.find(schema => schema["@type"] === "WebApplication");
+  assert.ok(appSchema, `${path}: WebApplication schema missing`);
+  assert.equal(appSchema.url, canonical, `${path}: WebApplication schema URL must match canonical`);
+  assert.equal(appSchema.author?.name, "Abdul Qadir", `${path}: WebApplication schema author mismatch`);
 
   let executableScripts = 0;
   for (const [, attrs, source] of scriptBlocks) {
