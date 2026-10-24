@@ -162,11 +162,11 @@ assert.match(html, /annual > 10000000/,
 
 assert.match(html, /id="salary-period"/,
   'Salary tax calculator must expose its Annual/Monthly period selector');
-assert.match(html, /Should I enter monthly or annual salary\\?[\\s\\S]{0,120}Either is supported/i,
+assert.match(html, /Should I enter monthly or annual salary\?[\s\S]{0,120}Either is supported/i,
   'Visible FAQ must explicitly support both Annual and Monthly input modes');
 assert.match(html, /When Monthly is selected, the calculator multiplies your input by 12/i,
   'Visible FAQ must explain the Monthly-to-Annual conversion');
-assert.doesNotMatch(html, /This calculator asks for annual taxable salary\\. If you start with a monthly figure/i,
+assert.doesNotMatch(html, /This calculator asks for annual taxable salary\. If you start with a monthly figure/i,
   'Visible FAQ must not contradict the Monthly input option');
 
 const periodFaq = faq.mainEntity.find(item => item.name === 'Should I calculate salary tax using gross salary or take-home pay?');
