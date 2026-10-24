@@ -3,6 +3,37 @@ import fs from 'node:fs';
 
 const html = fs.readFileSync(new URL('../pakistan-salary-tax-calculator.html', import.meta.url), 'utf8');
 
+const taxFunctionMatch = html.match(/function calculateTax\(x\) \{[\\s\\S]*?\n  \}/);
+assert.ok(taxFunctionMatch, 'Must expose the displayed salary tax function for boundary tests');
+const calculateTax = new Function(taxFunctionMatch[0] + '; return calculateTax;')();
+const slabBoundaries = [
+  { limit: 600000, rate: 0.01 },
+  { limit: 1200000, rate: 0.11 },
+  { limit: 2200000, rate: 0.20 },
+  { limit: 3200000, rate: 0.25 },
+  { limit: 4100000, rate: 0.29 },
+  { limit: 5600000, rate: 0.32 },
+  { limit: 7000000, rate: 0.35 }
+];
+for (const { limit, rate } of slabBoundaries) {
+  const atBoundary = calculateTax(limit).tax;
+  const oneRupeeAbove = calculateTax(limit + 1).tax;
+  assert.ok(Number.isFinite(atBoundary) && Number.isFinite(oneRupeeAbove),
+    'Tax must remain finite at slab boundary PKR ' + limit);
+  assert.ok(Math.abs((oneRupeeAbove - atBoundary) - rate) < 0.000001,
+    'Marginal tax must be continuous at PKR ' + limit);
+  assert.ok(oneRupeeAbove >= atBoundary,
+    'Tax must not fall when taxable salary crosses PKR ' + limit);
+}
+assert.equal(calculateTax(600000).tax, 0, 'PKR 600,000 must remain in the zero-tax band');
+assert.equal(calculateTax(1200000).tax, 6000, 'PKR 1.2m annual taxable salary must yield PKR 6,000 annual tax');
+assert.equal(calculateTax(2200000).tax, 116000, 'PKR 2.2m boundary must preserve base tax');
+assert.equal(calculateTax(3200000).tax, 316000, 'PKR 3.2m boundary must preserve base tax');
+assert.equal(calculateTax(4100000).tax, 541000, 'PKR 4.1m boundary must preserve base tax');
+assert.equal(calculateTax(5600000).tax, 976000, 'PKR 5.6m boundary must preserve base tax');
+assert.equal(calculateTax(7000000).tax, 1424000, 'PKR 7m boundary must preserve base tax');
+
+
 assert.match(html, /How much tax is deducted on a PKR 100,000 monthly salary in Pakistan\?/i,
   'Must answer the high-intent PKR 100,000 monthly salary tax question');
 assert.match(html, /PKR 6,000[\s\S]{0,180}PKR 500/i,
