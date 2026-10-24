@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const html = fs.readFileSync(new URL('../pakistan-salary-tax-calculator.html', import.meta.url), 'utf8');
 
-const taxFunctionMatch = html.match(/function calculateTax\(x\) \{[\\s\\S]*?\n  \}/);
+const taxFunctionMatch = html.match(/function calculateTax\(x\) \{[\s\S]*?\n  \}/);
 assert.ok(taxFunctionMatch, 'Must expose the displayed salary tax function for boundary tests');
 const calculateTax = new Function(taxFunctionMatch[0] + '; return calculateTax;')();
 const slabBoundaries = [
