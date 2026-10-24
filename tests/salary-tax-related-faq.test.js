@@ -159,4 +159,22 @@ assert.match(html, /function previousYearTax\(x\)/,
 assert.match(html, /annual > 10000000/,
   'Previous-year comparison must account for the 9% surcharge above PKR 10 million');
 
+
+assert.match(html, /id="salary-period"/,
+  'Salary tax calculator must expose its Annual/Monthly period selector');
+assert.match(html, /<h3>Should I enter monthly or annual salary<\\/h3><p>Either is supported/i,
+  'Visible FAQ must explicitly support both Annual and Monthly input modes');
+assert.match(html, /When Monthly is selected, the calculator multiplies your input by 12/i,
+  'Visible FAQ must explain the Monthly-to-Annual conversion');
+assert.doesNotMatch(html, /<h3>Should I enter monthly or annual salary<\\/h3><p>This calculator asks for annual taxable salary/i,
+  'Visible FAQ must not contradict the Monthly input option');
+
+const periodFaq = faq.mainEntity.find(item => item.name === 'Should I calculate salary tax using gross salary or take-home pay?');
+assert.match(periodFaq.acceptedAnswer.text, /Select Annual/i,
+  'FAQ schema answer must explain Annual input mode');
+assert.match(periodFaq.acceptedAnswer.text, /Monthly/i,
+  'FAQ schema answer must explain Monthly input mode');
+assert.match(periodFaq.acceptedAnswer.text, /multiplying it by 12/i,
+  'FAQ schema answer must describe the monthly-to-annual conversion');
+
 console.log('Finance calculator SEO, source and validation tests passed.');
