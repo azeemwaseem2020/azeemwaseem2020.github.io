@@ -3,6 +3,37 @@ import fs from 'node:fs';
 
 const html = fs.readFileSync(new URL('../pakistan-salary-tax-calculator.html', import.meta.url), 'utf8');
 
+const taxFunctionMatch = html.match(/function calculateTax\(x\) \{[\s\S]*?\n  \}/);
+assert.ok(taxFunctionMatch, 'Must expose the displayed salary tax function for boundary tests');
+const calculateTax = new Function(taxFunctionMatch[0] + '; return calculateTax;')();
+const slabBoundaries = [
+  { limit: 600000, rate: 0.01 },
+  { limit: 1200000, rate: 0.11 },
+  { limit: 2200000, rate: 0.20 },
+  { limit: 3200000, rate: 0.25 },
+  { limit: 4100000, rate: 0.29 },
+  { limit: 5600000, rate: 0.32 },
+  { limit: 7000000, rate: 0.35 }
+];
+for (const { limit, rate } of slabBoundaries) {
+  const atBoundary = calculateTax(limit).tax;
+  const oneRupeeAbove = calculateTax(limit + 1).tax;
+  assert.ok(Number.isFinite(atBoundary) && Number.isFinite(oneRupeeAbove),
+    'Tax must remain finite at slab boundary PKR ' + limit);
+  assert.ok(Math.abs((oneRupeeAbove - atBoundary) - rate) < 0.000001,
+    'Marginal tax must be continuous at PKR ' + limit);
+  assert.ok(oneRupeeAbove >= atBoundary,
+    'Tax must not fall when taxable salary crosses PKR ' + limit);
+}
+assert.equal(calculateTax(600000).tax, 0, 'PKR 600,000 must remain in the zero-tax band');
+assert.equal(calculateTax(1200000).tax, 6000, 'PKR 1.2m annual taxable salary must yield PKR 6,000 annual tax');
+assert.equal(calculateTax(2200000).tax, 116000, 'PKR 2.2m boundary must preserve base tax');
+assert.equal(calculateTax(3200000).tax, 316000, 'PKR 3.2m boundary must preserve base tax');
+assert.equal(calculateTax(4100000).tax, 541000, 'PKR 4.1m boundary must preserve base tax');
+assert.equal(calculateTax(5600000).tax, 976000, 'PKR 5.6m boundary must preserve base tax');
+assert.equal(calculateTax(7000000).tax, 1424000, 'PKR 7m boundary must preserve base tax');
+
+
 assert.match(html, /How much tax is deducted on a PKR 100,000 monthly salary in Pakistan\?/i,
   'Must answer the high-intent PKR 100,000 monthly salary tax question');
 assert.match(html, /PKR 6,000[\s\S]{0,180}PKR 500/i,
@@ -35,11 +66,11 @@ assert.match(html, /FBR Finance Act 2026 publication/,
   'Must link the enacted Finance Act as a primary source');
 assert.match(html, /A Finance Bill is useful background but is not[\s\S]{0,100}substitute for the enacted law/,
   'Must distinguish a Finance Bill from enacted legislation');
-assert.match(html, /Official source set reviewed October 15, 2026\./,
+assert.match(html, /Official source set rechecked October 24, 2026\./,
   'Must display the current official-source review date');
-assert.match(html, /"dateModified":"2026-10-15"/,
+assert.match(html, /"dateModified":"2026-10-24"/,
   'Structured data dateModified must match the reviewed page version');
-assert.match(html, /article:modified_time" content="2026-10-15"/,
+assert.match(html, /article:modified_time" content="2026-10-24"/,
   'Open Graph modified time must match the reviewed page version');
 
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
@@ -158,5 +189,23 @@ assert.match(html, /function previousYearTax\(x\)/,
   'Previous-year comparison must use a separate Tax Year 2026 formula');
 assert.match(html, /annual > 10000000/,
   'Previous-year comparison must account for the 9% surcharge above PKR 10 million');
+
+
+assert.match(html, /id="salary-period"/,
+  'Salary tax calculator must expose its Annual/Monthly period selector');
+assert.match(html, /Should I enter monthly or annual salary\?[\s\S]{0,120}Either is supported/i,
+  'Visible FAQ must explicitly support both Annual and Monthly input modes');
+assert.match(html, /When Monthly is selected, the calculator multiplies your input by 12/i,
+  'Visible FAQ must explain the Monthly-to-Annual conversion');
+assert.doesNotMatch(html, /This calculator asks for annual taxable salary\. If you start with a monthly figure/i,
+  'Visible FAQ must not contradict the Monthly input option');
+
+const periodFaq = faq.mainEntity.find(item => item.name === 'Should I calculate salary tax using gross salary or take-home pay?');
+assert.match(periodFaq.acceptedAnswer.text, /Select Annual/i,
+  'FAQ schema answer must explain Annual input mode');
+assert.match(periodFaq.acceptedAnswer.text, /Monthly/i,
+  'FAQ schema answer must explain Monthly input mode');
+assert.match(periodFaq.acceptedAnswer.text, /multiplying it by 12/i,
+  'FAQ schema answer must describe the monthly-to-annual conversion');
 
 console.log('Finance calculator SEO, source and validation tests passed.');
