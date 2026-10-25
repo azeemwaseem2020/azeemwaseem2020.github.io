@@ -109,4 +109,14 @@ assert.match(batteryGuide, /"headline":"Solar Battery Backup Calculator Pakistan
 assert.match(batteryGuide, /"name":"Solar Battery Backup Guide","item":"https:\/\/azeemwaseem2020\.github\.io\/blog-solar-battery-backup-calculator\.html"/, "battery guide: final breadcrumb has its canonical URL");
 assert.match(sitemap, /<loc>https:\/\/azeemwaseem2020\.github\.io\/blog-solar-battery-backup-calculator\.html<\/loc><lastmod>2026-10-25<\/lastmod>/, "battery guide: sitemap reflects the latest metadata update");
 
+const prioritySocialPages = ["break-even-calculator.html", "credit-card-payoff-calculator.html", "currency-converter.html", "dividend-calculator.html", "down-payment-percent-calculator.html", "gold-price-calculator.html", "gst-calculator.html", "bmi-calculator.html", "age-calculator.html", "blog-zakat-calculator-guide.html"];
+for (const page of prioritySocialPages) {
+  const html = readFileSync(page, "utf8");
+  assert.ok(html.includes('name="author" content="Abdul Qadir"'), page + ": author metadata");
+  assert.ok(html.includes('property="og:title"'), page + ": Open Graph title");
+  assert.ok(html.includes('property="og:description"'), page + ": Open Graph description");
+  assert.ok(html.includes('name="twitter:title"'), page + ": Twitter title");
+  assert.ok(html.includes('name="twitter:description"'), page + ": Twitter description");
+  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>2026-10-25</lastmod>"), page + ": sitemap lastmod");
+}
 console.log("Next-10 calculator quality regression checks: PASS (10 pages) + priority trust/solar/sitemap checks");
