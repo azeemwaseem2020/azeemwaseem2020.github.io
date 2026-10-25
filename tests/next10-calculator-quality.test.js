@@ -65,6 +65,8 @@ assert.match(solar, /daily\/\(S\*E\)/, "solar: PV size uses daily kWh divided by
 assert.match(solar, /BL\/1000\*B\/\(D\*I\)/, "solar: battery capacity accounts for backup load, hours, DoD and inverter efficiency");
 assert.match(solar, /motor-starting surge/i, "solar: disclose that motor-starting surge is excluded");
 assert.match(solar, /seasonal electricity demand stress test/i, "solar: seasonal demand comparison is present");
+assert.match(solar, /Approximate area per panel \(m²; 1 m² ≈ 10\.764 ft²\)/, "solar: explain metric input conversion for US users");
+assert.match(solar, /pc\*R\*10\.7639\)\.toFixed\(1\).*ft²/, "solar: show roof-area estimate in square feet as well as square metres");
 const solarPakistanGuide = readFileSync("blog-solar-calculator-pakistan.html", "utf8");
 assert.match(solarPakistanGuide, /<title>Solar Calculator Pakistan: Panels, Inverter &amp; Battery \\| Calcora<\\/title>/, "solar guide: title clearly states the Pakistan sizing task");
 assert.match(solarPakistanGuide, /name="description" content="Estimate solar panel count, inverter capacity and battery backup in Pakistan/i, "solar guide: description explains actual user inputs and outputs");
