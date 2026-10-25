@@ -73,6 +73,7 @@ assert.match(solarPakistanGuide, /name="description" content="Estimate solar pan
 assert.ok(solarPakistanGuide.includes('property="og:title" content="Solar Calculator Pakistan: Panels, Inverter &amp; Battery | Calcora"'), "solar guide: Open Graph title matches page title");
 assert.match(solarPakistanGuide, /name="twitter:description" content="Estimate solar panel count, inverter capacity and battery backup in Pakistan/i, "solar guide: Twitter description is aligned with search description");
 assert.match(solarPakistanGuide, /"headline":"Solar Calculator Pakistan: Panels, Inverter & Battery"/, "solar guide: Article headline matches the visible topic");
+assert.match(solarPakistanGuide, /"dateModified":"2026-10-25"/, "solar guide: Article schema reflects metadata review date");
 const inverterGuide = readFileSync("blog-solar-inverter-size-calculator.html", "utf8");
 assert.match(inverterGuide, /name="twitter:title"/, "inverter guide: Twitter title exists");
 assert.match(inverterGuide, /name="twitter:description"/, "inverter guide: Twitter description exists");
