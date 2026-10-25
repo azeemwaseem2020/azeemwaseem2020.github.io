@@ -45,4 +45,14 @@ const fertilizerVisibleQuestions=[...fertilizerFaqVisible.matchAll(/<h3\b[^>]*>(
 const fertilizerSchemaQuestions=fertilizerFaqSchema.mainEntity.map(item=>item.name);
 assert.deepEqual(fertilizerSchemaQuestions,fertilizerVisibleQuestions,'Fertilizer FAQ schema questions must match the visible FAQ headings and order');
 assert.equal(fertilizerFaqSchema.mainEntity.length,fertilizerVisibleQuestions.length,'Fertilizer FAQ schema must cover the visible FAQ section without stale or missing questions');
+const solarHtml=fs.readFileSync('solar-load-calculator.html','utf8');
+const solarFaqBlock=[...solarHtml.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)].map(m=>m[1]).find(raw=>raw.includes('"@type":"FAQPage"'));
+assert.ok(solarFaqBlock, 'Solar load calculator should provide FAQ structured data');
+const solarFaqSchema=JSON.parse(solarFaqBlock);
+const solarFaqStart=solarHtml.indexOf('<h2>Solar load calculator FAQs</h2>');
+const solarFaqEnd=solarHtml.indexOf('</section>',solarFaqStart);
+const solarFaqVisible=solarHtml.slice(solarFaqStart,solarFaqEnd);
+const solarVisibleQuestions=[...solarFaqVisible.matchAll(/<summary\b[^>]*>([\s\S]*?)<\/summary>/gi)].map(m=>m[1].replace(/<[^>]+>/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim());
+assert.deepEqual(solarFaqSchema.mainEntity.map(item=>item.name),solarVisibleQuestions,'Solar FAQ schema questions must match visible FAQ summaries and order');
+
 console.log('Construction cluster canonical, cross-link, ItemList and breadcrumb checks passed.');
