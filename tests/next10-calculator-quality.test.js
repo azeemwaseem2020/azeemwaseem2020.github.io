@@ -44,7 +44,7 @@ for (const path of pages) {
 }
 const sitemap = readFileSync("sitemap.xml", "utf8");
 for (const path of pages) {
-  const expectedLastmod = path === "eps-calculator.html" ? "2026-10-25" : "2026-10-19";
+  const expectedLastmod = ["eps-calculator.html", "interest-rate-calculator.html"].includes(path) ? "2026-10-25" : "2026-10-19";
   assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + path + "</loc><lastmod>" + expectedLastmod + "</lastmod>"), path + ": sitemap lastmod");
 }
 const amps = readFileSync("amps-to-watts-calculator.html", "utf8");
