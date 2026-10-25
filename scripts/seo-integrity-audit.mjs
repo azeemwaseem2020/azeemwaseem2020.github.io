@@ -15,6 +15,7 @@ const report = {
   internalLinksToNoindexPages: [],
   internalLinksToCanonicalAliases: [],
   htmlTechnical: { missingLang: [], missingViewport: [], missingCharset: [], multipleH1: [] },
+  contentQuality: { shortPages: [], titleLengthOutOfRange: [], descriptionLengthOutOfRange: [], missingAuthor: [], missingOpenGraphTitle: [], missingOpenGraphDescription: [], missingTwitterTitle: [], missingTwitterDescription: [] },
   structuredData: { invalidJsonLd: [] },
   canonicalTargetsMissing: [],
   sitemap: [],
@@ -113,6 +114,23 @@ for (const abs of htmlFiles) {
   }
 
   const markup = html.replace(/<script\b[\s\S]*?<\/script\s*>/gi, '').replace(/<style\b[\s\S]*?<\/style\s*>/gi, '');
+  if (!isVerification && !isNoindex) {
+    const authorTag = (html.match(/<meta\\b[^>]*\\bname\\s*=\\s*(?:"author"|'author'|author)[^>]*>/i) || [])[0] || '';
+    const ogTitleTag = (html.match(/<meta\\b[^>]*\\bproperty\\s*=\\s*(?:"og:title"|'og:title'|og:title)[^>]*>/i) || [])[0] || '';
+    const ogDescriptionTag = (html.match(/<meta\\b[^>]*\\bproperty\\s*=\\s*(?:"og:description"|'og:description'|og:description)[^>]*>/i) || [])[0] || '';
+    const twitterTitleTag = (html.match(/<meta\\b[^>]*\\bname\\s*=\\s*(?:"twitter:title"|'twitter:title'|twitter:title)[^>]*>/i) || [])[0] || '';
+    const twitterDescriptionTag = (html.match(/<meta\\b[^>]*\\bname\\s*=\\s*(?:"twitter:description"|'twitter:description'|twitter:description)[^>]*>/i) || [])[0] || '';
+    if (!attr(authorTag, 'content')) report.contentQuality.missingAuthor.push(file);
+    if (!attr(ogTitleTag, 'content')) report.contentQuality.missingOpenGraphTitle.push(file);
+    if (!attr(ogDescriptionTag, 'content')) report.contentQuality.missingOpenGraphDescription.push(file);
+    if (!attr(twitterTitleTag, 'content')) report.contentQuality.missingTwitterTitle.push(file);
+    if (!attr(twitterDescriptionTag, 'content')) report.contentQuality.missingTwitterDescription.push(file);
+    if (title.length < 30 || title.length > 65) report.contentQuality.titleLengthOutOfRange.push({ file, length: title.length, title });
+    if (description.length < 70 || description.length > 160) report.contentQuality.descriptionLengthOutOfRange.push({ file, length: description.length, description });
+    const visibleText = markup.replace(/<[^>]+>/g, ' ').replace(/&(?:nbsp|amp|quot|lt|gt|#39);/g, ' ').replace(/\\s+/g, ' ').trim();
+    const wordCount = visibleText ? visibleText.split(' ').filter(Boolean).length : 0;
+    if (wordCount < 300) report.contentQuality.shortPages.push({ file, wordCount });
+  }
   for (const anchor of markup.matchAll(/<a\b[^>]*>/gi)) {
     const href = attr(anchor[0], 'href');
     const target = relFile(file, href);
@@ -201,6 +219,7 @@ const summary = {
   internalLinksToNoindexPages: report.internalLinksToNoindexPages.length,
   internalLinksToCanonicalAliases: report.internalLinksToCanonicalAliases.length,
   htmlTechnical: Object.fromEntries(Object.entries(report.htmlTechnical).map(([key, value]) => [key, value.length])),
+  contentQuality: Object.fromEntries(Object.entries(report.contentQuality).map(([key, value]) => [key, value.length])),
   invalidJsonLd: report.structuredData.invalidJsonLd.length,
   canonicalTargetsMissing: report.canonicalTargetsMissing.length,
   indexablePagesMissingFromSitemap: indexablePagesMissingFromSitemap.length,
@@ -223,6 +242,7 @@ console.log(JSON.stringify({
     internalLinksToNoindexPages: report.internalLinksToNoindexPages,
     internalLinksToCanonicalAliases: report.internalLinksToCanonicalAliases,
     htmlTechnical: report.htmlTechnical,
+    contentQuality: report.contentQuality,
     invalidJsonLd: report.structuredData.invalidJsonLd,
     canonicalTargetsMissing: report.canonicalTargetsMissing,
     indexablePagesMissingFromSitemap,
