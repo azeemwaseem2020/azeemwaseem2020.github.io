@@ -80,10 +80,15 @@ const psxCapitalGains = readFileSync("psx-capital-gains-tax-calculator.html", "u
 assert.match(psxCapitalGains, /name="twitter:title"/, "PSX CGT: Twitter title exists");
 assert.match(psxCapitalGains, /name="twitter:description"/, "PSX CGT: Twitter description exists");
 assert.match(psxCapitalGains, /Estimate PSX capital gains tax in Pakistan/i, "PSX CGT: social metadata describes the actual calculator task");
+const psxCapitalGainGuide = readFileSync("blog-psx-capital-gain-calculator.html", "utf8");
+assert.ok(psxCapitalGainGuide.includes("<title>PSX Capital Gains Calculator Guide: Profit &amp; CGT | Calcora</title>"), "PSX guide: title matches user-facing calculation intent");
+assert.doesNotMatch(psxCapitalGainGuide, /Search intent and related PSX tools|aria-label="PSX search intent"/i, "PSX guide: no internal SEO wording is exposed to readers");
+assert.match(psxCapitalGainGuide, /"headline":"PSX Capital Gains Calculator Guide: Profit & CGT"/, "PSX guide: Article headline matches the page topic");
+assert.match(psxCapitalGainGuide, /"dateModified":"2026-10-25"/, "PSX guide: Article schema reflects the latest substantive review");
 const zakat = readFileSync("zakat-calculator.html", "utf8");
 assert.match(zakat, /not an independent review by a qualified Islamic scholar/i, "zakat: distinguish software checks from religious review");
 assert.match(zakat, /No religious or professional qualification is claimed/i, "zakat: qualifications and scope are transparent");
-for (const page of ["blog-solar-calculator-pakistan.html", "blog-solar-inverter-size-calculator.html", "psx-capital-gains-tax-calculator.html", "contact.html", "faq.html", "pakistan-salary-tax-calculator.html"]) {
+for (const page of ["blog-solar-calculator-pakistan.html", "blog-solar-inverter-size-calculator.html", "psx-capital-gains-tax-calculator.html", "blog-psx-capital-gain-calculator.html", "blog-bank-loan-calculator-pakistan.html", "pakistan-salary-tax-guide-urdu.html", "pakistan-salary-tax-guide-roman-urdu.html", "pakistan-filer-non-filer-tax-rates-2026-27.html", "pakistan-income-tax-return-deadline-2026.html", "contact.html", "faq.html", "pakistan-salary-tax-calculator.html"]) {
   assert.match(sitemap, new RegExp("<loc>https://azeemwaseem2020\\.github\\.io/" + page.replace(".", "\\.") + "</loc><lastmod>2026-10-25</lastmod>"), page + ": current sitemap lastmod");
 }
 const inverterGuide = readFileSync("blog-solar-inverter-size-calculator.html", "utf8");
