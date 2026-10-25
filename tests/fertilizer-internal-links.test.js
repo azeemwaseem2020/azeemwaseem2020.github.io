@@ -206,7 +206,7 @@ const pasture = fs.readFileSync(new URL('pasture-fertilizer-calculator.html', ro
 const pastureDirectory = fs.readFileSync(new URL('calculators.html', root), 'utf8');
 const pastureSitemap = fs.readFileSync(new URL('sitemap.xml', root), 'utf8');
 const pasturePrioritySitemap = fs.readFileSync(new URL('sitemap-pakistan-priority.xml', root), 'utf8');
-assert.match(pasture, /<title>Pasture Fertilizer Calculator \\| Rate &amp; Cost \\| Calcora<\\/title>/);
+assert.match(pasture, /<title>Pasture Fertilizer Calculator \| Rate &amp; Cost \| Calcora<\/title>/);
 assert.match(pasture, /<link rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\/pasture-fertilizer-calculator\.html">/);
 assert.match(pasture, /<h1>Pasture Fertilizer Calculator/);
 assert.match(pasture, /<meta name="description" content="Use this pasture fertilizer calculator to compare N, P₂O₅, K₂O and sulfur, estimate product rates per acre or hectare, whole bags and field cost\.">/);
