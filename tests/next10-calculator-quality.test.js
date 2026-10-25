@@ -61,10 +61,6 @@ const salarySchemaDate = (salaryTax.match(/"dateModified":"(\d{4}-\d{2}-\d{2})"/
 const salaryMetaDate = (salaryTax.match(/article:modified_time" content="(\d{4}-\d{2}-\d{2})"/) || [])[1];
 assert.ok(salarySchemaDate, "salary tax: schema modification date exists");
 assert.equal(salaryMetaDate, salarySchemaDate, "salary tax: Open Graph modified time matches schema date");
-const salaryTaxModifiedDate = (salaryTax.match(/"dateModified":"(\\d{4}-\\d{2}-\\d{2})"/) || [])[1];
-const salaryTaxOgModifiedDate = (salaryTax.match(/article:modified_time" content="(\\d{4}-\\d{2}-\\d{2})"/) || [])[1];
-assert.ok(salaryTaxModifiedDate, "salary tax: schema modification date is present");
-assert.equal(salaryTaxOgModifiedDate, salaryTaxModifiedDate, "salary tax: schema and Open Graph modification dates match");
 assert.match(salaryTax, /id="salary-net-gross-tools"/, "salary tax: net-to-gross feature is visibly documented");
 const solar = readFileSync("solar-load-calculator.html", "utf8");
 assert.match(solar, /daily\/\(S\*E\)/, "solar: PV size uses daily kWh divided by sun hours and efficiency");
