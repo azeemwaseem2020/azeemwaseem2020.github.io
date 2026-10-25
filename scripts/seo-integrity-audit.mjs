@@ -127,7 +127,8 @@ for (const abs of htmlFiles) {
     if (!attr(twitterDescriptionTag, 'content')) report.contentQuality.missingTwitterDescription.push(file);
     if (title.length < 30 || title.length > 65) report.contentQuality.titleLengthOutOfRange.push({ file, length: title.length, title });
     if (description.length < 70 || description.length > 160) report.contentQuality.descriptionLengthOutOfRange.push({ file, length: description.length, description });
-    const visibleText = markup.replace(/<[^>]+>/g, ' ').replace(/&(?:nbsp|amp|quot|lt|gt|#39);/g, ' ').replace(/\s+/g, ' ').trim();
+    const mainContent = (html.match(/<main\b[\s\S]*?<\/main\s*>/i) || html.match(/<article\b[\s\S]*?<\/article\s*>/i) || [markup])[0];
+    const visibleText = mainContent.replace(/<script\b[\s\S]*?<\/script\s*>/gi, ' ').replace(/<style\b[\s\S]*?<\/style\s*>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&(?:nbsp|amp|quot|lt|gt|#39);/g, ' ').replace(/\s+/g, ' ').trim();
     const wordCount = visibleText ? visibleText.split(' ').filter(Boolean).length : 0;
     if (wordCount < 300) report.contentQuality.shortPages.push({ file, wordCount });
   }
