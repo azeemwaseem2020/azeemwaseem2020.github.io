@@ -67,9 +67,9 @@ const mainSitemapUrls = new Set();
 for (const abs of htmlFiles) {
   const file = path.relative(ROOT, abs).split(path.sep).join('/');
   const html = fs.readFileSync(abs, 'utf8');
-  const title = (html.match(/<title\b[^>]*>([\s\S]*?)<\/title\s*>/i) || [])[1]?.replace(/\s+/g, ' ').trim() || '';
+  const title = decodeEntities((html.match(/<title\b[^>]*>([\s\S]*?)<\/title\s*>/i) || [])[1]?.replace(/\s+/g, ' ').trim() || '');
   const descriptionTag = (html.match(/<meta\b[^>]*\bname\s*=\s*(?:"description"|'description'|description)[^>]*>/i) || [])[0] || '';
-  const description = attr(descriptionTag, 'content');
+  const description = decodeEntities(attr(descriptionTag, 'content'));
   const canonicalTag = (html.match(/<link\b[^>]*\brel\s*=\s*(?:"canonical"|'canonical'|canonical)[^>]*>/i) || [])[0] || '';
   const canonical = attr(canonicalTag, 'href');
   if (canonical) canonicalForAllFiles.set(file, canonical);
