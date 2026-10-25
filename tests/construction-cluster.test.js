@@ -28,7 +28,7 @@ assert.match(flooringHtml, /Worked example: flooring quantity and material budge
 const gravelHtml=fs.readFileSync('gravel-calculator.html','utf8');
 assert.doesNotMatch(gravelHtml, /href="percentage-calculator\.html"|href="average-calculator\.html"/, 'Gravel page should avoid unrelated calculator links');
 const energyHub=fs.readFileSync('us-home-energy-calculator-hub.html','utf8');
-const energyTitle='US Home Energy Calculators: Bills &amp; Solar | Calcora';
+const energyTitle='US Home Energy Calculators | Electricity & Solar | Calcora';
 assert.ok(energyTitle.length>=30 && energyTitle.length<=65, 'US energy hub title should fit the target snippet length');
 assert.ok(energyHub.includes('<title>'+energyTitle+'</title>'), 'US energy hub title should use the focused search-intent title');
 assert.ok(energyHub.includes('<meta property="og:title" content="'+energyTitle+'">'), 'US energy hub OG title should align with page title');
