@@ -28,8 +28,9 @@ assert.match(flooringHtml, /Worked example: flooring quantity and material budge
 const gravelHtml=fs.readFileSync('gravel-calculator.html','utf8');
 assert.doesNotMatch(gravelHtml, /href="percentage-calculator\.html"|href="average-calculator\.html"/, 'Gravel page should avoid unrelated calculator links');
 const energyHub=fs.readFileSync('us-home-energy-calculator-hub.html','utf8');
-const energyTitle=(energyHub.match(/<title>([\\s\\S]*?)<\\/title>/i)||[])[1]||'';
+const energyTitle='US Home Energy Calculators | Electricity &amp; Solar | Calcora';
 assert.ok(energyTitle.length>=30 && energyTitle.length<=65, 'US energy hub title should fit the target snippet length');
-assert.match(energyHub, /<meta property="og:title" content="US Home Energy Calculators \\| Electricity &amp; Solar \\| Calcora">/, 'US energy hub OG title should align with page title');
-assert.match(energyHub, /<meta name="twitter:title" content="US Home Energy Calculators \\| Electricity &amp; Solar \\| Calcora">/, 'US energy hub Twitter title should align with page title');
+assert.ok(energyHub.includes('<title>'+energyTitle+'</title>'), 'US energy hub title should use the focused search-intent title');
+assert.ok(energyHub.includes('<meta property="og:title" content="'+energyTitle+'">'), 'US energy hub OG title should align with page title');
+assert.ok(energyHub.includes('<meta name="twitter:title" content="'+energyTitle+'">'), 'US energy hub Twitter title should align with page title');
 console.log('Construction cluster canonical, cross-link, ItemList and breadcrumb checks passed.');
