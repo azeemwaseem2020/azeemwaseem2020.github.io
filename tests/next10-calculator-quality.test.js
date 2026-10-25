@@ -69,7 +69,7 @@ assert.match(solar, /motor-starting surge/i, "solar: disclose that motor-startin
 assert.match(solar, /seasonal electricity demand stress test/i, "solar: seasonal demand comparison is present");
 assert.match(solar, /Approximate area per panel \(m²; 1 m² ≈ 10\.764 ft²\)/, "solar: explain metric input conversion for US users");
 assert.match(solar, /pc\*R\*10\.7639\)\.toFixed\(1\).*ft²/, "solar: show roof-area estimate in square feet as well as square metres");
-assert.match(solar, /quantityInputs,\.\.\.wattInputs,\.\.\.hourInputs\]\)\.some\(x=>x\.value\.trim\(\)===\x27\x27\)/, "solar: reject blank appliance fields instead of silently treating them as zero");
+assert.match(solar, /Complete the quantity, watts and hours for every appliance row/, "solar: reject blank appliance fields instead of silently treating them as zero");
 const solarPakistanGuide = readFileSync("blog-solar-calculator-pakistan.html", "utf8");
 assert.ok(solarPakistanGuide.includes("<title>Solar Calculator Pakistan: Panels, Inverter &amp; Battery | Calcora</title>"), "solar guide: title clearly states the Pakistan sizing task");
 assert.match(solarPakistanGuide, /name="description" content="Estimate solar panel count, inverter capacity and battery backup in Pakistan/i, "solar guide: description explains actual user inputs and outputs");
