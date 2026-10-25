@@ -13,6 +13,9 @@ assert.doesNotMatch(gravel, /"name":"Utility Calculators"/, 'Gravel breadcrumb s
 const flooring=fs.readFileSync('flooring-cost-calculator.html','utf8');
 assert.doesNotMatch(flooring, /id="calcora-semantic-context"/, 'Flooring page should not contain generic semantic filler');
 const paint=fs.readFileSync('paint-calculator.html','utf8');
+assert.match(paint, /id="paint-unit-conversion"/, 'Paint page should explain metric label conversion for the US-unit calculator');
+assert.match(paint, /coverage in ft² per US gallon ≈ coverage in m²\/L × 40\.745/, 'Paint guide should provide a transparent unit conversion');
+assert.doesNotMatch(paint, /<h2>How paint quantity is estimated<\/h2>/, 'Paint page should avoid the removed repetitive generic section');
 for(const link of ['construction-calculators.html','square-footage-calculator.html','flooring-cost-calculator.html','tile-calculator.html','volume-calculator.html']) {
   assert.ok(paint.includes('href="'+link+'"'), 'Paint page should link to relevant construction tool '+link);
 }
