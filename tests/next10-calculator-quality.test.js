@@ -54,4 +54,21 @@ const kg = readFileSync("kg-to-lb-calculator.html", "utf8");
 assert.match(kg, /x<0/, "kg-to-lb: rejects negative mass");
 const ellipse = readFileSync("ellipse-area-calculator.html", "utf8");
 assert.match(ellipse, /a>0&&b>0/, "ellipse: positive semi-axis validation");
-console.log("Next-10 calculator quality regression checks: PASS (10 pages)");
+const salaryTax = readFileSync("pakistan-salary-tax-calculator.html", "utf8");
+assert.match(salaryTax, /No independently qualified tax professional is identified as a reviewer/i, "salary tax: disclose lack of independent tax review");
+assert.doesNotMatch(salaryTax, /<strong>Reviewer:<\/strong>\s*Mr\. Jack/i, "salary tax: do not attribute review to an unverified named reviewer");
+assert.match(salaryTax, /<strong>Review type:<\/strong> Internal software and source-reference review/i, "salary tax: clearly label internal review");
+assert.match(salaryTax, /"dateModified":"2026-10-25"/, "salary tax: schema modification date reflects review disclosure");
+assert.match(salaryTax, /id="salary-net-gross-tools"/, "salary tax: net-to-gross feature is visibly documented");
+const solar = readFileSync("solar-load-calculator.html", "utf8");
+assert.match(solar, /daily\/\(S\*E\)/, "solar: PV size uses daily kWh divided by sun hours and efficiency");
+assert.match(solar, /BL\/1000\*B\/\(D\*I\)/, "solar: battery capacity accounts for backup load, hours, DoD and inverter efficiency");
+assert.match(solar, /motor-starting surge/i, "solar: disclose that motor-starting surge is excluded");
+assert.match(solar, /seasonal electricity demand stress test/i, "solar: seasonal demand comparison is present");
+const zakat = readFileSync("zakat-calculator.html", "utf8");
+assert.match(zakat, /not an independent review by a qualified Islamic scholar/i, "zakat: distinguish software checks from religious review");
+assert.match(zakat, /No religious or professional qualification is claimed/i, "zakat: qualifications and scope are transparent");
+for (const page of ["contact.html", "faq.html", "pakistan-salary-tax-calculator.html"]) {
+  assert.match(sitemap, new RegExp("<loc>https://azeemwaseem2020\\.github\\.io/" + page.replace(".", "\\.") + "</loc><lastmod>2026-10-25</lastmod>"), page + ": current sitemap lastmod");
+}
+console.log("Next-10 calculator quality regression checks: PASS (10 pages) + priority trust/solar/sitemap checks");
