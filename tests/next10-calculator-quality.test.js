@@ -65,10 +65,19 @@ assert.match(solar, /daily\/\(S\*E\)/, "solar: PV size uses daily kWh divided by
 assert.match(solar, /BL\/1000\*B\/\(D\*I\)/, "solar: battery capacity accounts for backup load, hours, DoD and inverter efficiency");
 assert.match(solar, /motor-starting surge/i, "solar: disclose that motor-starting surge is excluded");
 assert.match(solar, /seasonal electricity demand stress test/i, "solar: seasonal demand comparison is present");
+const solarPakistanGuide = readFileSync("blog-solar-calculator-pakistan.html", "utf8");
+assert.match(solarPakistanGuide, /<title>Solar Calculator Pakistan: Panels, Inverter &amp; Battery \\| Calcora<\\/title>/, "solar guide: title clearly states the Pakistan sizing task");
+assert.match(solarPakistanGuide, /name="description" content="Estimate solar panel count, inverter capacity and battery backup in Pakistan/i, "solar guide: description explains actual user inputs and outputs");
+assert.match(solarPakistanGuide, /property="og:title" content="Solar Calculator Pakistan: Panels, Inverter &amp; Battery \\| Calcora"/, "solar guide: Open Graph title matches page title");
+assert.match(solarPakistanGuide, /name="twitter:description" content="Estimate solar panel count, inverter capacity and battery backup in Pakistan/i, "solar guide: Twitter description is aligned with search description");
+assert.match(solarPakistanGuide, /"headline":"Solar Calculator Pakistan: Panels, Inverter & Battery"/, "solar guide: Article headline matches the visible topic");
+const inverterGuide = readFileSync("blog-solar-inverter-size-calculator.html", "utf8");
+assert.match(inverterGuide, /name="twitter:title"/, "inverter guide: Twitter title exists");
+assert.match(inverterGuide, /name="twitter:description"/, "inverter guide: Twitter description exists");
 const zakat = readFileSync("zakat-calculator.html", "utf8");
 assert.match(zakat, /not an independent review by a qualified Islamic scholar/i, "zakat: distinguish software checks from religious review");
 assert.match(zakat, /No religious or professional qualification is claimed/i, "zakat: qualifications and scope are transparent");
-for (const page of ["contact.html", "faq.html", "pakistan-salary-tax-calculator.html"]) {
+for (const page of ["blog-solar-calculator-pakistan.html", "blog-solar-inverter-size-calculator.html", "contact.html", "faq.html", "pakistan-salary-tax-calculator.html"]) {
   assert.match(sitemap, new RegExp("<loc>https://azeemwaseem2020\\.github\\.io/" + page.replace(".", "\\.") + "</loc><lastmod>2026-10-25</lastmod>"), page + ": current sitemap lastmod");
 }
 console.log("Next-10 calculator quality regression checks: PASS (10 pages) + priority trust/solar/sitemap checks");
