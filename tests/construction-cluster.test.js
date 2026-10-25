@@ -8,7 +8,7 @@ const gravel=fs.readFileSync('gravel-calculator.html','utf8');
 assert.match(gravel, /name="author" content="Abdul Qadir"/, 'Gravel page should identify the author consistently');
 assert.match(gravel, /name="twitter:title"/, 'Gravel page should include a Twitter title');
 assert.match(gravel, /name="twitter:description"/, 'Gravel page should include a Twitter description');
-assert.match(gravel, /"name":"Construction Calculators","item":"https:\\/\\/azeemwaseem2020\\.github\\.io\\/construction-calculators\\.html"/, 'Gravel breadcrumb should reflect the construction cluster');
+assert.ok(gravel.includes('"name":"Construction Calculators","item":"https://azeemwaseem2020.github.io/construction-calculators.html"'), 'Gravel breadcrumb should reflect the construction cluster');
 assert.doesNotMatch(gravel, /"name":"Utility Calculators"/, 'Gravel breadcrumb should not point to an unrelated utility hub');
 const flooring=fs.readFileSync('flooring-cost-calculator.html','utf8');
 assert.doesNotMatch(flooring, /id="calcora-semantic-context"/, 'Flooring page should not contain generic semantic filler');
