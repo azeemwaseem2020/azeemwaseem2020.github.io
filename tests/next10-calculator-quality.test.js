@@ -132,7 +132,7 @@ for (const page of financeSocialPages) {
 const refreshedDescriptionPages = ["p-value-calculator.html", "parallelogram-area-calculator.html", "percent-given-value-calculator.html", "prism-volume-calculator.html", "profit-margin-calculator.html", "remainder-calculator.html", "sector-area-calculator.html", "topsoil-calculator.html", "torus-volume-calculator.html", "trapezoid-area-calculator.html", "value-given-percent-calculator.html", "vat-calculator.html", "pregnancy-calculator.html", "psx-dividend-reinvestment-calculator.html", "pythagorean-theorem-calculator.html", "utility-calculator-hub.html", "lean-body-mass-calculator.html", "midpoint-calculator.html", "miles-to-km-calculator.html", "weight-loss-calculator.html"];
 for (const page of refreshedDescriptionPages) {
   const html = readFileSync(page, "utf8");
-  const description = (html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i) || [])[1];
+  const description = (html.match(/<meta\s+name="description"\s+content="([^"]*)"/i) || [])[1];
   assert.ok(description && description.length >= 70 && description.length <= 160, page + ": meta description should be 70–160 characters");
   assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>2026-10-25</lastmod>"), page + ": sitemap lastmod");
 }
