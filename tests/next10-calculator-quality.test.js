@@ -76,10 +76,14 @@ assert.match(solarPakistanGuide, /"headline":"Solar Calculator Pakistan: Panels,
 const inverterGuide = readFileSync("blog-solar-inverter-size-calculator.html", "utf8");
 assert.match(inverterGuide, /name="twitter:title"/, "inverter guide: Twitter title exists");
 assert.match(inverterGuide, /name="twitter:description"/, "inverter guide: Twitter description exists");
+const psxCapitalGains = readFileSync("psx-capital-gains-tax-calculator.html", "utf8");
+assert.match(psxCapitalGains, /name="twitter:title"/, "PSX CGT: Twitter title exists");
+assert.match(psxCapitalGains, /name="twitter:description"/, "PSX CGT: Twitter description exists");
+assert.match(psxCapitalGains, /Estimate PSX capital gains tax in Pakistan/i, "PSX CGT: social metadata describes the actual calculator task");
 const zakat = readFileSync("zakat-calculator.html", "utf8");
 assert.match(zakat, /not an independent review by a qualified Islamic scholar/i, "zakat: distinguish software checks from religious review");
 assert.match(zakat, /No religious or professional qualification is claimed/i, "zakat: qualifications and scope are transparent");
-for (const page of ["blog-solar-calculator-pakistan.html", "blog-solar-inverter-size-calculator.html", "contact.html", "faq.html", "pakistan-salary-tax-calculator.html"]) {
+for (const page of ["blog-solar-calculator-pakistan.html", "blog-solar-inverter-size-calculator.html", "psx-capital-gains-tax-calculator.html", "contact.html", "faq.html", "pakistan-salary-tax-calculator.html"]) {
   assert.match(sitemap, new RegExp("<loc>https://azeemwaseem2020\\.github\\.io/" + page.replace(".", "\\.") + "</loc><lastmod>2026-10-25</lastmod>"), page + ": current sitemap lastmod");
 }
 const inverterGuide = readFileSync("blog-solar-inverter-size-calculator.html", "utf8");
