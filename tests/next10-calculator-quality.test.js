@@ -82,4 +82,19 @@ assert.match(zakat, /No religious or professional qualification is claimed/i, "z
 for (const page of ["blog-solar-calculator-pakistan.html", "blog-solar-inverter-size-calculator.html", "contact.html", "faq.html", "pakistan-salary-tax-calculator.html"]) {
   assert.match(sitemap, new RegExp("<loc>https://azeemwaseem2020\\.github\\.io/" + page.replace(".", "\\.") + "</loc><lastmod>2026-10-25</lastmod>"), page + ": current sitemap lastmod");
 }
+const inverterGuide = readFileSync("blog-solar-inverter-size-calculator.html", "utf8");
+assert.match(inverterGuide, /<title>Solar Inverter Sizing Guide: kW, kVA &amp; Surge \| Calcora<\/title>/, "inverter guide: concise page title");
+assert.match(inverterGuide, /property=["']og:title["'] content=["']Solar Inverter Sizing Guide: kW, kVA &amp; Surge \| Calcora["']/i, "inverter guide: OG title matches page title");
+assert.match(inverterGuide, /property=["']og:image["']/i, "inverter guide: OG image is available");
+assert.match(inverterGuide, /name=["']twitter:description["']/i, "inverter guide: Twitter description is available");
+assert.match(sitemap, /<loc>https:\/\/azeemwaseem2020\.github\.io\/blog-solar-inverter-size-calculator\.html<\/loc><lastmod>2026-10-25<\/lastmod>/, "inverter guide: sitemap reflects the latest metadata update");
+
+const batteryGuide = readFileSync("blog-solar-battery-backup-calculator.html", "utf8");
+assert.match(batteryGuide, /<title>Solar Battery Backup Calculator Pakistan \| kWh &amp; Ah \| Calcora<\/title>/, "battery guide: title identifies Pakistan scope");
+assert.match(batteryGuide, /property=["']og:title["'] content=["']Solar Battery Backup Calculator Pakistan \| kWh &amp; Ah \| Calcora["']/i, "battery guide: OG title matches page title");
+assert.match(batteryGuide, /name=["']twitter:title["'] content=["']Solar Battery Backup Calculator Pakistan \| kWh &amp; Ah \| Calcora["']/i, "battery guide: Twitter title matches page title");
+assert.match(batteryGuide, /"headline":"Solar Battery Backup Calculator Pakistan: kWh, Ah & Backup Hours"/, "battery guide: Article schema headline reflects page topic");
+assert.match(batteryGuide, /"name":"Solar Battery Backup Guide","item":"https:\/\/azeemwaseem2020\.github\.io\/blog-solar-battery-backup-calculator\.html"/, "battery guide: final breadcrumb has its canonical URL");
+assert.match(sitemap, /<loc>https:\/\/azeemwaseem2020\.github\.io\/blog-solar-battery-backup-calculator\.html<\/loc><lastmod>2026-10-25<\/lastmod>/, "battery guide: sitemap reflects the latest metadata update");
+
 console.log("Next-10 calculator quality regression checks: PASS (10 pages) + priority trust/solar/sitemap checks");
