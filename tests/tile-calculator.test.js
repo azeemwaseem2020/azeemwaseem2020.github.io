@@ -50,4 +50,16 @@ elements["#l"].value = "0";
 calculate();
 assert.match(elements["#r"].textContent, /Enter positive room and tile dimensions/);
 
+elements["#l"].value = "1e308";
+elements["#w"].value = "1e308";
+calculate();
+assert.match(elements["#r"].textContent, /too large to calculate reliably/);
+
+elements["#l"].value = "1e100";
+elements["#w"].value = "1";
+elements["#tl"].value = "1e-100";
+elements["#tw"].value = "1";
+calculate();
+assert.match(elements["#r"].textContent, /too large to calculate reliably/);
+
 console.log("Tile calculator runtime regression tests passed: normal calculation, rounding, zero waste, invalid waste and invalid dimensions.");
