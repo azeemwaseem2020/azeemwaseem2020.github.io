@@ -58,7 +58,7 @@ const salaryTax = readFileSync("pakistan-salary-tax-calculator.html", "utf8");
 assert.match(salaryTax, /No independently qualified tax professional is identified as a reviewer/i, "salary tax: disclose lack of independent tax review");
 assert.doesNotMatch(salaryTax, /<strong>Reviewer:<\/strong>\s*Mr\. Jack/i, "salary tax: do not attribute review to an unverified named reviewer");
 assert.match(salaryTax, /<strong>Review type:<\/strong> Internal software and source-reference review/i, "salary tax: clearly label internal review");
-assert.match(salaryTax, /"dateModified":"2026-10-25"/, "salary tax: schema modification date reflects review disclosure");
+assert.match(salaryTax, /"dateModified":"2026-10-24"/, "salary tax: schema modification date matches the displayed review date");
 assert.match(salaryTax, /id="salary-net-gross-tools"/, "salary tax: net-to-gross feature is visibly documented");
 const solar = readFileSync("solar-load-calculator.html", "utf8");
 assert.match(solar, /daily\/\(S\*E\)/, "solar: PV size uses daily kWh divided by sun hours and efficiency");
