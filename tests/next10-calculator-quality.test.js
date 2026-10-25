@@ -136,4 +136,10 @@ for (const page of refreshedDescriptionPages) {
   assert.ok(description && description.length >= 70 && description.length <= 160, page + ": meta description should be 70–160 characters");
   assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>2026-10-25</lastmod>"), page + ": sitemap lastmod");
 }
+const authorStandardizationPages = ["height-converter-calculator.html", "herons-formula-calculator.html", "inverse-trigonometry-calculator.html", "lean-body-mass-calculator.html", "magnification-calculator.html", "mass-energy-calculator.html", "mirror-formula-calculator.html", "projectile-motion-calculator.html", "proportion-calculator.html", "random-number-generator.html", "scientific-notation-calculator.html", "sector-area-calculator.html", "series-resistance-calculator.html", "snells-law-calculator.html", "specific-heat-calculator.html", "speed-calculator.html", "spring-force-calculator.html", "steps-to-calories-calculator.html", "surface-area-calculator.html", "tdee-calculator.html", "time-and-a-half-calculator.html", "time-calculator.html", "tip-calculator.html", "torus-volume-calculator.html", "trapezoid-area-calculator.html", "triangle-calculator.html", "unit-converter.html", "value-given-percent-calculator.html", "volume-calculator.html", "wavelength-calculator.html", "weight-loss-calculator.html"];
+for (const page of authorStandardizationPages) {
+  const html = readFileSync(page, "utf8");
+  assert.ok(html.includes('name="author" content="Abdul Qadir"'), page + ": consistent author identity");
+  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>2026-10-25</lastmod>"), page + ": sitemap lastmod");
+}
 console.log("Next-10 calculator quality regression checks: PASS (10 pages) + priority trust/solar/sitemap checks");
