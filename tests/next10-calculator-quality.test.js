@@ -92,7 +92,7 @@ assert.match(zakat, /No religious or professional qualification is claimed/i, "z
 for (const page of ["blog-solar-calculator-pakistan.html", "blog-solar-inverter-size-calculator.html", "psx-capital-gains-tax-calculator.html", "blog-psx-capital-gain-calculator.html", "blog-bank-loan-calculator-pakistan.html", "pakistan-salary-tax-guide-urdu.html", "pakistan-salary-tax-guide-roman-urdu.html", "pakistan-filer-non-filer-tax-rates-2026-27.html", "pakistan-income-tax-return-deadline-2026.html", "contact.html", "faq.html", "pakistan-salary-tax-calculator.html"]) {
   assert.match(sitemap, new RegExp("<loc>https://azeemwaseem2020\\.github\\.io/" + page.replace(".", "\\.") + "</loc><lastmod>2026-10-25</lastmod>"), page + ": current sitemap lastmod");
 }
-const inverterGuide = readFileSync("blog-solar-inverter-size-calculator.html", "utf8");
+
 assert.match(inverterGuide, /<title>Solar Inverter Sizing Guide: kW, kVA &amp; Surge \| Calcora<\/title>/, "inverter guide: concise page title");
 assert.match(inverterGuide, /property=["']og:title["'] content=["']Solar Inverter Sizing Guide: kW, kVA &amp; Surge \| Calcora["']/i, "inverter guide: OG title matches page title");
 assert.match(inverterGuide, /property=["']og:image["']/i, "inverter guide: OG image is available");
