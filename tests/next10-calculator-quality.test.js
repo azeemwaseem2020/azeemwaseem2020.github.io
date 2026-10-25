@@ -44,7 +44,8 @@ for (const path of pages) {
 }
 const sitemap = readFileSync("sitemap.xml", "utf8");
 for (const path of pages) {
-  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + path + "</loc><lastmod>2026-10-19</lastmod>"), path + ": sitemap lastmod");
+  const expectedLastmod = path === "eps-calculator.html" ? "2026-10-25" : "2026-10-19";
+  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + path + "</loc><lastmod>" + expectedLastmod + "</lastmod>"), path + ": sitemap lastmod");
 }
 const amps = readFileSync("amps-to-watts-calculator.html", "utf8");
 assert.match(amps, /id=['"]pf['"]/i, "amps-to-watts: power factor input");
