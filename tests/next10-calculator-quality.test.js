@@ -68,9 +68,9 @@ assert.match(solar, /seasonal electricity demand stress test/i, "solar: seasonal
 assert.match(solar, /Approximate area per panel \(m²; 1 m² ≈ 10\.764 ft²\)/, "solar: explain metric input conversion for US users");
 assert.match(solar, /pc\*R\*10\.7639\)\.toFixed\(1\).*ft²/, "solar: show roof-area estimate in square feet as well as square metres");
 const solarPakistanGuide = readFileSync("blog-solar-calculator-pakistan.html", "utf8");
-assert.match(solarPakistanGuide, /<title>Solar Calculator Pakistan: Panels, Inverter &amp; Battery \\| Calcora<\\/title>/, "solar guide: title clearly states the Pakistan sizing task");
+assert.ok(solarPakistanGuide.includes("<title>Solar Calculator Pakistan: Panels, Inverter &amp; Battery | Calcora</title>"), "solar guide: title clearly states the Pakistan sizing task");
 assert.match(solarPakistanGuide, /name="description" content="Estimate solar panel count, inverter capacity and battery backup in Pakistan/i, "solar guide: description explains actual user inputs and outputs");
-assert.match(solarPakistanGuide, /property="og:title" content="Solar Calculator Pakistan: Panels, Inverter &amp; Battery \\| Calcora"/, "solar guide: Open Graph title matches page title");
+assert.ok(solarPakistanGuide.includes('property="og:title" content="Solar Calculator Pakistan: Panels, Inverter &amp; Battery | Calcora"'), "solar guide: Open Graph title matches page title");
 assert.match(solarPakistanGuide, /name="twitter:description" content="Estimate solar panel count, inverter capacity and battery backup in Pakistan/i, "solar guide: Twitter description is aligned with search description");
 assert.match(solarPakistanGuide, /"headline":"Solar Calculator Pakistan: Panels, Inverter & Battery"/, "solar guide: Article headline matches the visible topic");
 const inverterGuide = readFileSync("blog-solar-inverter-size-calculator.html", "utf8");
