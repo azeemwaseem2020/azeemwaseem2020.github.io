@@ -119,4 +119,14 @@ for (const page of prioritySocialPages) {
   assert.ok(html.includes('name="twitter:description"'), page + ": Twitter description");
   assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>2026-10-25</lastmod>"), page + ": sitemap lastmod");
 }
+const financeSocialPages = ["amortization-calculator.html", "apr-calculator.html", "apy-calculator.html", "blog-emi-amortization-schedule.html", "blog-freelancer-tax-pakistan.html", "base-calculator.html", "complex-number-calculator.html", "coulombs-law-calculator.html"];
+for (const page of financeSocialPages) {
+  const html = readFileSync(page, "utf8");
+  assert.ok(html.includes('name="author" content="Abdul Qadir"'), page + ": author metadata");
+  assert.ok(html.includes('property="og:title"'), page + ": Open Graph title");
+  assert.ok(html.includes('property="og:description"'), page + ": Open Graph description");
+  assert.ok(html.includes('name="twitter:title"'), page + ": Twitter title");
+  assert.ok(html.includes('name="twitter:description"'), page + ": Twitter description");
+  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>2026-10-25</lastmod>"), page + ": sitemap lastmod");
+}
 console.log("Next-10 calculator quality regression checks: PASS (10 pages) + priority trust/solar/sitemap checks");
