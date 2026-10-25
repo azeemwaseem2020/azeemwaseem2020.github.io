@@ -34,14 +34,14 @@ assert.ok(energyHub.includes('<title>'+energyTitle+'</title>'), 'US energy hub t
 assert.ok(energyHub.includes('<meta property="og:title" content="'+energyTitle+'">'), 'US energy hub OG title should align with page title');
 assert.ok(energyHub.includes('<meta name="twitter:title" content="'+energyTitle+'">'), 'US energy hub Twitter title should align with page title');
 const fertilizerHtml=fs.readFileSync('fertilizer-calculator.html','utf8');
-const fertilizerFaqBlock=[...fertilizerHtml.matchAll(/<script\\b[^>]*type=["']application\\/ld\\+json["'][^>]*>([\\s\\S]*?)<\\/script>/gi)].map(m=>m[1]).find(raw=>raw.includes('"@type":"FAQPage"'));
+const fertilizerFaqBlock=[...fertilizerHtml.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)].map(m=>m[1]).find(raw=>raw.includes('"@type":"FAQPage"'));
 assert.ok(fertilizerFaqBlock, 'Fertilizer calculator should provide FAQ structured data');
 const fertilizerFaqSchema=JSON.parse(fertilizerFaqBlock);
 const fertilizerFaqStart=fertilizerHtml.indexOf('Frequently asked questions');
 const fertilizerFaqEnd=fertilizerHtml.indexOf('</section>',fertilizerFaqStart);
 assert.ok(fertilizerFaqStart>=0 && fertilizerFaqEnd>fertilizerFaqStart, 'Fertilizer calculator should expose a visible FAQ section');
 const fertilizerFaqVisible=fertilizerHtml.slice(fertilizerFaqStart,fertilizerFaqEnd);
-const fertilizerVisibleQuestions=[...fertilizerFaqVisible.matchAll(/<h3\\b[^>]*>([\\s\\S]*?)<\\/h3>/gi)].map(m=>m[1].replace(/<[^>]+>/g,' ').replace(/&amp;/g,'&').replace(/\\s+/g,' ').trim());
+const fertilizerVisibleQuestions=[...fertilizerFaqVisible.matchAll(/<h3\b[^>]*>([\s\S]*?)<\/h3>/gi)].map(m=>m[1].replace(/<[^>]+>/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim());
 const fertilizerSchemaQuestions=fertilizerFaqSchema.mainEntity.map(item=>item.name);
 assert.deepEqual(fertilizerSchemaQuestions,fertilizerVisibleQuestions,'Fertilizer FAQ schema questions must match the visible FAQ headings and order');
 assert.equal(fertilizerFaqSchema.mainEntity.length,fertilizerVisibleQuestions.length,'Fertilizer FAQ schema must cover the visible FAQ section without stale or missing questions');
