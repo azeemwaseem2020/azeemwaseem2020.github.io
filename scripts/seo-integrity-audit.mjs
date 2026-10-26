@@ -15,6 +15,7 @@ const report = {
   internalLinksToNoindexPages: [],
   internalLinksToCanonicalAliases: [],
   htmlTechnical: { missingLang: [], missingViewport: [], missingCharset: [], multipleH1: [] },
+  contentQuality: { shortPages: [], titleLengthOutOfRange: [], descriptionLengthOutOfRange: [], missingAuthor: [], missingOpenGraphTitle: [], missingOpenGraphDescription: [], missingTwitterTitle: [], missingTwitterDescription: [], invalidMetaAttributeNames: [] },
   structuredData: { invalidJsonLd: [] },
   canonicalTargetsMissing: [],
   sitemap: [],
@@ -66,9 +67,9 @@ const mainSitemapUrls = new Set();
 for (const abs of htmlFiles) {
   const file = path.relative(ROOT, abs).split(path.sep).join('/');
   const html = fs.readFileSync(abs, 'utf8');
-  const title = (html.match(/<title\b[^>]*>([\s\S]*?)<\/title\s*>/i) || [])[1]?.replace(/\s+/g, ' ').trim() || '';
+  const title = decodeEntities((html.match(/<title\b[^>]*>([\s\S]*?)<\/title\s*>/i) || [])[1]?.replace(/\s+/g, ' ').trim() || '');
   const descriptionTag = (html.match(/<meta\b[^>]*\bname\s*=\s*(?:"description"|'description'|description)[^>]*>/i) || [])[0] || '';
-  const description = attr(descriptionTag, 'content');
+  const description = decodeEntities(attr(descriptionTag, 'content'));
   const canonicalTag = (html.match(/<link\b[^>]*\brel\s*=\s*(?:"canonical"|'canonical'|canonical)[^>]*>/i) || [])[0] || '';
   const canonical = attr(canonicalTag, 'href');
   if (canonical) canonicalForAllFiles.set(file, canonical);
@@ -113,6 +114,32 @@ for (const abs of htmlFiles) {
   }
 
   const markup = html.replace(/<script\b[\s\S]*?<\/script\s*>/gi, '').replace(/<style\b[\s\S]*?<\/style\s*>/gi, '');
+  if (!isVerification && !isNoindex) {
+    for (const meta of html.matchAll(/<meta\b[^>]*>/gi)) {
+      for (const attribute of ['name', 'property']) {
+        const value = attr(meta[0], attribute);
+        if (value && (value.length > 40 || /\s/.test(value))) report.contentQuality.invalidMetaAttributeNames.push({ file, attribute, value });
+      }
+    }
+  }
+  if (!isVerification && !isNoindex) {
+    const authorTag = (html.match(/<meta\b[^>]*\bname\s*=\s*(?:"author"|'author'|author)[^>]*>/i) || [])[0] || '';
+    const ogTitleTag = (html.match(/<meta\b[^>]*\bproperty\s*=\s*(?:"og:title"|'og:title'|og:title)[^>]*>/i) || [])[0] || '';
+    const ogDescriptionTag = (html.match(/<meta\b[^>]*\bproperty\s*=\s*(?:"og:description"|'og:description'|og:description)[^>]*>/i) || [])[0] || '';
+    const twitterTitleTag = (html.match(/<meta\b[^>]*\bname\s*=\s*(?:"twitter:title"|'twitter:title'|twitter:title)[^>]*>/i) || [])[0] || '';
+    const twitterDescriptionTag = (html.match(/<meta\b[^>]*\bname\s*=\s*(?:"twitter:description"|'twitter:description'|twitter:description)[^>]*>/i) || [])[0] || '';
+    if (!attr(authorTag, 'content')) report.contentQuality.missingAuthor.push(file);
+    if (!attr(ogTitleTag, 'content')) report.contentQuality.missingOpenGraphTitle.push(file);
+    if (!attr(ogDescriptionTag, 'content')) report.contentQuality.missingOpenGraphDescription.push(file);
+    if (!attr(twitterTitleTag, 'content')) report.contentQuality.missingTwitterTitle.push(file);
+    if (!attr(twitterDescriptionTag, 'content')) report.contentQuality.missingTwitterDescription.push(file);
+    if (title.length < 30 || title.length > 65) report.contentQuality.titleLengthOutOfRange.push({ file, length: title.length, title });
+    if (description.length < 70 || description.length > 160) report.contentQuality.descriptionLengthOutOfRange.push({ file, length: description.length, description });
+    const mainContent = (html.match(/<main\b[\s\S]*?<\/main\s*>/i) || html.match(/<article\b[\s\S]*?<\/article\s*>/i) || [markup])[0];
+    const visibleText = mainContent.replace(/<script\b[\s\S]*?<\/script\s*>/gi, ' ').replace(/<style\b[\s\S]*?<\/style\s*>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&(?:nbsp|amp|quot|lt|gt|#39);/g, ' ').replace(/\s+/g, ' ').trim();
+    const wordCount = visibleText ? visibleText.split(' ').filter(Boolean).length : 0;
+    if (wordCount < 300) report.contentQuality.shortPages.push({ file, wordCount });
+  }
   for (const anchor of markup.matchAll(/<a\b[^>]*>/gi)) {
     const href = attr(anchor[0], 'href');
     const target = relFile(file, href);
@@ -188,6 +215,10 @@ const indexablePagesMissingFromSitemap = [...canonicalForFile.keys()]
   .map(file => ({ file, url: file === 'index.html' ? BASE + '/' : BASE + '/' + file }))
   .filter(item => !mainSitemapUrls.has(item.url));
 
+if (report.contentQuality.invalidMetaAttributeNames.length) {
+  report.errors.push('Malformed meta attribute names: ' + report.contentQuality.invalidMetaAttributeNames.length);
+}
+
 const summary = {
   htmlFilesScanned: report.htmlFiles,
   missingTitle: report.metadata.missingTitle.length,
@@ -201,6 +232,7 @@ const summary = {
   internalLinksToNoindexPages: report.internalLinksToNoindexPages.length,
   internalLinksToCanonicalAliases: report.internalLinksToCanonicalAliases.length,
   htmlTechnical: Object.fromEntries(Object.entries(report.htmlTechnical).map(([key, value]) => [key, value.length])),
+  contentQuality: Object.fromEntries(Object.entries(report.contentQuality).map(([key, value]) => [key, value.length])),
   invalidJsonLd: report.structuredData.invalidJsonLd.length,
   canonicalTargetsMissing: report.canonicalTargetsMissing.length,
   indexablePagesMissingFromSitemap: indexablePagesMissingFromSitemap.length,
@@ -223,6 +255,7 @@ console.log(JSON.stringify({
     internalLinksToNoindexPages: report.internalLinksToNoindexPages,
     internalLinksToCanonicalAliases: report.internalLinksToCanonicalAliases,
     htmlTechnical: report.htmlTechnical,
+    contentQuality: report.contentQuality,
     invalidJsonLd: report.structuredData.invalidJsonLd,
     canonicalTargetsMissing: report.canonicalTargetsMissing,
     indexablePagesMissingFromSitemap,

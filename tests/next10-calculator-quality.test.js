@@ -44,7 +44,8 @@ for (const path of pages) {
 }
 const sitemap = readFileSync("sitemap.xml", "utf8");
 for (const path of pages) {
-  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + path + "</loc><lastmod>2026-10-19</lastmod>"), path + ": sitemap lastmod");
+  const expectedLastmod = ["eps-calculator.html", "interest-rate-calculator.html"].includes(path) ? "2026-10-25" : "2026-10-19";
+  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + path + "</loc><lastmod>" + expectedLastmod + "</lastmod>"), path + ": sitemap lastmod");
 }
 const amps = readFileSync("amps-to-watts-calculator.html", "utf8");
 assert.match(amps, /id=['"]pf['"]/i, "amps-to-watts: power factor input");
@@ -53,4 +54,94 @@ const kg = readFileSync("kg-to-lb-calculator.html", "utf8");
 assert.match(kg, /x<0/, "kg-to-lb: rejects negative mass");
 const ellipse = readFileSync("ellipse-area-calculator.html", "utf8");
 assert.match(ellipse, /a>0&&b>0/, "ellipse: positive semi-axis validation");
-console.log("Next-10 calculator quality regression checks: PASS (10 pages)");
+const salaryTax = readFileSync("pakistan-salary-tax-calculator.html", "utf8");
+assert.match(salaryTax, /No independently qualified tax professional is identified as a reviewer/i, "salary tax: disclose lack of independent tax review");
+assert.doesNotMatch(salaryTax, /<strong>Reviewer:<\/strong>\s*Mr\. Jack/i, "salary tax: do not attribute review to an unverified named reviewer");
+const salarySchemaDate = (salaryTax.match(/"dateModified":"(\d{4}-\d{2}-\d{2})"/) || [])[1];
+const salaryMetaDate = (salaryTax.match(/article:modified_time" content="(\d{4}-\d{2}-\d{2})"/) || [])[1];
+assert.ok(salarySchemaDate, "salary tax: schema modification date exists");
+assert.equal(salaryMetaDate, salarySchemaDate, "salary tax: Open Graph modified time matches schema date");
+assert.match(salaryTax, /id="salary-net-gross-tools"/, "salary tax: net-to-gross feature is visibly documented");
+const solar = readFileSync("solar-load-calculator.html", "utf8");
+assert.match(solar, /daily\/\(S\*E\)/, "solar: PV size uses daily kWh divided by sun hours and efficiency");
+assert.match(solar, /BL\/1000\*B\/\(D\*I\)/, "solar: battery capacity accounts for backup load, hours, DoD and inverter efficiency");
+assert.match(solar, /motor-starting surge/i, "solar: disclose that motor-starting surge is excluded");
+assert.match(solar, /seasonal electricity demand stress test/i, "solar: seasonal demand comparison is present");
+assert.match(solar, /Approximate area per panel \(m²; 1 m² ≈ 10\.764 ft²\)/, "solar: explain metric input conversion for US users");
+assert.match(solar, /pc\*R\*10\.7639\)\.toFixed\(1\).*ft²/, "solar: show roof-area estimate in square feet as well as square metres");
+assert.match(solar, /Complete the quantity, watts and hours for every appliance row/, "solar: reject blank appliance fields instead of silently treating them as zero");
+const solarPakistanGuide = readFileSync("blog-solar-calculator-pakistan.html", "utf8");
+assert.ok(solarPakistanGuide.includes("<title>Solar Calculator Pakistan: Panels, Inverter &amp; Battery | Calcora</title>"), "solar guide: title clearly states the Pakistan sizing task");
+assert.match(solarPakistanGuide, /name="description" content="Estimate solar panel count, inverter capacity and battery backup in Pakistan/i, "solar guide: description explains actual user inputs and outputs");
+assert.ok(solarPakistanGuide.includes('property="og:title" content="Solar Calculator Pakistan: Panels, Inverter &amp; Battery | Calcora"'), "solar guide: Open Graph title matches page title");
+assert.match(solarPakistanGuide, /name="twitter:description" content="Estimate solar panel count, inverter capacity and battery backup in Pakistan/i, "solar guide: Twitter description is aligned with search description");
+assert.match(solarPakistanGuide, /"headline":"Solar Calculator Pakistan: Panels, Inverter & Battery"/, "solar guide: Article headline matches the visible topic");
+assert.match(solarPakistanGuide, /"dateModified":"2026-10-25"/, "solar guide: Article schema reflects metadata review date");
+const inverterGuide = readFileSync("blog-solar-inverter-size-calculator.html", "utf8");
+assert.match(inverterGuide, /name="twitter:title"/, "inverter guide: Twitter title exists");
+assert.match(inverterGuide, /name="twitter:description"/, "inverter guide: Twitter description exists");
+const psxCapitalGains = readFileSync("psx-capital-gains-tax-calculator.html", "utf8");
+assert.match(psxCapitalGains, /name="twitter:title"/, "PSX CGT: Twitter title exists");
+assert.match(psxCapitalGains, /name="twitter:description"/, "PSX CGT: Twitter description exists");
+assert.match(psxCapitalGains, /Estimate PSX capital gains tax in Pakistan/i, "PSX CGT: social metadata describes the actual calculator task");
+const psxCapitalGainGuide = readFileSync("blog-psx-capital-gain-calculator.html", "utf8");
+assert.ok(psxCapitalGainGuide.includes("<title>PSX Capital Gains Calculator Guide: Profit &amp; CGT | Calcora</title>"), "PSX guide: title matches user-facing calculation intent");
+assert.doesNotMatch(psxCapitalGainGuide, /Search intent and related PSX tools|aria-label="PSX search intent"/i, "PSX guide: no internal SEO wording is exposed to readers");
+assert.match(psxCapitalGainGuide, /"headline":"PSX Capital Gains Calculator Guide: Profit & CGT"/, "PSX guide: Article headline matches the page topic");
+assert.match(psxCapitalGainGuide, /"dateModified":"2026-10-25"/, "PSX guide: Article schema reflects the latest substantive review");
+const zakat = readFileSync("zakat-calculator.html", "utf8");
+assert.match(zakat, /not an independent review by a qualified Islamic scholar/i, "zakat: distinguish software checks from religious review");
+assert.match(zakat, /No religious or professional qualification is claimed/i, "zakat: qualifications and scope are transparent");
+for (const page of ["blog-solar-calculator-pakistan.html", "blog-solar-inverter-size-calculator.html", "psx-capital-gains-tax-calculator.html", "blog-psx-capital-gain-calculator.html", "blog-bank-loan-calculator-pakistan.html", "pakistan-salary-tax-guide-urdu.html", "pakistan-salary-tax-guide-roman-urdu.html", "pakistan-filer-non-filer-tax-rates-2026-27.html", "pakistan-income-tax-return-deadline-2026.html", "contact.html", "faq.html", "pakistan-salary-tax-calculator.html"]) {
+  const expectedLastmod = page === "contact.html" || page === "faq.html" ? "2026-10-26" : "2026-10-25";
+  assert.ok(sitemap.includes("<url><loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>" + expectedLastmod + "</lastmod></url>"), page + ": current sitemap lastmod");
+}
+
+assert.match(inverterGuide, /<title>Solar Inverter Sizing Guide: kW, kVA &amp; Surge \| Calcora<\/title>/, "inverter guide: concise page title");
+assert.match(inverterGuide, /property=["']og:title["'] content=["']Solar Inverter Sizing Guide: kW, kVA &amp; Surge \| Calcora["']/i, "inverter guide: OG title matches page title");
+assert.match(inverterGuide, /property=["']og:image["']/i, "inverter guide: OG image is available");
+assert.match(inverterGuide, /name=["']twitter:description["']/i, "inverter guide: Twitter description is available");
+assert.match(sitemap, /<loc>https:\/\/azeemwaseem2020\.github\.io\/blog-solar-inverter-size-calculator\.html<\/loc><lastmod>2026-10-25<\/lastmod>/, "inverter guide: sitemap reflects the latest metadata update");
+
+const batteryGuide = readFileSync("blog-solar-battery-backup-calculator.html", "utf8");
+assert.match(batteryGuide, /<title>Solar Battery Backup Calculator Pakistan \| kWh &amp; Ah \| Calcora<\/title>/, "battery guide: title identifies Pakistan scope");
+assert.match(batteryGuide, /property=["']og:title["'] content=["']Solar Battery Backup Calculator Pakistan \| kWh &amp; Ah \| Calcora["']/i, "battery guide: OG title matches page title");
+assert.match(batteryGuide, /name=["']twitter:title["'] content=["']Solar Battery Backup Calculator Pakistan \| kWh &amp; Ah \| Calcora["']/i, "battery guide: Twitter title matches page title");
+assert.match(batteryGuide, /"headline":"Solar Battery Backup Calculator Pakistan: kWh, Ah & Backup Hours"/, "battery guide: Article schema headline reflects page topic");
+assert.match(batteryGuide, /"name":"Solar Battery Backup Guide","item":"https:\/\/azeemwaseem2020\.github\.io\/blog-solar-battery-backup-calculator\.html"/, "battery guide: final breadcrumb has its canonical URL");
+assert.match(sitemap, /<loc>https:\/\/azeemwaseem2020\.github\.io\/blog-solar-battery-backup-calculator\.html<\/loc><lastmod>2026-10-25<\/lastmod>/, "battery guide: sitemap reflects the latest metadata update");
+
+const prioritySocialPages = ["break-even-calculator.html", "credit-card-payoff-calculator.html", "currency-converter.html", "dividend-calculator.html", "down-payment-percent-calculator.html", "gold-price-calculator.html", "gst-calculator.html", "bmi-calculator.html", "age-calculator.html", "blog-zakat-calculator-guide.html"];
+for (const page of prioritySocialPages) {
+  const html = readFileSync(page, "utf8");
+  assert.ok(html.includes('name="author" content="Abdul Qadir"'), page + ": author metadata");
+  assert.ok(html.includes('property="og:title"'), page + ": Open Graph title");
+  assert.ok(html.includes('property="og:description"'), page + ": Open Graph description");
+  assert.ok(html.includes('name="twitter:title"'), page + ": Twitter title");
+  assert.ok(html.includes('name="twitter:description"'), page + ": Twitter description");
+  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>2026-10-25</lastmod>"), page + ": sitemap lastmod");
+}
+const financeSocialPages = ["amortization-calculator.html", "apr-calculator.html", "apy-calculator.html", "blog-emi-amortization-schedule.html", "blog-freelancer-tax-pakistan.html", "base-calculator.html", "complex-number-calculator.html", "coulombs-law-calculator.html"];
+for (const page of financeSocialPages) {
+  const html = readFileSync(page, "utf8");
+  assert.ok(html.includes('name="author" content="Abdul Qadir"'), page + ": author metadata");
+  assert.ok(html.includes('property="og:title"'), page + ": Open Graph title");
+  assert.ok(html.includes('property="og:description"'), page + ": Open Graph description");
+  assert.ok(html.includes('name="twitter:title"'), page + ": Twitter title");
+  assert.ok(html.includes('name="twitter:description"'), page + ": Twitter description");
+  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>2026-10-25</lastmod>"), page + ": sitemap lastmod");
+}
+const refreshedDescriptionPages = ["p-value-calculator.html", "parallelogram-area-calculator.html", "percent-given-value-calculator.html", "prism-volume-calculator.html", "profit-margin-calculator.html", "remainder-calculator.html", "sector-area-calculator.html", "topsoil-calculator.html", "torus-volume-calculator.html", "trapezoid-area-calculator.html", "value-given-percent-calculator.html", "vat-calculator.html", "pregnancy-calculator.html", "psx-dividend-reinvestment-calculator.html", "pythagorean-theorem-calculator.html", "utility-calculator-hub.html", "lean-body-mass-calculator.html", "midpoint-calculator.html", "miles-to-km-calculator.html", "weight-loss-calculator.html"];
+for (const page of refreshedDescriptionPages) {
+  const html = readFileSync(page, "utf8");
+  const description = (html.match(/<meta\s+name="description"\s+content="([^"]*)"/i) || [])[1];
+  assert.ok(description && description.length >= 70 && description.length <= 160, page + ": meta description should be 70–160 characters");
+  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>2026-10-25</lastmod>"), page + ": sitemap lastmod");
+}
+const authorStandardizationPages = ["height-converter-calculator.html", "herons-formula-calculator.html", "inverse-trigonometry-calculator.html", "lean-body-mass-calculator.html", "magnification-calculator.html", "mass-energy-calculator.html", "mirror-formula-calculator.html", "projectile-motion-calculator.html", "proportion-calculator.html", "random-number-generator.html", "scientific-notation-calculator.html", "sector-area-calculator.html", "series-resistance-calculator.html", "snells-law-calculator.html", "specific-heat-calculator.html", "speed-calculator.html", "spring-force-calculator.html", "steps-to-calories-calculator.html", "surface-area-calculator.html", "tdee-calculator.html", "time-and-a-half-calculator.html", "time-calculator.html", "tip-calculator.html", "torus-volume-calculator.html", "trapezoid-area-calculator.html", "triangle-calculator.html", "unit-converter.html", "value-given-percent-calculator.html", "volume-calculator.html", "wavelength-calculator.html", "weight-loss-calculator.html"];
+for (const page of authorStandardizationPages) {
+  const html = readFileSync(page, "utf8");
+  assert.ok(html.includes('name="author" content="Abdul Qadir"'), page + ": consistent author identity");
+  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>2026-10-25</lastmod>"), page + ": sitemap lastmod");
+}
+console.log("Next-10 calculator quality regression checks: PASS (10 pages) + priority trust/solar/sitemap checks");

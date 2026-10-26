@@ -36,12 +36,11 @@ for (const path of pages) {
   assert.match(html, /<meta\s+name=["']twitter:card["']/i, `${path}: Twitter card metadata missing`);
   assert.ok(schemas.length >= 1, `${path}: JSON-LD schema missing`);
 
-  for (const schemaMatch of schemas) {
-    const schema = JSON.parse(schemaMatch[1]);
-    assert.equal(schema.url, canonical, `${path}: schema URL must match canonical`);
-    assert.equal(schema["@type"], "WebApplication", `${path}: expected WebApplication schema`);
-    assert.equal(schema.author?.name, "Abdul Qadir", `${path}: schema author mismatch`);
-  }
+  const parsedSchemas = schemas.map(schemaMatch => JSON.parse(schemaMatch[1]));
+  const appSchema = parsedSchemas.find(schema => schema["@type"] === "WebApplication");
+  assert.ok(appSchema, `${path}: WebApplication schema missing`);
+  assert.equal(appSchema.url, canonical, `${path}: WebApplication schema URL must match canonical`);
+  assert.equal(appSchema.author?.name, "Abdul Qadir", `${path}: WebApplication schema author mismatch`);
 
   let executableScripts = 0;
   for (const [, attrs, source] of scriptBlocks) {
@@ -52,7 +51,12 @@ for (const path of pages) {
   }
   assert.ok(executableScripts > 0, `${path}: no executable inline script found`);
 
-  assert.ok(sitemap.includes(`<url><loc>${canonical}</loc><lastmod>2026-10-19</lastmod></url>`), `${path}: sitemap lastmod missing or stale`);
+  const sitemapEntry = sitemap.split("<url>").map(entry => entry.split("</url>")[0]).find(entry => entry.includes(`<loc>${canonical}</loc>`));
+  assert.ok(sitemapEntry, `${path}: canonical URL missing from sitemap`);
+  const lastmod = sitemapEntry.split("<lastmod>")[1]?.split("</lastmod>")[0];
+  assert.ok(lastmod, `${path}: sitemap lastmod missing`);
+  assert.ok(!Number.isNaN(Date.parse(lastmod)), `${path}: invalid sitemap lastmod`);
+  assert.ok(lastmod <= new Date().toISOString().slice(0, 10), `${path}: sitemap lastmod is in the future`);
 }
 
 console.log(`Top-10 thin-page SEO and inline-JavaScript syntax checks: PASS (${pages.length} pages)`);

@@ -138,7 +138,7 @@ assert.match(directory, /href="fertilizer-bag-calculator\.html"/);
 assert.match(directory, /Fertilizer Bag Calculator/);
 
 const hydro = fs.readFileSync(new URL('hydroponic-fertilizer-calculator.html', root), 'utf8');
-assert.match(hydro, /<title>Hydroponic Fertilizer Calculator: PPM, Tank Volume & Grams \| Calcora<\/title>/, 'hydroponic page must target the requested keyword naturally');
+assert.ok(hydro.includes('<title>Hydroponic Fertilizer Calculator | PPM, Tank &amp; Grams | Calcora</title>'), 'hydroponic page must target the requested keyword naturally with a concise title');
 assert.match(hydro, /<meta name="description" content="[^"]*target ppm[^"]*"/i, 'hydroponic page needs a specific meta description');
 assert.match(hydro, /rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\/hydroponic-fertilizer-calculator\.html"/, 'hydroponic page needs a self canonical');
 assert.match(hydro, /id="hydro-dose-form"/, 'hydroponic page must include its interactive dose form');
@@ -206,7 +206,7 @@ const pasture = fs.readFileSync(new URL('pasture-fertilizer-calculator.html', ro
 const pastureDirectory = fs.readFileSync(new URL('calculators.html', root), 'utf8');
 const pastureSitemap = fs.readFileSync(new URL('sitemap.xml', root), 'utf8');
 const pasturePrioritySitemap = fs.readFileSync(new URL('sitemap-pakistan-priority.xml', root), 'utf8');
-assert.match(pasture, /<title>Pasture Fertilizer Calculator: Rate per Acre, NPK & Cost \| Calcora<\/title>/);
+assert.ok(pasture.includes("<title>Pasture Fertilizer Calculator: NPK, Acre Rate &amp; Cost | Calcora</title>"), "pasture page title should match its actual topic");
 assert.match(pasture, /<link rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\/pasture-fertilizer-calculator\.html">/);
 assert.match(pasture, /<h1>Pasture Fertilizer Calculator/);
 assert.match(pasture, /<meta name="description" content="Use this pasture fertilizer calculator to compare N, P₂O₅, K₂O and sulfur, estimate product rates per acre or hectare, whole bags and field cost\.">/);
