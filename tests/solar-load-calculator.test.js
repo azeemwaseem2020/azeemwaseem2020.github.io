@@ -20,4 +20,11 @@ assert.match(guide, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
 assert.doesNotMatch(guide, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
 assert.match(guide, /Monthly kWh divided by the number of days in that billing period/);
 
+const panelPage = fs.readFileSync(new URL('../solar-panel-calculator.html', import.meta.url), 'utf8');
+assert.match(panelPage, /<title>Solar Panel Calculator: Panel Count & Daily Output \| Calcora<\/title>/);
+assert.match(panelPage, /property="og:title" content="Solar Panel Calculator: Panel Count & Daily Output \| Calcora"/);
+assert.doesNotMatch(panelPage, /og:title[^>]+Pakistan/i);
+assert.match(panelPage, /name="description" content="Estimate solar panel count and daily energy output/);
+assert.match(panelPage, /href="https:\/\/azeemwaseem2020\.github\.io\/solar-panel-calculator\.html"/);
+
 console.log('Solar load calculator inverter headroom checks passed.');
