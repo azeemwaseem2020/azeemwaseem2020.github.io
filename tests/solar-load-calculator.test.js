@@ -25,7 +25,7 @@ assert.match(panelPage, /<title>Solar Panel Calculator: Panel Count & Daily Outp
 assert.match(panelPage, /property="og:title" content="Solar Panel Calculator: Panel Count & Daily Output \| Calcora"/);
 assert.doesNotMatch(panelPage, /og:title[^>]+Pakistan/i);
 assert.match(panelPage, /name="description" content="Estimate solar panel count and daily energy output/);
-const panelSchemas = [...panelPage.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(([, raw]) => JSON.parse(raw));
+const panelSchemas = [...panelPage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(([, raw]) => JSON.parse(raw));
 const panelApp = panelSchemas.find(schema => schema['@type'] === 'SoftwareApplication');
 assert.ok(panelApp, 'solar panel SoftwareApplication schema exists');
 assert.equal(panelApp.name, 'Solar Panel Calculator: Panel Count & Daily Output | Calcora');
