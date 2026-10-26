@@ -17,8 +17,16 @@ assert.match(html, /daily\*Number\(billingDays\.value\)/);
 assert.match(html, /billing-period days you enter/);
 assert.match(html, /M=Number\(inverterMargin\.value\)\/100/);
 assert.match(html, /Math\.max\(0,totalLoad\/1000\)\*\(1\+M\)/);
-assert.match(html, /Starting surge is not included/);
+assert.match(html, /separate rough starting-surge reference/);
 assert.match(html, /Verify both continuous and surge ratings for the actual appliances/);
+assert.match(html, /\['Starting surge multiplier','ls',1,'1','0\.1'\]/);
+assert.match(html, /querySelectorAll\('\.ls'\)/);
+assert.match(html, /surges\.some\(x=>!Number\.isFinite\(x\)\|\|x<1\|\|x>10\)/);
+assert.match(html, /largestSurgeIncrement=Math\.max\(largestSurgeIncrement,w\*\(surges\[i\]-1\)\)/);
+assert.match(html, /render\(loadOut,daily,assumedRunning,assumedRunning\+largestSurgeIncrement\)/);
+assert.match(html, /Illustrative starting-surge reference/);
+assert.match(html, /assuming one appliance starts while the other assumed loads are already running/);
+assert.match(html, /Check inverter continuous output and surge rating\/duration/);
 
 const guide = fs.readFileSync(new URL('../blog-home-solar-load-calculator-usa.html', import.meta.url), 'utf8');
 assert.match(guide, /Use the electric bill without confusing energy and peak demand/);
