@@ -1,1 +1,74 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Solar Inverter Calculator | Size, kW & Load | Calcora</title><meta name="description" content="Estimate the right solar inverter size from connected load, peak demand, battery and system assumptions. Includes sizing guidance and limitations."><meta name="robots" content="noindex,follow"><link rel="canonical" href="https://azeemwaseem2020.github.io/blog-solar-inverter-size-calculator.html"><meta http-equiv="refresh" content="0;url=blog-solar-inverter-size-calculator.html"><script>location.replace("blog-solar-inverter-size-calculator.html");</script></head><body><p>This calculator has moved to <a href="blog-solar-inverter-size-calculator.html">Solar Inverter Size Calculator</a>.</p></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Solar Inverter Size Calculator: W, kW, VA & Surge | Calcora</title>
+<meta name="description" content="Estimate continuous inverter capacity and starting-surge demand from running watts, the largest starting appliance, power factor and headroom. Includes formulas and safety limits.">
+<meta name="author" content="Abdul Qadir">
+<link rel="canonical" href="https://azeemwaseem2020.github.io/solar-inverter-size-calculator.html">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta property="og:title" content="Solar Inverter Size Calculator: W, kW, VA &amp; Surge | Calcora">
+<meta property="og:description" content="Estimate inverter continuous capacity and a separate starting-surge reference, with transparent assumptions and practical limits.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://azeemwaseem2020.github.io/solar-inverter-size-calculator.html">
+<meta property="og:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Solar Inverter Size Calculator | Calcora">
+<meta name="twitter:description" content="Estimate continuous inverter capacity, apparent power and starting-surge demand.">
+<meta name="twitter:image" content="https://azeemwaseem2020.github.io/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Solar Inverter Size Calculator | Calcora","url":"https://azeemwaseem2020.github.io/solar-inverter-size-calculator.html","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I estimate inverter size?","acceptedAnswer":{"@type":"Answer","text":"Add the running watts of loads expected to operate at the same time, apply a chosen planning margin, and check apparent power in VA using power factor. Verify the actual inverter continuous rating and surge rating."}},{"@type":"Question","name":"Why are kW and kVA different?","acceptedAnswer":{"@type":"Answer","text":"kW describes real power while kVA describes apparent power. For a simplified single power-factor estimate, VA equals watts divided by power factor; motor and electronic loads can have different power factors."}},{"@type":"Question","name":"Does this calculator certify a solar inverter design?","acceptedAnswer":{"@type":"Answer","text":"No. It provides a preliminary estimate. Confirm surge magnitude and duration, voltage, waveform, battery limits, PV input, MPPT range, temperature derating, grid requirements and local electrical rules with manufacturer documentation and a qualified installer."}}]}]}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="header-inner"><a class="brand" href="./" aria-label="Calcora home"><span class="brand-mark">C</span>Calcora</a><nav aria-label="Primary navigation"><a href="calculators.html">Calculators</a><a href="categories.html">Categories</a><a href="blog.html">Guides</a><a href="resources.html">Resources</a></nav></div></header>
+<main id="main" class="section calculator-page">
+<p class="eyebrow">SOLAR • INVERTER SIZING</p>
+<h1>Solar Inverter Size Calculator — W, kW, VA &amp; Starting Surge</h1>
+<section class="page-trust" aria-label="Page information"><p><strong>Author:</strong> Abdul Qadir · <strong>Updated:</strong> October 26, 2026</p><p><strong>Methodology:</strong> Estimates use the formulas and assumptions shown below. <a href="calculator-methodology.html">Read Calcora's calculation methodology</a>.</p><p><strong>Important:</strong> Preliminary planning only. Final selection must follow the exact inverter and appliance manufacturer specifications and applicable electrical standards.</p></section>
+<p class="lead">Estimate the minimum continuous real-power capacity and a separate starting-surge reference for the loads you expect to run together. This tool does not select a particular inverter model or confirm equipment compatibility.</p>
+<div class="policy-grid" style="align-items:start">
+<section class="calculator-card" aria-labelledby="inputs-title">
+<h2 id="inputs-title">Your load and inverter assumptions</h2>
+<label for="runningWatts">Total simultaneous running load (W)</label><input id="runningWatts" type="number" value="1500" min="1" max="100000" step="1" inputmode="numeric">
+<small class="muted">Add only loads expected to operate at the same time. Do not use monthly kWh here.</small>
+<label for="largestWatts">Largest appliance that may start (running W)</label><input id="largestWatts" type="number" value="600" min="0" max="100000" step="1" inputmode="numeric">
+<small class="muted">This value must not exceed the simultaneous running load. Use appliance nameplate or manufacturer data.</small>
+<label for="surgeMultiplier">Starting multiplier for that appliance</label><input id="surgeMultiplier" type="number" value="3" min="1" max="10" step="0.1" inputmode="decimal">
+<small class="muted">Use a documented starting multiplier if available. A generic multiplier can be inaccurate for motors, compressors and pumps.</small>
+<label for="powerFactor">Assumed power factor</label><input id="powerFactor" type="number" value="0.9" min="0.1" max="1" step="0.01" inputmode="decimal">
+<small class="muted">Used to estimate apparent power (VA). Actual power factor may vary by load and operating condition.</small>
+<label for="headroom">Continuous capacity planning margin (%)</label><input id="headroom" type="number" value="25" min="0" max="100" step="5" inputmode="numeric">
+<button class="btn" id="calculateInverter" type="button">Calculate inverter requirements</button>
+<div id="inverterResults" class="result-box" aria-live="polite" role="status"><p>Enter your expected simultaneous load and starting assumptions to see a preliminary estimate.</p></div>
+</section>
+<aside class="hero-card"><p class="eyebrow">BEFORE CHOOSING EQUIPMENT</p><h2>Check the actual inverter datasheet</h2><ul><li>Continuous output in W and VA at your expected ambient temperature.</li><li>Surge output magnitude <em>and duration</em>, not just a peak number.</li><li>Battery voltage, maximum DC current and battery discharge limits.</li><li>PV maximum voltage/current, MPPT operating range and string limits.</li><li>Grid/hybrid/off-grid mode, transfer behavior and local code requirements.</li></ul><div class="callout"><strong>Do not size from panel watts alone.</strong> The inverter's AC output capability, starting demand, DC input limits and system configuration are separate checks.</div></aside>
+</div>
+<section class="prose" style="margin-top:32px">
+<h2>How the estimate works</h2>
+<p><strong>Continuous real-power target (W)</strong> = simultaneous running load × (1 + planning margin).</p>
+<p><strong>Approximate apparent-power target (VA)</strong> = continuous real-power target ÷ assumed power factor.</p>
+<p><strong>Illustrative starting load (W)</strong> = other running load + (largest appliance running watts × starting multiplier). This simplified model assumes one selected appliance starts while the other loads are already running.</p>
+<p>The starting-load VA value applies the same entered power factor as a rough comparison only. Real starting power factor, current waveform and inverter surge duration can differ, so do not treat it as a verified motor-start calculation.</p>
+<h2>Example: a 1,500 W simultaneous load</h2>
+<p>With a 25% planning margin, the continuous real-power target is 1,875 W. At a power factor of 0.9, the simplified apparent-power target is about 2,083 VA. If a 600 W appliance has a documented 3× starting multiplier, the illustrative starting load becomes 2,700 W before checking its real starting current and duration. These figures are calculation examples, not a recommendation for a particular product.</p>
+<h2>What this calculator cannot determine</h2>
+<p>It does not inspect appliance waveforms, exact motor locked-rotor current, voltage drop, altitude or temperature derating, inverter overload curves, PV string compatibility, battery chemistry, short-circuit protection, wiring or local permits. A qualified installer should validate those constraints against the selected equipment manuals.</p>
+<p>For the broader system, use the <a href="solar-load-calculator.html">Solar Load Calculator</a> for daily energy and appliance estimates, the <a href="solar-panel-calculator.html">Solar Panel Calculator</a> for a first-pass array estimate, and the <a href="solar-battery-calculator.html">Solar Battery Calculator</a> for backup energy. Then read the <a href="blog-solar-inverter-size-calculator.html">inverter sizing guide</a> for more context.</p>
+<h2>Frequently asked questions</h2>
+<h3>Is a 5 kW inverter enough for a 5 kW solar array?</h3><p>Not automatically. Confirm the inverter's permitted DC-to-AC ratio, maximum PV voltage and current, MPPT range, clipping behavior, local grid rules and intended operating mode. Array nameplate power alone is not enough to confirm compatibility.</p>
+<h3>Can I ignore starting surge?</h3><p>Not when loads include motors, pumps, compressors or other equipment with high startup demand. Check the appliance and inverter documentation for surge magnitude and duration.</p>
+<h3>Does a higher power factor always mean a better inverter?</h3><p>No. The entered power factor is a simplifying assumption for converting W to VA. Select equipment based on the real loads, required output, efficiency, compatibility and documented operating limits.</p>
+</section>
+</main>
+<footer class="footer-main"><div class="footer-inner"><div class="footer-grid"><div><a class="brand" href="./"><span class="brand-mark">C</span><span style="color:#fff">Calcora</span></a><p>Free, practical calculators for finance, PSX, solar energy and agriculture.</p></div><div><h3>Solar tools</h3><a href="solar-calculator-hub.html">Solar Planning Hub</a><a href="solar-load-calculator.html">Solar Load Calculator</a><a href="solar-panel-calculator.html">Solar Panel Calculator</a><a href="solar-battery-calculator.html">Solar Battery Calculator</a></div><div><h3>Company</h3><a href="about.html">About Us</a><a href="contact.html">Contact Us</a><a href="faq.html">FAQ</a></div><div><h3>Policies</h3><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a><a href="disclaimer.html">Disclaimer</a></div></div><div class="footer-bottom"><span>© 2026 Calcora. All rights reserved.</span><span>Free tools • No signup</span></div></div></footer>
+<script>
+const runningWatts=document.getElementById('runningWatts'),largestWatts=document.getElementById('largestWatts'),surgeMultiplier=document.getElementById('surgeMultiplier'),powerFactor=document.getElementById('powerFactor'),headroom=document.getElementById('headroom'),inverterResults=document.getElementById('inverterResults');
+function calculateInverter(){const running=Number(runningWatts.value),largest=Number(largestWatts.value),multiplier=Number(surgeMultiplier.value),pf=Number(powerFactor.value),margin=Number(headroom.value);if(![running,largest,multiplier,pf,margin].every(Number.isFinite)||running<1||running>100000||largest<0||largest>running||multiplier<1||multiplier>10||pf<0.1||pf>1||margin<0||margin>100){inverterResults.innerHTML='<p role="alert">Check the inputs: running load must be 1–100,000 W; the selected starting appliance must be between 0 and the total running load; multiplier 1–10; power factor 0.1–1; and margin 0–100%.</p>';return}const continuous=running*(1+margin/100),continuousVA=continuous/pf,surge=running-largest+largest*multiplier,surgeVA=surge/pf;inverterResults.innerHTML='<h2>Preliminary inverter requirements</h2><p><strong>Simultaneous running load:</strong> '+running.toLocaleString('en-US')+' W</p><p><strong>Continuous real-power target with margin:</strong> '+Math.ceil(continuous)+' W ('+(continuous/1000).toFixed(2)+' kW)</p><p><strong>Approximate continuous apparent-power target:</strong> '+Math.ceil(continuousVA)+' VA ('+(continuousVA/1000).toFixed(2)+' kVA)</p><p><strong>Illustrative starting load:</strong> '+Math.ceil(surge)+' W ('+(surge/1000).toFixed(2)+' kW)</p><p><strong>Illustrative starting apparent power:</strong> '+Math.ceil(surgeVA)+' VA ('+(surgeVA/1000).toFixed(2)+' kVA)</p><p class="muted">These are estimated minimum targets under your assumptions, not an equipment recommendation. Check the actual inverter's continuous rating and surge rating/duration, plus voltage, temperature derating, battery and PV input limits.</p>'}
+document.getElementById('calculateInverter').addEventListener('click',calculateInverter);
+</script>
+<script type="module" src="comments.js"></script>
+<script src="result-actions.js" defer></script>
+</body></html>

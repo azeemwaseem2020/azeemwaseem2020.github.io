@@ -56,6 +56,11 @@ assert.match(batteryPage, /<title>Solar Battery Calculator \| Backup Time, kWh &
 assert.match(batteryPage, /property="og:title" content="Solar Battery Calculator \| Backup Time, kWh & Ah \| Calcora"/);
 assert.doesNotMatch(batteryPage, /og:title[^>]+Pakistan/i);
 assert.match(batteryPage, /Updated: October 26, 2026/);
+assert.match(batteryPage, /dcCurrent=l\/\(v\*e\)/);
+assert.match(batteryPage, /Estimated DC current at the entered voltage/);
+assert.match(batteryPage, /Battery\/BMS:<\/strong> confirm continuous and peak discharge-current ratings/);
+assert.match(batteryPage, /DC current is approximately AC load watts/);
+
 assert.match(batteryPage, /href="blog-home-solar-load-calculator-usa\.html">US Home Solar Load Guide/);
 assert.doesNotMatch(batteryPage, /class="calcora-quick-guide"/);
 assert.doesNotMatch(batteryPage, /<h2>Next checks<\/h2>/);
@@ -81,10 +86,45 @@ assert.equal(loadApp.name, 'Home Solar Load Calculator: kWh, Panels & Battery | 
 assert.doesNotMatch(solarLoadPage, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
 assert.match(solarLoadPage, /https:\/\/pvwatts\.nrel\.gov\//);
 assert.match(solarLoadPage, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
+const inverterPage = fs.readFileSync(new URL('../solar-inverter-size-calculator.html', import.meta.url), 'utf8');
+assert.ok(inverterPage.includes('<title>Solar Inverter Size Calculator: W, kW, VA & Surge | Calcora</title>'));
+assert.match(inverterPage, /<link rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\/solar-inverter-size-calculator\.html"/);
+assert.match(inverterPage, /id="runningWatts" type="number"/);
+assert.match(inverterPage, /id="largestWatts" type="number"/);
+assert.match(inverterPage, /id="surgeMultiplier" type="number"/);
+assert.match(inverterPage, /id="powerFactor" type="number"/);
+assert.match(inverterPage, /const continuous=running\*\(1\+margin\/100\),continuousVA=continuous\/pf,surge=running-largest\+largest\*multiplier,surgeVA=surge\/pf/);
+assert.match(inverterPage, /Check the actual inverter's continuous rating and surge rating\/duration/);
+assert.match(inverterPage, /href="solar-load-calculator\.html"/);
+assert.match(inverterPage, /href="solar-panel-calculator\.html"/);
+assert.match(inverterPage, /href="solar-battery-calculator\.html"/);
+assert.doesNotMatch(inverterPage, /http-equiv="refresh"|location\.replace\(/);
+const inverterSchemas = [...inverterPage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(([, raw]) => JSON.parse(raw));
+assert.ok(inverterSchemas.some(schema => schema['@type'] === 'FAQPage' || schema['@graph']?.some(node => node['@type'] === 'FAQPage')), 'inverter calculator FAQ schema exists');
+assert.ok(inverterSchemas.some(schema => schema['@type'] === 'SoftwareApplication' || schema['@graph']?.some(node => node['@type'] === 'SoftwareApplication')), 'inverter calculator application schema exists');
+assert.match(solarHub, /href="solar-inverter-size-calculator\.html"/);
+const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
+assert.match(sitemap, /<loc>https:\/\/azeemwaseem2020\.github\.io\/solar-inverter-size-calculator\.html<\/loc><lastmod>2026-10-26<\/lastmod>/);
+assert.match(sitemap, /solar-load-calculator\.html<\/loc><lastmod>2026-10-26<\/lastmod>/);
 const inverterGuide = fs.readFileSync(new URL('../blog-solar-inverter-size-calculator.html', import.meta.url), 'utf8');
 assert.match(inverterGuide, /property="og:title" content="Solar Inverter Sizing Guide: kW, kVA &amp; Surge \| Calcora"/);
 assert.doesNotMatch(inverterGuide, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
 assert.match(inverterGuide, /https:\/\/pvwatts\.nrel\.gov\//);
 assert.match(inverterGuide, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
+
+assert.match(solarLoadPage, /id="pv-sensitivity"[^>]*aria-labelledby="pv-sensitivity-title"/);
+assert.match(solarLoadPage, /id="lowSun" type="number" value="3\.5" min="0\.1" max="12"/);
+assert.match(solarLoadPage, /id="highSun" type="number" value="6" min="0\.1" max="12"/);
+assert.match(solarLoadPage, /id="runPvRange"[^>]*>Compare PV sizing scenarios<\/button>/);
+assert.match(solarLoadPage, /document\.getElementById\('runPvRange'\)\.addEventListener\('click'/);
+assert.match(solarLoadPage, /!\(low<baseSun&&baseSun<high\)/);
+assert.match(solarLoadPage, /Lower peak-sun hours increase the array size needed to meet the same daily energy target/);
+assert.match(solarLoadPage, /function validPlanningInputs\(\)/);
+assert.match(solarLoadPage, /if\(!validPlanningInputs\(\)\)\{loadOut\.innerHTML=/);
+assert.match(solarLoadPage, /id="useRunningLoad"[^>]*>Use estimated running load as backup load<\/button>/);
+assert.match(solarLoadPage, /function useRunningLoadAsBackup\(\)/);
+assert.match(solarLoadPage, /document\.getElementById\('useRunningLoad'\)\.addEventListener\('click',useRunningLoadAsBackup\)/);
+assert.match(solarLoadPage, /The battery estimate uses the separate “Load to back up” input/);
+assert.match(solarLoadPage, /Optional: copy the estimated simultaneous running load into the separate battery-backup load input/);
 
 console.log('Solar load calculator inverter headroom checks passed.');
