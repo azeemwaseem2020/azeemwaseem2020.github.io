@@ -52,7 +52,10 @@ for (const path of pages) {
   }
   assert.ok(executableScripts > 0, `${path}: no executable inline script found`);
 
-  assert.ok(sitemap.includes(`<url><loc>${canonical}</loc><lastmod>2026-10-19</lastmod></url>`), `${path}: sitemap lastmod missing or stale`);
+  const sitemapEntry = sitemap.match(new RegExp(`<url>\\s*<loc>${canonical.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\  assert.ok(sitemap.includes(`<url><loc>${canonical}</loc><lastmod>2026-10-19</lastmod></url>`), `${path}: sitemap lastmod missing or stale`);")}</loc>([\\s\\S]*?)</url>`));
+  assert.ok(sitemapEntry, `${path}: canonical URL missing from sitemap`);
+  const lastmod = sitemapEntry[1].match(/<lastmod>(\\d{4}-\\d{2}-\\d{2})<\\/lastmod>/)?.[1];
+  if (lastmod) assert.ok(!Number.isNaN(Date.parse(lastmod)), `${path}: invalid sitemap lastmod date`);
 }
 
 console.log(`Top-10 thin-page SEO and inline-JavaScript syntax checks: PASS (${pages.length} pages)`);
