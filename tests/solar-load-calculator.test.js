@@ -44,7 +44,7 @@ assert.match(batteryPage, /Updated: October 26, 2026/);
 assert.match(batteryPage, /href="blog-home-solar-load-calculator-usa\.html">US Home Solar Load Guide/);
 assert.doesNotMatch(batteryPage, /class="calcora-quick-guide"/);
 assert.doesNotMatch(batteryPage, /<h2>Next checks<\/h2>/);
-const batterySchemas = [...batteryPage.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(([, raw]) => JSON.parse(raw));
+const batterySchemas = [...batteryPage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(([, raw]) => JSON.parse(raw));
 const batteryApp = batterySchemas.find(schema => schema['@type'] === 'SoftwareApplication');
 assert.ok(batteryApp, 'solar battery SoftwareApplication schema exists');
 assert.equal(batteryApp.name, 'Solar Battery Calculator | Backup Time, kWh & Ah | Calcora');
