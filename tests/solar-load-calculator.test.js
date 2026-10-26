@@ -82,7 +82,7 @@ assert.doesNotMatch(solarLoadPage, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
 assert.match(solarLoadPage, /https:\/\/pvwatts\.nrel\.gov\//);
 assert.match(solarLoadPage, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
 const inverterPage = fs.readFileSync(new URL('../solar-inverter-size-calculator.html', import.meta.url), 'utf8');
-assert.match(inverterPage, /<title>Solar Inverter Size Calculator: W, kW, VA &amp; Surge \| Calcora<\/title>/);
+assert.match(inverterPage, /<title>Solar Inverter Size Calculator: W, kW, VA & Surge \\| Calcora<\\/title>/);
 assert.match(inverterPage, /<link rel="canonical" href="https:\/\/azeemwaseem2020\.github\.io\/solar-inverter-size-calculator\.html"/);
 assert.match(inverterPage, /id="runningWatts" type="number"/);
 assert.match(inverterPage, /id="largestWatts" type="number"/);
