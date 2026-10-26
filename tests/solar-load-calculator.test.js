@@ -15,9 +15,9 @@ assert.match(html, /Verify both continuous and surge ratings for the actual appl
 
 const guide = fs.readFileSync(new URL('../blog-home-solar-load-calculator-usa.html', import.meta.url), 'utf8');
 assert.match(guide, /Use the electric bill without confusing energy and peak demand/);
-assert.match(solarLoadPage, /https:\/\/pvwatts\.nrel\.gov\//);
-assert.match(solarLoadPage, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
-assert.doesNotMatch(solarLoadPage, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
+assert.match(guide, /https:\/\/pvwatts\.nrel\.gov\//);
+assert.match(guide, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
+assert.doesNotMatch(guide, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
 assert.match(guide, /Monthly kWh divided by the number of days in that billing period/);
 
 const panelPage = fs.readFileSync(new URL('../solar-panel-calculator.html', import.meta.url), 'utf8');
