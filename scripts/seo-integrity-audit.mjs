@@ -215,6 +215,10 @@ const indexablePagesMissingFromSitemap = [...canonicalForFile.keys()]
   .map(file => ({ file, url: file === 'index.html' ? BASE + '/' : BASE + '/' + file }))
   .filter(item => !mainSitemapUrls.has(item.url));
 
+if (report.contentQuality.invalidMetaAttributeNames.length) {
+  report.errors.push('Malformed meta attribute names: ' + report.contentQuality.invalidMetaAttributeNames.length);
+}
+
 const summary = {
   htmlFilesScanned: report.htmlFiles,
   missingTitle: report.metadata.missingTitle.length,
