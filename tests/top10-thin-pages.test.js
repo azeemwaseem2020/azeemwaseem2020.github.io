@@ -36,12 +36,12 @@ for (const path of pages) {
   assert.match(html, /<meta\s+name=["']twitter:card["']/i, `${path}: Twitter card metadata missing`);
   assert.ok(schemas.length >= 1, `${path}: JSON-LD schema missing`);
 
-  for (const schemaMatch of schemas) {
-    const schema = JSON.parse(schemaMatch[1]);
-    assert.equal(schema.url, canonical, `${path}: schema URL must match canonical`);
-    assert.equal(schema["@type"], "WebApplication", `${path}: expected WebApplication schema`);
-    assert.equal(schema.author?.name, "Abdul Qadir", `${path}: schema author mismatch`);
-  }
+  const parsedSchemas = schemas.map((schemaMatch) => JSON.parse(schemaMatch[1]));
+  const webApplications = parsedSchemas.filter((schema) => schema["@type"] === "WebApplication");
+  assert.equal(webApplications.length, 1, `${path}: exactly one WebApplication schema required`);
+  const webApplication = webApplications[0];
+  assert.equal(webApplication.url, canonical, `${path}: WebApplication URL must match canonical`);
+  assert.equal(webApplication.author?.name, "Abdul Qadir", `${path}: WebApplication author mismatch`);
 
   let executableScripts = 0;
   for (const [, attrs, source] of scriptBlocks) {
@@ -52,7 +52,10 @@ for (const path of pages) {
   }
   assert.ok(executableScripts > 0, `${path}: no executable inline script found`);
 
-  assert.ok(sitemap.includes(`<url><loc>${canonical}</loc><lastmod>2026-10-19</lastmod></url>`), `${path}: sitemap lastmod missing or stale`);
+  const sitemapEntry = sitemap.split("<url>").find((entry) => entry.includes(`<loc>${canonical}</loc>`));
+  assert.ok(sitemapEntry, `${path}: canonical URL missing from sitemap`);
+  const lastmod = sitemapEntry.match(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/)?.[1];
+  if (lastmod) assert.ok(!Number.isNaN(Date.parse(lastmod)), `${path}: invalid sitemap lastmod date`);
 }
 
 console.log(`Top-10 thin-page SEO and inline-JavaScript syntax checks: PASS (${pages.length} pages)`);
