@@ -98,6 +98,9 @@ const inverterSchemas = [...inverterPage.matchAll(/<script type="application\/ld
 assert.ok(inverterSchemas.some(schema => schema['@type'] === 'FAQPage' || schema['@graph']?.some(node => node['@type'] === 'FAQPage')), 'inverter calculator FAQ schema exists');
 assert.ok(inverterSchemas.some(schema => schema['@type'] === 'SoftwareApplication' || schema['@graph']?.some(node => node['@type'] === 'SoftwareApplication')), 'inverter calculator application schema exists');
 assert.match(solarHub, /href="solar-inverter-size-calculator\.html"/);
+const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
+assert.match(sitemap, /<loc>https:\/\/azeemwaseem2020\.github\.io\/solar-inverter-size-calculator\.html<\/loc><lastmod>2026-10-26<\/lastmod>/);
+assert.match(sitemap, /solar-load-calculator\.html<\/loc><lastmod>2026-10-26<\/lastmod>/);
 const inverterGuide = fs.readFileSync(new URL('../blog-solar-inverter-size-calculator.html', import.meta.url), 'utf8');
 assert.match(inverterGuide, /property="og:title" content="Solar Inverter Sizing Guide: kW, kVA &amp; Surge \| Calcora"/);
 assert.doesNotMatch(inverterGuide, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
