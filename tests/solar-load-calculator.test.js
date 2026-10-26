@@ -87,4 +87,12 @@ assert.doesNotMatch(inverterGuide, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
 assert.match(inverterGuide, /https:\/\/pvwatts\.nrel\.gov\//);
 assert.match(inverterGuide, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
 
+assert.match(solarLoadPage, /function validPlanningInputs\(\)/);
+assert.match(solarLoadPage, /if\(!validPlanningInputs\(\)\)\{loadOut\.innerHTML=/);
+assert.match(solarLoadPage, /id="useRunningLoad"[^>]*>Use estimated running load as backup load<\/button>/);
+assert.match(solarLoadPage, /function useRunningLoadAsBackup\(\)/);
+assert.match(solarLoadPage, /document\.getElementById\('useRunningLoad'\)\.addEventListener\('click',useRunningLoadAsBackup\)/);
+assert.match(solarLoadPage, /The battery estimate uses the separate “Load to back up” input/);
+assert.match(solarLoadPage, /Copies the estimated simultaneous running load into the separate battery-backup load input/);
+
 console.log('Solar load calculator inverter headroom checks passed.');
