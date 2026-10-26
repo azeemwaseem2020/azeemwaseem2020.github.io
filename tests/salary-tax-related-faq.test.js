@@ -105,9 +105,9 @@ assert.match(emi, /total scheduled repayment of approximately PKR 127,482\.27/,
   'EMI worked example must match the reducing-balance formula to two decimal places');
 assert.doesNotMatch(emi, /2026-10-09/,
   'EMI structured-data dates must not retain the prior revision date');
-assert.equal((emi.match(/"dateModified":"2026-10-26"/g) || []).length, 2,
+assert.equal((emi.match(/"dateModified":"2026-10-15"/g) || []).length, 2,
   'EMI WebApplication and WebPage structured data must share the current revision date');
-assert.match(emi, /article:modified_time" content="2026-10-26"/,
+assert.match(emi, /article:modified_time" content="2026-10-15"/,
   'EMI Open Graph modified time must match the current page revision');
 assert.equal(emi.split('<h2>Worked EMI example</h2>').length - 1, 1,
   'EMI worked example should appear once after consolidation');
