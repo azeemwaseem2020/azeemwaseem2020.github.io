@@ -45,8 +45,16 @@ assert.match(html, /article:modified_time" content="2026-10-26"/,
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
 assert.match(zakat, /<h1>Pakistan Zakat Calculator — Nisab &amp; 2\.5% Estimate<\/h1>/,
   'Zakat page should not label a prior-year Nisab as the current-year default');
-assert.match(zakat, /value="" placeholder="Enter the applicable Nisab amount"/,
-  'Zakat page must not prefill the historical 1446–47 Nisab as current');
+assert.match(zakat, /id="nisab"[^>]*value="503529"/,
+  'Zakat page must prefill the requested PKR 503,529 reference');
+assert.match(zakat, /The field is prefilled with PKR 503,529 as a historical reference/,
+  'Zakat page must clearly qualify the prefilled Nisab as historical, not universal or current-year guaranteed');
+assert.match(zakat, /id="gold-tola"/, 'Zakat page must accept gold weight in tola');
+assert.match(zakat, /id="gold-rate"/, 'Zakat page must accept a user-entered gold price per tola in PKR');
+assert.match(zakat, /id="silver-tola"/, 'Zakat page must accept silver weight in tola');
+assert.match(zakat, /id="silver-rate"/, 'Zakat page must accept a user-entered silver price per tola in PKR');
+assert.match(zakat, /Math\.round\(Number\(weight\)\*Number\(rate\)\*100\)\/100/,
+  'Zakat page must calculate metal value from entered tola and PKR per-tola rate');
 assert.match(zakat, /PKR 503,529[\s\S]{0,220}historical Pakistan government reference/,
   'Zakat page must identify the PKR 503,529 threshold as historical');
 assert.match(zakat, /!Number\.isFinite\(assets\)/,
@@ -115,7 +123,7 @@ assert.match(methodology, /do not prove exhaustive correctness/,
 const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
 const prioritySitemap = fs.readFileSync(new URL('../sitemap-pakistan-priority.xml', import.meta.url), 'utf8');
 for (const map of [sitemap, prioritySitemap]) {
-  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/zakat-calculator\.html<\/loc><lastmod>2026-10-15<\/lastmod>/,
+  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/zakat-calculator\.html<\/loc><lastmod>2026-10-26<\/lastmod>/,
     'Both sitemaps must record the Zakat page revision date');
   assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/loan-emi-calculator\.html<\/loc><lastmod>2026-10-15<\/lastmod>/,
     'Both sitemaps must record the EMI page revision date');
