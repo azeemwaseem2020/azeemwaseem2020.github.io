@@ -15,9 +15,9 @@ assert.match(html, /Verify both continuous and surge ratings for the actual appl
 
 const guide = fs.readFileSync(new URL('../blog-home-solar-load-calculator-usa.html', import.meta.url), 'utf8');
 assert.match(guide, /Use the electric bill without confusing energy and peak demand/);
-assert.match(guide, /https:\/\/pvwatts\.nrel\.gov\//);
-assert.match(guide, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
-assert.doesNotMatch(guide, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
+assert.match(solarLoadPage, /https:\/\/pvwatts\.nrel\.gov\//);
+assert.match(solarLoadPage, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
+assert.doesNotMatch(solarLoadPage, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
 assert.match(guide, /Monthly kWh divided by the number of days in that billing period/);
 
 const panelPage = fs.readFileSync(new URL('../solar-panel-calculator.html', import.meta.url), 'utf8');
@@ -58,7 +58,8 @@ assert.match(panelPage, /href="https:\/\/azeemwaseem2020\.github\.io\/solar-pane
 const solarHub = fs.readFileSync(new URL('../solar-calculator-hub.html', import.meta.url), 'utf8');
 assert.match(solarHub, /<title>Solar Calculator Hub \| Load, Panels, Battery & Inverter \| Calcora<\/title>/);
 assert.match(solarHub, /property="og:title" content="Solar Calculator Hub \| Load, Panels, Battery & Inverter \| Calcora"/);
-const loadSchemas = [...guide.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(([, raw]) => JSON.parse(raw));
+const solarLoadPage = fs.readFileSync(new URL('../solar-load-calculator.html', import.meta.url), 'utf8');
+const loadSchemas = [...solarLoadPage.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(([, raw]) => JSON.parse(raw));
 const loadApp = loadSchemas.find(schema => schema['@type'] === 'SoftwareApplication');
 assert.ok(loadApp, 'solar load SoftwareApplication schema exists');
 assert.equal(loadApp.name, 'Home Solar Load Calculator: kWh, Panels & Battery | Calcora');
