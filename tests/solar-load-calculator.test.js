@@ -8,6 +8,13 @@ assert.match(html, /id="inverterMargin" type="number" value="25" min="0" max="10
 assert.match(html, /inverterMargin=document\.getElementById\('inverterMargin'\)/);
 assert.match(html, /Number\(inverterMargin\.value\)/);
 assert.match(html, /v\[10\]>=0&&v\[10\]<=100/);
+assert.match(html, /<label for="billingDays">Days covered by this electricity bill<\/label>/);
+assert.match(html, /id="billingDays" type="number" value="30" min="1" max="62"/);
+assert.match(html, /billingDays=document\.getElementById\('billingDays'\)/);
+assert.match(html, /v\[11\]>=1&&v\[11\]<=62&&Number\.isInteger\(v\[11\]\)/);
+assert.match(html, /Number\(units\.value\)\/Number\(billingDays\.value\)/);
+assert.match(html, /daily\*Number\(billingDays\.value\)/);
+assert.match(html, /billing-period days you enter/);
 assert.match(html, /M=Number\(inverterMargin\.value\)\/100/);
 assert.match(html, /Math\.max\(0,totalLoad\/1000\)\*\(1\+M\)/);
 assert.match(html, /Starting surge is not included/);
