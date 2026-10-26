@@ -54,4 +54,21 @@ assert.equal(batteryApp.url, 'https://azeemwaseem2020.github.io/solar-battery-ca
 
 assert.match(panelPage, /href="https:\/\/azeemwaseem2020\.github\.io\/solar-panel-calculator\.html"/);
 
+
+const solarHub = fs.readFileSync(new URL('../solar-calculator-hub.html', import.meta.url), 'utf8');
+assert.match(solarHub, /<title>Solar Calculator Hub \| Load, Panels, Battery & Inverter \| Calcora<\/title>/);
+assert.match(solarHub, /property="og:title" content="Solar Calculator Hub \| Load, Panels, Battery & Inverter \| Calcora"/);
+const loadSchemas = [...guide.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(([, raw]) => JSON.parse(raw));
+const loadApp = loadSchemas.find(schema => schema['@type'] === 'SoftwareApplication');
+assert.ok(loadApp, 'solar load SoftwareApplication schema exists');
+assert.equal(loadApp.name, 'Home Solar Load Calculator: kWh, Panels & Battery | Calcora');
+assert.doesNotMatch(guide, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
+assert.match(guide, /https:\/\/pvwatts\.nrel\.gov\//);
+assert.match(guide, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
+const inverterGuide = fs.readFileSync(new URL('../blog-solar-inverter-size-calculator.html', import.meta.url), 'utf8');
+assert.match(inverterGuide, /property="og:title" content="Solar Inverter Sizing Guide: kW, kVA &amp; Surge \| Calcora"/);
+assert.doesNotMatch(inverterGuide, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
+assert.match(inverterGuide, /https:\/\/pvwatts\.nrel\.gov\//);
+assert.match(inverterGuide, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
+
 console.log('Solar load calculator inverter headroom checks passed.');
