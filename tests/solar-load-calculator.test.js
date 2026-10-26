@@ -36,6 +36,20 @@ assert.match(panelPage, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
 assert.doesNotMatch(panelPage, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
 assert.doesNotMatch(panelPage, /id="calcora-search-guide"/);
 assert.doesNotMatch(panelPage, /class="calcora-quick-guide"/);
+const batteryPage = fs.readFileSync(new URL('../solar-battery-calculator.html', import.meta.url), 'utf8');
+assert.match(batteryPage, /<title>Solar Battery Calculator \| Backup Time, kWh & Ah \| Calcora<\/title>/);
+assert.match(batteryPage, /property="og:title" content="Solar Battery Calculator \| Backup Time, kWh & Ah \| Calcora"/);
+assert.doesNotMatch(batteryPage, /og:title[^>]+Pakistan/i);
+assert.match(batteryPage, /Updated: October 26, 2026/);
+assert.match(batteryPage, /href="blog-home-solar-load-calculator-usa\.html">US Home Solar Load Guide/);
+assert.doesNotMatch(batteryPage, /class="calcora-quick-guide"/);
+assert.doesNotMatch(batteryPage, /<h2>Next checks<\/h2>/);
+const batterySchemas = [...batteryPage.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(([, raw]) => JSON.parse(raw));
+const batteryApp = batterySchemas.find(schema => schema['@type'] === 'SoftwareApplication');
+assert.ok(batteryApp, 'solar battery SoftwareApplication schema exists');
+assert.equal(batteryApp.name, 'Solar Battery Calculator | Backup Time, kWh & Ah | Calcora');
+assert.equal(batteryApp.url, 'https://azeemwaseem2020.github.io/solar-battery-calculator.html');
+
 
 
 assert.match(panelPage, /href="https:\/\/azeemwaseem2020\.github\.io\/solar-panel-calculator\.html"/);
