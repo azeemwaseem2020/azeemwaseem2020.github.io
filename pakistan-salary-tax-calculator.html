@@ -105,8 +105,8 @@
       '<h2>Estimated result</h2>' +
       '<p><strong>Net-pay definition:</strong> The net figures below mean taxable salary after estimated income tax only—not full take-home pay after provident fund, insurance, loan repayments or other payroll deductions.</p>' +
       '<p><strong>Annual taxable income used:</strong> PKR ' + fmt(x) + '</p>' +
-      '<p><strong>Estimated annual amount after income tax only (not full take-home pay):</strong> PKR ' + fmt(Math.max(0, x - slab.tax)) + '</p>' +
-      '<p><strong>Estimated monthly amount after income tax only (not full take-home pay):</strong> PKR ' + fmt(Math.max(0, x - slab.tax) / 12) + '</p>' +
+      '<p><strong>Estimated annual net after income tax (not full take-home pay):</strong> PKR ' + fmt(Math.max(0, x - slab.tax)) + '</p>' +
+      '<p><strong>Estimated monthly net after income tax (not full take-home pay):</strong> PKR ' + fmt(Math.max(0, x - slab.tax) / 12) + '</p>' +
       '<p><strong>Applicable slab:</strong> ' + slab.band + '</p>' +
       '<p><strong>Tax formula for this slab:</strong> ' + formula + '</p>' +
       '<p><strong>Estimated annual tax:</strong> PKR ' + fmt(slab.tax) + '</p>' +
