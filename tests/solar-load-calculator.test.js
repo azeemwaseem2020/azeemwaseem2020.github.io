@@ -87,6 +87,13 @@ assert.doesNotMatch(inverterGuide, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
 assert.match(inverterGuide, /https:\/\/pvwatts\.nrel\.gov\//);
 assert.match(inverterGuide, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
 
+assert.match(solarLoadPage, /id="pv-sensitivity"[^>]*aria-labelledby="pv-sensitivity-title"/);
+assert.match(solarLoadPage, /id="lowSun" type="number" value="3\.5" min="0\.1" max="12"/);
+assert.match(solarLoadPage, /id="highSun" type="number" value="6" min="0\.1" max="12"/);
+assert.match(solarLoadPage, /id="runPvRange"[^>]*>Compare PV sizing scenarios<\/button>/);
+assert.match(solarLoadPage, /document\.getElementById\('runPvRange'\)\.addEventListener\('click'/);
+assert.match(solarLoadPage, /!(low<baseSun&&baseSun<high)/);
+assert.match(solarLoadPage, /Lower peak-sun hours increase the array size needed to meet the same daily energy target/);
 assert.match(solarLoadPage, /function validPlanningInputs\(\)/);
 assert.match(solarLoadPage, /if\(!validPlanningInputs\(\)\)\{loadOut\.innerHTML=/);
 assert.match(solarLoadPage, /id="useRunningLoad"[^>]*>Use estimated running load as backup load<\/button>/);
