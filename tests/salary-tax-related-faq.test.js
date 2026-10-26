@@ -37,10 +37,10 @@ assert.match(html, /A Finance Bill is useful background but is not[\s\S]{0,100}s
   'Must distinguish a Finance Bill from enacted legislation');
 assert.match(html, /Official source set reviewed October 15, 2026\./,
   'Must display the current official-source review date');
-assert.match(html, /"dateModified":"2026-10-15"/,
-  'Structured data dateModified must match the reviewed page version');
-assert.match(html, /article:modified_time" content="2026-10-15"/,
-  'Open Graph modified time must match the reviewed page version');
+assert.match(html, /"dateModified":"2026-10-26"/,
+  'Structured data dateModified must match the latest page revision');
+assert.match(html, /article:modified_time" content="2026-10-26"/,
+  'Open Graph modified time must match the latest page revision');
 
 const zakat = fs.readFileSync(new URL('../zakat-calculator.html', import.meta.url), 'utf8');
 assert.match(zakat, /<h1>Pakistan Zakat Calculator — Nisab &amp; 2\.5% Estimate<\/h1>/,
@@ -55,9 +55,9 @@ assert.match(zakat, /validMoneyInput/,
   'Zakat calculator must reject blank, negative and non-numeric money inputs instead of silently converting them to zero');
 assert.match(zakat, /Enter a positive Nisab threshold/,
   'Zakat calculation must require a positive user-confirmed Nisab');
-assert.match(zakat, /"dateModified":"2026-10-15"/,
+assert.match(zakat, /"dateModified":"2026-10-26"/,
   'Zakat structured-data revision date must match the current page revision');
-assert.match(zakat, /article:modified_time" content="2026-10-15"/,
+assert.match(zakat, /article:modified_time" content="2026-10-26"/,
   'Zakat Open Graph modified time must match the current page revision');
 
 const emi = fs.readFileSync(new URL('../loan-emi-calculator.html', import.meta.url), 'utf8');
