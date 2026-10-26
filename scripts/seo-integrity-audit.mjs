@@ -15,7 +15,7 @@ const report = {
   internalLinksToNoindexPages: [],
   internalLinksToCanonicalAliases: [],
   htmlTechnical: { missingLang: [], missingViewport: [], missingCharset: [], multipleH1: [] },
-  contentQuality: { shortPages: [], titleLengthOutOfRange: [], descriptionLengthOutOfRange: [], missingAuthor: [], missingOpenGraphTitle: [], missingOpenGraphDescription: [], missingTwitterTitle: [], missingTwitterDescription: [] },
+  contentQuality: { shortPages: [], titleLengthOutOfRange: [], descriptionLengthOutOfRange: [], missingAuthor: [], missingOpenGraphTitle: [], missingOpenGraphDescription: [], missingTwitterTitle: [], missingTwitterDescription: [], invalidMetaAttributeNames: [] },
   structuredData: { invalidJsonLd: [] },
   canonicalTargetsMissing: [],
   sitemap: [],
@@ -114,6 +114,14 @@ for (const abs of htmlFiles) {
   }
 
   const markup = html.replace(/<script\b[\s\S]*?<\/script\s*>/gi, '').replace(/<style\b[\s\S]*?<\/style\s*>/gi, '');
+  if (!isVerification && !isNoindex) {
+    for (const meta of html.matchAll(/<meta\\b[^>]*>/gi)) {
+      for (const attribute of ['name', 'property']) {
+        const value = attr(meta[0], attribute);
+        if (value && (value.length > 40 || /\\s/.test(value))) report.contentQuality.invalidMetaAttributeNames.push({ file, attribute, value });
+      }
+    }
+  }
   if (!isVerification && !isNoindex) {
     const authorTag = (html.match(/<meta\b[^>]*\bname\s*=\s*(?:"author"|'author'|author)[^>]*>/i) || [])[0] || '';
     const ogTitleTag = (html.match(/<meta\b[^>]*\bproperty\s*=\s*(?:"og:title"|'og:title'|og:title)[^>]*>/i) || [])[0] || '';
