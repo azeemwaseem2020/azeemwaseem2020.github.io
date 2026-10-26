@@ -18,7 +18,7 @@ assert.match(html, /billing-period days you enter/);
 assert.match(html, /M=Number\(inverterMargin\.value\)\/100/);
 assert.match(html, /Math\.max\(0,totalLoad\/1000\)\*\(1\+M\)/);
 assert.match(html, /separate rough starting-surge reference/);
-assert.match(html, /Verify both continuous and surge ratings for the actual appliances/);
+assert.match(html, /Check inverter continuous output and surge rating\\/duration/);
 assert.match(html, /\['Starting surge multiplier','ls',1,'1','0\.1'\]/);
 assert.match(html, /querySelectorAll\('\.ls'\)/);
 assert.match(html, /surges\.some\(x=>!Number\.isFinite\(x\)\|\|x<1\|\|x>10\)/);
