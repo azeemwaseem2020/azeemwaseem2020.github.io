@@ -94,7 +94,7 @@ assert.match(zakat, /not an independent review by a qualified Islamic scholar/i,
 assert.match(zakat, /No religious or professional qualification is claimed/i, "zakat: qualifications and scope are transparent");
 for (const page of ["blog-solar-calculator-pakistan.html", "blog-solar-inverter-size-calculator.html", "psx-capital-gains-tax-calculator.html", "blog-psx-capital-gain-calculator.html", "blog-bank-loan-calculator-pakistan.html", "pakistan-salary-tax-guide-urdu.html", "pakistan-salary-tax-guide-roman-urdu.html", "pakistan-filer-non-filer-tax-rates-2026-27.html", "pakistan-income-tax-return-deadline-2026.html", "contact.html", "faq.html", "pakistan-salary-tax-calculator.html"]) {
   const expectedLastmod = page === "contact.html" || page === "faq.html" ? "2026-10-26" : "2026-10-25";
-  assert.match(sitemap, new RegExp("<loc>https://azeemwaseem2020\\.github\\.io/" + page.replace(".", "\\.") + "</loc><lastmod>" + expectedLastmod + "</lastmod>"), page + ": current sitemap lastmod");
+  assert.ok(sitemap.includes("<url><loc>https://azeemwaseem2020.github.io/" + page + "</loc><lastmod>" + expectedLastmod + "</lastmod></url>"), page + ": current sitemap lastmod");
 }
 
 assert.match(inverterGuide, /<title>Solar Inverter Sizing Guide: kW, kVA &amp; Surge \| Calcora<\/title>/, "inverter guide: concise page title");
