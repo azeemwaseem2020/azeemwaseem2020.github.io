@@ -149,8 +149,8 @@ const prioritySitemap = fs.readFileSync(new URL('../sitemap-pakistan-priority.xm
 for (const map of [sitemap, prioritySitemap]) {
   assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/zakat-calculator\.html<\/loc><lastmod>2026-10-26<\/lastmod>/,
     'Both sitemaps must record the Zakat page revision date');
-  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/loan-emi-calculator\.html<\/loc><lastmod>2026-10-15<\/lastmod>/,
-    'Both sitemaps must record the EMI page revision date');
+  assert.match(map, /<loc>https:\/\/azeemwaseem2020\.github\.io\/loan-emi-calculator\.html<\/loc><lastmod>2026-10-26<\/lastmod>/,
+    'Both sitemaps must record the current EMI page revision date');
 }
 assert.match(emi, /id="extra-principal"/,
   'EMI page must expose an optional extra-principal input');
