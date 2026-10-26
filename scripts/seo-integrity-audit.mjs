@@ -115,10 +115,10 @@ for (const abs of htmlFiles) {
 
   const markup = html.replace(/<script\b[\s\S]*?<\/script\s*>/gi, '').replace(/<style\b[\s\S]*?<\/style\s*>/gi, '');
   if (!isVerification && !isNoindex) {
-    for (const meta of html.matchAll(/<meta\\b[^>]*>/gi)) {
+    for (const meta of html.matchAll(/<meta\b[^>]*>/gi)) {
       for (const attribute of ['name', 'property']) {
         const value = attr(meta[0], attribute);
-        if (value && (value.length > 40 || /\\s/.test(value))) report.contentQuality.invalidMetaAttributeNames.push({ file, attribute, value });
+        if (value && (value.length > 40 || /\s/.test(value))) report.contentQuality.invalidMetaAttributeNames.push({ file, attribute, value });
       }
     }
   }
