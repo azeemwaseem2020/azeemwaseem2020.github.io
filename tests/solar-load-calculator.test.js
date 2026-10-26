@@ -30,6 +30,13 @@ const panelApp = panelSchemas.find(schema => schema['@type'] === 'SoftwareApplic
 assert.ok(panelApp, 'solar panel SoftwareApplication schema exists');
 assert.equal(panelApp.name, 'Solar Panel Calculator: Panel Count & Daily Output | Calcora');
 assert.equal(panelApp.url, 'https://azeemwaseem2020.github.io/solar-panel-calculator.html');
+assert.match(panelPage, /Last updated: 26 October 2026/);
+assert.match(panelPage, /https:\/\/pvwatts\.nrel\.gov\//);
+assert.match(panelPage, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
+assert.doesNotMatch(panelPage, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
+assert.doesNotMatch(panelPage, /id="calcora-search-guide"/);
+assert.doesNotMatch(panelPage, /class="calcora-quick-guide"/);
+
 
 assert.match(panelPage, /href="https:\/\/azeemwaseem2020\.github\.io\/solar-panel-calculator\.html"/);
 
