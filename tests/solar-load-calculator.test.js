@@ -93,6 +93,6 @@ assert.match(solarLoadPage, /id="useRunningLoad"[^>]*>Use estimated running load
 assert.match(solarLoadPage, /function useRunningLoadAsBackup\(\)/);
 assert.match(solarLoadPage, /document\.getElementById\('useRunningLoad'\)\.addEventListener\('click',useRunningLoadAsBackup\)/);
 assert.match(solarLoadPage, /The battery estimate uses the separate “Load to back up” input/);
-assert.match(solarLoadPage, /Copies the estimated simultaneous running load into the separate battery-backup load input/);
+assert.match(solarLoadPage, /Optional: copy the estimated simultaneous running load into the separate battery-backup load input/);
 
 console.log('Solar load calculator inverter headroom checks passed.');
