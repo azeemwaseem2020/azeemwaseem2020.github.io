@@ -56,6 +56,11 @@ assert.match(batteryPage, /<title>Solar Battery Calculator \| Backup Time, kWh &
 assert.match(batteryPage, /property="og:title" content="Solar Battery Calculator \| Backup Time, kWh & Ah \| Calcora"/);
 assert.doesNotMatch(batteryPage, /og:title[^>]+Pakistan/i);
 assert.match(batteryPage, /Updated: October 26, 2026/);
+assert.match(batteryPage, /dcCurrent=l\/\(v\*e\)/);
+assert.match(batteryPage, /Estimated DC current at the entered voltage/);
+assert.match(batteryPage, /Battery\/BMS:<\/strong> confirm continuous and peak discharge-current ratings/);
+assert.match(batteryPage, /DC current is approximately AC load watts/);
+
 assert.match(batteryPage, /href="blog-home-solar-load-calculator-usa\.html">US Home Solar Load Guide/);
 assert.doesNotMatch(batteryPage, /class="calcora-quick-guide"/);
 assert.doesNotMatch(batteryPage, /<h2>Next checks<\/h2>/);
