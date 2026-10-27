@@ -40,7 +40,7 @@ assert.ok(collection.mainEntity.itemListElement.some(item => item.url.endsWith('
 const drawdownPage = fs.readFileSync(new URL('psx-drawdown-recovery-calculator.html', root), 'utf8');
 assert.match(drawdownPage, /id="peakPrice"/, 'PSX drawdown: reference peak input missing');
 assert.match(drawdownPage, /id="currentPrice"/, 'PSX drawdown: scenario price input missing');
-assert.match(drawdownPage, /const recovery=\(peak\/current-1\)\*100/, 'PSX drawdown: recovery percentage formula missing');
+assert.match(drawdownPage, /recovery=\(peak\/current-1\)\*100/, 'PSX drawdown: recovery percentage formula missing');
 assert.match(drawdownPage, /Further downside stress scenarios/, 'PSX drawdown: stress scenario table missing');
 assert.match(drawdownPage, /not a forecast or probability estimate/, 'PSX drawdown: scenario disclaimer missing');
 const drawdownSchemas = [...drawdownPage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)].map(([, json]) => JSON.parse(json));
