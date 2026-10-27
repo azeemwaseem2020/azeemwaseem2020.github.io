@@ -53,8 +53,12 @@ assert.match(zakat, /id="gold-tola"/, 'Zakat page must accept gold weight in tol
 assert.match(zakat, /id="gold-rate"/, 'Zakat page must accept a user-entered gold price per tola in PKR');
 assert.match(zakat, /id="silver-tola"/, 'Zakat page must accept silver weight in tola');
 assert.match(zakat, /id="silver-rate"/, 'Zakat page must accept a user-entered silver price per tola in PKR');
-assert.match(zakat, /Math\.round\(Number\(weight\)\*Number\(rate\)\*100\)\/100/,
-  'Zakat page must calculate metal value from entered tola and PKR per-tola rate');
+assert.match(zakat, /Math\.round\(grams\*perGram\*purityFactor\*100\)\/100/,
+  'Zakat page must calculate metal value using converted weight, entered rate units and gold purity');
+assert.match(zakat, /87\.48\*perGram\/Math\.max\(purityFactor,0\.01\)/,
+  'Gold Nisab preset must use 87.48 grams and account for selected gold purity');
+assert.match(zakat, /612\.36\*perGram\*100/,
+  'Silver Nisab preset must use 612.36 grams when rates are entered per gram');
 assert.match(zakat, /PKR 503,529[\s\S]{0,220}historical Pakistan government reference/,
   'Zakat page must identify the PKR 503,529 threshold as historical');
 assert.match(zakat, /!Number\.isFinite\(assets\)/,
