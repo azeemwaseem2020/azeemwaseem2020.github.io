@@ -34,7 +34,7 @@ for (const path of pages) {
       app = true;
       assert.equal(schema.url, canonical, path + ": schema canonical");
       assert.equal(schema.author?.name, "Abdul Qadir", path + ": schema author");
-      assert.equal(schema.dateModified, "2026-10-19", path + ": schema date");
+      assert.equal(schema.dateModified, path === "hours-to-days-calculator.html" ? "2026-10-27" : "2026-10-19", path + ": schema date");
     }
   }
   assert.ok(app, path + ": WebApplication schema");
@@ -44,7 +44,8 @@ for (const path of pages) {
 }
 const sitemap = readFileSync("sitemap.xml", "utf8");
 for (const path of pages) {
-  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + path + "</loc><lastmod>2026-10-19</lastmod>"), path + ": sitemap lastmod");
+  const expectedLastmod = path === "hours-to-days-calculator.html" ? "2026-10-27" : "2026-10-19";
+  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + path + "</loc><lastmod>" + expectedLastmod + "</lastmod>"), path + ": sitemap lastmod");
 }
 const amps = readFileSync("amps-to-watts-calculator.html", "utf8");
 assert.match(amps, /id=['"]pf['"]/i, "amps-to-watts: power factor input");
