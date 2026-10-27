@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const root = new URL('../', import.meta.url);
-const pages = ['psx-calculator.html','psx-brokerage-commission-calculator.html','psx-portfolio-calculator.html','psx-average-price-calculator.html','psx-position-size-calculator.html','psx-dividend-reinvestment-calculator.html','psx-capital-gains-tax-calculator.html','psx-dividend-yield-calculator.html','psx-investor-calculator-hub.html','psx-calculator-urdu.html'];
+const pages = ['psx-calculator.html','psx-brokerage-commission-calculator.html','psx-portfolio-calculator.html','psx-average-price-calculator.html','psx-position-size-calculator.html','psx-dividend-reinvestment-calculator.html','psx-capital-gains-tax-calculator.html','psx-dividend-yield-calculator.html','psx-drawdown-recovery-calculator.html','psx-investor-calculator-hub.html','psx-calculator-urdu.html'];
 const sitemap = fs.readFileSync(new URL('sitemap.xml', root), 'utf8');
 
 for (const file of pages) {
@@ -28,13 +28,25 @@ const parsedSchemas = jsonLdScripts.map(([, json]) => JSON.parse(json));
 const collection = parsedSchemas.find(schema => schema['@type'] === 'CollectionPage');
 assert.ok(collection, 'PSX hub: CollectionPage JSON-LD missing');
 assert.equal(collection.mainEntity.numberOfItems, collection.mainEntity.itemListElement.length, 'PSX hub: ItemList count must match entries');
-assert.equal(collection.mainEntity.itemListElement.length, 8, 'PSX hub: expected eight specific PSX calculators');
+assert.equal(collection.mainEntity.itemListElement.length, 9, 'PSX hub: expected nine specific PSX calculators');
 for (const item of collection.mainEntity.itemListElement) {
   const file = new URL(item.url).pathname.split('/').pop();
   assert.ok(hub.includes('href="' + file + '"'), 'PSX hub: structured-data item must be linked on page: ' + file);
   assert.ok(sitemap.includes(item.url), 'PSX hub: structured-data item missing from sitemap: ' + file);
 }
 assert.ok(collection.mainEntity.itemListElement.some(item => item.url.endsWith('/psx-brokerage-commission-calculator.html')), 'PSX hub: brokerage calculator missing from structured data');
+assert.ok(collection.mainEntity.itemListElement.some(item => item.url.endsWith('/psx-drawdown-recovery-calculator.html')), 'PSX hub: drawdown calculator missing from structured data');
+
+const drawdownPage = fs.readFileSync(new URL('psx-drawdown-recovery-calculator.html', root), 'utf8');
+assert.match(drawdownPage, /id="peakPrice"/, 'PSX drawdown: reference peak input missing');
+assert.match(drawdownPage, /id="currentPrice"/, 'PSX drawdown: scenario price input missing');
+assert.match(drawdownPage, /const recovery=\(peak\/current-1\)\*100/, 'PSX drawdown: recovery percentage formula missing');
+assert.match(drawdownPage, /Further downside stress scenarios/, 'PSX drawdown: stress scenario table missing');
+assert.match(drawdownPage, /not a forecast or probability estimate/, 'PSX drawdown: scenario disclaimer missing');
+const drawdownSchemas = [...drawdownPage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)].map(([, json]) => JSON.parse(json));
+assert.ok(drawdownSchemas.some(schema => schema['@type'] === 'SoftwareApplication'), 'PSX drawdown: SoftwareApplication schema missing');
+const drawdownScripts = [...drawdownPage.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(([, script]) => script.trim()).filter(Boolean);
+assert.doesNotThrow(() => new vm.Script(drawdownScripts[drawdownScripts.length - 1]), 'PSX drawdown: calculator JavaScript must parse');
 
 const profitPage = fs.readFileSync(new URL('psx-calculator.html', root), 'utf8');
 assert.ok(profitPage.includes('<title>PSX Profit Calculator Pakistan | Net P/L &amp; Break-Even | Calcora</title>'), 'PSX profit page: title should preserve the primary profit intent');
