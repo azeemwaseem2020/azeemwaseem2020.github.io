@@ -53,7 +53,8 @@
 <div class="urdu-field"><label for="dividendTax">ڈیویڈنڈ ٹیکس/کٹوتی (%)</label><input id="dividendTax" type="number" min="0" max="100" step="any" value="0" required></div>
 <div class="urdu-field"><label for="targetReturn">مطلوبہ قیمت پر مبنی ریٹرن (%)</label><input id="targetReturn" type="number" min="0" max="10000" step="any" value="10" required><p class="urdu-help">ڈیویڈنڈ کے بغیر، خرید لاگت پر مطلوبہ منافع۔</p></div>
 </div>
-<div class="urdu-actions"><button class="urdu-btn" type="submit">حساب کریں</button><button class="urdu-btn secondary" type="reset">مثالی اعداد بحال کریں</button></div>
+<div class="urdu-actions"><button class="urdu-btn" type="submit">حساب کریں</button><button class="urdu-btn secondary" type="reset">مثالی اعداد بحال کریں</button><button class="urdu-btn secondary" id="downloadReport" type="button">حساب کی CSV رپورٹ ڈاؤن لوڈ کریں</button></div>
+<p class="urdu-help">رپورٹ اسی براؤزر میں تیار ہوتی ہے؛ آپ کی درج کردہ قیمتیں کسی سرور پر بھیجنے کا کوڈ اس ٹول میں شامل نہیں۔</p>
 </form>
 </section>
 <section class="urdu-card" aria-labelledby="results-title" aria-live="polite">
@@ -66,6 +67,9 @@
 <div class="urdu-stat"><span>ٹیکس کے بعد ڈیویڈنڈ</span><strong id="netDividend">—</strong></div>
 <div class="urdu-stat primary"><span>ڈیویڈنڈ سمیت کل خالص ریٹرن</span><strong id="totalReturn">—</strong></div>
 <div class="urdu-stat"><span>کل سرمایہ پر خالص ریٹرن</span><strong id="returnPct">—</strong></div>
+<div class="urdu-stat"><span>کل اخراجات کا ٹریڈ ویلیو سے تناسب</span><strong id="costDrag">—</strong></div>
+<div class="urdu-stat"><span>فیس سمیت بریک ایون تک درکار قیمت تبدیلی</span><strong id="requiredMove">—</strong></div>
+<div class="urdu-stat"><span>نقصان کے بعد اصل سرمایہ تک واپسی</span><strong id="recoveryPct">—</strong></div>
 <div class="urdu-stat"><span>اندازاً بریک ایون سیل قیمت</span><strong id="breakEven">—</strong></div>
 <div class="urdu-stat wide"><span>مطلوبہ قیمت پر مبنی ریٹرن کے لیے سیل قیمت</span><strong id="targetPrice">—</strong></div>
 </div>
@@ -105,9 +109,10 @@
   const money=n=>'PKR '+Number(n).toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2});
   const pct=n=>Number(n).toLocaleString('en-PK',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
   const put=(id,value)=>{document.getElementById(id).textContent=value;};
+  let lastReport=null;
   function calculate(){
     const [buy,sell,q,buyCosts,sellCosts,cgtPct,dps,divTaxPct,targetPct]=ids.map(num);
-    if(!ids.every(id=>Number.isFinite(num(id)))||buy<=0||sell<0||!Number.isInteger(q)||q<1||buyCosts<0||sellCosts<0||cgtPct<0||cgtPct>100||divTaxPct<0||divTaxPct>100||targetPct<0){put('calcStatus','براہِ کرم تمام اعداد درست اور غیر منفی درج کریں۔');return;}
+    if(!ids.every(id=>Number.isFinite(num(id)))||buy<=0||sell<0||!Number.isInteger(q)||q<1||buyCosts<0||sellCosts<0||cgtPct<0||cgtPct>100||dps<0||divTaxPct<0||divTaxPct>100||targetPct<0||targetPct>10000){lastReport=null;put('calcStatus','براہِ کرم تمام اعداد درست اور مقررہ حدود میں درج کریں۔');return;}
     const invested=buy*q+buyCosts;
     const gross=sell*q;
     const taxableGain=Math.max(0,gross-sellCosts-invested);
@@ -118,11 +123,25 @@
     const roi=invested>0?total/invested*100:0;
     const be=(invested+sellCosts)/q;
     const targetSale=cgtPct===100?null:(sellCosts+invested+(invested*targetPct/100)/(1-cgtPct/100))/q;
-    put('buyTotal',money(invested));put('saleGross',money(gross));put('cgtAmount',money(tax));put('tradeNet',money(tradeNet));put('netDividend',money(netDiv));put('totalReturn',money(total));put('returnPct',pct(roi));put('breakEven',money(be)+' / شیئر');put('targetPrice',cgtPct===100?(targetPct>0?'100% CGT پر مثبت قیمت پر مبنی منافع ممکن نہیں':money(be)+' / شیئر'):money(targetSale)+' / شیئر');
+    const totalCosts=buyCosts+sellCosts;
+    const tradedValue=(buy*q)+(sell*q);
+    const costDragPct=tradedValue>0?totalCosts/tradedValue*100:0;
+    const requiredMovePct=(be-buy)/buy*100;
+    const recoveryPct=total<0&&invested+total>0?Math.abs(total)/(invested+total)*100:null;
+    put('buyTotal',money(invested));put('saleGross',money(gross));put('cgtAmount',money(tax));put('tradeNet',money(tradeNet));put('netDividend',money(netDiv));put('totalReturn',money(total));put('returnPct',pct(roi));put('costDrag',pct(costDragPct));put('requiredMove',pct(requiredMovePct));put('recoveryPct',recoveryPct===null?(total<0?'حساب ممکن نہیں':'نقصان نہیں'):pct(recoveryPct));put('breakEven',money(be)+' / شیئر');put('targetPrice',cgtPct===100?(targetPct>0?'100% CGT پر مثبت قیمت پر مبنی منافع ممکن نہیں':money(be)+' / شیئر'):money(targetSale)+' / شیئر');
     put('calcStatus','نتیجہ صرف درج کردہ قیمتوں، مقررہ اخراجات اور فرض کردہ شرحوں پر مبنی ہے۔ اصل بروکر اسٹیٹمنٹ سے ملائیں۔');
     const scenarios=[{name:'قیمت 5% کم',price:sell*.95},{name:'موجودہ فروخت قیمت',price:sell},{name:'قیمت 5% زیادہ',price:sell*1.05}];
-    document.getElementById('scenarioRows').innerHTML=scenarios.map(s=>{const g=s.price*q;const taxable=Math.max(0,g-sellCosts-invested);const t=taxable*cgtPct/100;const net=g-sellCosts-t-invested;return '<tr><td>'+s.name+'</td><td>'+money(s.price)+'</td><td>'+money(net)+'</td></tr>';}).join('');
+    const scenarioResults=scenarios.map(s=>{const g=s.price*q;const taxable=Math.max(0,g-sellCosts-invested);const t=taxable*cgtPct/100;const net=g-sellCosts-t-invested;return {...s,net};});
+    document.getElementById('scenarioRows').innerHTML=scenarioResults.map(s=>'<tr><td>'+s.name+'</td><td>'+money(s.price)+'</td><td>'+money(s.net)+'</td></tr>').join('');
+    lastReport={buy,sell,q,buyCosts,sellCosts,cgtPct,dps,divTaxPct,targetPct,invested,gross,tax,tradeNet,netDiv,total,roi,totalCosts,tradedValue,costDragPct,requiredMovePct,recoveryPct,be,targetSale,scenarioResults};
   }
+  document.getElementById('downloadReport').addEventListener('click',function(){
+    if(!lastReport){put('calcStatus','پہلے درست اعداد درج کریں۔');return;}
+    const r=lastReport;
+    const rows=[['Calcora PSX Urdu Trade Report'],['Metric','Value','Unit'],['Buy price per share',r.buy,'PKR/share'],['Sell price per share',r.sell,'PKR/share'],['Share quantity',r.q,'shares'],['Buy costs',r.buyCosts,'PKR'],['Sell costs',r.sellCosts,'PKR'],['User-entered CGT rate',r.cgtPct,'%'],['Dividend per share',r.dps,'PKR/share'],['Dividend withholding assumption',r.divTaxPct,'%'],['Invested capital incl. buy costs',r.invested,'PKR'],['Gross sale value',r.gross,'PKR'],['Estimated CGT',r.tax,'PKR'],['Net trade profit/loss',r.tradeNet,'PKR'],['Net dividend estimate',r.netDiv,'PKR'],['Total net return estimate',r.total,'PKR'],['Return on invested capital',r.roi,'%'],['Total entered transaction costs',r.totalCosts,'PKR'],['Costs / gross traded value',r.costDragPct,'%'],['Price move needed to reach break-even',r.requiredMovePct,'%'],['Break-even exit price',r.be,'PKR/share'],['Target return assumption',r.targetPct,'%'],['Target exit price estimate',r.targetSale===null?'Not available at 100% CGT':r.targetSale,'PKR/share'],[],['Scenario','Exit price (PKR/share)','Net trade result (PKR)'],...r.scenarioResults.map(s=>[s.name,s.price,s.net]),[],['Caution','Estimates only; verify broker charges, tax rules and statements.']];
+    const csv='\uFEFF'+rows.map(row=>row.map(value=>'"'+String(value??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+    const blob=new Blob([csv],{type:'text/csv;charset=utf-8;' });const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='calcora-psx-trade-report.csv';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
+  });
   form.addEventListener('submit',function(e){e.preventDefault();calculate();});
   form.addEventListener('input',calculate);
   form.addEventListener('reset',function(){setTimeout(calculate,0);});
