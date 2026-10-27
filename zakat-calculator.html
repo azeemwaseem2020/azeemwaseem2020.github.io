@@ -22,7 +22,7 @@
 <tr><td>PKR 500,000</td><td>500,000 × 2.5%</td><td>PKR 12,500</td></tr>
 <tr><td>1 tola gold</td><td>11.6638 g × applicable gold value per gram × 2.5%</td><td id="one-tola-zakat-example">Enter a gold rate to estimate</td></tr>
 </tbody></table>
-<p class="field-help">ایک تولہ سونا بذاتِ خود نصاب پورا ہونے کا ثبوت نہیں؛ قیمت، purity اور زیورات کا حکم منتخب فقہی طریقے کے مطابق بدل سکتا ہے۔</p>
+<p class="field-help">ایک تولہ سونا بذاتِ خود نصاب پورا ہونے کا ثبوت نہیں؛ قیمت، purity اور زیورات کا حکم منتخب فقہی طریقے کے مطابق بدل سکتا ہے۔</p></section>
 <section class="section prose" aria-labelledby="zakat-lakh-crore"><h2 id="zakat-lakh-crore">Zakat on lakh and crore amounts</h2><p>یہ فوری جدول صرف 2.5% کا حساب دکھاتا ہے۔ یہ خود بخود یہ فیصلہ نہیں کرتا کہ کسی شخص پر زکوٰۃ واجب ہے یا نہیں؛ اس کے لیے نصاب، قمری سال اور اثاثوں کی اہلیت بھی اہم ہیں۔</p><div class="table-wrap"><table><thead><tr><th>Wealth amount</th><th>2.5% calculation</th><th>Estimated Zakat</th></tr></thead><tbody>
 <tr><td>PKR 50,000</td><td>50,000 × 2.5%</td><td>PKR 1,250</td></tr><tr><td>1 lakh (100,000)</td><td>100,000 × 2.5%</td><td>PKR 2,500</td></tr><tr><td>2 lakh (200,000)</td><td>200,000 × 2.5%</td><td>PKR 5,000</td></tr><tr><td>3 lakh (300,000)</td><td>300,000 × 2.5%</td><td>PKR 7,500</td></tr><tr><td>5 lakh (500,000)</td><td>500,000 × 2.5%</td><td>PKR 12,500</td></tr><tr><td>7.5 lakh (750,000)</td><td>750,000 × 2.5%</td><td>PKR 18,750</td></tr><tr><td>10 lakh (1,000,000)</td><td>1,000,000 × 2.5%</td><td>PKR 25,000</td></tr><tr><td>25 lakh (2,500,000)</td><td>2,500,000 × 2.5%</td><td>PKR 62,500</td></tr><tr><td>50 lakh (5,000,000)</td><td>5,000,000 × 2.5%</td><td>PKR 125,000</td></tr><tr><td>1 crore (10,000,000)</td><td>10,000,000 × 2.5%</td><td>PKR 250,000</td></tr><tr><td>2.5 crore (25,000,000)</td><td>25,000,000 × 2.5%</td><td>PKR 625,000</td></tr><tr><td>5 crore (50,000,000)</td><td>50,000,000 × 2.5%</td><td>PKR 1,250,000</td></tr>
 </tbody></table></div>
@@ -153,7 +153,8 @@ document.getElementById('fetch-metal-rates').addEventListener('click',async()=>{
   if(!(gold>0)||!(silver>0)) throw new Error('Unexpected rate format');
   document.getElementById('gold-rate').value=String(gold);
   document.getElementById('silver-rate').value=String(silver);
-  document.getElementById('gold-rate-unit')?.setAttribute('value','tola');
+  document.getElementById('gold-rate-unit').value='tola';
+  document.getElementById('silver-rate-unit').value='tola';
   status.textContent='Indicative rates loaded from a third-party source'+(data.updated_at?' (updated '+data.updated_at+')':'')+'. Verify local jeweller rates before relying on them; prices are not official.';
   applyNisabPreset();updateOneTolaExample();updateGoldWeightTable();calculateZakat();
  }catch(e){status.textContent='Automatic rates could not be loaded. Enter current local rates manually; the calculator remains usable.';}
