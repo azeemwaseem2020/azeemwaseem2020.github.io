@@ -113,12 +113,8 @@ assert.doesNotMatch(emi, /<h3>What changes the EMI\?<\/h3>/,
   'EMI page must not repeat the rate/principal/term impact list');
 
 
-assert.match(zakat, /id="zakat-verification-record"/,
-  'Zakat page must expose a verification record');
-assert.ok(zakat.includes('PKR 900,000 in listed assets') && zakat.includes('PKR 20,000'),
-  'Zakat verification record must show a reproducible worked arithmetic example');
-assert.ok(zakat.includes('Independent reviewer:</strong> None is currently identified'),
-  'Zakat page must not imply independent specialist review without evidence');
+assert.doesNotMatch(zakat, /zakat-verification-record|Independent reviewer|reviewed and verified/i,
+  'Zakat page must not publish a reviewer verification claim until consent and review evidence are confirmed');
 
 assert.match(emi, /id="emi-verification-record"/,
   'EMI page must expose a verification record');
