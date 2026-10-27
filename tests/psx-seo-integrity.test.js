@@ -131,3 +131,22 @@ assert.doesNotThrow(() => new vm.Script(urduInlineScripts[urduInlineScripts.leng
 
 
 console.log('PSX SEO integrity regression checks: PASS');
+const positionPage = fs.readFileSync(new URL('psx-position-size-calculator.html', root), 'utf8');
+for (const id of ['buyCost','sellCost','cgt']) {
+  assert.ok(positionPage.includes('id="' + id + '"'), 'PSX position sizing: missing cost assumption input ' + id);
+}
+assert.ok(positionPage.includes('e*(1+b)-s*(1-ss)'), 'PSX position sizing: stop-loss risk must include entered buy/sell costs');
+assert.ok(positionPage.includes('c/(e*(1+b))'), 'PSX position sizing: affordability must include buy-side costs');
+assert.ok(positionPage.includes('targetBeforeTax-taxPer'), 'PSX position sizing: target scenario must account for entered CGT assumption');
+assert.ok(positionPage.includes('not official broker tariffs or a legal tax calculation'), 'PSX position sizing: cost/tax assumptions disclaimer missing');
+assert.ok(positionPage.includes('Can I include PSX brokerage and transaction costs?'), 'PSX position sizing: cost assumption FAQ missing');
+
+assert.ok(positionPage.includes('<h3>Does the CGT field calculate my legal tax liability?</h3>'), 'PSX position sizing: visible CGT FAQ missing');
+assert.ok(positionPage.includes('<h3>Can I include PSX brokerage and transaction costs?</h3>'), 'PSX position sizing: visible costs FAQ missing');
+const positionSchemas = [...positionPage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)].map(([, json]) => JSON.parse(json));
+const positionFaq = positionSchemas.find(schema => schema['@type'] === 'FAQPage');
+assert.ok(positionFaq, 'PSX position sizing: FAQPage JSON-LD missing');
+for (const question of ['Can I include PSX brokerage and transaction costs?','Does the CGT field calculate my legal tax liability?']) {
+  assert.ok(positionFaq.mainEntity.some(item => item.name === question), 'PSX position sizing: structured FAQ missing ' + question);
+  assert.ok(positionPage.includes('<h3>' + question + '</h3>'), 'PSX position sizing: visible FAQ mismatch ' + question);
+}
