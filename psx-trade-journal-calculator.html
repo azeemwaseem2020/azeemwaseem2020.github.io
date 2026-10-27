@@ -36,7 +36,7 @@
 <label for="price">Price per share (PKR)<input id="price" type="number" min="0.0001" step="any" required placeholder="e.g. 125.50"></label>
 <label for="charges">Transaction charges (PKR)<input id="charges" type="number" min="0" step="any" value="0" required></label>
 </div>
-<div class="journal-actions"><button class="btn btn-primary" type="submit">Add transaction</button><button class="btn btn-secondary" id="export-csv" type="button">Export CSV backup</button></div>
+<div class="journal-actions"><button class="btn btn-primary" type="submit">Add transaction</button><button class="btn btn-secondary" id="export-csv" type="button">Export CSV backup</button></div>\n<div class="journal-grid" style="margin-top:14px"><label for="import-file">Import journal CSV<input id="import-file" type="file" accept=".csv,text/csv"></label><label for="import-mode">Import handling<select id="import-mode"><option value="skip">Skip duplicate transactions</option><option value="replace">Replace existing journal after validation</option></select></label></div><div class="journal-actions"><button class="btn btn-secondary" id="import-csv" type="button">Validate and import CSV</button></div><p class="small-note">Import a Calcora CSV backup or a CSV with headers: Date, Ticker, Type, Quantity, Price per share PKR, Charges PKR. Reference-price rows from Calcora exports are also supported. Review the file before importing.</p>
 <p id="form-message" role="status" aria-live="polite"></p>
 </form>
 </section>
@@ -92,6 +92,42 @@ $('entry-form').addEventListener('submit',e=>{e.preventDefault();const ticker=$(
  if(type==='SELL'){const prior=trades.filter(x=>x.ticker.toUpperCase()===ticker&&x.date<=date).map((x,i)=>({...x,_i:i})).sort((a,b)=>a.date.localeCompare(b.date)||a._i-b._i);let held=0;for(const x of prior)held+=x.type==='BUY'?Number(x.qty):-Number(x.qty);if(qty>held){$('form-message').textContent='This sale is larger than the recorded shares held by '+date+'. Add or correct earlier buys first.';return;}}
  trades.push(t);save();render();$('form-message').textContent='Transaction added. Check the ledger and keep a CSV backup.';$('quantity').value='';$('price').value='';$('ticker').value='';$('charges').value='0';});
 $('market-form').addEventListener('submit',e=>{e.preventDefault();const t=$('market-ticker').value.trim().toUpperCase(),p=Number($('market-price').value);if(!t||!Number.isFinite(p)||p<0){$('market-message').textContent='Enter a ticker and a valid non-negative reference price.';return;}marketPrices[t]=p;save();render();$('market-message').textContent='Reference price saved for '+t+'.';});
+function parseCsv(text){
+ const rows=[];let row=[],field='',quoted=false;
+ for(let i=0;i<text.length;i++){const ch=text[i];if(quoted){if(ch==='"'&&text[i+1]==='"'){field+='"';i++;}else if(ch==='"')quoted=false;else field+=ch;}else if(ch==='"'){quoted=true;}else if(ch===','){row.push(field);field='';}else if(ch==='\\n'){row.push(field.replace(/\\r$/,''));if(row.some(v=>v.trim()!==''))rows.push(row);row=[];field='';}else field+=ch;}
+ if(quoted)throw new Error('CSV contains an unmatched quote.');if(field.length||row.length){row.push(field.replace(/\\r$/,''));if(row.some(v=>v.trim()!==''))rows.push(row);}return rows;
+}
+$('import-csv').addEventListener('click',async()=>{
+ const file=$('import-file').files&&$('import-file').files[0],msg=$('form-message');
+ if(!file){msg.textContent='Choose a CSV file first.';return;}
+ try{
+  const rows=parseCsv((await file.text()).replace(/^\\uFEFF/,''));
+  if(rows.length<2)throw new Error('The CSV must contain a header and at least one data row.');
+  const header=rows[0].map(v=>v.trim().toLowerCase());
+  const col=(...names)=>header.findIndex(h=>names.includes(h));
+  const di=col('date'),ti=col('ticker'),yi=col('type','transaction'),qi=col('quantity','shares'),pi=col('price per share pkr','price','price per share'),ci=col('charges pkr','charges','transaction charges');
+  if([di,ti,yi,qi,pi,ci].some(i=>i<0))throw new Error('Required headers missing. Use Date, Ticker, Type, Quantity, Price per share PKR, Charges PKR.');
+  const imported=[],refs={};let refCount=0;
+  rows.slice(1).forEach((r,index)=>{
+   const date=(r[di]||'').trim(),ticker=(r[ti]||'').trim().toUpperCase(),type=(r[yi]||'').trim().toUpperCase();
+   if(date.toUpperCase()==='REFERENCE_PRICE'||type==='REFERENCE_PRICE'){const rt=ticker,rp=Number(r[pi]);if(!rt||!Number.isFinite(rp)||rp<0)throw new Error('Invalid reference-price row at CSV line '+(index+2)+'.');refs[rt]=rp;refCount++;return;}
+   const qty=Number(r[qi]),price=Number(r[pi]),charges=Number(r[ci]||0);
+   if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(date)||Number.isNaN(Date.parse(date))||!ticker||!['BUY','SELL'].includes(type)||!Number.isInteger(qty)||qty<=0||!Number.isFinite(price)||price<=0||!Number.isFinite(charges)||charges<0)throw new Error('Invalid transaction at CSV line '+(index+2)+'. Check date, ticker, BUY/SELL, whole-share quantity, price and charges.');
+   imported.push({id:'imp-'+Date.now().toString(36)+'-'+index+'-'+Math.random().toString(36).slice(2,7),date,ticker,type,qty,price,charges});
+  });
+  if(!imported.length&&!refCount)throw new Error('No valid transactions or reference prices were found.');
+  const mode=$('import-mode').value;
+  const existingKeys=new Set(trades.map(t=>[t.date,t.ticker.toUpperCase(),t.type,t.qty,t.price,t.charges].join('|')));
+  const newTrades=imported.filter(t=>!existingKeys.has([t.date,t.ticker,t.type,t.qty,t.price,t.charges].join('|')));
+  const dupes=imported.length-newTrades.length;
+  const message='Validated '+imported.length+' transactions and '+refCount+' reference prices. '+dupes+' duplicate transaction(s) will be skipped. '+(mode==='replace'?'This will replace existing journal data.':'Existing entries will be kept.')+' Import now?';
+  if(!confirm(message))return;
+  if(mode==='replace'){trades=[];marketPrices={};}
+  trades.push(...(mode==='replace'?imported:newTrades));
+  Object.assign(marketPrices,refs);save();render();
+  msg.textContent='CSV import complete: '+(mode==='replace'?imported.length:newTrades.length)+' transaction(s) imported, '+dupes+' duplicate(s) skipped, '+refCount+' reference price(s) read.';
+ }catch(err){msg.textContent='Import failed: '+err.message;}
+});
 $('export-csv').addEventListener('click',()=>{const rows=[['Date','Ticker','Type','Quantity','Price per share PKR','Charges PKR'],...trades.map(t=>[t.date,t.ticker,t.type,t.qty,t.price,t.charges])];Object.keys(marketPrices).sort().forEach(t=>rows.push(['REFERENCE_PRICE',t,'', '',marketPrices[t],'']));const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='calcora-psx-trade-journal.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);});
 $('clear-journal').addEventListener('click',()=>{if(confirm('Delete all saved transactions and reference prices from this browser? Export a backup first if you need one.')){trades=[];marketPrices={};save();render();$('form-message').textContent='Journal data cleared from this browser.';}});
 $('trade-date').value=new Date().toISOString().slice(0,10);load();render();
