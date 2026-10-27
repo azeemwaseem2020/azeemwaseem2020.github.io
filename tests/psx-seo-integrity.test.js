@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const root = new URL('../', import.meta.url);
-const pages = ['psx-calculator.html','psx-brokerage-commission-calculator.html','psx-portfolio-calculator.html','psx-average-price-calculator.html','psx-position-size-calculator.html','psx-dividend-reinvestment-calculator.html','psx-capital-gains-tax-calculator.html','psx-dividend-yield-calculator.html','psx-investor-calculator-hub.html'];
+const pages = ['psx-calculator.html','psx-brokerage-commission-calculator.html','psx-portfolio-calculator.html','psx-average-price-calculator.html','psx-position-size-calculator.html','psx-dividend-reinvestment-calculator.html','psx-capital-gains-tax-calculator.html','psx-dividend-yield-calculator.html','psx-investor-calculator-hub.html','psx-calculator-urdu.html'];
 const sitemap = fs.readFileSync(new URL('sitemap.xml', root), 'utf8');
 
 for (const file of pages) {
@@ -90,5 +90,21 @@ assert.match(yieldPage, /does not annualise a quarterly or interim dividend auto
 assert.match(yieldPage, /Gross dividend is not necessarily take-home cash/, 'Dividend yield page: gross versus net income distinction missing');
 assert.match(yieldPage, /!Number\.isInteger\(shares\)/, 'Dividend yield page: share count must be validated as a whole number');
 assert.match(yieldPage, /periodLabel=period==='Annual total'/, 'Dividend yield page: selected dividend period must affect result labelling');
+
+
+const urduPage = fs.readFileSync(new URL('psx-calculator-urdu.html', root), 'utf8');
+assert.match(urduPage, /<html lang="ur" dir="rtl">/, 'Urdu PSX page: Urdu language and RTL direction required');
+assert.match(urduPage, /id="tradeNet"/, 'Urdu PSX page: net trade result missing');
+assert.match(urduPage, /id="netDividend"/, 'Urdu PSX page: after-tax dividend result missing');
+assert.match(urduPage, /id="totalReturn"/, 'Urdu PSX page: total-return result missing');
+assert.match(urduPage, /id="breakEven"/, 'Urdu PSX page: break-even result missing');
+assert.match(urduPage, /id="targetPrice"/, 'Urdu PSX page: target exit price result missing');
+assert.match(urduPage, /Math\.max\(0,gross-sellCosts-invested\)/, 'Urdu PSX page: CGT should only be estimated on positive taxable gain');
+assert.match(urduPage, /const netDiv=q\*dps\*\(1-divTaxPct\/100\)/, 'Urdu PSX page: dividend withholding formula missing');
+assert.match(urduPage, /const be=\(invested\+sellCosts\)\/q/, 'Urdu PSX page: break-even formula missing');
+assert.match(urduPage, /psx-calculator-urdu\.html/, 'Urdu PSX page: canonical URL missing');
+assert.match(urduPage, /<meta property="og:image:alt"/, 'Urdu PSX page: social image alt text missing');
+assert.match(urduPage, /@type":"FAQPage"/, 'Urdu PSX page: FAQ structured data missing');
+assert.match(urduPage, /does not provide a buy, sell or investment recommendation|investment advice/i, 'Urdu PSX page: investment advice boundary missing');
 
 console.log('PSX SEO integrity regression checks: PASS');
