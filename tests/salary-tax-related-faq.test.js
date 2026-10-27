@@ -55,8 +55,18 @@ assert.match(zakat, /id="silver-tola"/, 'Zakat page must accept silver weight in
 assert.match(zakat, /id="silver-rate"/, 'Zakat page must accept a user-entered silver price per tola in PKR');
 assert.match(zakat, /Math\.round\(grams\*perGram\*purityFactor\*100\)\/100/,
   'Zakat page must calculate metal value using converted weight, entered rate units and gold purity');
-assert.match(zakat, /87\.48\*perGram\/Math\.max\(purityFactor,0\.01\)/,
-  'Gold Nisab preset must use 87.48 grams and account for selected gold purity');
+assert.match(zakat, /87\.48\*perGram\*100/,
+  'Gold Nisab preset must use 87.48 grams against the 24K reference rate');
+assert.match(zakat, /id="nisab-basis"[\s\S]*value="government"[\s\S]*value="custom"/,
+  'Nisab basis must distinguish live gold/silver standards, government bank-deduction reference and custom threshold');
+assert.match(zakat, /https:\/\/goldrateinpakistan\.org\/api\/rates\.json/,
+  'Zakat calculator must support automatic third-party gold and silver rates');
+assert.match(zakat, /loadMetalRates\(\);/,
+  'Zakat calculator should attempt to load rates automatically on page load');
+assert.match(zakat, /id="zakat-lakh-crore"/,
+  'Zakat page must include a quick lookup table for Pakistani lakh/crore amounts');
+assert.match(zakat, /id="gold-table-value-7-5"/,
+  'Zakat page must include a gold weight lookup table with a 7.5 tola reference');
 assert.match(zakat, /612\.36\*perGram\*100/,
   'Silver Nisab preset must use 612.36 grams when rates are entered per gram');
 assert.match(zakat, /PKR 503,529[\s\S]{0,220}historical Pakistan government reference/,
