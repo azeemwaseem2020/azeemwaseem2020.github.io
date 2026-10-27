@@ -150,3 +150,10 @@ for (const question of ['Can I include PSX brokerage and transaction costs?','Do
   assert.ok(positionFaq.mainEntity.some(item => item.name === question), 'PSX position sizing: structured FAQ missing ' + question);
   assert.ok(positionPage.includes('<h3>' + question + '</h3>'), 'PSX position sizing: visible FAQ mismatch ' + question);
 }
+
+const portfolioPage = fs.readFileSync(new URL('psx-portfolio-calculator.html', root), 'utf8');
+assert.ok(portfolioPage.includes('Math.pow(x.allocation,2)'), 'PSX portfolio: HHI must use squared value weights');
+assert.ok(portfolioPage.includes('Top 3 holdings weight'), 'PSX portfolio: top-three concentration metric missing');
+assert.ok(portfolioPage.includes('Concentration index (HHI)'), 'PSX portfolio: HHI result missing');
+assert.ok(portfolioPage.includes('Effective holdings estimate'), 'PSX portfolio: effective holdings metric missing');
+assert.ok(portfolioPage.includes('does not account for sector overlap, correlation, liquidity or hidden common risks'), 'PSX portfolio: concentration limitations must be disclosed');
