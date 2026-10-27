@@ -67,6 +67,10 @@ assert.match(zakat, /id="zakat-lakh-crore"/,
   'Zakat page must include a quick lookup table for Pakistani lakh/crore amounts');
 assert.match(zakat, /id="gold-table-value-7-5"/,
   'Zakat page must include a gold weight lookup table with a 7.5 tola reference');
+assert.match(zakat, /id="silver-table-value-52-5"/,
+  'Zakat page must include a silver weight lookup table with the 52.5 tola Nisab reference');
+assert.match(zakat, /updateMetalWeightTable\('silver',\[1,5,10,20,52\.5,100\]\)/,
+  'Silver lookup values should respond to the entered rate and selected rate unit');
 assert.match(zakat, /612\.36\*perGram\*100/,
   'Silver Nisab preset must use 612.36 grams when rates are entered per gram');
 assert.match(zakat, /PKR 503,529[\s\S]{0,220}historical Pakistan government reference/,
