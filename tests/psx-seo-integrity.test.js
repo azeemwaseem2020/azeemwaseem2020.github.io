@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import vm from 'node:vm';
 
 const root = new URL('../', import.meta.url);
 const pages = ['psx-calculator.html','psx-brokerage-commission-calculator.html','psx-portfolio-calculator.html','psx-average-price-calculator.html','psx-position-size-calculator.html','psx-dividend-reinvestment-calculator.html','psx-capital-gains-tax-calculator.html','psx-dividend-yield-calculator.html','psx-investor-calculator-hub.html','psx-calculator-urdu.html'];
@@ -115,6 +116,9 @@ assert.match(urduPage, /const costDragPct=tradedValue>0\?totalCosts\/tradedValue
 assert.match(urduPage, /const requiredMovePct=\(be-buy\)\/buy\*100/, 'Urdu PSX page: required break-even price movement formula missing');
 assert.match(urduPage, /lastReport=null/, 'Urdu PSX page: invalid inputs must disable stale report exports');
 assert.match(urduPage, /new Blob\(\[csv\]/, 'Urdu PSX page: report should be generated client-side');
+const urduInlineScripts = [...urduPage.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)].map(([, script]) => script.trim()).filter(Boolean);
+assert.ok(urduInlineScripts.length > 0, 'Urdu PSX page: inline script missing');
+assert.doesNotThrow(() => new vm.Script(urduInlineScripts[urduInlineScripts.length - 1]), 'Urdu PSX page: calculator JavaScript must parse');
 
 
 console.log('PSX SEO integrity regression checks: PASS');
