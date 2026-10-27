@@ -187,6 +187,9 @@ for (const sitemapFile of ['sitemap.xml', 'sitemap-pakistan-priority.xml']) {
 const indexablePagesMissingFromSitemap = [...canonicalForFile.keys()]
   .map(file => ({ file, url: file === 'index.html' ? BASE + '/' : BASE + '/' + file }))
   .filter(item => !mainSitemapUrls.has(item.url));
+if (indexablePagesMissingFromSitemap.length) {
+  report.errors.push('Indexable pages missing from sitemap.xml: ' + indexablePagesMissingFromSitemap.map(item => item.file).join(', '));
+}
 
 const summary = {
   htmlFilesScanned: report.htmlFiles,
