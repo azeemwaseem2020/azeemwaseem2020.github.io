@@ -116,6 +116,15 @@ assert.match(urduPage, /const costDragPct=tradedValue>0\?totalCosts\/tradedValue
 assert.match(urduPage, /const requiredMovePct=\(be-buy\)\/buy\*100/, 'Urdu PSX page: required break-even price movement formula missing');
 assert.match(urduPage, /lastReport=null/, 'Urdu PSX page: invalid inputs must disable stale report exports');
 assert.match(urduPage, /new Blob\(\[csv\]/, 'Urdu PSX page: report should be generated client-side');
+assert.match(urduPage, /PSX share profit calculator/, 'Urdu PSX page: natural Urdu/English mixed search intent missing');
+assert.match(urduPage, /PSX Investor Awareness Guide/, 'Urdu PSX page: official investor awareness source missing');
+assert.match(urduPage, /www\.fbr\.gov\.pk/, 'Urdu PSX page: official FBR source missing');
+assert.match(urduPage, /PKR 890/, 'Urdu PSX page: worked example net result missing');
+assert.match(urduPage, /Trade confirmation/, 'Urdu PSX page: transaction reconciliation checklist missing');
+assert.match(urduPage, /100 روپے کا شیئر 110 روپے میں بیچنے پر 10 روپے فی شیئر خالص منافع ہوتا ہے/, 'Urdu PSX page: practical long-tail FAQ missing');
+assert.match(urduPage, /"name":"پاکستان اسٹاک ایکسچینج میں شیئر کا خالص منافع کیسے معلوم کریں؟"/, 'Urdu PSX page: FAQ schema should align with visible Urdu query');
+assert.equal((urduPage.match(/"@type":"Question"/g)||[]).length, 5, 'Urdu PSX page: FAQ structured data count should match the five key questions');
+
 const urduInlineScripts = [...urduPage.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(([, script]) => script.trim()).filter(Boolean);
 assert.ok(urduInlineScripts.length > 0, 'Urdu PSX page: inline script missing');
 assert.doesNotThrow(() => new vm.Script(urduInlineScripts[urduInlineScripts.length - 1]), 'Urdu PSX page: calculator JavaScript must parse');
