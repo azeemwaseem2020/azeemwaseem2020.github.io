@@ -112,7 +112,7 @@
   let lastReport=null;
   function calculate(){
     const [buy,sell,q,buyCosts,sellCosts,cgtPct,dps,divTaxPct,targetPct]=ids.map(num);
-    if(!ids.every(id=>Number.isFinite(num(id)))||buy<=0||sell<0||!Number.isInteger(q)||q<1||buyCosts<0||sellCosts<0||cgtPct<0||cgtPct>100||divTaxPct<0||divTaxPct>100||targetPct<0){put('calcStatus','براہِ کرم تمام اعداد درست اور غیر منفی درج کریں۔');return;}
+    if(!ids.every(id=>Number.isFinite(num(id)))||buy<=0||sell<0||!Number.isInteger(q)||q<1||buyCosts<0||sellCosts<0||cgtPct<0||cgtPct>100||dps<0||divTaxPct<0||divTaxPct>100||targetPct<0||targetPct>10000){lastReport=null;put('calcStatus','براہِ کرم تمام اعداد درست اور مقررہ حدود میں درج کریں۔');return;}
     const invested=buy*q+buyCosts;
     const gross=sell*q;
     const taxableGain=Math.max(0,gross-sellCosts-invested);
@@ -139,7 +139,7 @@
     if(!lastReport){put('calcStatus','پہلے درست اعداد درج کریں۔');return;}
     const r=lastReport;
     const rows=[['Calcora PSX Urdu Trade Report'],['Metric','Value','Unit'],['Buy price per share',r.buy,'PKR/share'],['Sell price per share',r.sell,'PKR/share'],['Share quantity',r.q,'shares'],['Buy costs',r.buyCosts,'PKR'],['Sell costs',r.sellCosts,'PKR'],['User-entered CGT rate',r.cgtPct,'%'],['Dividend per share',r.dps,'PKR/share'],['Dividend withholding assumption',r.divTaxPct,'%'],['Invested capital incl. buy costs',r.invested,'PKR'],['Gross sale value',r.gross,'PKR'],['Estimated CGT',r.tax,'PKR'],['Net trade profit/loss',r.tradeNet,'PKR'],['Net dividend estimate',r.netDiv,'PKR'],['Total net return estimate',r.total,'PKR'],['Return on invested capital',r.roi,'%'],['Total entered transaction costs',r.totalCosts,'PKR'],['Costs / gross traded value',r.costDragPct,'%'],['Price move needed to reach break-even',r.requiredMovePct,'%'],['Break-even exit price',r.be,'PKR/share'],['Target return assumption',r.targetPct,'%'],['Target exit price estimate',r.targetSale===null?'Not available at 100% CGT':r.targetSale,'PKR/share'],[],['Scenario','Exit price (PKR/share)','Net trade result (PKR)'],...r.scenarioResults.map(s=>[s.name,s.price,s.net]),[],['Caution','Estimates only; verify broker charges, tax rules and statements.']];
-    const csv='\\uFEFF'+rows.map(row=>row.map(value=>'"'+String(value??'').replace(/"/g,'""')+'"').join(',')).join('\\r\\n');
+    const csv='\uFEFF'+rows.map(row=>row.map(value=>'"'+String(value??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
     const blob=new Blob([csv],{type:'text/csv;charset=utf-8;' });const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='calcora-psx-trade-report.csv';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
   });
   form.addEventListener('submit',function(e){e.preventDefault();calculate();});
