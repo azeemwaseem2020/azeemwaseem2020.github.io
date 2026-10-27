@@ -94,8 +94,15 @@ function applyNisabPreset(){
   const basis=document.getElementById('nisab-basis').value;
   const goldRate=Number(rawValue('gold-rate')||0), silverRate=Number(rawValue('silver-rate')||0);
   if(basis==='custom') return;
-  if(basis==='gold'&&goldRate>0) document.getElementById('nisab').value=String(Math.round(goldRate*7.5));
-  if(basis==='silver'&&silverRate>0) document.getElementById('nisab').value=String(Math.round(silverRate*52.5));
+  if(basis==='gold'&&goldRate>0){
+    const perGram=goldRate/(document.getElementById('gold-rate-unit')?.value==='tola'?TOLA_GRAMS:1);
+    const purityFactor=Number(document.getElementById('gold-purity').value||24)/24;
+    document.getElementById('nisab').value=String(Math.round((87.48*perGram/Math.max(purityFactor,0.01))*100)/100);
+  }
+  if(basis==='silver'&&silverRate>0){
+    const perGram=silverRate/(document.getElementById('silver-rate-unit')?.value==='tola'?TOLA_GRAMS:1);
+    document.getElementById('nisab').value=String(Math.round(612.36*perGram*100)/100);
+  }
 }
 
 function calculateZakat(){
