@@ -106,5 +106,15 @@ assert.match(urduPage, /psx-calculator-urdu\.html/, 'Urdu PSX page: canonical UR
 assert.match(urduPage, /<meta property="og:image:alt"/, 'Urdu PSX page: social image alt text missing');
 assert.match(urduPage, /@type":"FAQPage"/, 'Urdu PSX page: FAQ structured data missing');
 assert.match(urduPage, /does not provide a buy, sell or investment recommendation|investment advice/i, 'Urdu PSX page: investment advice boundary missing');
+assert.match(urduPage, /id="costDrag"/, 'Urdu PSX page: transaction-cost drag metric missing');
+assert.match(urduPage, /id="requiredMove"/, 'Urdu PSX page: fee-inclusive break-even movement missing');
+assert.match(urduPage, /id="recoveryPct"/, 'Urdu PSX page: loss recovery metric missing');
+assert.match(urduPage, /id="downloadReport"/, 'Urdu PSX page: downloadable trade report control missing');
+assert.match(urduPage, /calcora-psx-trade-report\.csv/, 'Urdu PSX page: CSV export filename missing');
+assert.match(urduPage, /const costDragPct=tradedValue>0\?totalCosts\/tradedValue\*100:0/, 'Urdu PSX page: cost-drag formula missing');
+assert.match(urduPage, /const requiredMovePct=\(be-buy\)\/buy\*100/, 'Urdu PSX page: required break-even price movement formula missing');
+assert.match(urduPage, /lastReport=null/, 'Urdu PSX page: invalid inputs must disable stale report exports');
+assert.match(urduPage, /new Blob\(\[csv\]/, 'Urdu PSX page: report should be generated client-side');
+
 
 console.log('PSX SEO integrity regression checks: PASS');
