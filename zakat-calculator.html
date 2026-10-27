@@ -7,11 +7,30 @@
   <p><strong>Important:</strong> Results are estimates for planning and educational use. Check applicable official, professional, technical or regulatory guidance when a decision requires current or site-specific information.</p>
 </section>
 <section class="section prose" aria-labelledby="zakat-verification-record"><h2 id="zakat-verification-record">Calculation verification record</h2><p>This record describes automated checks in Calcora’s repository test suite. It is evidence of software-level checks, not an independent religious review or a ruling on which assets qualify.</p><ul><li><strong>Worked arithmetic:</strong> PKR 900,000 in listed assets minus PKR 100,000 in entered liabilities gives PKR 800,000 net listed assets; at an entered Nisab of PKR 503,529, the calculator estimates 2.5% as PKR 20,000.</li><li><strong>Required-input check:</strong> an empty Nisab must not produce a normal estimate.</li><li><strong>Numeric safety check:</strong> excessively large values must be rejected rather than displayed as a reliable result.</li></ul><p><strong>شرعی جائزے کی موجودہ حیثیت:</strong> مفتی محمد علی کا تعارف ویب سائٹ کے مالک کی فراہم کردہ معلومات کے مطابق درج ہے؛ ادارے کا نام رازداری کی وجہ سے شامل نہیں کیا گیا۔ اس صفحے پر مکمل شدہ آزادانہ شرعی جائزے یا جائزے کی تاریخ کی تصدیق موجود نہیں، اس لیے ایسا دعویٰ نہیں کیا جا رہا۔ شرعی شرائط، اثاثوں کی اہلیت، قابلِ کٹوتی واجبات اور متعلقہ نصاب کے لیے مستند عالمِ دین سے رجوع کریں۔</p><p><a href="calculator-methodology.html">Read how Calcora checks calculator software</a> · <a href="contact.html">Report a calculation issue</a></p></section>
-<p class="lead">Estimate Zakat on eligible assets using an entered Nisab threshold and a transparent 2.5% calculation. The tool is designed to show the arithmetic clearly rather than issue a religious ruling.</p><section class="calculator-card"><h2>Enter your Zakat details</h2><label for="nisab">Nisab threshold used for this estimate (PKR)</label><input id="nisab" type="number" min="0" step="1" value="503529" placeholder="Enter the applicable Nisab amount" aria-describedby="nisab-help"><p id="nisab-help" class="field-help">The field is prefilled with PKR 503,529 as a historical reference for bank-account deductions in 1446–47 AH (2026). This is not a confirmed threshold for a later Zakat year or a universal personal Nisab. Verify the amount appropriate to your valuation date and method, and edit it if needed. See the official <a href="https://www.sbp.org.pk/circulars/bprd-circular-letter-no-03-of-2026" target="_blank" rel="noopener noreferrer">State Bank of Pakistan notification reference</a> before using a historical figure.</p><label for="cash">Cash in hand (PKR)</label><input id="cash" type="number" min="0" step="1" value="0"><label for="bank">Bank balances (PKR)</label><input id="bank" type="number" min="0" step="1" value="0"><fieldset class="metal-valuation"><legend>Gold valuation</legend><label for="gold-tola">Gold weight (tola)</label><input id="gold-tola" type="number" min="0" step="0.001" value="0" inputmode="decimal"><label for="gold-rate">Gold price per tola (PKR)</label><input id="gold-rate" type="number" min="0" step="1" value="" placeholder="Optional — enter your valuation rate" inputmode="decimal"><label for="gold">Total gold value (PKR)</label><input id="gold" type="number" min="0" step="1" value="0" inputmode="decimal"><p class="field-help">If both weight and price per tola are entered, total value is calculated as tola × price per tola. You can also enter the total PKR value directly. Use a rate and valuation method appropriate to the gold purity and date; no live price is fetched.</p></fieldset><fieldset class="metal-valuation"><legend>Silver valuation</legend><label for="silver-tola">Silver weight (tola)</label><input id="silver-tola" type="number" min="0" step="0.001" value="0" inputmode="decimal"><label for="silver-rate">Silver price per tola (PKR)</label><input id="silver-rate" type="number" min="0" step="1" value="" placeholder="Optional — enter your valuation rate" inputmode="decimal"><label for="silver">Total silver value (PKR)</label><input id="silver" type="number" min="0" step="1" value="0" inputmode="decimal"><p class="field-help">If both weight and price per tola are entered, total value is calculated as tola × price per tola. You can also enter the total PKR value directly. Enter your chosen valuation rate; this calculator does not retrieve live prices.</p></fieldset><label for="investments">Investments / shares included in your calculation (PKR)</label><input id="investments" type="number" min="0" step="1" value="0"><label for="business">Business inventory / trade assets (PKR)</label><input id="business" type="number" min="0" step="1" value="0"><label for="receivables">Eligible receivables (PKR)</label><input id="receivables" type="number" min="0" step="1" value="0"><label for="liabilities">Deductible eligible liabilities (PKR)</label><input id="liabilities" type="number" min="0" step="1" value="0"><button class="btn" id="calc" type="button">Calculate Zakat</button><div id="result" role="status" aria-live="polite"></div></section><section class="prose zakat-guide">
+<p class="lead">Estimate Zakat on eligible assets using an entered Nisab threshold and a transparent 2.5% calculation. The tool is designed to show the arithmetic clearly rather than issue a religious ruling.</p><section class="calculator-card"><h2>Enter your Zakat details</h2><label for="madhhab">Fiqh method (educational selection)</label>
+<select id="madhhab"><option value="hanafi" selected>Hanafi — commonly uses silver Nisab for combined cash/wealth</option><option value="hanbali">Hanbali — select gold or silver Nisab according to qualified guidance</option></select>
+<p id="madhhab-help" class="field-help">یہ انتخاب عمومی رہنمائی ہے، فتویٰ نہیں۔ مختلف اہلِ علم کے طریقۂ حساب میں فرق ہو سکتا ہے۔ اپنی صورتِ حال کے لیے مستند مفتی سے تصدیق کریں۔</p>
+<label for="nisab-basis">Nisab valuation basis</label>
+<select id="nisab-basis"><option value="silver" selected>Silver — 612.36 grams (commonly used in Pakistan for Hanafi cash/combined wealth)</option><option value="gold">Gold — 87.48 grams</option><option value="custom">Custom PKR Nisab (enter manually)</option></select>
+<p class="field-help">Standard conversion used here: 1 Pakistani tola = 11.6638 grams. Gold Nisab 87.48 g (7.5 tola); silver Nisab 612.36 g (52.5 tola). Some references use different gram conversions; confirm the convention you follow.</p>
+<label for="nisab">Nisab threshold used for this estimate (PKR)</label><input id="nisab" type="number" min="0" step="1" value="503529" placeholder="Enter the applicable Nisab amount" aria-describedby="nisab-help"><p id="nisab-help" class="field-help">The field is prefilled with PKR 503,529 as a historical reference for bank-account deductions in 1446–47 AH (2026). This is not a confirmed threshold for a later Zakat year or a universal personal Nisab. Verify the amount appropriate to your valuation date and method, and edit it if needed. See the official <a href="https://www.sbp.org.pk/circulars/bprd-circular-letter-no-03-of-2026" target="_blank" rel="noopener noreferrer">State Bank of Pakistan notification reference</a> before using a historical figure.</p><label for="cash">Cash in hand (PKR)</label><input id="cash" type="number" min="0" step="1" value="0"><label for="bank">Bank balances (PKR)</label><input id="bank" type="number" min="0" step="1" value="0"><fieldset class="metal-valuation"><legend>Gold valuation</legend>
+<label for="gold-unit">Gold weight unit</label><select id="gold-unit"><option value="tola">Tola</option><option value="gram">Grams</option></select>
+<label for="gold-purity">Gold purity</label><select id="gold-purity"><option value="24">24K (pure)</option><option value="22" selected>22K</option><option value="21">21K</option><option value="18">18K</option></select>
+<button class="btn" id="fetch-metal-rates" type="button">Try automatic Pakistan gold/silver rates</button><p id="metal-rate-status" class="field-help" role="status" aria-live="polite">Rates are optional and will only be used if the external source responds. You can always enter a rate manually.</p><label for="gold-tola">Gold weight (tola)</label><input id="gold-tola" type="number" min="0" step="0.001" value="0" inputmode="decimal"><label for="gold-rate">Gold price (PKR)</label><select id="gold-rate-unit"><option value="tola">Per tola</option><option value="gram">Per gram</option></select><input id="gold-rate" type="number" min="0" step="0.01" value="" placeholder="Optional — enter your valuation rate" inputmode="decimal"><label for="gold">Total gold value (PKR)</label><input id="gold" type="number" min="0" step="1" value="0" inputmode="decimal"><p class="field-help">If weight and price are entered, total value is calculated using the selected weight and rate units. You can also enter the total PKR value directly. Use a rate and valuation method appropriate to the gold purity and date; no live price is fetched.</p></fieldset><fieldset class="metal-valuation"><legend>Silver valuation</legend>
+<label for="silver-unit">Silver weight unit</label><select id="silver-unit"><option value="tola">Tola</option><option value="gram">Grams</option></select><label for="silver-tola">Silver weight (tola)</label><input id="silver-tola" type="number" min="0" step="0.001" value="0" inputmode="decimal"><label for="silver-rate">Silver price (PKR)</label><select id="silver-rate-unit"><option value="tola">Per tola</option><option value="gram">Per gram</option></select><input id="silver-rate" type="number" min="0" step="0.01" value="" placeholder="Optional — enter your valuation rate" inputmode="decimal"><label for="silver">Total silver value (PKR)</label><input id="silver" type="number" min="0" step="1" value="0" inputmode="decimal"><p class="field-help">If both weight and price per tola are entered, total value is calculated as tola × price per tola. You can also enter the total PKR value directly. Enter your chosen valuation rate; this calculator does not retrieve live prices.</p></fieldset><label for="investments">Investments / shares included in your calculation (PKR)</label><input id="investments" type="number" min="0" step="1" value="0"><label for="business">Business inventory / trade assets (PKR)</label><input id="business" type="number" min="0" step="1" value="0"><label for="receivables">Eligible receivables (PKR)</label><input id="receivables" type="number" min="0" step="1" value="0"><label for="liabilities">Deductible eligible liabilities (PKR)</label><input id="liabilities" type="number" min="0" step="1" value="0"><button class="btn" id="calc" type="button">Calculate Zakat</button><div id="result" role="status" aria-live="polite"></div></section><section class="section prose" aria-labelledby="zakat-examples"><h2 id="zakat-examples">Zakat on Rs 100,000, Rs 500,000 and 1 tola of gold</h2>
+<p>The figures below show 2.5% arithmetic only, assuming the person is liable for Zakat and the amount is part of their zakatable wealth after applying the relevant conditions. A single asset amount does not by itself prove Zakat is due; Nisab, lunar-year conditions, asset eligibility and deductions may matter.</p>
+<table><thead><tr><th>Amount / example</th><th>Illustrative calculation</th><th>Estimated 2.5%</th></tr></thead><tbody>
+<tr><td>PKR 100,000</td><td>100,000 × 2.5%</td><td>PKR 2,500</td></tr>
+<tr><td>PKR 500,000</td><td>500,000 × 2.5%</td><td>PKR 12,500</td></tr>
+<tr><td>1 tola gold</td><td>11.6638 g × applicable gold value per gram × 2.5%</td><td id="one-tola-zakat-example">Enter a gold rate to estimate</td></tr>
+</tbody></table>
+<p class="field-help">The 1-tola example is not a claim that owning 1 tola alone reaches Nisab. Its value depends on purity, valuation date and local market rate. Jewelry treatment also differs among scholarly approaches.</p></section><section class="prose zakat-guide">
 <h2>How this Zakat calculator works</h2>
 <p>Enter the values of assets you believe should be included under the Zakat method you follow, then enter any liabilities that method permits you to deduct. The calculator adds the listed assets, subtracts the entered liabilities (without allowing a negative net total), compares the result with the Nisab value you entered, and estimates 2.5% when the net amount reaches that threshold.</p>
 <p><strong>Formula:</strong> Net listed assets = cash + bank balances + gold value + silver value + included investments + business inventory + eligible receivables − deductible liabilities. Estimated Zakat = 2.5% of net listed assets when the net amount meets or exceeds the entered Nisab; otherwise the estimate is zero.</p>
 <p>The formula is arithmetic only. The calculator does not decide whether a particular asset is zakatable, whether a debt is deductible, which valuation date applies, or whether other conditions are met in your circumstances.</p>
+<h2>Hanafi and Hanbali selection: read before using</h2>
+<p>The madhhab selector is a transparency aid, not an automated fatwa. The Hanafi approach commonly compares combined cash, gold, silver and trade wealth against the silver Nisab. Hanbali rulings and contemporary applications may differ by asset type and scholarly guidance; in particular, the treatment of personal jewelry can differ. The Nisab basis can be selected separately, so confirm the correct basis with a qualified scholar rather than assuming one dropdown settles every case.</p>
 <h2>Important: understand the Nisab reference</h2>
 <p>The published PKR 503,529 amount is a historical Pakistan government reference for the Zakat year 1446–47 AH (2026), notified for deduction at source from specified bank, profit-and-loss-sharing and similar accounts. As of 13 October 2026, the official references linked on this page still identify that prior-year notification; do not treat it as a confirmed threshold for a later Zakat year. The <a href="https://www.sbp.org.pk/circulars/bprd-circular-letter-no-03-of-2026" target="_blank" rel="noopener noreferrer">State Bank of Pakistan circular page</a> links to the notification, and the <a href="https://zakat.punjab.gov.pk/node/161" target="_blank" rel="noopener noreferrer">Punjab Zakat &amp; Ushr Department FAQ</a> displays the same amount. You can also read the <a href="https://www.sbp.org.pk/bprd/2026/CL3-Notification.pdf" target="_blank" rel="noopener noreferrer">original government notification (PDF)</a>.</p>
 <p><strong>This government bank-deduction threshold should not be treated as a universal personal Zakat ruling.</strong> Personal Nisab assessment may depend on the valuation basis (including the method followed for gold or silver), the relevant date and qualified religious guidance. The value of precious metals changes, and the official bank-deduction figure is tied to a particular Zakat year and specified account categories. Check the appropriate threshold for your own calculation date and method, and edit the field above rather than assuming the default is always applicable.</p>
@@ -46,13 +65,38 @@ const money=id=>Number(rawValue(id));
 const result=document.getElementById('result');
 const whatsappShare=document.getElementById('whatsapp-share');
 const formatPKR=n=>n.toLocaleString('en-PK',{maximumFractionDigits:2});
+const TOLA_GRAMS=11.6638;
+function selectedWeightGrams(prefix){
+  const raw=document.getElementById(prefix+'-tola').value.trim();
+  if(raw===''||!Number.isFinite(Number(raw))||Number(raw)<0) return null;
+  return Number(raw)*(document.getElementById(prefix+'-unit').value==='tola'?TOLA_GRAMS:1);
+}
 function syncMetalValue(prefix){
-  const weight=document.getElementById(prefix+'-tola').value.trim();
+  const grams=selectedWeightGrams(prefix);
   const rate=document.getElementById(prefix+'-rate').value.trim();
-  if(weight!==''&&rate!==''&&Number.isFinite(Number(weight))&&Number(weight)>=0&&Number.isFinite(Number(rate))&&Number(rate)>=0){
-    document.getElementById(prefix).value=String(Math.round(Number(weight)*Number(rate)*100)/100);
+  if(grams!==null&&rate!==''&&Number.isFinite(Number(rate))&&Number(rate)>=0){
+    const perGram=Number(rate)/(document.getElementById(prefix+'-rate-unit')?.value==='tola'?TOLA_GRAMS:1);
+    document.getElementById(prefix).value=String(Math.round(grams*perGram*100)/100);
   }
 }
+function updateOneTolaExample(){
+  const rate=rawValue('gold-rate');
+  const purity=Number(document.getElementById('gold-purity').value||22)/24;
+  const target=document.getElementById('one-tola-zakat-example');
+  if(rate!==''&&Number.isFinite(Number(rate))&&Number(rate)>=0){
+    const perGram=Number(rate)/(document.getElementById('gold-rate-unit')?.value==='tola'?1:TOLA_GRAMS);
+    const value=(document.getElementById('gold-rate-unit')?.value==='tola'?Number(rate):Number(rate)*TOLA_GRAMS)*purity;
+    target.textContent='Approx. PKR '+formatPKR(value*0.025)+' (rate-based; purity adjusted)';
+  }else target.textContent='Enter a gold rate to estimate';
+}
+function applyNisabPreset(){
+  const basis=document.getElementById('nisab-basis').value;
+  const goldRate=Number(rawValue('gold-rate')||0), silverRate=Number(rawValue('silver-rate')||0);
+  if(basis==='custom') return;
+  if(basis==='gold'&&goldRate>0) document.getElementById('nisab').value=String(Math.round(goldRate*7.5));
+  if(basis==='silver'&&silverRate>0) document.getElementById('nisab').value=String(Math.round(silverRate*52.5));
+}
+
 function calculateZakat(){
   const invalidIds=inputIds.filter(id=>!validMoneyInput(id));
   if(invalidIds.length){result.innerHTML='<p role="alert"><strong>Check your entries:</strong> enter a valid non-negative amount in every field, and enter a positive Nisab threshold. Invalid fields: '+invalidIds.map(id=>document.querySelector('label[for="'+id+'"]').textContent).join(', ')+'.</p>';return;}
@@ -73,7 +117,33 @@ function calculateZakat(){
 document.getElementById('calc').addEventListener('click',calculateZakat);
 inputIds.forEach(id=>document.getElementById(id).addEventListener('input',calculateZakat));
 ['gold','silver'].forEach(prefix=>{
-  [prefix+'-tola',prefix+'-rate'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{syncMetalValue(prefix);calculateZakat();}));
+  [prefix+'-tola',prefix+'-rate',prefix+'-unit',prefix+'-rate-unit'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{syncMetalValue(prefix);updateOneTolaExample();applyNisabPreset();calculateZakat();}));
 });
-calculateZakat();
+document.getElementById('gold-purity').addEventListener('change',()=>{updateOneTolaExample();calculateZakat();});
+document.getElementById('nisab-basis').addEventListener('change',()=>{applyNisabPreset();calculateZakat();});
+document.getElementById('madhhab').addEventListener('change',()=>{
+ const basis=document.getElementById('nisab-basis');
+ if(document.getElementById('madhhab').value==='hanafi') basis.value='silver';
+ document.getElementById('madhhab-help').textContent=document.getElementById('madhhab').value==='hanafi'
+ ?'Hanafi: combined cash and similar monetary wealth commonly uses silver Nisab. Confirm your specific case with a qualified scholar.'
+ :'Hanbali: select gold or silver Nisab according to the scholar and asset type relevant to your case; personal jewelry rulings may differ.';
+ applyNisabPreset();calculateZakat();
+});
+document.getElementById('fetch-metal-rates').addEventListener('click',async()=>{
+ const status=document.getElementById('metal-rate-status');
+ status.textContent='Requesting indicative rates from a third-party source…';
+ try{
+  const response=await fetch('https://goldrateinpakistan.org/api/rates.json',{cache:'no-store'});
+  if(!response.ok) throw new Error('Rate service unavailable');
+  const data=await response.json();
+  const gold=Number(data?.gold?.['24k']?.per_tola),silver=Number(data?.silver?.per_tola);
+  if(!(gold>0)||!(silver>0)) throw new Error('Unexpected rate format');
+  document.getElementById('gold-rate').value=String(gold);
+  document.getElementById('silver-rate').value=String(silver);
+  document.getElementById('gold-rate-unit')?.setAttribute('value','tola');
+  status.textContent='Indicative rates loaded from a third-party source'+(data.updated_at?' (updated '+data.updated_at+')':'')+'. Verify local jeweller rates before relying on them; prices are not official.';
+  applyNisabPreset();updateOneTolaExample();calculateZakat();
+ }catch(e){status.textContent='Automatic rates could not be loaded. Enter current local rates manually; the calculator remains usable.';}
+});
+calculateZakat();updateOneTolaExample();
 </script><script src="result-actions.js" defer></script></body></html>
