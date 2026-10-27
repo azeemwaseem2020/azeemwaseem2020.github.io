@@ -142,7 +142,11 @@ function calculateZakat(){
 document.getElementById('calc').addEventListener('click',calculateZakat);
 inputIds.forEach(id=>document.getElementById(id).addEventListener('input',calculateZakat));
 ['gold','silver'].forEach(prefix=>{
-  [prefix+'-tola',prefix+'-rate',prefix+'-unit',prefix+'-rate-unit'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{syncMetalValue(prefix);updateOneTolaExample();updateGoldWeightTable();applyNisabPreset();calculateZakat();}));
+  const refreshMetal=()=>{syncMetalValue(prefix);updateOneTolaExample();updateGoldWeightTable();applyNisabPreset();calculateZakat();};
+  [prefix+'-tola',prefix+'-rate'].forEach(id=>document.getElementById(id).addEventListener('input',refreshMetal));
+  [prefix+'-unit',prefix+'-rate-unit'].forEach(id=>{
+    document.getElementById(id).addEventListener('change',refreshMetal);
+  });
 });
 document.getElementById('gold-purity').addEventListener('change',()=>{syncMetalValue('gold');updateOneTolaExample();updateGoldWeightTable();calculateZakat();});
 document.getElementById('nisab-basis').addEventListener('change',()=>{applyNisabPreset();calculateZakat();});
