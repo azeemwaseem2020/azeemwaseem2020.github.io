@@ -117,8 +117,8 @@
     const total=tradeNet+netDiv;
     const roi=invested>0?total/invested*100:0;
     const be=(invested+sellCosts)/q;
-    const targetSale=(sellCosts+invested+(invested*targetPct/100)/(1-cgtPct/100))/q;
-    put('buyTotal',money(invested));put('saleGross',money(gross));put('cgtAmount',money(tax));put('tradeNet',money(tradeNet));put('netDividend',money(netDiv));put('totalReturn',money(total));put('returnPct',pct(roi));put('breakEven',money(be)+' / شیئر');put('targetPrice',cgtPct===100&&targetPct>0?'100% CGT پر یہ ہدف ممکن نہیں':money(targetSale)+' / شیئر');
+    const targetSale=cgtPct===100?null:(sellCosts+invested+(invested*targetPct/100)/(1-cgtPct/100))/q;
+    put('buyTotal',money(invested));put('saleGross',money(gross));put('cgtAmount',money(tax));put('tradeNet',money(tradeNet));put('netDividend',money(netDiv));put('totalReturn',money(total));put('returnPct',pct(roi));put('breakEven',money(be)+' / شیئر');put('targetPrice',cgtPct===100?(targetPct>0?'100% CGT پر مثبت قیمت پر مبنی منافع ممکن نہیں':money(be)+' / شیئر'):money(targetSale)+' / شیئر');
     put('calcStatus','نتیجہ صرف درج کردہ قیمتوں، مقررہ اخراجات اور فرض کردہ شرحوں پر مبنی ہے۔ اصل بروکر اسٹیٹمنٹ سے ملائیں۔');
     const scenarios=[{name:'قیمت 5% کم',price:sell*.95},{name:'موجودہ فروخت قیمت',price:sell},{name:'قیمت 5% زیادہ',price:sell*1.05}];
     document.getElementById('scenarioRows').innerHTML=scenarios.map(s=>{const g=s.price*q;const taxable=Math.max(0,g-sellCosts-invested);const t=taxable*cgtPct/100;const net=g-sellCosts-t-invested;return '<tr><td>'+s.name+'</td><td>'+money(s.price)+'</td><td>'+money(net)+'</td></tr>';}).join('');
