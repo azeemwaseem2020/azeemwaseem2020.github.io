@@ -125,7 +125,7 @@ console.log('Advanced TMR checker trust, currency and weighted-nutrient example 
 
 
 assert.match(feedCalc, /Last updated:<\/strong> October 27, 2026/, 'Visible TMR feed calculator review date should match the latest content update');
-assert.match(feedCalc, /article:modified_time" content="2026-10-19"/, 'TMR feed calculator modification metadata should match its visible review date');
+assert.match(feedCalc, /article:modified_time" content="2026-10-27"/, 'TMR feed calculator modification metadata should match its visible review date');
 for (const [path, html] of [
   ['tmr-feed-calculator.html', feedCalc],
   ['tmr-dry-matter-calculator.html', dryMatter],
