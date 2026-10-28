@@ -73,11 +73,11 @@
 <footer class="footer-main"><div class="footer-inner"><div class="footer-bottom"><span>© 2026 Calcora</span><span>Check the formula and inputs</span></div></div></footer>
 <script>
 function calc(){
- const a=Number(document.getElementById('a').value),b=Number(document.getElementById('b').value),c=Number(document.getElementById('c').value),d=Number(document.getElementById('d').value);
+ const fields=['a','b','c','d'].map(id=>document.getElementById(id)),raw=fields.map(el=>el.value.trim()),values=raw.map(Number),[a,b,c,d]=values;
  const r=document.getElementById('r');
- if([a,b,c,d].some(v=>!Number.isFinite(v))){r.textContent='Enter all four real and imaginary components.';return;}
+ if(raw.some(v=>v==='')||values.some(v=>!Number.isFinite(v))){r.textContent='Enter all four real and imaginary components as finite numbers.';return;}
  const fmt=(x,y)=>x+(y>=0?'+':'')+y+'i';
- r.innerHTML='<p><strong>Sum:</strong> '+fmt(a+c,b+d)+'</p><p><strong>Difference:</strong> '+fmt(a-c,b-d)+'</p><p><strong>Product:</strong> '+fmt(a*c-b*d,a*d+b*c)+'</p>';
+ const results=[a+c,b+d,a-c,b-d,a*c-b*d,a*d+b*c];if(results.some(v=>!Number.isFinite(v))){r.textContent='These components are too large to calculate safely.';return;}r.textContent='Sum: '+fmt(a+c,b+d)+' | Difference: '+fmt(a-c,b-d)+' | Product: '+fmt(a*c-b*d,a*d+b*c);
 }
 </script>
 </body></html>
