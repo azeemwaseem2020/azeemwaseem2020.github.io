@@ -44,12 +44,13 @@ for (const path of pages) {
 }
 const sitemap = readFileSync("sitemap.xml", "utf8");
 for (const path of pages) {
-  const escapedPath = path.replace(/[.*+?^\x24{}()|[\]\\]/g, "\\for (const path of pages) {
-  const expectedLastmod = path === "hours-to-days-calculator.html" ? "2026-10-27" : "2026-10-19";
-  assert.ok(sitemap.includes("<loc>https://azeemwaseem2020.github.io/" + path + "</loc><lastmod>" + expectedLastmod + "</lastmod>"), path + ": sitemap lastmod");
-}");
-  const entry = new RegExp("<loc>https://azeemwaseem2020\\.github\\.io/" + escapedPath + "</loc><lastmod>(\\d{4}-\\d{2}-\\d{2})</lastmod>");
-  assert.match(sitemap, entry, path + ": sitemap includes a valid lastmod date");
+  const loc = "<loc>https://azeemwaseem2020.github.io/" + path + "</loc>";
+  const start = sitemap.indexOf(loc);
+  assert.notEqual(start, -1, path + ": sitemap URL");
+  const close = sitemap.indexOf("</url>", start);
+  assert.notEqual(close, -1, path + ": sitemap URL entry closes");
+  const entry = sitemap.slice(start, close);
+  assert.match(entry, /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/, path + ": sitemap includes a valid lastmod date");
 }
 const amps = readFileSync("amps-to-watts-calculator.html", "utf8");
 assert.match(amps, /id=['"]pf['"]/i, "amps-to-watts: power factor input");
