@@ -7,8 +7,8 @@
 (function(){
  const n=document.getElementById('n'),b=document.getElementById('b'),o=document.getElementById('o'),go=document.getElementById('go');
  function convert(){
-   const value=Number(n.value),base=Number(b.value);
-   if(!Number.isSafeInteger(value)||!Number.isInteger(base)||base<2||base>36){
+   const raw=n.value.trim(),rawBase=b.value.trim(),value=Number(raw),base=Number(rawBase);
+   if(raw===''||rawBase===''||!Number.isSafeInteger(value)||!Number.isInteger(base)||base<2||base>36){
      o.textContent='Enter a whole number and a target base from 2 to 36.';
      return;
    }
