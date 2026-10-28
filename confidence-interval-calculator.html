@@ -55,9 +55,9 @@
 (function(){
  const byId=id=>document.getElementById(id);
  function calculate(){
-  const mean=Number(byId('mean').value), sd=Number(byId('sd').value), n=Number(byId('n').value), z=Number(byId('z').value), out=byId('result');
-  if(![mean,sd,n,z].every(Number.isFinite)||sd<0||!Number.isInteger(n)||n<1||z<=0){out.textContent='Enter a finite mean, a non-negative standard deviation, a positive whole-number sample size, and a critical z value greater than zero.';return;}
-  const se=sd/Math.sqrt(n), margin=z*se, lower=mean-margin, upper=mean+margin;
+  const fields=['mean','sd','n','z'].map(id=>byId(id)),raw=fields.map(el=>el.value.trim()),[mean,sd,n,z]=raw.map(Number),out=byId('result');
+  if(raw.some(v=>v==='')||![mean,sd,n,z].every(Number.isFinite)||sd<0||!Number.isSafeInteger(n)||n<1||z<=0){out.textContent='Enter a finite mean, a non-negative standard deviation, a positive whole-number sample size, and a critical z value greater than zero.';return;}
+  const se=sd/Math.sqrt(n),margin=z*se,lower=mean-margin,upper=mean+margin;if(![se,margin,lower,upper].every(Number.isFinite)){out.textContent='These values are too large to calculate a reliable interval.';return;}
   out.textContent='Standard error: '+se.toFixed(6)+' | Margin of error: '+margin.toFixed(6)+' | Confidence interval: '+lower.toFixed(4)+' to '+upper.toFixed(4);
  }
  byId('calculate').addEventListener('click',calculate);
