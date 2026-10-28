@@ -53,9 +53,9 @@
 (function(){
  const byId=id=>document.getElementById(id);
  function calculate(){
-  const sd=Number(byId('sd').value), mean=Number(byId('mean').value), out=byId('result');
-  if(!Number.isFinite(sd)||!Number.isFinite(mean)||sd<0||mean<=0){out.textContent='Enter a finite, non-negative standard deviation and a positive mean. CV is not conventionally interpreted for a zero or negative mean.';return;}
-  out.textContent='Coefficient of variation: '+((sd/mean)*100).toFixed(4)+'%';
+  const sdRaw=byId('sd').value.trim(),meanRaw=byId('mean').value.trim(),sd=Number(sdRaw),mean=Number(meanRaw),out=byId('result');
+  if(sdRaw===''||meanRaw===''||!Number.isFinite(sd)||!Number.isFinite(mean)||sd<0||mean<=0){out.textContent='Enter a finite, non-negative standard deviation and a positive mean. CV is not conventionally interpreted for a zero or negative mean.';return;}
+  const cv=(sd/mean)*100;if(!Number.isFinite(cv)){out.textContent='These values are outside the supported numeric range.';return;}out.textContent='Coefficient of variation: '+cv.toFixed(4)+'%';
  }
  byId('calculate').addEventListener('click',calculate);
  calculate();
