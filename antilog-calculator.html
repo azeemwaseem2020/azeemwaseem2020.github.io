@@ -38,7 +38,7 @@ form.addEventListener('submit', event => {
 
   const formatted = answer.toLocaleString(undefined, { maximumSignificantDigits: 10 });
   const inverseCheck = Math.log(answer) / Math.log(base);
-  const checkText = Number.isFinite(inverseCheck) ? ' | inverse check ≈ ' + inverseCheck.toPrecision(7) : '';
+  const checkText = Number.isFinite(inverseCheck) ? ' | verification: log base ' + base + ' of the result ≈ ' + inverseCheck.toPrecision(7) : '';
   showMessage('Antilog result: ' + formatted + ' | Calculation: ' + base + ' ^ ' + logValue + ' = ' + formatted + checkText);
 });
 </script></body></html>
