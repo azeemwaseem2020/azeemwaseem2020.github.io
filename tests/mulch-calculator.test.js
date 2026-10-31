@@ -16,4 +16,6 @@ const adjusted = base * 1.10;
 assert.equal(base, 50);
 assert.ok(Math.abs(adjusted - 55) < 1e-9);
 assert.equal(Math.ceil(adjusted / 2), 28);
+assert.match(html, /name="author" content="Abdul Qadir"/);
+assert.match(html, /Mulch calculator: complete guide/);
 console.log('Mulch calculator volume, bag rounding, validation and output checks passed.');
