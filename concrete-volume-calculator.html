@@ -46,9 +46,9 @@ q('#f').addEventListener('submit',e=>{
  const metric=unit.value==='m',waste=Number(q('#waste').value);
  const base=l*w*d,adjusted=base*(1+waste/100);
  if(!Number.isFinite(adjusted)){out.textContent='The entered dimensions are too large to calculate.';return;}
- const lines=metric
-  ? '<p><strong>Measured volume:</strong> '+format(base)+' m³</p><p><strong>With '+waste+'% allowance:</strong> '+format(adjusted)+' m³</p><p><strong>Equivalent:</strong> '+format(adjusted*35.3146667)+' ft³ · '+format(adjusted*1.30795062)+' yd³</p>'
-  : '<p><strong>Measured volume:</strong> '+format(base)+' ft³</p><p><strong>With '+waste+'% allowance:</strong> '+format(adjusted)+' ft³</p><p><strong>Equivalent:</strong> '+format(adjusted/27)+' yd³ · '+format(adjusted*0.0283168466)+' m³</p>';
- out.innerHTML=lines+'<p><strong>Formula:</strong> '+format(l)+' × '+format(w)+' × '+format(d)+' = '+format(base)+' cubic '+(metric?'metres':'feet')+'</p><p><strong>How allowance is applied:</strong> measured volume × (1 + '+waste+'/100).</p><p class="muted">This is a geometric estimate. It does not determine mix design, reinforcement, structural dimensions, delivery rounding or site-specific waste.</p>';
+ const equivalent=metric
+  ? format(adjusted*35.3146667)+' ft³ · '+format(adjusted*1.30795062)+' yd³'
+  : format(adjusted/27)+' yd³ · '+format(adjusted*0.0283168466)+' m³';
+ out.textContent='Measured volume: '+format(base)+' '+(metric?'m³':'ft³')+'\\nWith '+waste+'% allowance: '+format(adjusted)+' '+(metric?'m³':'ft³')+'\\nEquivalent: '+equivalent+'\\nFormula: '+format(l)+' × '+format(w)+' × '+format(d)+' = '+format(base)+' cubic '+(metric?'metres':'feet')+'\\nAllowance: measured volume × (1 + '+waste+'/100).\\nGeometric estimate only; not a mix design, structural calculation or supplier delivery quantity.';
 });
 </script></body></html>
