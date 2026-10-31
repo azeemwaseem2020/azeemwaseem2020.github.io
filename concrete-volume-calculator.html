@@ -9,7 +9,20 @@
 <script>
 const q=s=>document.querySelector(s),out=q('#result'),unit=q('#unit');
 function format(n){return n.toLocaleString('en-US',{maximumFractionDigits:3});}
-function syncUnits(){const metric=unit.value==='m';document.querySelectorAll('[data-unit]').forEach(el=>el.textContent=metric?'m':'ft');q('#d').value=metric?'0.15':'0.5';}
+let previousUnit=unit.value;
+function syncUnits(){
+ const nextUnit=unit.value;
+ if(nextUnit!==previousUnit){
+  const factor=nextUnit==='m'?0.3048:1/0.3048;
+  ['l','w','d'].forEach(id=>{
+   const field=q('#'+id),value=Number(field.value);
+   if(field.value.trim()!==''&&Number.isFinite(value))field.value=String(Number((value*factor).toPrecision(10)));
+  });
+  previousUnit=nextUnit;
+ }
+ const metric=nextUnit==='m';
+ document.querySelectorAll('[data-unit]').forEach(el=>el.textContent=metric?'m':'ft');
+}
 unit.addEventListener('change',syncUnits);
 q('#f').addEventListener('submit',e=>{
  e.preventDefault();
