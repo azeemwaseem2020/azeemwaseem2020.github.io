@@ -1,4 +1,4 @@
 const fs=require('node:fs');const assert=require('node:assert/strict');const html=fs.readFileSync('paint-calculator.html','utf8');
 assert.match(html,/Paint Calculator: Gallons, Coats &amp; Coverage|Paint Calculator: Gallons, Coats & Coverage/);
 assert.match(html,/square feet per US gallon/);assert.match(html,/Doors\/windows excluded/);assert.match(html,/Math\.ceil\(gallons\)/);assert.match(html,/Number\.isFinite/);assert.match(html,/openings>=area/);assert.match(html,/waste>100/);assert.match(html,/out\.textContent=/);assert.doesNotMatch(html,/out\.innerHTML/);
-const net=500-40;const gallons=net*2/350*1.1;assert.ok(Math.abs(gallons-2.8914285714)<1e-9);assert.equal(Math.ceil(gallons),3);console.log('Paint calculator US gallons, openings, coats, allowance and validation checks passed.');
+const net=500-40;const gallons=net*2/350*1.1;assert.ok(Math.abs(gallons-2.8914285714)<1e-9);assert.equal(Math.ceil(gallons),3);assert.match(html,/name="author" content="Abdul Qadir"/);assert.match(html,/460 × 2 ÷ 350/);assert.doesNotMatch(html,/paint-planning-guide|6\.2 litres/);console.log('Paint calculator US gallons, openings, coats, allowance and validation checks passed.');
