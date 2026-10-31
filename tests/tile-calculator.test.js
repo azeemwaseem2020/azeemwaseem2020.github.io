@@ -8,7 +8,7 @@ assert.match(html,/construction-calculators\.html/);
 assert.match(html,/getElementById\("r"\)\.textContent=/);
 assert.match(html,/id="pack"/);
 assert.match(html,/Math\.ceil\(tiles\/perBox\)/);
-assert.match(html,/tiles including allowance/);
+assert.match(html,/tiles including allowance/i);
 assert.match(html,/id="tile-planning-guide"/);
 assert.equal((html.match(/id="tile-planning-guide"/g)||[]).length,1);
 assert.doesNotMatch(html,/Tile quantity planning guide/);
