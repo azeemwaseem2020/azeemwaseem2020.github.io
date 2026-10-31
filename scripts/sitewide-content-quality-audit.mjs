@@ -73,7 +73,7 @@ const report = {
     duplicateTitleGroups: [...duplicateGroups.values()].filter(group => group.length > 1)
   },
   reviewQueue: indexablePages
-    .filter(p => p.wordCount < 400 || p.duplicateH2.length || p.repeatedParagraphCount || !p.description || !p.h1Count || p.h1Count > 1)
+    .filter(p => p.wordCount < 400 || p.duplicateH2.length || p.repeatedParagraphCount || !p.description || !p.h1Count || p.h1Count > 1 || !p.hasAuthor || !p.hasOpenGraphTitle || !p.hasTwitterCard || !p.hasFaq)
     .sort((a,b) => a.wordCount-b.wordCount)
 };
 fs.mkdirSync(path.join(root,'audit-reports'),{recursive:true});
