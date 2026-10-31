@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const assert = require('node:assert/strict');
 const html = fs.readFileSync('gravel-calculator.html', 'utf8');
-assert.match(html, /Gravel Calculator: Cubic Yards &amp; Weight Estimate|Gravel Calculator: Cubic Yards & Weight Estimate/);
+assert.match(html, /Gravel Calculator: Driveway Cubic Yards &amp; Tons|Gravel Calculator: Driveway Cubic Yards & Tons/);
 assert.match(html, /square feet/i);
 assert.match(html, /Depth \(inches\)/);
 assert.match(html, /Bulk density/);
