@@ -1,2 +1,15 @@
 const fs=require('node:fs');const assert=require('node:assert/strict');const html=fs.readFileSync('tile-calculator.html','utf8');
-assert.match(html,/Tile Calculator: Tile Count &amp; Waste Allowance|Tile Calculator: Tile Count & Waste Allowance/);assert.match(html,/name="twitter:card" content="summary_large_image"/);assert.match(html,/max="100"/);assert.match(html,/W>100/);assert.match(html,/Math\.ceil\(A\/T\*\(1\+W\/100\)\)/);assert.match(html,/construction-calculators\.html/);assert.match(html,/r\.textContent=/);console.log('Tile calculator SEO, waste validation, rounding and internal-link checks passed.');
+assert.match(html,/Tile Calculator: Tile Count &amp; Waste Allowance|Tile Calculator: Tile Count & Waste Allowance/);
+assert.match(html,/name="twitter:card" content="summary_large_image"/);
+assert.match(html,/max="100"/);
+assert.match(html,/waste>100/);
+assert.match(html,/Math\\.ceil\\(area\\/tileArea\\*\\(1\\+waste\\/100\\)\\)/);
+assert.match(html,/construction-calculators\\.html/);
+assert.match(html,/r\\.textContent=/);
+assert.match(html,/id="pack"/);
+assert.match(html,/Math\\.ceil\\(tiles\\/perBox\\)/);
+assert.match(html,/tiles including allowance/);
+assert.match(html,/id="tile-planning-guide"/);
+assert.equal((html.match(/id="tile-planning-guide"/g)||[]).length,1);
+assert.doesNotMatch(html,/Tile quantity planning guide/);
+console.log('Tile calculator SEO, package rounding, validation and guide checks passed.');

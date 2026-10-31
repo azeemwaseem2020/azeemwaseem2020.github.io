@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const assert = require('node:assert/strict');
 const html = fs.readFileSync('gravel-calculator.html', 'utf8');
-assert.match(html, /Gravel Calculator: Cubic Yards &amp; Weight Estimate|Gravel Calculator: Cubic Yards & Weight Estimate/);
+assert.match(html, /Gravel Calculator: Driveway Cubic Yards &amp; Tons|Gravel Calculator: Driveway Cubic Yards & Tons/);
 assert.match(html, /square feet/i);
 assert.match(html, /Depth \(inches\)/);
 assert.match(html, /Bulk density/);
@@ -17,4 +17,8 @@ const adjusted = base * 1.10;
 assert.equal(base, 60);
 assert.equal(adjusted, 66);
 assert.equal(Number((adjusted / 27).toFixed(2)), 2.44);
+assert.match(html, /name="author" content="Abdul Qadir"/);
+assert.match(html, /Gravel calculator: practical questions/);
+assert.match(html, /does not convert metres or centimetres automatically/);
+assert.doesNotMatch(html, /gravel-volume-guide|20 m²/);
 console.log('Gravel calculator US volume, optional density, validation and output checks passed.');
