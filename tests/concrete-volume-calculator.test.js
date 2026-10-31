@@ -5,7 +5,7 @@ const html = fs.readFileSync('concrete-volume-calculator.html', 'utf8');
 const script = html.match(/<script>\s*([\s\S]*?)<\/script>/i)?.[1] || '';
 
 assert.match(html, /Concrete Calculator: Cubic Yards &amp; m³ \| Calcora/);
-assert.match(html, /name="description"/);
+assert.match(html, /name="description"/);\nassert.match(html, /name="author" content="Abdul Qadir"/);\nassert.match(html, /og:title/);\nassert.match(html, /og:description/);\nassert.match(html, /construction-calculators\\.html/);\nassert.match(html, /Concrete volume FAQ/);\nassert.equal((html.match(/id="method-heading"/g) || []).length, 1);\nassert.doesNotMatch(html, /calcora-content-expansion|calcora-semantic-context|calcora-practical-guide-2026/);
 assert.match(html, /id="unit"/);
 assert.match(html, /id="waste"/);
 assert.match(html, /id="result"[^>]*aria-live="polite"/);
