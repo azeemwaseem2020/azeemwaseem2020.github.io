@@ -5,7 +5,7 @@ assert.match(html,/max="100"/);
 assert.match(html,/waste>100/);
 assert.match(html,/Math\.ceil\(area\/tileArea\*\(1\+waste\/100\)\)/);
 assert.match(html,/construction-calculators\.html/);
-assert.match(html,/r\.textContent=/);
+assert.match(html,/getElementById\("r"\)\.textContent=/);
 assert.match(html,/id="pack"/);
 assert.match(html,/Math\.ceil\(tiles\/perBox\)/);
 assert.match(html,/tiles including allowance/);
