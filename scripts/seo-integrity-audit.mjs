@@ -14,6 +14,7 @@ const report = {
   brokenInternalLinks: [],
   internalLinksToNoindexPages: [],
   internalLinksToCanonicalAliases: [],
+  internalLinkGraph: { orphanIndexablePages: [], unreachableIndexablePages: [], depthOverThree: [] },
   htmlTechnical: { missingLang: [], missingViewport: [], missingCharset: [], multipleH1: [] },
   structuredData: { invalidJsonLd: [] },
   canonicalTargetsMissing: [],
@@ -139,6 +140,38 @@ for (const abs of htmlFiles) {
 function canonicalUrlForFile(file) {
   return file === 'index.html' ? BASE + '/' : BASE + '/' + file;
 }
+// Build the internal-link graph so pages are evaluated for actual discoverability,
+// not merely for being present in a sitemap.
+const incomingLinkCounts = new Map();
+const adjacency = new Map();
+for (const link of internalAnchorLinks) {
+  incomingLinkCounts.set(link.target, (incomingLinkCounts.get(link.target) || 0) + 1);
+  if (!adjacency.has(link.file)) adjacency.set(link.file, new Set());
+  adjacency.get(link.file).add(link.target);
+}
+const crawlDepth = new Map([['index.html', 0]]);
+const queue = ['index.html'];
+for (let cursor = 0; cursor < queue.length; cursor++) {
+  const current = queue[cursor];
+  const nextDepth = crawlDepth.get(current) + 1;
+  for (const target of adjacency.get(current) || []) {
+    if (!crawlDepth.has(target)) {
+      crawlDepth.set(target, nextDepth);
+      queue.push(target);
+    }
+  }
+}
+const indexableFileSet = [...canonicalForFile.keys()];
+report.internalLinkGraph.orphanIndexablePages = indexableFileSet
+  .filter(file => (incomingLinkCounts.get(file) || 0) === 0)
+  .map(file => ({ file, incomingLinks: 0, canonical: canonicalForFile.get(file) }));
+report.internalLinkGraph.unreachableIndexablePages = indexableFileSet
+  .filter(file => !crawlDepth.has(file))
+  .map(file => ({ file, incomingLinks: incomingLinkCounts.get(file) || 0, canonical: canonicalForFile.get(file) }));
+report.internalLinkGraph.depthOverThree = indexableFileSet
+  .filter(file => crawlDepth.has(file) && crawlDepth.get(file) > 3)
+  .map(file => ({ file, depth: crawlDepth.get(file), incomingLinks: incomingLinkCounts.get(file) || 0 }));
+
 for (const link of internalAnchorLinks) {
   if (noindexFiles.has(link.target)) report.internalLinksToNoindexPages.push(link);
   const targetCanonical = canonicalForAllFiles.get(link.target);
@@ -203,6 +236,11 @@ const summary = {
   brokenInternalLinks: report.brokenInternalLinks.length,
   internalLinksToNoindexPages: report.internalLinksToNoindexPages.length,
   internalLinksToCanonicalAliases: report.internalLinksToCanonicalAliases.length,
+  internalLinkGraph: {
+    orphanIndexablePages: report.internalLinkGraph.orphanIndexablePages.length,
+    unreachableIndexablePages: report.internalLinkGraph.unreachableIndexablePages.length,
+    depthOverThree: report.internalLinkGraph.depthOverThree.length
+  },
   htmlTechnical: Object.fromEntries(Object.entries(report.htmlTechnical).map(([key, value]) => [key, value.length])),
   invalidJsonLd: report.structuredData.invalidJsonLd.length,
   canonicalTargetsMissing: report.canonicalTargetsMissing.length,
@@ -212,6 +250,9 @@ const summary = {
 };
 if (report.internalLinksToNoindexPages.length) console.warn('WARNING: internal links point to noindex pages: ' + report.internalLinksToNoindexPages.length);
 if (report.internalLinksToCanonicalAliases.length) console.warn('WARNING: internal links point to canonical aliases: ' + report.internalLinksToCanonicalAliases.length);
+if (report.internalLinkGraph.orphanIndexablePages.length) console.warn('WARNING: indexable pages with no internal links: ' + report.internalLinkGraph.orphanIndexablePages.length);
+if (report.internalLinkGraph.unreachableIndexablePages.length) console.warn('WARNING: indexable pages unreachable from homepage: ' + report.internalLinkGraph.unreachableIndexablePages.length);
+if (report.internalLinkGraph.depthOverThree.length) console.warn('WARNING: indexable pages more than three clicks from homepage: ' + report.internalLinkGraph.depthOverThree.length);
 console.log('CALCORA SEO INTEGRITY AUDIT');
 console.log(JSON.stringify({
   ...summary,
@@ -225,6 +266,7 @@ console.log(JSON.stringify({
     brokenInternalLinks: report.brokenInternalLinks,
     internalLinksToNoindexPages: report.internalLinksToNoindexPages,
     internalLinksToCanonicalAliases: report.internalLinksToCanonicalAliases,
+    internalLinkGraph: report.internalLinkGraph,
     htmlTechnical: report.htmlTechnical,
     invalidJsonLd: report.structuredData.invalidJsonLd,
     canonicalTargetsMissing: report.canonicalTargetsMissing,
