@@ -19,6 +19,6 @@ assert.equal(adjusted, 66);
 assert.equal(Number((adjusted / 27).toFixed(2)), 2.44);
 assert.match(html, /name="author" content="Abdul Qadir"/);
 assert.match(html, /Gravel volume and weight: how the estimate works/);
-assert.match(html, /square metres or centimetres automatically/);
+assert.match(html, /does not convert metres or centimetres automatically/);
 assert.doesNotMatch(html, /gravel-volume-guide|20 m²/);
 console.log('Gravel calculator US volume, optional density, validation and output checks passed.');
