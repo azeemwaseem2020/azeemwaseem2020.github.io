@@ -55,8 +55,8 @@ const report = {
   totals: {
     htmlFiles: pages.length, indexablePages: indexablePages.length,
     under250Words: indexablePages.filter(p => p.wordCount < 250).length,
-    250to399Words: indexablePages.filter(p => p.wordCount >= 250 && p.wordCount < 400).length,
-    400to499Words: indexablePages.filter(p => p.wordCount >= 400 && p.wordCount < 500).length,
+    '250to399Words': indexablePages.filter(p => p.wordCount >= 250 && p.wordCount < 400).length,
+    '400to499Words': indexablePages.filter(p => p.wordCount >= 400 && p.wordCount < 500).length,
     500PlusWords: indexablePages.filter(p => p.wordCount >= 500).length,
     missingTitle: indexablePages.filter(p => !p.title).length,
     missingDescription: indexablePages.filter(p => !p.description).length,
