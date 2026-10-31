@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const html = fs.readFileSync('concrete-volume-calculator.html', 'utf8');
 const script = html.match(/<script>\s*([\s\S]*?)<\/script>/i)?.[1] || '';
 
-assert.match(html, /Concrete Calculator: Cubic Yards &amp; m³ \| Calcora/);
+assert.match(html, /Concrete Volume Calculator: Slab &amp; Footing Volume \| Calcora/);
 assert.match(html, /name="description"/);
 assert.match(html, /name="author" content="Abdul Qadir"/);
 assert.match(html, /og:title/);
