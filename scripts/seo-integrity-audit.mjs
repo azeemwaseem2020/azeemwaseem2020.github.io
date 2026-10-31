@@ -42,8 +42,20 @@ function decodeEntities(value) {
 }
 function relFile(fromFile, href) {
   const raw = decodeEntities(href).trim();
-  if (!raw || raw.startsWith('#') || /^(?:https?:|mailto:|tel:|javascript:|data:|blob:|sms:)/i.test(raw)) return null;
-  const pathname = raw.split(/[?#]/, 1)[0];
+  if (!raw || raw.startsWith('#')) return null;
+  let pathname;
+  if (/^(?:https?:)?\/\//i.test(raw)) {
+    try {
+      const parsed = new URL(raw, BASE);
+      if (parsed.origin !== BASE) return null;
+      pathname = parsed.pathname;
+    } catch {
+      return null;
+    }
+  } else {
+    if (/^(?:mailto:|tel:|javascript:|data:|blob:|sms:)/i.test(raw)) return null;
+    pathname = raw.split(/[?#]/, 1)[0];
+  }
   if (!pathname) return null;
   let resolved;
   if (pathname.startsWith('/')) resolved = pathname.slice(1);
