@@ -5,7 +5,14 @@ const html = fs.readFileSync('concrete-volume-calculator.html', 'utf8');
 const script = html.match(/<script>\s*([\s\S]*?)<\/script>/i)?.[1] || '';
 
 assert.match(html, /Concrete Calculator: Cubic Yards &amp; m³ \| Calcora/);
-assert.match(html, /name="description"/);\nassert.match(html, /name="author" content="Abdul Qadir"/);\nassert.match(html, /og:title/);\nassert.match(html, /og:description/);\nassert.match(html, /construction-calculators\\.html/);\nassert.match(html, /Concrete volume FAQ/);\nassert.equal((html.match(/id="method-heading"/g) || []).length, 1);\nassert.doesNotMatch(html, /calcora-content-expansion|calcora-semantic-context|calcora-practical-guide-2026/);
+assert.match(html, /name="description"/);
+assert.match(html, /name="author" content="Abdul Qadir"/);
+assert.match(html, /og:title/);
+assert.match(html, /og:description/);
+assert.match(html, /construction-calculators\.html/);
+assert.match(html, /Frequently asked questions/);
+assert.equal((html.match(/id="method-heading"/g) || []).length, 1);
+assert.doesNotMatch(html, /calcora-content-expansion|calcora-semantic-context|calcora-practical-guide-2026/);
 assert.match(html, /id="unit"/);
 assert.match(html, /id="waste"/);
 assert.match(html, /id="result"[^>]*aria-live="polite"/);
@@ -30,4 +37,4 @@ assert.ok(Math.abs(m3 - 1.699010796) < 1e-8);
 assert.ok(Math.abs(60 * 1.1 - 66) < 1e-12);
 assert.ok(Math.abs(10 * 0.3048 - 3.048) < 1e-12);
 
-console.log('Concrete volume calculator: metadata, unit conversion, allowance, validation and safe output checks passed.');
+console.log('Concrete volume calculator: metadata, duplicate-content, unit conversion, allowance, validation and safe-output checks passed.');
