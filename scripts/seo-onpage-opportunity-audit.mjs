@@ -120,7 +120,13 @@ for (const absolute of files) {
     }
   }
   if (/search intent covered|search gap expansion|global\/search intent|semantic keyword targets|primary keyword:|supporting keywords:/i.test(strip(markup))) issues.searchStrategyLeakage.push(file);
-  if (!schemaTypes.some(type => /WebApplication|SoftwareApplication|Product|Service/i.test(String(type)))) issues.missingApplicationSchemaReview.push({ file, schemaTypes });
+  // Only review actual interactive calculator tools for application schema. Editorial guides,
+  // category hubs, author pages and policy pages are not expected to use SoftwareApplication.
+  const hasCalculatorControls = /(?:<input\\b|<select\\b|<textarea\\b)/i.test(markup);
+  const isCalculatorToolPage = /(?:calculator|converter)-[^/]*\\.html$/i.test(file) || /(?:^|\\/)[^/]*(?:calculator|converter)\\.html$/i.test(file);
+  if (isCalculatorToolPage && hasCalculatorControls && !schemaTypes.some(type => /WebApplication|SoftwareApplication/i.test(String(type)))) {
+    issues.missingApplicationSchemaReview.push({ file, schemaTypes });
+  }
 }
 for (const [description, filesForDescription] of descriptions) {
   if (filesForDescription.length > 1) issues.duplicateDescriptions.push({ description, files: filesForDescription });
@@ -128,7 +134,7 @@ for (const [description, filesForDescription] of descriptions) {
 const totals = Object.fromEntries(Object.entries(issues).map(([key, value]) => [key, value.length]));
 const report = {
   generatedAt: new Date().toISOString(),
-  scope: 'Static review signals for indexable HTML pages. Length ranges and schema-presence checks are heuristics, not Google ranking rules.',
+  scope: 'Static review signals for indexable HTML pages. Length ranges and calculator application-schema checks are limited to pages with calculator/converter names and interactive form controls; all checks are static review signals, not Google ranking rules.',
   pageCount: pages.length,
   totals,
   issues
