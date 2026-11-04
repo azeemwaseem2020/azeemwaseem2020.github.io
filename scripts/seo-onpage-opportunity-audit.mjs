@@ -25,7 +25,7 @@ function walk(dir) {
 }
 function attr(tag, name) {
   const escaped = name.replace(/[.*+?^$|()[\]\\]/g, '\\$&');
-  const m = tag.match(new RegExp("\\b" + escaped + "\\s*=\\s*(?:\"([^\"]*)\"|'([^']*)'|([^\\s>]+))", "i"));
+  const m = tag.match(new RegExp("\b" + escaped + "\\s*=\\s*(?:\"([^\"]*)\"|'([^']*)'|([^\\s>]+))", "i"));
   return m ? (m[1] ?? m[2] ?? m[3] ?? '').trim() : '';
 }
 function decode(s) {
@@ -122,8 +122,8 @@ for (const absolute of files) {
   if (/search intent covered|search gap expansion|global\/search intent|semantic keyword targets|primary keyword:|supporting keywords:/i.test(strip(markup))) issues.searchStrategyLeakage.push(file);
   // Only review actual interactive calculator tools for application schema. Editorial guides,
   // category hubs, author pages and policy pages are not expected to use SoftwareApplication.
-  const hasCalculatorControls = /(?:<input\\b|<select\\b|<textarea\\b)/i.test(markup);
-  const isCalculatorToolPage = /(?:calculator|converter)-[^/]*\\.html$/i.test(file) || /(?:^|\\/)[^/]*(?:calculator|converter)\\.html$/i.test(file);
+  const hasCalculatorControls = /(?:<input\b|<select\b|<textarea\b)/i.test(markup);
+  const isCalculatorToolPage = /(?:calculator|converter)-[^/]*\.html$/i.test(file) || /(?:^|\/)[^/]*(?:calculator|converter)\.html$/i.test(file);
   if (isCalculatorToolPage && hasCalculatorControls && !schemaTypes.some(type => /WebApplication|SoftwareApplication/i.test(String(type)))) {
     issues.missingApplicationSchemaReview.push({ file, schemaTypes });
   }
