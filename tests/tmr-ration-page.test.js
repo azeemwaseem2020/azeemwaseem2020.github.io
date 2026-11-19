@@ -178,7 +178,7 @@ console.log('TMR cluster search-intent metadata, canonicals, H1s and freshness c
 
 // TMR long-tail search answers: visible dry-matter and batch-scaling guidance must match FAQ schema.
 const tmrFeedPage = fs.readFileSync(new URL('tmr-feed-calculator.html', root), 'utf8');
-const tmrSchemas = [...tmrFeedPage.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(([, raw]) => JSON.parse(raw));
+const tmrSchemas = tmrFeedPage.split('<script type="application/ld+json">').slice(1).map(part => JSON.parse(part.split('</script>')[0]));
 const tmrFaq = tmrSchemas.find(schema => schema['@type'] === 'FAQPage');
 assert.ok(tmrFaq, 'TMR calculator must retain FAQPage schema');
 for (const question of ['How do I calculate dry matter in a TMR batch?','How do I calculate the weight of each TMR ingredient?','How is estimated dry matter per animal per day calculated?','Can I mix as-fed percentages with dry-matter percentages?']) {
@@ -186,5 +186,5 @@ for (const question of ['How do I calculate dry matter in a TMR batch?','How do 
   assert.ok(tmrFaq.mainEntity.some(item => item.name === question), 'TMR FAQ schema missing ' + question);
 }
 assert.ok(tmrFaq.mainEntity.every(item => tmrFeedPage.includes(item.acceptedAnswer.text)), 'TMR FAQ answers must match visible content');
-assert.match(tmrFeedPage, /Last updated:<\\/strong> November 19, 2026/);
-assert.match(tmrFeedPage, /article:modified_time" content="2026-11-19"/);
+assert.ok(tmrFeedPage.includes('Last updated:</strong> November 19, 2026'));
+assert.ok(tmrFeedPage.includes('article:modified_time" content="2026-11-19"'));
