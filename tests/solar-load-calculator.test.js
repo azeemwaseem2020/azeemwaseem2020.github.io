@@ -84,7 +84,7 @@ const loadApp = loadSchemas.find(schema => schema['@type'] === 'SoftwareApplicat
 assert.ok(loadApp, 'solar load SoftwareApplication schema exists');
 assert.equal(loadApp.name, 'Solar Load Calculator Pakistan | Panels & Battery | Calcora');
 assert.match(solarLoadPage, /<title>Solar Load Calculator Pakistan \| Panels & Battery \| Calcora<\/title>/);
-assert.match(solarLoadPage, /name="description" content="Calculate daily solar energy, panel count, battery backup and inverter load/);
+assert.match(solarLoadPage, /name="description" content="Use this solar load calculator to estimate household watts, daily kWh/);
 assert.match(solarLoadPage, /https:\/\/globalsolaratlas\.info\//);
 assert.match(solarLoadPage, /Pakistan solar irradiation and PV-potential map data/);
 assert.doesNotMatch(solarLoadPage, /preliminary US home planning/);
