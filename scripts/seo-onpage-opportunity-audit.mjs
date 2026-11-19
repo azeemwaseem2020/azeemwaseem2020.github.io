@@ -25,8 +25,14 @@ function walk(dir) {
 }
 function attr(tag, name) {
   const escaped = name.replace(/[.*+?^$|()[\]\\]/g, '\\$&');
-  const m = tag.match(new RegExp("\b" + escaped + "\\s*=\\s*(?:\"([^\"]*)\"|'([^']*)'|([^\\s>]+))", "i"));
+  const m = tag.match(new RegExp("\\b" + escaped + "\\s*=\\s*(?:\"([^\"]*)\"|'([^']*)'|([^\\s>]+))", "i"));
   return m ? (m[1] ?? m[2] ?? m[3] ?? '').trim() : '';
+}
+// Guard the quoted-attribute parser: a broken word-boundary escape silently
+// makes every metadata and Open Graph audit appear missing.
+if (attr('<meta name="description" content="Calcora parser check">', 'content') !== 'Calcora parser check' ||
+    attr('<meta property="og:title" content="Calcora title">', 'property') !== 'og:title') {
+  throw new Error('SEO audit attribute parser self-test failed.');
 }
 function decode(s) {
   return s.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ');
