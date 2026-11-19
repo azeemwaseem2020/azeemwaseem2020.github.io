@@ -82,7 +82,12 @@ const solarLoadPage = fs.readFileSync(new URL('../solar-load-calculator.html', i
 const loadSchemas = [...solarLoadPage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(([, raw]) => JSON.parse(raw));
 const loadApp = loadSchemas.find(schema => schema['@type'] === 'SoftwareApplication');
 assert.ok(loadApp, 'solar load SoftwareApplication schema exists');
-assert.equal(loadApp.name, 'Home Solar Load Calculator: kWh, Panels & Battery | Calcora');
+assert.equal(loadApp.name, 'Solar Load Calculator Pakistan | Panels & Battery | Calcora');
+assert.match(solarLoadPage, /<title>Solar Load Calculator Pakistan \| Panels & Battery \| Calcora<\/title>/);
+assert.match(solarLoadPage, /name="description" content="Calculate daily solar energy, panel count, battery backup and inverter load/);
+assert.match(solarLoadPage, /https:\/\/globalsolaratlas\.info\//);
+assert.match(solarLoadPage, /Pakistan solar irradiation and PV-potential map data/);
+assert.doesNotMatch(solarLoadPage, /preliminary US home planning/);
 assert.doesNotMatch(solarLoadPage, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
 assert.match(solarLoadPage, /https:\/\/pvwatts\.nrel\.gov\//);
 assert.match(solarLoadPage, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
