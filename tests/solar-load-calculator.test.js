@@ -132,4 +132,20 @@ assert.match(solarLoadPage, /document\.getElementById\('useRunningLoad'\)\.addEv
 assert.match(solarLoadPage, /The battery estimate uses the separate “Load to back up” input/);
 assert.match(solarLoadPage, /Optional: copy the estimated simultaneous running load into the separate battery-backup load input/);
 
+// Solar cluster navigation: hub, Pakistan guide and specialist tools form one clear path.
+const solarHub = fs.readFileSync(new URL('../solar-calculator-hub.html', import.meta.url), 'utf8');
+const solarBattery = fs.readFileSync(new URL('../solar-battery-calculator.html', import.meta.url), 'utf8');
+const solarInverter = fs.readFileSync(new URL('../solar-inverter-size-calculator.html', import.meta.url), 'utf8');
+const pakistanSolarGuide = fs.readFileSync(new URL('../blog-solar-calculator-pakistan.html', import.meta.url), 'utf8');
+const solarSizingGuide = fs.readFileSync(new URL('../blog-solar-sizing-from-load-to-battery.html', import.meta.url), 'utf8');
+for (const path of ['solar-load-calculator.html', 'solar-panel-calculator.html', 'solar-battery-calculator.html', 'solar-inverter-size-calculator.html']) {
+  assert.ok(solarHub.includes('href="' + path + '"'), 'solar hub links to ' + path);
+}
+assert.ok(solarHub.includes('href="blog-solar-calculator-pakistan.html"'));
+assert.ok(solarBattery.includes('href="solar-inverter-size-calculator.html"'));
+assert.ok(solarInverter.includes('href="solar-battery-calculator.html"'));
+assert.ok(pakistanSolarGuide.includes('href="solar-calculator-hub.html"'));
+assert.ok(solarSizingGuide.includes('href="solar-inverter-size-calculator.html"'));
+assert.ok(solarSizingGuide.includes('href="solar-battery-calculator.html"'));
+
 console.log('Solar load calculator inverter headroom checks passed.');
