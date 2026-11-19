@@ -164,12 +164,12 @@ assert.ok(inverterPage.includes('<strong>Updated:</strong> November 19, 2026'));
 assert.ok(inverterPage.includes('article:modified_time" content="2026-11-19"'));
 assert.ok(inverterPage.includes('Can I size an inverter using monthly electricity units (kWh) alone?'));
 assert.ok(inverterPage.includes('Is the solar panel array rating the same as inverter output capacity?'));
-const inverterSchemas = inverterPage.split('<script type="application/ld+json">').slice(1).map(part => JSON.parse(part.split('</script>')[0]));
-const inverterApp = inverterSchemas.flatMap(schema => schema['@graph'] || [schema]).find(schema => schema['@type'] === 'SoftwareApplication');
-const inverterFaq = inverterSchemas.flatMap(schema => schema['@graph'] || [schema]).find(schema => schema['@type'] === 'FAQPage');
-assert.equal(inverterApp.offers.priceCurrency, 'PKR');
-assert.equal(inverterApp.dateModified, '2026-11-19');
+const inverterUpdatedSchemas = inverterPage.split('<script type="application/ld+json">').slice(1).map(part => JSON.parse(part.split('</script>')[0]));
+const inverterUpdatedApp = inverterUpdatedSchemas.flatMap(schema => schema['@graph'] || [schema]).find(schema => schema['@type'] === 'SoftwareApplication');
+const inverterUpdatedFaq = inverterUpdatedSchemas.flatMap(schema => schema['@graph'] || [schema]).find(schema => schema['@type'] === 'FAQPage');
+assert.equal(inverterUpdatedApp.offers.priceCurrency, 'PKR');
+assert.equal(inverterUpdatedApp.dateModified, '2026-11-19');
 for (const question of ['Can I size an inverter using monthly electricity units (kWh) alone?','Is the solar panel array rating the same as inverter output capacity?']) {
-  assert.ok(inverterFaq.mainEntity.some(item => item.name === question), 'inverter FAQ schema missing ' + question);
+  assert.ok(inverterUpdatedFaq.mainEntity.some(item => item.name === question), 'inverter FAQ schema missing ' + question);
 }
 assert.ok(inverterPage.includes('id="inverter-rating-guide"'));
