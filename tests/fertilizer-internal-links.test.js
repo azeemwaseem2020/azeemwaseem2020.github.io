@@ -360,3 +360,8 @@ assert.ok(mainFertilizer.includes('Last updated:</strong> November 19, 2026'));
 assert.ok(mainFertilizer.includes('article:modified_time" content="2026-11-19"'));
 assert.ok(primaryFaq.mainEntity.every(item => mainFertilizer.includes(item.acceptedAnswer.text)), 'every FAQ schema answer must also be visible on the page');
 console.log('Fertilizer organic-search FAQ and schema alignment checks: PASS');
+
+assert.match(mainFertilizer, /id="crop-specific-fertilizer-planning"/);
+for (const cropGuide of ['wheat-fertilizer-calculator-pakistan.html','maize-fertilizer-calculator-pakistan.html','rice-fertilizer-calculator-pakistan.html','cotton-fertilizer-calculator-pakistan.html','sugarcane-fertilizer-calculator-pakistan.html']) {
+  assert.ok(mainFertilizer.includes('href="' + cropGuide + '"'), 'primary fertilizer calculator must link to ' + cropGuide);
+}
