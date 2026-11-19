@@ -173,7 +173,7 @@ assert.ok(portfolioPage.includes('does not account for sector overlap, correlati
 
 // Search-intent coverage for total PSX trade investment and separate dividend returns.
 const psxPrimaryPage = fs.readFileSync(new URL('psx-calculator.html', root), 'utf8');
-const psxPrimarySchemas = [...psxPrimaryPage.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(([, raw]) => JSON.parse(raw));
+const psxPrimarySchemas = psxPrimaryPage.split('<script type="application/ld+json">').slice(1).map(part => JSON.parse(part.split('</script>')[0]));
 const psxPrimaryFaq = psxPrimarySchemas.find(schema => schema['@type'] === 'FAQPage');
 assert.ok(psxPrimaryFaq, 'PSX profit calculator FAQPage schema missing');
 for (const question of ['How do I calculate the total amount invested in a PSX trade?','Does the total amount invested include dividends or the future selling value?']) {
@@ -181,5 +181,5 @@ for (const question of ['How do I calculate the total amount invested in a PSX t
   assert.ok(psxPrimaryFaq.mainEntity.some(item => item.name === question), 'PSX FAQ schema missing ' + question);
 }
 assert.ok(psxPrimaryFaq.mainEntity.every(item => psxPrimaryPage.includes(item.acceptedAnswer.text)), 'PSX FAQ answers must match visible content');
-assert.match(psxPrimaryPage, /Updated November 19, 2026/);
-assert.match(psxPrimaryPage, /article:modified_time" content="2026-11-19"/);
+assert.ok(psxPrimaryPage.includes('Updated November 19, 2026'));
+assert.ok(psxPrimaryPage.includes('article:modified_time" content="2026-11-19"'));
