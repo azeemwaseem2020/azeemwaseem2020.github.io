@@ -109,6 +109,8 @@ function inlineScript(html, marker) {
   assert.match(field('result').innerHTML, /too large to calculate reliably/);
 }
 
+// Loan EMI cluster navigation: core calculator, supporting tools and educational guides.
+const emiCore = read('loan-emi-calculator.html');
 // Search Console query coverage: Pakistan monthly-installment intent and matching FAQ schema.
 assert.match(emiCore, /name="description" content="Calculate your monthly loan installment \(EMI\) in Pakistan/);
 assert.match(emiCore, /How is EMI calculated for a loan in Pakistan\?/);
@@ -118,8 +120,6 @@ assert.match(emiCore, /"name": "How is EMI calculated for a loan in Pakistan\?"/
 assert.match(emiCore, /"name": "Is a monthly installment the same as EMI\?"/);
 assert.match(emiCore, /"name": "Can I calculate EMI for a PKR 100,000 loan\?"/);
 
-// Loan EMI cluster navigation: core calculator, supporting tools and educational guides.
-const emiCore = read('loan-emi-calculator.html');
 const personalLoan = read('personal-loan-calculator.html');
 const interestLoan = read('loan-interest-calculator.html');
 const payoffLoan = read('loan-payoff-calculator.html');
