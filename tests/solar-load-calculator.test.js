@@ -157,3 +157,19 @@ assert.ok(solarSizingGuide.includes('href="solar-inverter-size-calculator.html"'
 assert.ok(solarSizingGuide.includes('href="solar-battery-calculator.html"'));
 
 console.log('Solar load calculator inverter headroom checks passed.');
+
+
+// Inverter sizing search-intent coverage and Pakistan-specific schema metadata.
+assert.match(inverterPage, /<strong>Updated:<\\/strong> November 19, 2026/);
+assert.match(inverterPage, /article:modified_time" content="2026-11-19"/);
+assert.match(inverterPage, /Can I size an inverter using monthly electricity units \\(kWh\\) alone\\?/);
+assert.match(inverterPage, /Is the solar panel array rating the same as inverter output capacity\\?/);
+const inverterSchemas = [...inverterPage.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(([, raw]) => JSON.parse(raw));
+const inverterApp = inverterSchemas.flatMap(schema => schema['@graph'] || [schema]).find(schema => schema['@type'] === 'SoftwareApplication');
+const inverterFaq = inverterSchemas.flatMap(schema => schema['@graph'] || [schema]).find(schema => schema['@type'] === 'FAQPage');
+assert.equal(inverterApp.offers.priceCurrency, 'PKR');
+assert.equal(inverterApp.dateModified, '2026-11-19');
+for (const question of ['Can I size an inverter using monthly electricity units (kWh) alone?','Is the solar panel array rating the same as inverter output capacity?']) {
+  assert.ok(inverterFaq.mainEntity.some(item => item.name === question), 'inverter FAQ schema missing ' + question);
+}
+assert.match(inverterPage, /id="inverter-rating-guide"/);
