@@ -132,6 +132,15 @@ assert.match(solarLoadPage, /document\.getElementById\('useRunningLoad'\)\.addEv
 assert.match(solarLoadPage, /The battery estimate uses the separate “Load to back up” input/);
 assert.match(solarLoadPage, /Optional: copy the estimated simultaneous running load into the separate battery-backup load input/);
 
+// Search Console query coverage: visible solar FAQs and concise Pakistan-first snippet.
+assert.match(solarLoadPage, /name="description" content="Use this solar load calculator to estimate household watts, daily kWh/);
+assert.match(solarLoadPage, /How do I calculate the load for a solar system\?/);
+assert.match(solarLoadPage, /How do I calculate solar panel load from electricity units\?/);
+assert.match(solarLoadPage, /How do I calculate the load for an inverter\?/);
+assert.match(solarLoadPage, /"name": "How do I calculate the load for a solar system\?"/);
+assert.match(solarLoadPage, /"name": "How do I calculate solar panel load from electricity units\?"/);
+assert.match(solarLoadPage, /"name": "How do I calculate the load for an inverter\?"/);
+
 // Solar cluster navigation: hub, Pakistan guide and specialist tools form one clear path.
 const solarBattery = fs.readFileSync(new URL('../solar-battery-calculator.html', import.meta.url), 'utf8');
 const solarInverter = fs.readFileSync(new URL('../solar-inverter-size-calculator.html', import.meta.url), 'utf8');
