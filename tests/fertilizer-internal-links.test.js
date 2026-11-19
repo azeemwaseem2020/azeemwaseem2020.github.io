@@ -125,7 +125,7 @@ assert.match(primary, /x\.price!==null\?money\(x\.cost\):'Enter price'/, 'each u
 assert.match(primary, /items\.filter\(x=>x\.r>0\)\.every\(x=>x\.price!==null\)\?money\(cost\):'Incomplete—enter all prices'/, 'copied result summary must not report a partial cost as a total');
 assert.equal((primary.match(/"featureList"\s*:/g) || []).length, 1, 'SoftwareApplication schema must not repeat the featureList key');
 const metadataUpdateDate = primary.match(/article:modified_time" content="([^"]+)"/)?.[1];
-assert.equal(metadataUpdateDate, visibleUpdateDate.replace(/^October (\d+), (\d{4})$/, (_, day, year) => year + '-10-' + day.padStart(2, '0')), 'fertilizer modification metadata must match the visible update date');
+const visibleDateParts = visibleUpdateDate.match(/^([A-Za-z]+) (\d+), (\d{4})$/);\nconst monthNumber = {January:'01',February:'02',March:'03',April:'04',May:'05',June:'06',July:'07',August:'08',September:'09',October:'10',November:'11',December:'12'}[visibleDateParts?.[1]];\nassert.ok(visibleDateParts && monthNumber, 'visible fertilizer update date must be a valid written date');\nassert.equal(metadataUpdateDate, visibleDateParts[3] + '-' + monthNumber + '-' + visibleDateParts[2].padStart(2, '0'), 'fertilizer modification metadata must match the visible update date');
 
 assert.match(blend, /href="fertilizer-bag-calculator\.html"/);
 assert.match(blend, /purchase surplus and cost/);
