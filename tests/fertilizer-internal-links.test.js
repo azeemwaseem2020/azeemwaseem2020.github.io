@@ -336,8 +336,8 @@ console.log('Whole-bag optimizer bounded-search and purchase-cost regression che
 
 // Organic-search intent coverage: answer observed NPK/acre and product-grade queries,
 // and keep FAQ structured data aligned with the visible answers.
-const primaryFaqSchemas = [...mainFertilizer.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)]
-  .map(match => JSON.parse(match[1]));
+const primaryFaqSchemas = mainFertilizer.split('<script type="application/ld+json">').slice(1)
+  .map(part => JSON.parse(part.split('</script>')[0]));
 const primaryFaq = primaryFaqSchemas.find(schema => schema['@type'] === 'FAQPage');
 assert.ok(primaryFaq, 'primary fertilizer calculator must retain FAQPage schema');
 assert.equal(primaryFaq.mainEntity.length, 4, 'primary fertilizer FAQ schema must contain the four selected visible answers');
@@ -351,9 +351,9 @@ for (const question of primaryFaqQuestions) {
   assert.ok(mainFertilizer.includes('<h3>' + question + '</h3>'), 'visible fertilizer FAQ must answer: ' + question);
   assert.ok(primaryFaq.mainEntity.some(item => item.name === question), 'FAQ schema must match visible question: ' + question);
 }
-assert.match(mainFertilizer, /20 \/ 0\\.46 = about 43\\.48 kg of product per acre/);
-assert.match(mainFertilizer, /28% nitrogen, 0% phosphate/);
-assert.match(mainFertilizer, /Last updated:<\\/strong> November 19, 2026/);
-assert.match(mainFertilizer, /article:modified_time" content="2026-11-19"/);
+assert.ok(mainFertilizer.includes('20 ÷ 0.46 = about 43.48 kg of product per acre'));
+assert.ok(mainFertilizer.includes('28% nitrogen, 0% phosphate'));
+assert.ok(mainFertilizer.includes('Last updated:</strong> November 19, 2026'));
+assert.ok(mainFertilizer.includes('article:modified_time" content="2026-11-19"'));
 assert.ok(primaryFaq.mainEntity.every(item => mainFertilizer.includes(item.acceptedAnswer.text)), 'every FAQ schema answer must also be visible on the page');
 console.log('Fertilizer organic-search FAQ and schema alignment checks: PASS');
