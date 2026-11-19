@@ -332,3 +332,28 @@ assert.equal(bagReference.cost, 800, 'reference whole-bag optimizer should choos
 assert.deepEqual(bagReference.counts, [0, 2], 'reference whole-bag optimizer should prefer the feasible lower-cost integer bag combination');
 assert.ok(bagReference.supply.N >= 20 && bagReference.supply.P >= 10, 'whole-bag purchase must meet every nutrient minimum');
 console.log('Whole-bag optimizer bounded-search and purchase-cost regression checks: PASS');
+
+
+// Organic-search intent coverage: answer observed NPK/acre and product-grade queries,
+// and keep FAQ structured data aligned with the visible answers.
+const primaryFaqSchemas = [...mainFertilizer.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)]
+  .map(match => JSON.parse(match[1]));
+const primaryFaq = primaryFaqSchemas.find(schema => schema['@type'] === 'FAQPage');
+assert.ok(primaryFaq, 'primary fertilizer calculator must retain FAQPage schema');
+assert.equal(primaryFaq.mainEntity.length, 4, 'primary fertilizer FAQ schema must contain the four selected visible answers');
+const primaryFaqQuestions = [
+  'How do I calculate fertilizer per acre?',
+  'How do I calculate an NPK fertilizer dose per acre?',
+  'What does 28-0-0-5 fertilizer grade mean?',
+  'How do I convert a nutrient target into kilograms of fertilizer?'
+];
+for (const question of primaryFaqQuestions) {
+  assert.ok(mainFertilizer.includes('<h3>' + question + '</h3>'), 'visible fertilizer FAQ must answer: ' + question);
+  assert.ok(primaryFaq.mainEntity.some(item => item.name === question), 'FAQ schema must match visible question: ' + question);
+}
+assert.match(mainFertilizer, /20 \/ 0\\.46 = about 43\\.48 kg of product per acre/);
+assert.match(mainFertilizer, /28% nitrogen, 0% phosphate/);
+assert.match(mainFertilizer, /Last updated:<\\/strong> November 19, 2026/);
+assert.match(mainFertilizer, /article:modified_time" content="2026-11-19"/);
+assert.ok(primaryFaq.mainEntity.every(item => mainFertilizer.includes(item.acceptedAnswer.text)), 'every FAQ schema answer must also be visible on the page');
+console.log('Fertilizer organic-search FAQ and schema alignment checks: PASS');
