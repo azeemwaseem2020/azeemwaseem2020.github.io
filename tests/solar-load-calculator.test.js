@@ -156,6 +156,15 @@ assert.ok(pakistanSolarGuide.includes('href="solar-calculator-hub.html"'));
 assert.ok(solarSizingGuide.includes('href="solar-inverter-size-calculator.html"'));
 assert.ok(solarSizingGuide.includes('href="solar-battery-calculator.html"'));
 
+
+assert.match(solarLoadPage, /id="pakistan-units-reference"/);
+assert.match(solarLoadPage, /Pakistan solar system estimate by monthly electricity units/);
+assert.match(solarLoadPage, /450 units ÷ 30 = 15 kWh\/day/);
+assert.match(solarLoadPage, /How many solar panels do I need for 450 monthly electricity units in Pakistan\?/);
+assert.match(solarLoadPage, /Last updated: 20 November 2026/);
+assert.match(solarLoadPage, /article:modified_time" content="2026-11-20"/);
+assert.ok(loadSchemas.find(schema => schema['@type'] === 'FAQPage').mainEntity.some(item => item.name === 'How many solar panels do I need for 450 monthly electricity units in Pakistan?'));
+
 console.log('Solar load calculator inverter headroom checks passed.');
 
 
