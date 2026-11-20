@@ -125,7 +125,10 @@ assert.match(primary, /x\.price!==null\?money\(x\.cost\):'Enter price'/, 'each u
 assert.match(primary, /items\.filter\(x=>x\.r>0\)\.every\(x=>x\.price!==null\)\?money\(cost\):'Incomplete—enter all prices'/, 'copied result summary must not report a partial cost as a total');
 assert.equal((primary.match(/"featureList"\s*:/g) || []).length, 1, 'SoftwareApplication schema must not repeat the featureList key');
 const metadataUpdateDate = primary.match(/article:modified_time" content="([^"]+)"/)?.[1];
-assert.equal(metadataUpdateDate, visibleUpdateDate.replace(/^October (\d+), (\d{4})$/, (_, day, year) => year + '-10-' + day.padStart(2, '0')), 'fertilizer modification metadata must match the visible update date');
+const visibleDateParts = visibleUpdateDate.match(/^([A-Za-z]+) (\d+), (\d{4})$/);
+const monthNumber = {January:'01',February:'02',March:'03',April:'04',May:'05',June:'06',July:'07',August:'08',September:'09',October:'10',November:'11',December:'12'}[visibleDateParts?.[1]];
+assert.ok(visibleDateParts && monthNumber, 'visible fertilizer update date must be a valid written date');
+assert.equal(metadataUpdateDate, visibleDateParts[3] + '-' + monthNumber + '-' + visibleDateParts[2].padStart(2, '0'), 'fertilizer modification metadata must match the visible update date');
 
 assert.match(blend, /href="fertilizer-bag-calculator\.html"/);
 assert.match(blend, /purchase surplus and cost/);
@@ -260,8 +263,8 @@ const mainFertilizerScript = mainFertilizer.split('<script>').at(-1).split('</sc
 assert.doesNotThrow(() => new Function(mainFertilizerScript), 'main fertilizer calculator JavaScript must parse without syntax errors');
 assert.ok(Math.abs(100 * 0.30 - 30) < 1e-9 && Math.abs(100 * 0.70 - 70) < 1e-9, '30/70 split schedule must preserve the total product quantity');
 assert.ok(Math.abs(30 * 0.46 - 13.8) < 1e-9 && Math.abs(70 * 0.46 - 32.2) < 1e-9, 'split schedule must preserve nutrient contribution from a 46% N product');
-assert.match(mainFertilizer, /Last updated:<\/strong> October 27, 2026/);
-assert.match(mainFertilizer, /article:modified_time" content="2026-10-27"/);
+assert.match(mainFertilizer, /Last updated:<\/strong> November 19, 2026/);
+assert.match(mainFertilizer, /article:modified_time" content="2026-11-19"/);
 console.log('Main fertilizer split schedule, validation, export, formula and freshness checks: PASS');
 assert.match(mainFertilizer, /function optimizeCostPlan\(\)/, 'target planner must include an explicit cost-aware solver');
 assert.match(mainFertilizer, /function solveLinearSystem\(matrix,vector\)/, 'optimizer must solve candidate nutrient-balance equations');
@@ -332,3 +335,33 @@ assert.equal(bagReference.cost, 800, 'reference whole-bag optimizer should choos
 assert.deepEqual(bagReference.counts, [0, 2], 'reference whole-bag optimizer should prefer the feasible lower-cost integer bag combination');
 assert.ok(bagReference.supply.N >= 20 && bagReference.supply.P >= 10, 'whole-bag purchase must meet every nutrient minimum');
 console.log('Whole-bag optimizer bounded-search and purchase-cost regression checks: PASS');
+
+
+// Organic-search intent coverage: answer observed NPK/acre and product-grade queries,
+// and keep FAQ structured data aligned with the visible answers.
+const primaryFaqSchemas = mainFertilizer.split('<script type="application/ld+json">').slice(1)
+  .map(part => JSON.parse(part.split('</script>')[0]));
+const primaryFaq = primaryFaqSchemas.find(schema => schema['@type'] === 'FAQPage');
+assert.ok(primaryFaq, 'primary fertilizer calculator must retain FAQPage schema');
+assert.equal(primaryFaq.mainEntity.length, 4, 'primary fertilizer FAQ schema must contain the four selected visible answers');
+const primaryFaqQuestions = [
+  'How do I calculate fertilizer per acre?',
+  'How do I calculate an NPK fertilizer dose per acre?',
+  'What does 28-0-0-5 fertilizer grade mean?',
+  'How do I convert a nutrient target into kilograms of fertilizer?'
+];
+for (const question of primaryFaqQuestions) {
+  assert.ok(mainFertilizer.includes('<h3>' + question + '</h3>'), 'visible fertilizer FAQ must answer: ' + question);
+  assert.ok(primaryFaq.mainEntity.some(item => item.name === question), 'FAQ schema must match visible question: ' + question);
+}
+assert.ok(mainFertilizer.includes('20 ÷ 0.46 = about 43.48 kg of product per acre'));
+assert.ok(mainFertilizer.includes('28% nitrogen, 0% phosphate'));
+assert.ok(mainFertilizer.includes('Last updated:</strong> November 19, 2026'));
+assert.ok(mainFertilizer.includes('article:modified_time" content="2026-11-19"'));
+assert.ok(primaryFaq.mainEntity.every(item => mainFertilizer.includes(item.acceptedAnswer.text)), 'every FAQ schema answer must also be visible on the page');
+console.log('Fertilizer organic-search FAQ and schema alignment checks: PASS');
+
+assert.match(mainFertilizer, /id="crop-specific-fertilizer-planning"/);
+for (const cropGuide of ['wheat-fertilizer-calculator-pakistan.html','maize-fertilizer-calculator-pakistan.html','rice-fertilizer-calculator-pakistan.html','cotton-fertilizer-calculator-pakistan.html','sugarcane-fertilizer-calculator-pakistan.html']) {
+  assert.ok(mainFertilizer.includes('href="' + cropGuide + '"'), 'primary fertilizer calculator must link to ' + cropGuide);
+}

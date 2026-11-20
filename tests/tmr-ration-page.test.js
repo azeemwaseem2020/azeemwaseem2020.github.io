@@ -124,8 +124,8 @@ assert.match(rationCheck, /does not prove the ration meets an animal’s needs/i
 console.log('Advanced TMR checker trust, currency and weighted-nutrient example checks: PASS');
 
 
-assert.match(feedCalc, /Last updated:<\/strong> October 27, 2026/, 'Visible TMR feed calculator review date should match the latest content update');
-assert.match(feedCalc, /article:modified_time" content="2026-10-27"/, 'TMR feed calculator modification metadata should match its visible review date');
+assert.match(feedCalc, /Last updated:<\/strong> November 19, 2026/, 'Visible TMR feed calculator review date should match the latest content update');
+assert.match(feedCalc, /article:modified_time" content="2026-11-19"/, 'TMR feed calculator modification metadata should match its visible review date');
 for (const [path, html] of [
   ['tmr-feed-calculator.html', feedCalc],
   ['tmr-dry-matter-calculator.html', dryMatter],
@@ -175,3 +175,16 @@ for (const [name, html] of clusterPages) {
   assert.match(html, /<meta name="description" content="[^"]{70,160}">/i, name + ' description should be a useful 70–160 character summary');
 }
 console.log('TMR cluster search-intent metadata, canonicals, H1s and freshness checks: PASS');
+
+// TMR long-tail search answers: visible dry-matter and batch-scaling guidance must match FAQ schema.
+const tmrFeedPage = fs.readFileSync(new URL('tmr-feed-calculator.html', root), 'utf8');
+const tmrSchemas = tmrFeedPage.split('<script type="application/ld+json">').slice(1).map(part => JSON.parse(part.split('</script>')[0]));
+const tmrFaq = tmrSchemas.find(schema => schema['@type'] === 'FAQPage');
+assert.ok(tmrFaq, 'TMR calculator must retain FAQPage schema');
+for (const question of ['How do I calculate dry matter in a TMR batch?','How do I calculate the weight of each TMR ingredient?','How is estimated dry matter per animal per day calculated?','Can I mix as-fed percentages with dry-matter percentages?']) {
+  assert.ok(tmrFeedPage.includes('<summary>' + question + '</summary>'), 'visible TMR FAQ missing ' + question);
+  assert.ok(tmrFaq.mainEntity.some(item => item.name === question), 'TMR FAQ schema missing ' + question);
+}
+assert.ok(tmrFaq.mainEntity.every(item => tmrFeedPage.includes(item.acceptedAnswer.text)), 'TMR FAQ answers must match visible content');
+assert.ok(tmrFeedPage.includes('Last updated:</strong> November 19, 2026'));
+assert.ok(tmrFeedPage.includes('article:modified_time" content="2026-11-19"'));

@@ -109,4 +109,43 @@ function inlineScript(html, marker) {
   assert.match(field('result').innerHTML, /too large to calculate reliably/);
 }
 
+// Loan EMI cluster navigation: core calculator, supporting tools and educational guides.
+const emiCore = read('loan-emi-calculator.html');
+// Search Console query coverage: Pakistan monthly-installment intent and matching FAQ schema.
+assert.match(emiCore, /name="description" content="Calculate your monthly loan installment \(EMI\) in Pakistan/);
+assert.match(emiCore, /How is EMI calculated for a loan in Pakistan\?/);
+assert.match(emiCore, /Is a monthly installment the same as EMI\?/);
+assert.match(emiCore, /Can I calculate EMI for a PKR 100,000 loan\?/);
+assert.match(emiCore, /"name": "How is EMI calculated for a loan in Pakistan\?"/);
+assert.match(emiCore, /"name": "Is a monthly installment the same as EMI\?"/);
+assert.match(emiCore, /"name": "Can I calculate EMI for a PKR 100,000 loan\?"/);
+
+const personalLoan = read('personal-loan-calculator.html');
+const interestLoan = read('loan-interest-calculator.html');
+const payoffLoan = read('loan-payoff-calculator.html');
+const emiGuide = read('blog-loan-emi.html');
+const amortizationGuide = read('blog-emi-amortization-schedule.html');
+const homeLoanPage = read('home-loan-emi-pakistan.html');
+const carLoanPage = read('car-loan-emi-pakistan.html');
+assert.match(homeLoanPage, /How does a larger down payment affect home loan EMI\?/);
+assert.match(homeLoanPage, /Does a longer home finance tenure reduce the total cost\?/);
+assert.match(homeLoanPage, /"name": "How does a larger down payment affect home loan EMI\?"/);
+assert.match(homeLoanPage, /"name": "Does a longer home finance tenure reduce the total cost\?"/);
+assert.match(carLoanPage, /How does a larger car down payment affect the monthly installment\?/);
+assert.match(carLoanPage, /Should I compare car finance offers using EMI alone\?/);
+assert.match(carLoanPage, /"name": "How does a larger car down payment affect the monthly installment\?"/);
+assert.match(carLoanPage, /"name": "Should I compare car finance offers using EMI alone\?"/);
+assert.ok(personalLoan.includes('href="loan-emi-calculator.html"'));
+assert.ok(personalLoan.includes('href="loan-comparison-calculator.html"'));
+assert.ok(interestLoan.includes('href="blog-emi-amortization-schedule.html"'));
+assert.ok(interestLoan.includes('href="reducing-balance-vs-flat-rate-loan.html"'));
+assert.ok(payoffLoan.includes('href="loan-interest-calculator.html"'));
+assert.ok(payoffLoan.includes('href="loan-comparison-calculator.html"'));
+assert.ok(emiGuide.includes('href="blog-emi-amortization-schedule.html"'));
+assert.ok(emiGuide.includes('href="home-loan-emi-pakistan.html"'));
+assert.ok(amortizationGuide.includes('href="loan-payoff-calculator.html"'));
+assert.ok(amortizationGuide.includes('href="loan-comparison-calculator.html"'));
+assert.ok(emiCore.includes('href="home-loan-emi-pakistan.html"'));
+assert.ok(emiCore.includes('href="car-loan-emi-pakistan.html"'));
+
 console.log('Zakat and EMI runtime regression tests passed.');

@@ -59,7 +59,7 @@ assert.ok(profitPage.includes('Last updated: October 19, 2026'), 'PSX profit pag
 assert.ok(profitPage.includes('Calculation checks: Calcora regression tests'), 'PSX profit page: validation wording should describe internal regression tests accurately');
 assert.doesNotMatch(profitPage, /Reviewed for calculation logic by Calcora/, 'PSX profit page: avoid ambiguous self-review wording');
 assert.match(profitPage, /<strong>Page information:<\/strong>[\s\S]*?Last updated: October 19, 2026<\/p>/, 'PSX profit page: page-information block should contain the current revision date');
-assert.match(profitPage, /<meta property="article:modified_time" content="2026-10-19">/, 'PSX profit page: article modified time should match the revision');
+assert.match(profitPage, /<meta property="article:modified_time" content="2026-11-19">/, 'PSX profit page: article modified time should match the revision');
 assert.match(profitPage, /id="next-psx-tool"/, 'PSX profit page: consolidated intent-led PSX navigation missing');
 assert.match(profitPage, /href="psx-dividend-yield-calculator\.html"/, 'PSX profit page: dividend yield internal link missing');
 assert.match(profitPage, /href="psx-capital-gains-tax-calculator\.html"/, 'PSX profit page: dedicated CGT tool link missing');
@@ -169,3 +169,17 @@ assert.ok(portfolioPage.includes('Top 3 holdings weight'), 'PSX portfolio: top-t
 assert.ok(portfolioPage.includes('Concentration index (HHI)'), 'PSX portfolio: HHI result missing');
 assert.ok(portfolioPage.includes('Effective holdings estimate'), 'PSX portfolio: effective holdings metric missing');
 assert.ok(portfolioPage.includes('does not account for sector overlap, correlation, liquidity or hidden common risks'), 'PSX portfolio: concentration limitations must be disclosed');
+
+
+// Search-intent coverage for total PSX trade investment and separate dividend returns.
+const psxPrimaryPage = fs.readFileSync(new URL('psx-calculator.html', root), 'utf8');
+const psxPrimarySchemas = psxPrimaryPage.split('<script type="application/ld+json">').slice(1).map(part => JSON.parse(part.split('</script>')[0]));
+const psxPrimaryFaq = psxPrimarySchemas.find(schema => schema['@type'] === 'FAQPage');
+assert.ok(psxPrimaryFaq, 'PSX profit calculator FAQPage schema missing');
+for (const question of ['How do I calculate the total amount invested in a PSX trade?','Does the total amount invested include dividends or the future selling value?']) {
+  assert.ok(psxPrimaryPage.includes('<summary>' + question + '</summary>'), 'visible PSX FAQ missing ' + question);
+  assert.ok(psxPrimaryFaq.mainEntity.some(item => item.name === question), 'PSX FAQ schema missing ' + question);
+}
+assert.ok(psxPrimaryFaq.mainEntity.every(item => psxPrimaryPage.includes(item.acceptedAnswer.text)), 'PSX FAQ answers must match visible content');
+assert.ok(psxPrimaryPage.includes('Updated November 19, 2026'));
+assert.ok(psxPrimaryPage.includes('article:modified_time" content="2026-11-19"'));

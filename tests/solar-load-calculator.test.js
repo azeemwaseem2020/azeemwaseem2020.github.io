@@ -82,7 +82,12 @@ const solarLoadPage = fs.readFileSync(new URL('../solar-load-calculator.html', i
 const loadSchemas = [...solarLoadPage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(([, raw]) => JSON.parse(raw));
 const loadApp = loadSchemas.find(schema => schema['@type'] === 'SoftwareApplication');
 assert.ok(loadApp, 'solar load SoftwareApplication schema exists');
-assert.equal(loadApp.name, 'Home Solar Load Calculator: kWh, Panels & Battery | Calcora');
+assert.equal(loadApp.name, 'Solar Load Calculator Pakistan | Panels & Battery | Calcora');
+assert.match(solarLoadPage, /<title>Solar Load Calculator Pakistan \| Panels & Battery \| Calcora<\/title>/);
+assert.match(solarLoadPage, /name="description" content="Use this solar load calculator to estimate household watts, daily kWh/);
+assert.match(solarLoadPage, /https:\/\/globalsolaratlas\.info\//);
+assert.match(solarLoadPage, /Pakistan solar irradiation and PV-potential map data/);
+assert.doesNotMatch(solarLoadPage, /preliminary US home planning/);
 assert.doesNotMatch(solarLoadPage, /https:\/\/(?:pvwatts|sam)\.nlr\.gov/);
 assert.match(solarLoadPage, /https:\/\/pvwatts\.nrel\.gov\//);
 assert.match(solarLoadPage, /https:\/\/sam\.nrel\.gov\/photovoltaic/);
@@ -104,7 +109,7 @@ assert.ok(inverterSchemas.some(schema => schema['@type'] === 'FAQPage' || schema
 assert.ok(inverterSchemas.some(schema => schema['@type'] === 'SoftwareApplication' || schema['@graph']?.some(node => node['@type'] === 'SoftwareApplication')), 'inverter calculator application schema exists');
 assert.match(solarHub, /href="solar-inverter-size-calculator\.html"/);
 const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
-assert.match(sitemap, /<loc>https:\/\/azeemwaseem2020\.github\.io\/solar-inverter-size-calculator\.html<\/loc><lastmod>2026-10-26<\/lastmod>/);
+assert.match(sitemap, /<loc>https:\/\/azeemwaseem2020\.github\.io\/solar-inverter-size-calculator\.html<\/loc><lastmod>2026-11-19<\/lastmod>/);
 assert.match(sitemap, /solar-load-calculator\.html<\/loc><lastmod>2026-10-26<\/lastmod>/);
 const inverterGuide = fs.readFileSync(new URL('../blog-solar-inverter-size-calculator.html', import.meta.url), 'utf8');
 assert.match(inverterGuide, /property="og:title" content="Solar Inverter Sizing Guide: kW, kVA &amp; Surge \| Calcora"/);
@@ -127,4 +132,44 @@ assert.match(solarLoadPage, /document\.getElementById\('useRunningLoad'\)\.addEv
 assert.match(solarLoadPage, /The battery estimate uses the separate “Load to back up” input/);
 assert.match(solarLoadPage, /Optional: copy the estimated simultaneous running load into the separate battery-backup load input/);
 
+// Search Console query coverage: visible solar FAQs and concise Pakistan-first snippet.
+assert.match(solarLoadPage, /name="description" content="Use this solar load calculator to estimate household watts, daily kWh/);
+assert.match(solarLoadPage, /How do I calculate the load for a solar system\?/);
+assert.match(solarLoadPage, /How do I calculate solar panel load from electricity units\?/);
+assert.match(solarLoadPage, /How do I calculate the load for an inverter\?/);
+assert.match(solarLoadPage, /"name": "How do I calculate the load for a solar system\?"/);
+assert.match(solarLoadPage, /"name": "How do I calculate solar panel load from electricity units\?"/);
+assert.match(solarLoadPage, /"name": "How do I calculate the load for an inverter\?"/);
+
+// Solar cluster navigation: hub, Pakistan guide and specialist tools form one clear path.
+const solarBattery = fs.readFileSync(new URL('../solar-battery-calculator.html', import.meta.url), 'utf8');
+const solarInverter = fs.readFileSync(new URL('../solar-inverter-size-calculator.html', import.meta.url), 'utf8');
+const pakistanSolarGuide = fs.readFileSync(new URL('../blog-solar-calculator-pakistan.html', import.meta.url), 'utf8');
+const solarSizingGuide = fs.readFileSync(new URL('../blog-solar-sizing-from-load-to-battery.html', import.meta.url), 'utf8');
+for (const path of ['solar-load-calculator.html', 'solar-panel-calculator.html', 'solar-battery-calculator.html', 'solar-inverter-size-calculator.html']) {
+  assert.ok(solarHub.includes('href="' + path + '"'), 'solar hub links to ' + path);
+}
+assert.ok(solarHub.includes('href="blog-solar-calculator-pakistan.html"'));
+assert.ok(solarBattery.includes('href="solar-inverter-size-calculator.html"'));
+assert.ok(solarInverter.includes('href="solar-battery-calculator.html"'));
+assert.ok(pakistanSolarGuide.includes('href="solar-calculator-hub.html"'));
+assert.ok(solarSizingGuide.includes('href="solar-inverter-size-calculator.html"'));
+assert.ok(solarSizingGuide.includes('href="solar-battery-calculator.html"'));
+
 console.log('Solar load calculator inverter headroom checks passed.');
+
+
+// Inverter sizing search-intent coverage and Pakistan-specific schema metadata.
+assert.ok(inverterPage.includes('<strong>Updated:</strong> November 19, 2026'));
+assert.ok(inverterPage.includes('article:modified_time" content="2026-11-19"'));
+assert.ok(inverterPage.includes('Can I size an inverter using monthly electricity units (kWh) alone?'));
+assert.ok(inverterPage.includes('Is the solar panel array rating the same as inverter output capacity?'));
+const inverterUpdatedSchemas = inverterPage.split('<script type="application/ld+json">').slice(1).map(part => JSON.parse(part.split('</script>')[0]));
+const inverterUpdatedApp = inverterUpdatedSchemas.flatMap(schema => schema['@graph'] || [schema]).find(schema => schema['@type'] === 'SoftwareApplication');
+const inverterUpdatedFaq = inverterUpdatedSchemas.flatMap(schema => schema['@graph'] || [schema]).find(schema => schema['@type'] === 'FAQPage');
+assert.equal(inverterUpdatedApp.offers.priceCurrency, 'PKR');
+assert.equal(inverterUpdatedApp.dateModified, '2026-11-19');
+for (const question of ['Can I size an inverter using monthly electricity units (kWh) alone?','Is the solar panel array rating the same as inverter output capacity?']) {
+  assert.ok(inverterUpdatedFaq.mainEntity.some(item => item.name === question), 'inverter FAQ schema missing ' + question);
+}
+assert.ok(inverterPage.includes('id="inverter-rating-guide"'));
