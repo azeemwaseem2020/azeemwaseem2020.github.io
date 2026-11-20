@@ -55,7 +55,7 @@ const batteryPage = fs.readFileSync(new URL('../solar-battery-calculator.html', 
 assert.match(batteryPage, /<title>Solar Battery Calculator \| Backup Time, kWh & Ah \| Calcora<\/title>/);
 assert.match(batteryPage, /property="og:title" content="Solar Battery Calculator \| Backup Time, kWh & Ah \| Calcora"/);
 assert.doesNotMatch(batteryPage, /og:title[^>]+Pakistan/i);
-assert.match(batteryPage, /Updated: October 26, 2026/);
+assert.match(batteryPage, /Updated: November 20, 2026/);
 assert.match(batteryPage, /dcCurrent=l\/\(v\*e\)/);
 assert.match(batteryPage, /Estimated DC current at the entered voltage/);
 assert.match(batteryPage, /Battery\/BMS:<\/strong> confirm continuous and peak discharge-current ratings/);
