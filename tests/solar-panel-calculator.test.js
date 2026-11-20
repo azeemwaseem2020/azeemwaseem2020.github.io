@@ -17,10 +17,10 @@ assert.ok(faq.mainEntity.some(item => item.name === question), 'visible producti
 assert.ok(page.includes('Last updated: 20 November 2026'));
 assert.ok(page.includes('article:modified_time" content="2026-11-20"'));
 
-assert.equal(0.55 * 4 * 0.8, 1.7600000000000002);
-assert.equal(0.55 * 5 * 0.8, 2.2);
-assert.equal(0.55 * 6 * 0.8, 2.64);
-assert.equal(2.2 * 30, 66);
+assert.ok(Math.abs(0.55 * 4 * 0.8 - 1.76) < 1e-10);
+assert.ok(Math.abs(0.55 * 5 * 0.8 - 2.2) < 1e-10);
+assert.ok(Math.abs(0.55 * 6 * 0.8 - 2.64) < 1e-10);
+assert.ok(Math.abs(2.2 * 30 - 66) < 1e-10);
 
 const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
 assert.ok(sitemap.includes('<loc>https://azeemwaseem2020.github.io/solar-panel-calculator.html</loc><lastmod>2026-11-20</lastmod>'));
